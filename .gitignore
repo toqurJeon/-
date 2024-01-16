@@ -1,0 +1,37 @@
+HELP.md
+moiroomserver/.gradle
+moiroomserver/build/
+!moiroomserver/gradle/wrapper/gradle-wrapper.jar
+!moiroomserver/**/src/main/**/build/
+!moiroomserver/**/src/test/**/build/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea
+moiroomserver/*.iws
+moiroomserver/*.iml
+moiroomserver/*.ipr
+moiroomserver/out/
+!moiroomserver/**/src/main/**/out/
+!moiroomserver/**/src/test/**/out/
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+
+### VS Code ###
+.vscode/
