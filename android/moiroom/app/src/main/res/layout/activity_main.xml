@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+xml 문서에 대한 기본 정보 선언. xml버전과 문자 인코딩 버전
+xml파일 제일 위에 있어야함(주석도 있으면 안 됨
+
+
+* activity_main 파일
+activity_main: 프로젝트를 생성할 때 기본으로 생성되는 레이아웃
+기본적으로는 어플이 처음 켜질 때 이 페이지가 보이게 설정되어 있지만
+(MainAcctivity.kt의 onCreate/setContentView)
+우리는 login/매칭결과 상세 페이지가 보이기 때문에 이 xml은 안 쓸 예정
+하지만 참고용으로 남겨둠
+
+
+ConstraintLayout: 제트팩(androidx)에서 제공하는 라이브러리(다른 레이아웃을 사용해도 무방)
+xmlns: xml 문서에서 네임스페이스를 선언하는 속성
+네임 스페이스: 엘리먼트와 속성을 식별하기 위한 일종의 접두어를 제공하는 메커니즘
+ex)xmlns:변수A='네임스페이스 링크' -> 해당 네임스페이스에 있는 요소에 접근하기 위해서 A라는 변수를 활용할 것이라는 선언
+tools:context=".MainActivity" -> 해당 xml이 MainActiity.kt 파일에 있는 MainActivity 클래스와 연결
+(클래스 뿐만 아니라 프래그먼트, 뷰에도 연결할 수 있으며, 특정 요소와 연결하지 않을 경우 생략도 가능)
+(tools:context에 관련된 내용은 파악이 100% 안 돼서 아닐 수도 있음
+-->
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Hello World!"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
