@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">moiroom</string>
+    <string name="kakao_login_button_description">카카오 로그인 버튼</string>
 </resources>
