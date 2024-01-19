@@ -1,3 +1,5 @@
+package com.example.moiroom
+
 import android.content.Intent
 import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
 import androidx.appcompat.app.AppCompatActivity

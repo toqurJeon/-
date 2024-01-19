@@ -1,6 +1,5 @@
 package com.example.moiroom
 
-import SecondActivity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
