@@ -4,6 +4,7 @@ plugins {
     id("kotlin-kapt")
 }
 
+
 android {
     namespace = "com.example.moiroom"
     compileSdk = 34
