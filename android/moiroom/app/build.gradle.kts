@@ -1,7 +1,9 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
 }
+
 
 android {
     namespace = "com.example.moiroom"
@@ -33,6 +35,10 @@ android {
     kotlinOptions {
         jvmTarget = "1.8"
     }
+
+    viewBinding {
+        enable = true
+    }
 }
 
 dependencies {
@@ -46,4 +52,12 @@ dependencies {
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
     // 카카오 로그인 모듈 추가
     implementation("com.kakao.sdk:v2-user:2.0.1")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    // 갤러리 접근용
+    implementation("androidx.activity:activity-ktx:1.4.0")
+    implementation("androidx.fragment:fragment-ktx:1.3.6")
+    implementation("com.github.bumptech.glide:glide:4.12.0")
+    kapt("com.github.bumptech.glide:compiler:4.12.0")
+
 }

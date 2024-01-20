@@ -1,5 +1,7 @@
 package com.example.moiroom
 
+import android.content.ContentProvider
+import android.content.ContentValues
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -12,8 +14,14 @@ import com.kakao.sdk.common.util.Utility
 
 //성현
 import android.content.Intent
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import com.bumptech.glide.Glide
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
@@ -101,4 +109,93 @@ class MainActivity : AppCompatActivity() {
 
 }
 
+
+//class MainActivity : AppCompatActivity() {
+//
+//    override fun onCreate(savedInstanceState: Bundle?) {
+//        super.onCreate(savedInstanceState)
+//        setContentView(R.layout.activity_jaeeontest)
+//        Log.d("PhotoPath", "시작")
+//        // 갤러리에서 모든 사진 가져오기
+//        val photos = getAllPhotos()
+//        Log.d("PhotoPath", "${photos.size}")
+//        // 가져온 사진들에 대한 처리
+//        for (photo in photos) {
+//            // 각 사진에 대한 처리를 여기에 추가
+////            val textView = findViewById<TextView>(R.id.textView)
+//            val myImageView = findViewById<ImageView>(R.id.textView)
+//            // TextView에 데이터 설정
+//            Glide.with(this)
+//                .load(photo)
+//                .into(myImageView)
+//            Log.d("PhotoPath", "Photo Path: $photo")
+//            break
+//        }
+//    }
+//
+//    private fun getAllPhotos(): ArrayList<String> {
+//        val projection = arrayOf(
+//            MediaStore.Images.Media.DATA,
+//            MediaStore.Images.Media.DISPLAY_NAME
+//        )
+//
+//        val photos = ArrayList<String>()
+//
+//        // MediaStore에서 이미지를 가져오는 쿼리
+//        val cursor: Cursor? = contentResolver.query(
+//            MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+//            projection,
+//            null,
+//            null,
+//            null
+//        )
+//
+//        cursor?.use {
+//            val columnIndexData = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+//            while (it.moveToNext()) {
+//                val photoPath = it.getString(columnIndexData)
+//                photos.add(photoPath)
+//            }
+//        }
+//
+//        return photos
+//    }
+//}
+
+class MyContentProvider : ContentProvider() {
+    override fun delete(uri: Uri, selection: String?, selectionArgs: Array<String>?): Int {
+        return 0
+    }
+
+    override fun getType(uri: Uri): String? {
+        return null
+    }
+
+    override fun insert(uri: Uri, values: ContentValues?): Uri? {
+        return null
+    }
+
+    override fun onCreate(): Boolean {
+        return false
+    }
+
+    override fun query(
+        uri: Uri,
+        projection: Array<String>?,
+        selection: String?,
+        selectionArgs: Array<String>?,
+        sortOrder: String?
+    ): Cursor? {
+        return null
+    }
+
+    override fun update(
+        uri: Uri,
+        values: ContentValues?,
+        selection: String?,
+        selectionArgs: Array<String>?
+    ): Int {
+        return 0
+    }
+}
 

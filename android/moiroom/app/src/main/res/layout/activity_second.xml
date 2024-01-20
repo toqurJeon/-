@@ -28,14 +28,69 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent" />
 
+    <ImageView
+        android:id="@+id/profileImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"  />
+
     <TextView
         android:id="@+id/nickname"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="닉네임: "
         android:textSize="20sp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/profileImage" />
+
+    <TextView
+        android:id="@+id/email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="이메일: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/nickname" />
+
+    <TextView
+        android:id="@+id/gender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="성별: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/email" />
+
+    <TextView
+        android:id="@+id/ageRange"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="연령대: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/gender" />
+
+    <TextView
+        android:id="@+id/birthday"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="생일: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/ageRange" />
+
+    <TextView
+        android:id="@+id/birthyear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="출생연도: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/birthday" />
+
+    <TextView
+        android:id="@+id/phoneNumber"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="전화번호: "
+        android:textSize="20sp"
+        app:layout_constraintTop_toBottomOf="@id/birthyear" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
