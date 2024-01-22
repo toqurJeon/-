@@ -18,10 +18,10 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(name = "metropolitan_id", nullable = false)
+    @Column(name = "metropolitan_id")
     private Long metropolitanId;
 
-    @Column(name = "city_id", nullable = false)
+    @Column(name = "city_id")
     private Long cityId;
 
     @Column(name = "character_id")
