@@ -23,10 +23,11 @@ class NowMatchingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val frameLayout: FrameLayout = view.findViewById(R.id.matchingFrameLayout)
-        frameLayout.setOnClickListener {
+        val startMatchingButton: TextView = view.findViewById(R.id.startMatchingButton)
+        startMatchingButton.setOnClickListener {
             val intent = Intent(activity, LoadingActivity::class.java)
             startActivity(intent)
         }
     }
+
 }
