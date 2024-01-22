@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">moiroom</string>
     <string name="kakao_login_button_description">카카오 로그인 버튼</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="chatting">This is chatting page</string>
+    <string name="now_matching">This is now Matching page</string>
 </resources>

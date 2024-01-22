@@ -32,14 +32,27 @@
             android:id="@+id/kakao_login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/kakao_login_medium_wide"
+            android:layout_marginBottom="256dp"
             android:background="@android:color/transparent"
-            android:scaleType="centerInside"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginBottom="40dp"
             android:contentDescription="@string/kakao_login_button_description"
-            />
+            android:scaleType="centerInside"
+            android:src="@drawable/kakao_login_medium_wide"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_bias="0.495"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <ImageView
+            android:id="@+id/moiroom2_main_logo"
+            android:layout_width="241dp"
+            android:layout_height="492dp"
+            android:layout_marginBottom="168dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/kakao_login_button_description"
+            android:scaleType="centerInside"
+            android:src="@drawable/moiroom2"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
