@@ -10,4 +10,6 @@ public class ChatRoom extends BaseEntity {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatRoomId;
+
+    private String lastMessage;
 }
