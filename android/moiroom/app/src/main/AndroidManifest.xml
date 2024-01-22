@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.moiroom">
-    <!-- 인터넷 사용 권한 설정 -->
-    <uses-permission android:name="android.permission.INTERNET" /> <!-- 외부 저장소(갤러리)에 있는 파일을 읽기 위한 권한을 설정 -->
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <!-- 인터넷 사용 권한 설정-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 외부 저장소(갤러리)에 있는 파일을 읽기 위한 권한을 설정 -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
     <queries>
         <package android:name="com.example.moiroom_content_provider" />
@@ -17,13 +19,15 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moiroom">
+        <activity android:name=".NaviActivity"
+        <activity
+            android:name=".InfoinputActivity"
+            android:exported="true" />
         <activity
             android:name=".SecondActivity"
             android:exported="true"></activity>
         <activity
             android:name=".MainActivity"
-            android:exported="false" />
-        <activity android:name=".NaviActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -36,7 +40,6 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
@@ -45,14 +48,17 @@
                     android:scheme="kakao694a967e5e200f2b2342046d25fdcd7e" />
             </intent-filter>
         </activity>
-
-        <!-- 콘텐츠 프로바이더 등록 -->
+<!--콘텐츠 프로바이더 등록-->
         <provider
             android:name=".MyContentProvider"
             android:authorities="com.example.moiroom_content_provider"
             android:enabled="true"
             android:exported="true"
-            android:grantUriPermissions="true"></provider>
+            android:grantUriPermissions="true" >
+        </provider>
     </application>
+
+
+
 
 </manifest>
