@@ -1,0 +1,48 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NowMatchingFragment">
+
+    <FrameLayout
+        android:id="@+id/matchingFrameLayout"
+        android:layout_width="344dp"
+        android:layout_height="504dp"
+        android:background="@drawable/gradient_background"
+        android:layout_gravity="center"
+        android:layout_marginBottom="18dp"
+        android:padding="10dp"
+        android:clickable="true"
+        android:focusable="true">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:src="@drawable/ic_before_matching" />
+
+    <TextView
+        android:id="@+id/startMatchingButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="매칭 시작하기"
+        android:textSize="20sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="@font/pretendard_semibold"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:layout_marginBottom="522dp"
+        android:fontFamily="@font/pretendard_semibold"
+        android:gravity="center"
+        android:padding="10dp"
+        android:text="매칭을 시작해보세요.\n룸메이트가 기다리고 있어요!"
+        android:textColor="#FFFFFF"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+</FrameLayout>
+
+    </FrameLayout>
