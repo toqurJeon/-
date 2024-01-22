@@ -19,7 +19,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moiroom">
-        <activity android:name=".NaviActivity"
+        <activity android:name=".NaviActivity"></activity>
         <activity
             android:name=".InfoinputActivity"
             android:exported="true" />
@@ -45,7 +45,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakao694a967e5e200f2b2342046d25fdcd7e" />
+                    android:scheme="kakao1cbfb61d83c4ab599a7d1b1771485417" />
             </intent-filter>
         </activity>
 <!--콘텐츠 프로바이더 등록-->
