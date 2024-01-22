@@ -7,6 +7,10 @@
     <!-- 외부 저장소(갤러리)에 있는 파일을 읽기 위한 권한을 설정 -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
 
+    <queries>
+        <package android:name="com.example.moiroom_content_provider" />
+    </queries>
+
     <application
         android:name=".GlobalApplication"
         android:allowBackup="true"
@@ -15,10 +19,20 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moiroom">
-        <activity android:name=".SecondActivity"
-            android:exported="true">
+        <activity android:name=".NaviActivity"></activity>
+        <activity
+            android:name=".InfoinputActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
         </activity>
-        <activity android:name=".MainActivity"
+        <activity
+            android:name=".SecondActivity"
+            android:exported="true"></activity>
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,9 +40,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-
-        <activity android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
+        <activity
+            android:name="com.kakao.sdk.auth.AuthCodeHandlerActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
@@ -37,7 +50,7 @@
 
                 <data
                     android:host="oauth"
-                    android:scheme="kakao694a967e5e200f2b2342046d25fdcd7e" />
+                    android:scheme="kakao1cbfb61d83c4ab599a7d1b1771485417" />
             </intent-filter>
         </activity>
 <!--콘텐츠 프로바이더 등록-->
@@ -50,9 +63,7 @@
         </provider>
     </application>
 
-    <queries>
-        <package android:name="com.example.moiroom_content_provider" />
-    </queries>
+
 
 
 </manifest>
