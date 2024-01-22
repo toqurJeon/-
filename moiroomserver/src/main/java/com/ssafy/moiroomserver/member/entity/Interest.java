@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.chat.entity;
+package com.ssafy.moiroomserver.member.entity;
 
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
 import jakarta.persistence.*;
@@ -7,14 +7,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
-public class ChatRoom extends BaseEntity {
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Table(name = "interest")
+public class Interest extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long chatRoomId;
+    private Long interestId;
 
-    private String lastMessage;
+    @Column(name = "name", nullable = false)
+    private String name;
 }
