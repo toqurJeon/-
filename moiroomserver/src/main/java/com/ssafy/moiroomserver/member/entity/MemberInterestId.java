@@ -9,6 +9,6 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class MemberInterestId implements Serializable {
 
-    private Long memberId;
-    private Long interestId;
+    private Member member;
+    private Interest interest;
 }
