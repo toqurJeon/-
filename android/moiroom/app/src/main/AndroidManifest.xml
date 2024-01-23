@@ -60,6 +60,10 @@
             android:exported="true" />
 
         <activity
+            android:name=".extraction.AccessGallery"
+            android:exported="true" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true">
             <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
@@ -93,12 +97,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".extraction.HealthActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+            <meta-data android:name="health_permissions"
+                android:resource="@array/health_permissions" />
+        </activity>
+
         <!--
         콘텐트 프로바이더 등록
         콘텐트 프로바이더는 exported를 false 추천
         -->
         <provider
-            android:name=".MyContentProvider"
+            android:name=".extraction.MyContentProvider"
             android:authorities="com.example.moiroom_content_provider"
             android:enabled="true"
             android:exported="false"
