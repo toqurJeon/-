@@ -51,7 +51,7 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
                 // NaviActivity로 보내는 인텐트 생성
-                val intent = Intent(this, NaviActivity::class.java)
+                val intent = Intent(this, InfoinputActivity::class.java)
                 // 스택에 쌓여있던 액티비티 모두 제거하고 액티비티 시작
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 // 현재 실행 중인 액티비티 종료
@@ -110,7 +110,7 @@ class MainActivity : AppCompatActivity() {
             // 토큰이 있으면 토스트 띄우고 InfoinputActivity로 인텐트 보내기
             else if (token != null) {
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, InfoinputActivity::class.java)
+                val intent = Intent(this, NaviActivity::class.java)
                 // 스택에 쌓여있던 액티비티 모두 제거하고 액티비티 시작
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 // 현재 액티비티 종료
