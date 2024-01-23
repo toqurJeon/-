@@ -72,5 +72,11 @@ dependencies {
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("com.github.bumptech.glide:glide:4.12.0")
     kapt("com.github.bumptech.glide:compiler:4.12.0")
+    // RecyclerView
+    implementation("androidx.recyclerview:recyclerview:1.3.2")
+    // viewModel
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.7.0")
+    implementation("androidx.navigation:navigation-fragment:2.7.6")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.6")
 
 }
