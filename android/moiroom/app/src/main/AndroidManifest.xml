@@ -33,6 +33,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Moiroom">
         <activity
+            android:name=".ChatActivity"
+            android:exported="true" />
+        <activity
             android:name=".NowMatchingActivity"
             android:exported="false" />
         <!--
@@ -50,12 +53,12 @@
             android:name=".InfoinputActivity"
             android:exported="true">
             <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
-<!--            <intent-filter>-->
-<!--                &lt;!&ndash; action.MAIN: 해당 액티비티를 앱의 메인 액티비티로 지정&ndash;&gt;-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                &lt;!&ndash; category.LAUNCHER: 앱을 처음 실행할 때 실행되는 액티비티로 설정&ndash;&gt;-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- &lt;!&ndash; action.MAIN: 해당 액티비티를 앱의 메인 액티비티로 지정&ndash;&gt; -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- &lt;!&ndash; category.LAUNCHER: 앱을 처음 실행할 때 실행되는 액티비티로 설정&ndash;&gt; -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <activity
