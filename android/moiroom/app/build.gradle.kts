@@ -1,6 +1,15 @@
+// Gradle:  Android 애플리케이션 및 기타 프로젝트의 빌드와 종속성 관리를 위한 강력한 빌드 도구
+
+// 프로젝트에 적용할 플러그인
+// 플러그인: Gradle 빌드 도구의 확장 기능으로, 특정 기능이나 작업을 수행할 수 있도록 도와주는 도구나 라이브러리
+// 기본 구조: id("plugin-id") version "plugin-version"
 plugins {
+    // 안드로이드 어플 개발 플러그인
     id("com.android.application")
+    // 코틀린을 통한 안드로이드 어플 개발 플러그인
     id("org.jetbrains.kotlin.android")
+    // 코틀린 어노테이션 프로세싱 플러그인 (아직 정확히 모르겠음)
+    // 어노테이션: @ 뒤에 있는 거
     id("kotlin-kapt")
 }
 
@@ -11,7 +20,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.moiroom"
-        minSdk = 21
+        minSdk = 30
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
