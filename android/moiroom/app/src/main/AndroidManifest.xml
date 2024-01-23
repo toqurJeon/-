@@ -32,6 +32,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Moiroom">
+        <activity
+            android:name=".NowMatchingActivity"
+            android:exported="false" />
         <!--
        activity 태그: 화면에 나타날 액티비티들을 정의
        exported: 다른 앱에서 접근 허용 여부

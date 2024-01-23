@@ -2,6 +2,7 @@ package com.example.moiroom
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -59,8 +60,12 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 키 해시 값을 구하기 위한 코드(성현)
+        val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+
         val keyHash = Utility.getKeyHash(this)
         Log.d("Hash", keyHash)
+        Log.d("Button Clicked", "Button clicked: $isButtonClicked")
 
         // 카카오 로그인 함수
         // 0AuthToken, Throwable 2개의 변수를 받을 수 있는, 반환값이 없는(Unit) 함수
