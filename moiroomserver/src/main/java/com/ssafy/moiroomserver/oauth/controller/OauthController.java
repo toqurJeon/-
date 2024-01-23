@@ -17,7 +17,7 @@ public class OauthController {
 
     @ResponseBody
     @GetMapping("/oauth/kakao")
-    public String kakaoCallback(@RequestParam String code) {
+    public String kakaoLogin(@RequestParam String code) {
         log.info("code: " + code);
         String accessToken = oauthService.getKakaoAccessToken(code);
 
