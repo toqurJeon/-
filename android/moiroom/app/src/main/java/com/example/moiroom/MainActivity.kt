@@ -2,6 +2,7 @@ package com.example.moiroom
 
 import android.content.ContentProvider
 import android.content.ContentValues
+import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,15 +42,19 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
                 // SecondActivity 대신 InfoInputActivity로 변경
-                val intent = Intent(this, NaviActivity::class.java)
+                val intent = Intent(this, NowMatchingActivity::class.java)
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
         }
 
         // 키 해시 값을 구하기 위한 코드(성현)
+        val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+
         val keyHash = Utility.getKeyHash(this)
         Log.d("Hash", keyHash)
+        Log.d("Button Clicked", "Button clicked: $isButtonClicked")
 
         val callback: (OAuthToken?, Throwable?) -> Unit = { token, error ->
             if (error != null) {

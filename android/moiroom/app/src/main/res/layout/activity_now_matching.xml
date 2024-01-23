@@ -3,7 +3,7 @@
     android:id="@+id/matchingFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NowMatchingFragment">
+    tools:context=".NowMatchingActivity">
 
     <RelativeLayout
         android:layout_width="344dp"
@@ -13,7 +13,8 @@
         android:layout_marginBottom="18dp"
         android:padding="10dp"
         android:clickable="true"
-        android:focusable="true">
+        android:focusable="true"
+        android:id="@+id/relativeLayout">
 
         <ImageView
             android:id="@+id/image"
@@ -35,7 +36,6 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/startMatchingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -44,7 +44,9 @@
             android:textSize="20sp"
             android:textColor="#FFFFFF"
             android:fontFamily="@font/pretendard_semibold"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:id="@+id/startMatchingButton"
+            android:onClick="startMatchingButton"/>
 
         <TextView
             android:layout_width="match_parent"
