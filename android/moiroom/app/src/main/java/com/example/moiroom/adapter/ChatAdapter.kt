@@ -10,11 +10,9 @@ import com.example.moiroom.R
 import com.example.moiroom.data.Chat
 import com.example.moiroom.databinding.ChatItemLayoutBinding
 
-class ChatAdapter(private val dataList: List<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
-    inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-
-    }
+    inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val binding = ChatItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -32,6 +30,7 @@ class ChatAdapter(private val dataList: List<Chat>) : RecyclerView.Adapter<ChatA
             if (data.member_id == 1) {
                 holder.binding.chatContent.setBackgroundColor(ContextCompat.getColor(holder.binding.root.context, R.color.lightorange))
                 holder.binding.root.gravity = Gravity.END
+                chatMemberName.visibility = View.GONE
             } else {
                 holder.binding.chatContent.setBackgroundColor(ContextCompat.getColor(holder.binding.root.context, R.color.darkorange))
                 holder.binding.root.gravity = Gravity.START
@@ -41,5 +40,11 @@ class ChatAdapter(private val dataList: List<Chat>) : RecyclerView.Adapter<ChatA
 
     override fun getItemCount(): Int {
         return dataList.size
+    }
+
+    fun updateData(newData: List<Chat>) {
+        dataList.clear()
+        dataList.addAll(newData)
+        notifyDataSetChanged()
     }
 }

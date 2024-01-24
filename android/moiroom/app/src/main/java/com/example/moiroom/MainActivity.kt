@@ -50,13 +50,24 @@ class MainActivity : AppCompatActivity() {
             else if (tokenInfo != null) {
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
-                // NaviActivity로 보내는 인텐트 생성
-                val intent = Intent(this, NaviActivity::class.java)
+                val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+                val intent: Intent
+
+                // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
+                if (isButtonClicked) {
+                    intent = Intent(this, NaviActivity::class.java)
+                } else {
+                    // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
+                    intent = Intent(this, InfoinputActivity::class.java)
+                }
+
                 // 스택에 쌓여있던 액티비티 모두 제거하고 액티비티 시작
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 // 현재 실행 중인 액티비티 종료
                 finish()
             }
+
         }
 
         // 키 해시 값을 구하기 위한 코드(성현)
@@ -65,7 +76,6 @@ class MainActivity : AppCompatActivity() {
 
         val keyHash = Utility.getKeyHash(this)
         Log.d("Hash", keyHash)
-        Log.d("Button Clicked", "Button clicked: $isButtonClicked")
 
         // 카카오 로그인 함수
         // 0AuthToken, Throwable 2개의 변수를 받을 수 있는, 반환값이 없는(Unit) 함수
@@ -110,10 +120,21 @@ class MainActivity : AppCompatActivity() {
             // 토큰이 있으면 토스트 띄우고 InfoinputActivity로 인텐트 보내기
             else if (token != null) {
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val intent = Intent(this, InfoinputActivity::class.java)
+                val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+                val intent: Intent
+
+                // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
+                if (isButtonClicked) {
+                    intent = Intent(this, NaviActivity::class.java)
+                } else {
+                    // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
+                    intent = Intent(this, InfoinputActivity::class.java)
+                }
+
                 // 스택에 쌓여있던 액티비티 모두 제거하고 액티비티 시작
                 startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                // 현재 액티비티 종료
+                // 현재 실행 중인 액티비티 종료
                 finish()
             }
         }

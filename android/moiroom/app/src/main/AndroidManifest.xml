@@ -13,6 +13,8 @@
     <queries>
         <!-- 콘텐트 프로바이더-->
         <package android:name="com.example.moiroom_content_provider" />
+        <!-- 안드로이드 헬스-->
+        <package android:name="com.google.android.apps.healthdata" />
     </queries>
     <!--
     application 태그: 안드로이드 앱의 주요 구성과 동작을 정의
@@ -31,10 +33,12 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Moiroom">
         <activity
             android:name=".ChatActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".NowMatchingActivity"
             android:exported="false" />

@@ -13,6 +13,8 @@ class GlobalApplication : Application() {
 
     // Retrofit: HTTP 통신을 수행할 때 사용하는 인스턴스
     lateinit var retrofit: Retrofit
+    lateinit var retrofit2: Retrofit
+
 
     // override: 부모 클래스에 정의된 매서드를 자식 클래스에서 동일한 시그니처(이름, 매개변수)로 다시 구현
     // onCreate: 액티비티가 처음 생성될 때/서비스가 시작될 때 호출되는 초기화 매서드
@@ -30,6 +32,11 @@ class GlobalApplication : Application() {
             // 서버에서 받은 JSON 데이터를 객체로 변환하기 위한 Gson 컨버터를 Retrofit에 추가
             .addConverterFactory(GsonConverterFactory.create())
             // 위 정보를 바탕으로 Retrofit 인스턴트 생성
+            .build()
+
+        retrofit2 = Retrofit.Builder()
+            .baseUrl("http://i10a308.p.ssafy.io:5000/")
+            .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
 }
