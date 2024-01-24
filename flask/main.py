@@ -32,7 +32,7 @@ def receive_and_send():
         # /send_json 엔드포인트로 POST 요청 보내기
         # 이 url에 springboot url 들어갈 예정
         send_response =(
-            requests.post('http://127.0.0.1:5000/send_json',
+            requests.post('http://i10a308.p.ssafy.io:5000/send_json',
                           json={'component1': component1,
                                 'component2': component2,
                                 'component3': component3,
