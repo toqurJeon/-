@@ -20,19 +20,19 @@ def receive_and_send():
 
         # print("Received JSON: Name={}, Age={}".format(name, age))
 
-        component1 = round(param1*10000)
-        component2 = round((param1+param2)*5000)
-        component3 = round(param2*10000)
-        component4 = round(param3*10000)
-        component5 = round(param1*10000)
-        component6 = round(param2*10000)
-        component7 = round(param3*10000)
-        component8 = round(param1*10000)
+        component1 = round(param1 * 10000)
+        component2 = round((param1 + param2) * 5000)
+        component3 = round(param2 * 10000)
+        component4 = round(param3 * 10000)
+        component5 = round(param1 * 10000)
+        component6 = round(param2 * 10000)
+        component7 = round(param3 * 10000)
+        component8 = round(param1 * 10000)
 
         # /send_json 엔드포인트로 POST 요청 보내기
         # 이 url에 springboot url 들어갈 예정
-        send_response =(
-            requests.post('http://127.0.0.1:5000/send_json',
+        send_response = (
+            requests.post('http://i10a308.p.ssafy.io:8080/member',
                           json={'component1': component1,
                                 'component2': component2,
                                 'component3': component3,
@@ -48,7 +48,6 @@ def receive_and_send():
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
-
 
 
 # 실제로는 spring이 대체할 예정이나, 테스트를 위해 작성
@@ -67,7 +66,5 @@ def send_json():
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', debug=True)
