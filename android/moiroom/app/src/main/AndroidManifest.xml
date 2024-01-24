@@ -13,6 +13,8 @@
     <queries>
         <!-- 콘텐트 프로바이더-->
         <package android:name="com.example.moiroom_content_provider" />
+        <!-- 안드로이드 헬스-->
+        <package android:name="com.google.android.apps.healthdata" />
     </queries>
     <!--
     application 태그: 안드로이드 앱의 주요 구성과 동작을 정의
