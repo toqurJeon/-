@@ -5,55 +5,44 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moiroom.adapter.CardAdapter
+import com.example.moiroom.data.TestData
+import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [NowMatchingAfterFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class NowMatchingAfterFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
-    }
+    private lateinit var binding: FragmentNowMatchingAfterBinding
+    private val cardInfoList = TestData.cardInfoList
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_now_matching_after, container, false)
+        binding = FragmentNowMatchingAfterBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment NowMatchingAfterFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            NowMatchingAfterFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        // RecyclerView에 대한 Adapter 설정
+        val CardAdapter = CardAdapter(cardInfoList)
+        binding.recyclerView.adapter = CardAdapter
+
+        // 토글 버튼의 체크 상태에 따라 LayoutManager 변경
+        binding.toggleButton.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                // 토글 버튼이 체크되면 GridLayoutManager를 설정하여 여러 카드를 보여줌
+                binding.recyclerView.layoutManager = GridLayoutManager(context, 2) // 2는 한 줄에 보여줄 아이템의 수
+            } else {
+                // 토글 버튼이 체크 해제되면 LinearLayoutManager를 설정하여 한 카드씩 보여줌
+                binding.recyclerView.layoutManager = LinearLayoutManager(context)
             }
+            CardAdapter.notifyDataSetChanged() // LayoutManager 변경 후 Adapter에 알림
+        }
+
+        // 초기 상태는 한 명씩 보기로 설정 (필요에 따라 변경 가능)
+        binding.recyclerView.layoutManager = LinearLayoutManager(context)
     }
 }

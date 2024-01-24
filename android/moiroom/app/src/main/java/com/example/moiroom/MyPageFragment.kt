@@ -1,5 +1,6 @@
 package com.example.moiroom
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -52,6 +53,12 @@ class MyPageFragment : Fragment() {
                 if (error != null) {
                     Toast.makeText(context, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
+                    // 로그아웃 성공 시, 'isButtonClicked' 값을 초기화
+                    val sharedPreferences = this.activity?.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences?.edit()
+                    editor?.putBoolean("isButtonClicked", false)
+                    editor?.apply()
+
                     Toast.makeText(context, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
@@ -60,12 +67,18 @@ class MyPageFragment : Fragment() {
             }
         }
 
-        // 회원탈퇴 기능 구현
+// 회원탈퇴 기능 구현
         kakao_unlink_button.setOnClickListener {
             UserApiClient.instance.unlink { error ->
                 if (error != null) {
                     Toast.makeText(context, "회원 탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
+                    // 회원탈퇴 성공 시, 'isButtonClicked' 값을 초기화
+                    val sharedPreferences = this.activity?.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                    val editor = sharedPreferences?.edit()
+                    editor?.putBoolean("isButtonClicked", false)
+                    editor?.apply()
+
                     Toast.makeText(context, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(context, MainActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
