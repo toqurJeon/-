@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginBottom="8dp"
+    android:gravity="start">
+
+    <TextView
+        android:id="@+id/chatRoomName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ChatRoomName" />
+
+    <TextView
+        android:id="@+id/chatRoomLastMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Content"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/chatRoomCreatedAt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CreatedAt" />
+
+</LinearLayout>
