@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
@@ -14,9 +15,13 @@ import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.moiroom.data.MyResponse
+import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityInfoinputBinding
 import kotlinx.coroutines.launch
+import retrofit2.Call
 import retrofit2.create
+import java.util.logging.Logger.global
 
 class InfoinputActivity : AppCompatActivity() {
 
@@ -41,6 +46,7 @@ class InfoinputActivity : AppCompatActivity() {
         // GlobalApplication 클래스에 있는 Retofit 인스턴스를 활용해서
         // API 요청을 보낼 수 있는 인터페이스(ApiInterface) 구현체 생성
         val apiInterface = globalApplication.retrofit.create(ApiInterface::class.java)
+        val apiInterface2 = globalApplication.retrofit2.create(ApiInterface::class.java)
 
         // 입력 글자 수 업데이트
         binding.textLength.text = textLength
@@ -54,6 +60,15 @@ class InfoinputActivity : AppCompatActivity() {
             }
             override fun afterTextChanged(s: Editable?) {}
         })
+
+        lifecycleScope.launch {
+            val response = sendPostRequest()
+
+            // response가 null이 아니면 로그에 출력
+            response?.let {
+                Log.d("결과", "POST 성공 - Message: ${it.message}, Status: ${it.status}")
+            }
+        }
 
         // 지역 찾기 버튼 누르기
         binding.findInput.setOnClickListener {
@@ -82,7 +97,7 @@ class InfoinputActivity : AppCompatActivity() {
                                         // POST 요청 구현 필요
 
                                         // 액티비티 이동
-                                        val intent = Intent(this@InfoinputActivity, NaviActivity::class.java)
+                                        val intent = Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
@@ -104,5 +119,22 @@ class InfoinputActivity : AppCompatActivity() {
 
         val alertDialog = builder.create()
         alertDialog.show()
+    }
+
+    private suspend fun sendPostRequest(): MyResponse? {
+        val globalApplication = application as GlobalApplication
+
+        val apiService = globalApplication.retrofit2.create(ApiInterface::class.java)
+
+        val requestBody = RequestBody(0.1354, 0.3159, 0.7561)
+
+        return try {
+            val response = apiService.postData(requestBody)
+            Log.d("결과", "POST 성공 - Message: ${response.message}, Status: ${response.status}")
+            response
+        } catch (e: Exception) {
+            Log.e("에러", "POST 요청 보내기 오류", e)
+            null
+        }
     }
 }
