@@ -1,7 +1,11 @@
 package com.example.moiroom
 
+
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
+import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.adapter.ChatAdapter
@@ -14,6 +18,8 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatAdapter
+    // chatRoomId의 초기값
+    private var chatRoomId: Int = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,16 +27,45 @@ class ChatActivity : AppCompatActivity() {
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 채팅방 리스트 (ChattingFragment)로부터 전달된 chatRoomId 받기
+        chatRoomId = intent.getIntExtra("chatRoomId", -1)
+
+        // chatRoomId 적용
+        binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+
+        // 뒤로 가기 버튼
+        binding.backwardButton.setOnClickListener {
+            onBackPressed()
+        }
+
+        // recyclerView 적용
         recyclerView = binding.recyclerView
         val layoutManager = LinearLayoutManager(this)
+        // 항상 가장 밑으로 이동
+        layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
 
         // 데이터를 가져오는 함수
-        val data = getListOfChatData()
+        val data = getListOfChatData().toMutableList()
         adapter = ChatAdapter(data)
         recyclerView.adapter = adapter
 
-        scrollToLastItem()
+        binding.sendMsgBtn.setOnClickListener {
+            val message = binding.sendMsg.text.toString().trim()
+            if (message.isNotEmpty()) {
+                val newChat = Chat(
+                    data.size + 1,
+                    1,
+                    1,
+                    message,
+                    Instant.now()
+                )
+                data.add(newChat)
+                adapter.updateData(data.toList())
+                binding.sendMsg.text.clear()
+                scrollToLastItem()
+            }
+        }
     }
 
     private fun scrollToLastItem() {
@@ -57,5 +92,10 @@ class ChatActivity : AppCompatActivity() {
             Chat(13, 2, 1, "ㅎㅎ", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(14, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
         )
+    }
+
+    override fun onBackPressed() {
+        // 뒤로가기
+        finish()
     }
 }
