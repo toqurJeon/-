@@ -22,7 +22,7 @@ android {
     // 빌드된 애플리케이션의 패키지 정의
     defaultConfig {
         // 패키지 이름(고유 식별자)
-        applicationId = "com.example.moiroom"
+        applicationId = "com.moiroom.moiroom"
         // 어플 실행을 위한 최소 안드로이드 SDK 버전
         minSdk = 30
         // 명시적으로 대상이 되는 안드로이드 SDK 버전
