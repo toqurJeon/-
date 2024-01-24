@@ -62,7 +62,12 @@ class InfoinputActivity : AppCompatActivity() {
         })
 
         lifecycleScope.launch {
-            sendPostRequest()
+            val response = sendPostRequest()
+
+            // response가 null이 아니면 로그에 출력
+            response?.let {
+                Log.d("결과", "POST 성공 - Message: ${it.message}, Status: ${it.status}")
+            }
         }
 
         // 지역 찾기 버튼 누르기
@@ -116,28 +121,20 @@ class InfoinputActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private suspend fun sendPostRequest() {
+    private suspend fun sendPostRequest(): MyResponse? {
         val globalApplication = application as GlobalApplication
 
         val apiService = globalApplication.retrofit2.create(ApiInterface::class.java)
 
         val requestBody = RequestBody(0.1354, 0.3159, 0.7561)
 
-        val call = apiService.postData(requestBody)
-
-        call.enqueue(object : retrofit2.Callback<MyResponse> {
-            override fun onResponse(call: Call<MyResponse>, response: retrofit2.Response<MyResponse>) {
-                if (response.isSuccessful) {
-                    Log.d("결과","성공")
-                    val myResponse = response.body()
-                } else {
-                    Log.d("결과","실패")
-                }
-            }
-
-            override fun onFailure(call: Call<MyResponse>, t: Throwable) {
-                Log.d("결과","보내기 실패")
-            }
-        })
+        return try {
+            val response = apiService.postData(requestBody)
+            Log.d("결과", "POST 성공 - Message: ${response.message}, Status: ${response.status}")
+            response
+        } catch (e: Exception) {
+            Log.e("에러", "POST 요청 보내기 오류", e)
+            null
+        }
     }
 }

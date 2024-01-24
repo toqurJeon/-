@@ -21,5 +21,5 @@ interface ApiInterface {
     // 코루틴을 사용해서 메인 스레드에서 작업하지 않고 백그라운드에서 작업하도록 설정
 
     @POST("receive_and_send")
-    suspend fun postData(@Body requestBody: RequestBody): Call<MyResponse>
+    suspend fun postData(@Body requestBody: RequestBody): MyResponse
 }

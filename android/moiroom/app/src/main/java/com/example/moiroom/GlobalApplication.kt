@@ -4,12 +4,7 @@
 package com.example.moiroom
 
 import android.app.Application
-import com.example.moiroom.adapter.CallTypeAdapter
-import com.example.moiroom.adapter.MyResponseTypeAdapter
-import com.example.moiroom.data.MyResponse
-import com.google.gson.GsonBuilder
 import com.kakao.sdk.common.KakaoSdk
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
