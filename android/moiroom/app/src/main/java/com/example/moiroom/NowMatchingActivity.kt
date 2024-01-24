@@ -12,24 +12,33 @@ class NowMatchingActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_now_matching) // 레이아웃 파일명은 실제 레이아웃 파일명으로 변경해야 합니다.
 
-        val startMatchingButton: TextView = findViewById(R.id.startMatchingButton)
-        val relativeLayout: RelativeLayout = findViewById(R.id.relativeLayout) // RelativeLayout 참조 추가
+        // SharedPreferences에서 'isButtonClicked' 값을 가져옴
+        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
 
-        val onClickListener = View.OnClickListener {
-            val intent = Intent(this, LoadingActivity::class.java)
+        if (isButtonClicked) {
+            val intent = Intent(this, NaviActivity::class.java)
             startActivity(intent)
+            finish()
+        } else {
+            setContentView(R.layout.activity_now_matching)
 
-            // 클릭 여부를 SharedPreferences에 저장
-            val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
-            val editor = sharedPreferences.edit()
-            editor.putBoolean("isButtonClicked", false)
-            editor.apply()
+            val startMatchingButton: TextView = findViewById(R.id.startMatchingButton)
+            val relativeLayout: RelativeLayout = findViewById(R.id.relativeLayout)
+
+            val onClickListener = View.OnClickListener {
+                val intent = Intent(this, LoadingActivity::class.java)
+                startActivity(intent)
+
+                // 클릭 여부를 SharedPreferences에 저장
+                val editor = sharedPreferences.edit()
+                editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
+                editor.apply()
+            }
+
+            startMatchingButton.setOnClickListener(onClickListener)
+            relativeLayout.setOnClickListener(onClickListener)
         }
-
-        // '매칭 시작하기' 버튼과 RelativeLayout에 동일한 클릭 리스너 설정
-        startMatchingButton.setOnClickListener(onClickListener)
-        relativeLayout.setOnClickListener(onClickListener)
     }
 }

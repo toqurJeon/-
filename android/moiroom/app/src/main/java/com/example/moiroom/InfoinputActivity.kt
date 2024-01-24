@@ -92,7 +92,7 @@ class InfoinputActivity : AppCompatActivity() {
                                         // POST 요청 구현 필요
 
                                         // 액티비티 이동
-                                        val intent = Intent(this@InfoinputActivity, NaviActivity::class.java)
+                                        val intent = Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
                                         startActivity(intent)
                                     }
                                 }
