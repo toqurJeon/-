@@ -1,11 +1,14 @@
 package com.example.moiroom
 
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.ViewTreeObserver
+import android.widget.Button
+import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.adapter.ChatAdapter
@@ -66,6 +69,11 @@ class ChatActivity : AppCompatActivity() {
                 scrollToLastItem()
             }
         }
+
+        val btnShowModal: Button = binding.exitBtn
+        btnShowModal.setOnClickListener {
+            showExitDialog()
+        }
     }
 
     private fun scrollToLastItem() {
@@ -92,6 +100,30 @@ class ChatActivity : AppCompatActivity() {
             Chat(13, 2, 1, "ㅎㅎ", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(14, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
         )
+    }
+
+    private fun showExitDialog() {
+        val dialog = Dialog(this)
+        dialog.setContentView(R.layout.dialog_exit)
+
+        val textExitMessage: TextView = dialog.findViewById(R.id.textExitMessage)
+        val btnYes: Button = dialog.findViewById(R.id.btnYes)
+        val btnNo: Button = dialog.findViewById(R.id.btnNo)
+
+        btnYes.setOnClickListener {
+            // 'Yes' 버튼이 클릭되었을 때의 동작
+            // 여기에 원하는 동작을 추가하세요.
+            dialog.dismiss() // 다이얼로그 닫기
+            onBackPressed()
+        }
+
+        btnNo.setOnClickListener {
+            // 'No' 버튼이 클릭되었을 때의 동작
+            // 여기에 원하는 동작을 추가하세요.
+            dialog.dismiss() // 다이얼로그 닫기
+        }
+
+        dialog.show()
     }
 
     override fun onBackPressed() {
