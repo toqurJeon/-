@@ -13,6 +13,8 @@
     <queries>
         <!-- 콘텐트 프로바이더-->
         <package android:name="com.example.moiroom_content_provider" />
+        <!-- 안드로이드 헬스-->
+        <package android:name="com.google.android.apps.healthdata" />
     </queries>
     <!--
     application 태그: 안드로이드 앱의 주요 구성과 동작을 정의
@@ -31,7 +33,15 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.Moiroom">
+        <activity
+            android:name=".ChatActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustResize"/>
+        <activity
+            android:name=".NowMatchingActivity"
+            android:exported="false" />
         <!--
        activity 태그: 화면에 나타날 액티비티들을 정의
        exported: 다른 앱에서 접근 허용 여부
@@ -47,16 +57,20 @@
             android:name=".InfoinputActivity"
             android:exported="true">
             <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
-<!--            <intent-filter>-->
-<!--                &lt;!&ndash; action.MAIN: 해당 액티비티를 앱의 메인 액티비티로 지정&ndash;&gt;-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-<!--                &lt;!&ndash; category.LAUNCHER: 앱을 처음 실행할 때 실행되는 액티비티로 설정&ndash;&gt;-->
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
+            <!-- <intent-filter> -->
+            <!-- &lt;!&ndash; action.MAIN: 해당 액티비티를 앱의 메인 액티비티로 지정&ndash;&gt; -->
+            <!-- <action android:name="android.intent.action.MAIN" /> -->
+            <!-- &lt;!&ndash; category.LAUNCHER: 앱을 처음 실행할 때 실행되는 액티비티로 설정&ndash;&gt; -->
+            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+            <!-- </intent-filter> -->
         </activity>
 
         <activity
             android:name=".SecondActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".extraction.AccessGallery"
             android:exported="true" />
 
         <activity
@@ -93,12 +107,21 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".extraction.HealthActivity" android:exported="true">
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE"/>
+            </intent-filter>
+            <meta-data android:name="health_permissions"
+                android:resource="@array/health_permissions" />
+        </activity>
+
         <!--
         콘텐트 프로바이더 등록
         콘텐트 프로바이더는 exported를 false 추천
         -->
         <provider
-            android:name=".MyContentProvider"
+            android:name=".extraction.MyContentProvider"
             android:authorities="com.example.moiroom_content_provider"
             android:enabled="true"
             android:exported="false"
