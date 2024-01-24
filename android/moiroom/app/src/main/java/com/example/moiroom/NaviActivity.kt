@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentManager
 import com.example.moiroom.databinding.ActivityNaviBinding
 
 
-private const val TAG_NOW_MATCHING = "now_matching_fragment"
+private const val TAG_NOW_MATCHING_AFTER = "now_matching_after_fragment"
 private const val TAG_CHATTING = "chatting_fragment"
 private const val TAG_MY_PAGE = "my_page_fragment"
 
@@ -21,11 +21,11 @@ class NaviActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        setFragment(TAG_NOW_MATCHING, NowMatchingFragment())
+        setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.nowMatchingFragment -> setFragment(TAG_NOW_MATCHING, NowMatchingFragment())
+                R.id.nowMatchingFragment -> setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
                 R.id.chattingFragment -> setFragment(TAG_CHATTING, ChattingFragment())
                 R.id.myPageFragment-> setFragment(TAG_MY_PAGE, MyPageFragment())
             }
@@ -41,12 +41,12 @@ class NaviActivity : AppCompatActivity() {
             fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
         }
 
-        val nowMatching = manager.findFragmentByTag(TAG_NOW_MATCHING)
+        val nowMatchingAfter = manager.findFragmentByTag(TAG_NOW_MATCHING_AFTER)
         val chatting = manager.findFragmentByTag(TAG_CHATTING)
         val myPage = manager.findFragmentByTag(TAG_MY_PAGE)
 
-        if (nowMatching != null){
-            fragTransaction.hide(nowMatching)
+        if (nowMatchingAfter != null){
+            fragTransaction.hide(nowMatchingAfter)
         }
 
         if (chatting != null){
@@ -57,9 +57,9 @@ class NaviActivity : AppCompatActivity() {
             fragTransaction.hide(myPage)
         }
 
-        if (tag == TAG_NOW_MATCHING) {
-            if (nowMatching!=null){
-                fragTransaction.show(nowMatching)
+        if (tag == TAG_NOW_MATCHING_AFTER) {
+            if (nowMatchingAfter!=null){
+                fragTransaction.show(nowMatchingAfter)
             }
         }
         else if (tag == TAG_CHATTING) {

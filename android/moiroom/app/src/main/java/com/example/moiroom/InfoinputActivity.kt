@@ -20,21 +20,29 @@ import retrofit2.create
 
 class InfoinputActivity : AppCompatActivity() {
 
-    // 뷰바인딩
+    // activity_infoinput.xml에 뷰바인딩
     private lateinit var binding: ActivityInfoinputBinding
     // 사용자가 입력한 자기소개 저장
     private var userInput: String = ""
+    // 입력 글자 수에 따라 추후 수정
     private var textLength: String = "0/30"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // 레이아웃 폴더에 있는 activity_infoinput.xml을 inflate해서 바인딩
+        // xml을 실제 뷰 객체로 변환하는 과정
         binding = ActivityInfoinputBinding.inflate(layoutInflater)
+        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
 
+        // GlobalApplication 클래스에 쉽게 접근할 수 있도록 변수명 생성
         val globalApplication = application as GlobalApplication
+        // GlobalApplication 클래스에 있는 Retofit 인스턴스를 활용해서
+        // API 요청을 보낼 수 있는 인터페이스(ApiInterface) 구현체 생성
         val apiInterface = globalApplication.retrofit.create(ApiInterface::class.java)
 
+        // 입력 글자 수 업데이트
         binding.textLength.text = textLength
         // 사용자 입력 자기소개 저장하기
         binding.editText.addTextChangedListener(object : TextWatcher {
