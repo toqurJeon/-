@@ -17,6 +17,8 @@
         android:id="@+id/chatRoomLastMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:text="Content"
         android:padding="4dp"/>
 

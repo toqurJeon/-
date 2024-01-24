@@ -1,8 +1,10 @@
 package com.example.moiroom
 
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.ViewTreeObserver
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -39,14 +41,31 @@ class ChatActivity : AppCompatActivity() {
         // recyclerView 적용
         recyclerView = binding.recyclerView
         val layoutManager = LinearLayoutManager(this)
+        // 항상 가장 밑으로 이동
+        layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
 
         // 데이터를 가져오는 함수
-        val data = getListOfChatData()
+        val data = getListOfChatData().toMutableList()
         adapter = ChatAdapter(data)
         recyclerView.adapter = adapter
 
-        scrollToLastItem()
+        binding.sendMsgBtn.setOnClickListener {
+            val message = binding.sendMsg.text.toString().trim()
+            if (message.isNotEmpty()) {
+                val newChat = Chat(
+                    data.size + 1,
+                    1,
+                    1,
+                    message,
+                    Instant.now()
+                )
+                data.add(newChat)
+                adapter.updateData(data.toList())
+                binding.sendMsg.text.clear()
+                scrollToLastItem()
+            }
+        }
     }
 
     private fun scrollToLastItem() {
