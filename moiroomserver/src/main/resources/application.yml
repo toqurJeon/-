@@ -14,3 +14,15 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  cloud:
+    aws:
+      s3:
+        bucket: moiroom
+      credentials:
+        accessKey: AKIAZI2LIXYWMZMTGB53
+        secretKey: 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
+      region:
+        static: ap-northeast-2
+        auto: false
+      stack:
+        auto: false
