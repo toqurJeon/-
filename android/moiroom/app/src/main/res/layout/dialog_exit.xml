@@ -8,7 +8,7 @@
         android:id="@+id/textExitMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="나가시겠습니까?"
+        android:text="채팅방을 나가시겠습니까?"
         android:textSize="18sp"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="16dp"/>
@@ -24,13 +24,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Yes"/>
+            android:text="Yes"
+            android:layout_marginHorizontal="8dp"/>
 
         <Button
             android:id="@+id/btnNo"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="No"/>
+            android:text="No"
+            android:layout_marginHorizontal="8dp"/>
     </LinearLayout>
 </RelativeLayout>

@@ -51,7 +51,8 @@
             android:exported="false" />
 
         <activity
-            android:name=".NaviActivity" />
+            android:name=".NaviActivity"
+            android:exported="true" />
 
         <activity
             android:name=".InfoinputActivity"
