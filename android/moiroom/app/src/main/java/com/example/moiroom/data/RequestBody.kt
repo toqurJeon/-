@@ -12,3 +12,15 @@ data class MyResponse(
 ) {
     constructor() : this("", "")
 }
+
+data class PhotoInfo(
+    val photoPath: String,
+    val photoDayAdded: String,
+    val photoIsDownload: String,
+    val photoIsFavorite: String,
+    val photoIsTrashed: String,
+    val photoHeight: String,
+    val photoWidth: String,
+    val photoLatitude: String,
+    val photoLongitude: String,
+)

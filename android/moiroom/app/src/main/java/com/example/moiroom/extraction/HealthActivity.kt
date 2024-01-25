@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 
-//class HealthActivity: AppCompatActivity() {
+class HealthActivity: AppCompatActivity() {
 //    val PERMISSIONS =
 //        setOf(
 //            Permission.createReadPermission(HeartRateSeries::class),
@@ -35,7 +35,7 @@ import java.util.concurrent.TimeUnit
 //            Permission.createReadPermission(Steps::class),
 //            Permission.createWritePermission(Steps::class)
 //        )
-//    // Create the permissions launcher.
+    // Create the permissions launcher.
 //    val requestPermissions =
 //        registerForActivityResult(HealthDataRequestPermissions()) { granted ->
 //            if (granted.containsAll(PERMISSIONS)) {
@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit
 //                // Lack of required permissions
 //            }
 //        }
-//
+
 //    fun checkPermissionsAndRun(client: HealthConnectClient) {
 //        lifecycleScope.launch {
 //            val granted = client.permissionController.getGrantedPermissions(PERMISSIONS)
@@ -55,6 +55,6 @@ import java.util.concurrent.TimeUnit
 //            }
 //        }
 //    }
-//
-//}
+
+}
 
