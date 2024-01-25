@@ -34,6 +34,7 @@ class GlobalApplication : Application() {
             // 위 정보를 바탕으로 Retrofit 인스턴트 생성
             .build()
 
+        // 데이터 전송용
         retrofit2 = Retrofit.Builder()
             .baseUrl("http://i10a308.p.ssafy.io:5000/")
             .addConverterFactory(GsonConverterFactory.create())

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,64 +7,91 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".ChatActivity">
+    tools:context=".ChatActivity"
+    android:background="@color/lightgray">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_marginHorizontal="8dp"
+        android:paddingBottom="52dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        tools:listitem="@layout/chat_item_layout" />
 
     <RelativeLayout
         android:id="@+id/topFixed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_gravity="top"
+        android:background="#90ECECEC"
+        android:paddingHorizontal="12dp"
+        android:paddingTop="8dp">
 
-        <Button
+        <ImageView
             android:id="@+id/backwardButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="뒤로 가기"
-            android:layout_alignParentLeft="true"/>
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:src="@drawable/arrow_back_fill0_wght400_grad0_opsz24"/>
 
         <TextView
             android:id="@+id/chatRoomName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="ChatRoomName"
+            android:gravity="center_vertical"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="32dp" />
+            android:layout_marginBottom="32dp"
+            android:textStyle="bold"
+            android:textSize="20sp"/>
 
-        <Button
+        <ImageView
             android:id="@+id/exitBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="exit"
-            android:layout_alignParentRight="true"/>
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/close_fill0_wght400_grad0_opsz24"/>
+
     </RelativeLayout>
-
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_margin="8dp"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/chat_item_layout" />
 
     <LinearLayout
         android:id="@+id/bottomFixed"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingVertical="6dp"
+        android:background="@drawable/top_border_box"
+        android:elevation="8dp"
+        android:layout_gravity="bottom">
 
         <EditText
             android:id="@+id/sendMsg"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1" />
+            android:background="@drawable/rounded_edittext_bg"
+            android:padding="8dp"
+            android:paddingStart="16dp"
+            android:layout_weight="1"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"/>
 
-        <Button
-            android:id="@+id/sendMsgBtn"
+        <FrameLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="전송" />
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="8dp">
+
+            <ImageView
+                android:id="@+id/sendMsgBtn"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="center"
+                android:src="@drawable/send_fill0_wght400_grad0_opsz24"/>
+
+
+        </FrameLayout>
 
     </LinearLayout>
-</LinearLayout>
+</FrameLayout>
