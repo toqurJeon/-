@@ -22,8 +22,6 @@ import com.example.moiroom.data.PhotoInfo
 import com.example.moiroom.data.RequestBody
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import com.drew.imaging.ImageMetadataReader
-import com.drew.metadata.exif.GpsDirectory
 import java.io.File
 
 class AccessGallery : AppCompatActivity() {
