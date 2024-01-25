@@ -15,6 +15,9 @@ import com.example.moiroom.adapter.ChatAdapter
 import com.example.moiroom.data.Chat
 import com.example.moiroom.databinding.ActivityChatBinding
 import java.time.Instant
+import java.time.LocalDateTime
+import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class ChatActivity : AppCompatActivity() {
 
@@ -70,7 +73,7 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        val btnShowModal: Button = binding.exitBtn
+        val btnShowModal = binding.exitBtn
         btnShowModal.setOnClickListener {
             showExitDialog()
         }
@@ -97,7 +100,7 @@ class ChatActivity : AppCompatActivity() {
             Chat(10, 2, 1, "띠용", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(11, 2, 1, "왜 가지마", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(12, 1, 1, "구냥", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(13, 2, 1, "ㅎㅎ", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(13, 2, 1, "음 말이 길어지면 어떻게 되는 지 테스트 중입니다. 엄청나게 말을 길게하는 사람이에요. 계속 말해 계속 끝까지 말을 합니다. 정말 많이 말을해요.", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(14, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
         )
     }
