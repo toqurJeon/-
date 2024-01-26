@@ -1,0 +1,5 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/lightgray"/> <!-- 배경 색상 -->
+    <corners android:radius="24dp"/> <!-- 모서리의 반지름 (원하는 크기로 조절) -->
+<!--    <stroke android:color="@color/grey" android:width="1dp"/> &lt;!&ndash; 테두리 선의 색상과 두께 &ndash;&gt;-->
+</shape>
