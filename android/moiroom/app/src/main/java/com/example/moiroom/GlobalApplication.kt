@@ -14,6 +14,7 @@ class GlobalApplication : Application() {
     // Retrofit: HTTP 통신을 수행할 때 사용하는 인스턴스
     lateinit var retrofit: Retrofit
     lateinit var retrofit2: Retrofit
+    lateinit var retrofitInstagram: Retrofit
 
 
     // override: 부모 클래스에 정의된 매서드를 자식 클래스에서 동일한 시그니처(이름, 매개변수)로 다시 구현
@@ -37,6 +38,12 @@ class GlobalApplication : Application() {
         // 데이터 전송용
         retrofit2 = Retrofit.Builder()
             .baseUrl("http://i10a308.p.ssafy.io:5000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        // 인스타그램 엑세스 토큰 용
+        retrofitInstagram = Retrofit.Builder()
+            .baseUrl("https://api.instagram.com/oauth/authorize?client_id=405314348528197&redirect_uri=YOUR_REDIRECT_URI&scope=user_profile,user_media&response_type=code")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
