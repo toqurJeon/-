@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class PageController {
 
     @GetMapping("/moiroom/privacy")
-    public String privacy() {
+    public String showPrivacyPage() {
         return "privacy";
     }
 }
