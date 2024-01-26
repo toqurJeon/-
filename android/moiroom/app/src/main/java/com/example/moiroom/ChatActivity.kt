@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 
+import ChatAdapter
 import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
@@ -11,7 +12,6 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moiroom.adapter.ChatAdapter
 import com.example.moiroom.data.Chat
 import com.example.moiroom.databinding.ActivityChatBinding
 import java.time.Instant
