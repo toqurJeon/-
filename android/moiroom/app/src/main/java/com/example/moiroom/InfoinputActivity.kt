@@ -127,7 +127,7 @@ class InfoinputActivity : AppCompatActivity() {
         val apiService = globalApplication.retrofit2.create(ApiInterface::class.java)
 
         val requestBody = RequestBody(0.1354, 0.3159, 0.7561)
-
+        Log.d("정보", "$requestBody")
         return try {
             val response = apiService.postData(requestBody)
             Log.d("결과", "POST 성공 - Message: ${response.message}, Status: ${response.status}")

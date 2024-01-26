@@ -51,8 +51,7 @@ class ChattingFragment : Fragment() {
     private fun getListOfChatRoomData(): List<ChatRoom> {
         return listOf(
             ChatRoom(1, "안녕하세요. 룸메이트 구하고 있습니다.", Instant.parse("2024-01-23T12:34:56Z")),
-            ChatRoom(2, "안녕하세요. 제가요 룸메이트를 구하고 있걸랑요? 그런데 이게 참 어렵습니다. 그 어려운 것이 그냥 어려운 것이 아니고 참 어렵다니까요?", Instant.parse("2024-01-24T12:34:56Z")),
-            ChatRoom(3, "ㅎㅇ", Instant.parse("2024-01-24T12:34:56Z"))
+            ChatRoom(2, "안녕하세요. 제가요 룸메이트를 구하고 있걸랑요? 그런데 이게 참 어렵습니다. 그 어려운 것이 그냥 어려운 것이 아니고 참 어렵다니까요?", Instant.parse("2024-01-24T12:34:56Z"))
         )
     }
 }
