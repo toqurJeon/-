@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P12A308?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    hikari:
+      username: S10P12A308@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
+      password: DkjJ9q7ZiB
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  security:
+    user:
+      name: hello
+      password: 12345
+
+cloud:
+  aws:
+    s3:
+      bucket: moiroom
+    credentials:
+      accessKey: ${S3_ACCESSKEY}
+      secretKey: ${S3_SECRETKEY}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false
