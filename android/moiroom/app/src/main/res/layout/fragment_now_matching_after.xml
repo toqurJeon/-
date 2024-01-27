@@ -11,14 +11,23 @@
         android:id="@+id/toggleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textOff="여러 명 보기"
-        android:textOn="한 명 씩 보기" />
+        android:textOff="한 명 씩 보기"
+        android:textOn="여러 명 보기"
+        android:checked="true"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        tools:listitem="@layout/card_layout" />
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/card_layout"
+        />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>
+
+
+
