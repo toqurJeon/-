@@ -94,14 +94,15 @@ class ChatActivity : AppCompatActivity() {
             Chat(4, 1, 1, "모든것이", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(5, 2, 1, "나두", Instant.parse("2024-01-23T12:34:56Z")),
             Chat(6, 2, 1, "감사합니다", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(7, 1, 1, "안녕히가세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(8, 2, 1, "잘가세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(9, 1, 1, "가지마", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(10, 2, 1, "띠용", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(11, 2, 1, "왜 가지마", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(12, 1, 1, "구냥", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(13, 2, 1, "음 말이 길어지면 어떻게 되는 지 테스트 중입니다. 엄청나게 말을 길게하는 사람이에요. 계속 말해 계속 끝까지 말을 합니다. 정말 많이 말을해요.", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(14, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
+            Chat(7, 2, 1, "정말루", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(8, 1, 1, "안녕히가세요", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(9, 2, 1, "잘가세요", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(10, 1, 1, "가지마", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(11, 2, 1, "띠용", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(12, 2, 1, "왜 가지마", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(13, 1, 1, "구냥", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(14, 2, 1, "음 말이 길어지면 어떻게 되는 지 테스트 중입니다. 엄청나게 말을 길게하는 사람이에요. 계속 말해 계속 끝까지 말을 합니다. 정말 많이 말을해요.", Instant.parse("2024-01-23T12:34:56Z")),
+            Chat(15, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
         )
     }
 
@@ -114,16 +115,14 @@ class ChatActivity : AppCompatActivity() {
         val btnNo: Button = dialog.findViewById(R.id.btnNo)
 
         btnYes.setOnClickListener {
-            // 'Yes' 버튼이 클릭되었을 때의 동작
-            // 여기에 원하는 동작을 추가하세요.
+
             dialog.dismiss() // 다이얼로그 닫기
             onBackPressed()
         }
 
         btnNo.setOnClickListener {
-            // 'No' 버튼이 클릭되었을 때의 동작
-            // 여기에 원하는 동작을 추가하세요.
-            dialog.dismiss() // 다이얼로그 닫기
+
+            dialog.dismiss()
         }
 
         dialog.show()

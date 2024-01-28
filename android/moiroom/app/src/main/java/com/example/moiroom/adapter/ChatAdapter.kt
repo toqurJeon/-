@@ -18,7 +18,9 @@ import java.time.format.DateTimeFormatter
 
 class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
 
-    inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        var nextViewHolder: ChatItemLayoutBinding? = null
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val binding = ChatItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -38,6 +40,9 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
             chatContent.text = data.content
             chatCreatedAt.text = time
 
+            // 이전 메세지와 비교
+
+
             val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape)
             val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape_flipped)
 
@@ -51,6 +56,28 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
                 chatLayout.gravity = Gravity.END
                 chatMemberName.visibility = View.GONE
                 imageCard.visibility = View.GONE
+                chatCreatedAt.visibility = View.GONE
+
+                if (position == (dataList.size - 1)) {
+                    chatCreatedAt.visibility = View.VISIBLE
+
+                } else if (position == 0) {
+                    val downData = dataList[position + 1]
+                    val downMemberId = downData.member_id
+                    val downTime = formatting(downData.created_at)
+
+                    if (currentMemberId != downMemberId || time != downTime) {
+                        chatCreatedAt.visibility = View.VISIBLE
+                    }
+                } else {
+                    val downData = dataList[position + 1]
+                    val downMemberId = downData.member_id
+                    val downTime = formatting(downData.created_at)
+
+                    if (currentMemberId != downMemberId || time != downTime) {
+                        chatCreatedAt.visibility = View.VISIBLE
+                    }
+                }
 
             } else {
                 chatBallonDrawable?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.darkorange), PorterDuff.Mode.SRC_ATOP)
@@ -58,27 +85,52 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
 
                 holder.binding.root.gravity = Gravity.START
                 chatLayout.gravity = Gravity.START
-                chatMemberName.visibility = View.VISIBLE
-                imageCard.visibility = View.VISIBLE
+                chatMemberName.visibility = View.GONE
+                imageCard.visibility = View.INVISIBLE
+                chatCreatedAt.visibility = View.GONE
 
                 chatMemberName.text = sample_name
 
-                // 이전 데이터와 현재 데이터를 비교하여 이전 RecyclerView에 영향을 줍니다.
-                if (position > dataList.size - 1) {
-                    val previousData = dataList[position - 1]
-                    val previousMemberId = previousData.member_id
-                    val previousTime = formatting(previousData.created_at)
+                // dataList.size 는 data의 갯수
+                // position은 0부터 dataList.size - 1 까지 (size == 15, position -> 14,13,...,1,0)
+                if (position == (dataList.size - 1)) {
+                    val upData = dataList[position - 1]
+                    val upMemberId = upData.member_id
+                    val upTime = formatting(upData.created_at)
 
-                    val previousViewHolder = holder.binding
+                    chatCreatedAt.visibility = View.VISIBLE
 
-                    if (currentMemberId == previousMemberId && time == previousTime) {
-                        previousViewHolder.imageCard.visibility = View.INVISIBLE
-                        previousViewHolder.chatCreatedAt.visibility = View.VISIBLE
-                        previousViewHolder.chatMemberName.visibility = View.GONE
-                    } else {
-                        previousViewHolder.imageCard.visibility = View.VISIBLE
-                        previousViewHolder.chatCreatedAt.visibility = View.GONE
-                        previousViewHolder.chatMemberName.visibility = View.VISIBLE
+                    if (currentMemberId != upMemberId || time != upTime) {
+                        imageCard.visibility = View.VISIBLE
+                        chatMemberName.visibility = View.VISIBLE
+                    }
+                } else if (position == 0) {
+                    val downData = dataList[position + 1]
+                    val downMemberId = downData.member_id
+                    val downTime = formatting(downData.created_at)
+
+                    imageCard.visibility = View.VISIBLE
+                    chatMemberName.visibility = View.VISIBLE
+
+                    if (currentMemberId != downMemberId || time != downTime) {
+                        chatCreatedAt.visibility = View.VISIBLE
+                    }
+                } else {
+                    val upData = dataList[position - 1]
+                    val downData = dataList[position + 1]
+
+                    val upMemberId = upData.member_id
+                    val downMemberId = downData.member_id
+
+                    val upTime = formatting(upData.created_at)
+                    val downTime = formatting(downData.created_at)
+
+                    if (currentMemberId != upMemberId || time != upTime) {
+                        imageCard.visibility = View.VISIBLE
+                        chatMemberName.visibility = View.VISIBLE
+                    }
+                    if (currentMemberId != downMemberId || time != downTime) {
+                        chatCreatedAt.visibility = View.VISIBLE
                     }
                 }
             }
@@ -95,6 +147,8 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
             layoutParams.setMargins(layoutParams.leftMargin, 0, layoutParams.rightMargin, layoutParams.bottomMargin)
             holder.itemView.layoutParams = layoutParams
         }
+
+        holder.nextViewHolder = holder.binding
     }
 
     override fun getItemCount(): Int {
