@@ -1,7 +1,13 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, render_template
 import requests
 
 app = Flask(__name__)
+
+
+@app.route('/moiroom/privacy')
+def privacy():
+    # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
+    return render_template('index.html')
 
 
 @app.route('/receive_and_send', methods=['POST'])

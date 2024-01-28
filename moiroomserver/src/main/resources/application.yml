@@ -15,6 +15,32 @@ spring:
         format_sql: true
         show_sql: true
   security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: cfd8bf207f95e154c8f064581f71f655
+            scope:
+              - age_range
+              - birthday
+              - account_email
+              - profile_image
+              - gender
+              - birthyear
+              - openid
+              - name
+              - phone_number
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/oauth/kakao
+            client-authentication-method: POST
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
+
     user:
       name: hello
       password: 12345
@@ -24,8 +50,8 @@ cloud:
     s3:
       bucket: moiroom
     credentials:
-      accessKey: AKIAZI2LIXYWMZMTGB53
-      secretKey: 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
+      accessKey: ${S3_ACCESSKEY}
+      secretKey: ${S3_SECRETKEY}
     region:
       static: ap-northeast-2
       auto: false
