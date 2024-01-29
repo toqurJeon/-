@@ -5,4 +5,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chatting">This is chatting page</string>
     <string name="now_matching">This is now Matching page</string>
+    <string name="facebook_app_id">1429064924713303
+</string>
 </resources>

@@ -24,3 +24,13 @@ data class PhotoInfo(
     val photoLatitude: String,
     val photoLongitude: String,
 )
+//?client_id=802744445198772
+//&redirect_uri=https://example.com/instagramredirection
+//&scope=user_profile,user_media
+//&response_type=code
+data class InstagramRequest(
+    val client_id: String,
+    val redirection_uri: String,
+    val scope: String,
+    val response_type: String,
+)

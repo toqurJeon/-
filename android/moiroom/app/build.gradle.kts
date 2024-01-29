@@ -110,4 +110,9 @@ dependencies {
     // Glide 라이브러리
     implementation("com.github.bumptech.glide:glide:4.12.0")
     annotationProcessor("com.github.bumptech.glide:compiler:4.12.0")
+    // 페이스북
+    repositories {
+        mavenCentral()
+    }
+    implementation("com.facebook.android:facebook-android-sdk:[8,9)")
 }

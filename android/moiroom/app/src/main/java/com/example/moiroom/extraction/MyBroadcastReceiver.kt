@@ -5,7 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 
-class MyProdcastReceiver : BroadcastReceiver() {
+class MyBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
         // "myapp://" 스킴을 처리하는 로직을 여기에 추가
         if (intent != null && Intent.ACTION_VIEW == intent.action) {
@@ -13,6 +13,7 @@ class MyProdcastReceiver : BroadcastReceiver() {
             if (data != null && "moiroom://instagram" == data.scheme) {
                 // "myapp://" 스킴으로 들어온 경우에 대한 처리
                 // 예: 특정 화면으로 이동하거나 특정 동작 수행
+                InstagramExtract()
             }
         }
     }
