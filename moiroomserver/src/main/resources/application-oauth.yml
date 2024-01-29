@@ -1,0 +1,31 @@
+spring:
+  config:
+    activate:
+      on-profile: oauth
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao:
+            client-id: cfd8bf207f95e154c8f064581f71f655
+            client-secret: gDhH4VBTHa19a5TNqmb2HGtEs0ERf2NB
+            scope: account_email
+            #              - age_range
+            #              - birthday
+            #              - account_email
+            #              - profile_image
+            #              - gender
+            #              - birthyear
+            #              - openid
+            #              - name
+            #              - phone_number
+            client-name: kakao
+            authorization-grant-type: authorization_code
+            redirect-uri: http://127.0.0.1:8080/oauth/kakao
+            client-authentication-method: post
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
