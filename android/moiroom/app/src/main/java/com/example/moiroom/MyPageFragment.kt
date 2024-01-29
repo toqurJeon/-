@@ -1,25 +1,35 @@
 package com.example.moiroom
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.PointF
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextPaint
 import android.util.AttributeSet
 import android.util.Half.toFloat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.ui.graphics.Color
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.Member
 import com.example.moiroom.databinding.FragmentMyPageBinding
+
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.RadarData
 import com.github.mikephil.charting.data.RadarDataSet
 import com.github.mikephil.charting.data.RadarEntry
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.sin
 
 
 class MyPageFragment : Fragment() {
@@ -46,44 +56,64 @@ class MyPageFragment : Fragment() {
         binding.memberGender.text = memberData.memberGender
         binding.memberBirthYear.text = "${memberData.memberBirthYear}"
         binding.memberIntroduction.text = memberData.memberIntroduction
+        binding.metropolitanName.text = memberData.metropolitanName
+        binding.cityName.text = memberData.cityName
 
-        val entries: ArrayList<RadarEntry> = ArrayList()
-        entries.add(RadarEntry(memberData.socialbility.toFloat()/100))
-        entries.add(RadarEntry(memberData.positivity.toFloat()/100))
-        entries.add(RadarEntry(memberData.activity.toFloat()/100))
-        entries.add(RadarEntry(memberData.communion.toFloat()/100))
-        entries.add(RadarEntry(memberData.altruism.toFloat()/100))
-        entries.add(RadarEntry(memberData.empathy.toFloat()/100))
-        entries.add(RadarEntry(memberData.humor.toFloat()/100))
-        entries.add(RadarEntry(memberData.generous.toFloat()/100))
+        val chartView = RadarChartView(context, null)
 
-        val labels = arrayOf("사교", "긍정", "활동", "공유", "이타", "공감", "감각", "관대")
+        chartView.setDataList(
+            arrayListOf(
+                RadarChartData(CharacteristicType.socialbility, memberData.socialbility.toFloat()/100),
+                RadarChartData(CharacteristicType.positivity, memberData.positivity.toFloat()/100),
+                RadarChartData(CharacteristicType.activity, memberData.activity.toFloat()/100),
+                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat()/100),
+                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat()/100),
+                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat()/100),
+                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat()/100),
+                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat()/100),
+            )
+        )
+        binding.radarChartContainer.addView(chartView)
 
-        val radarDataSet = RadarDataSet(entries, "Data Label")
-
-        radarDataSet.color = ContextCompat.getColor(requireContext(), R.color.darkorange)
-        radarDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.grey)
 
 
-        val radarData = RadarData()
-        radarData.addDataSet(radarDataSet)
-
-        val radarChart = binding.radarChart
-        radarChart.data = radarData
-        radarChart.description.isEnabled = false
-        radarChart.webLineWidth = 1f
-        radarChart.webLineWidthInner = 2f
-
-        val xAxis: XAxis = radarChart.xAxis
-        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-
-        val yAxis: YAxis = radarChart.yAxis
-        yAxis.axisMaximum = 90f
-        yAxis.axisMinimum = 0f
-
-        xAxis.textSize = 16f
-
-        radarChart.invalidate()
+//        val entries: ArrayList<RadarEntry> = ArrayList()
+//        entries.add(RadarEntry(memberData.socialbility.toFloat()/100))
+//        entries.add(RadarEntry(memberData.positivity.toFloat()/100))
+//        entries.add(RadarEntry(memberData.activity.toFloat()/100))
+//        entries.add(RadarEntry(memberData.communion.toFloat()/100))
+//        entries.add(RadarEntry(memberData.altruism.toFloat()/100))
+//        entries.add(RadarEntry(memberData.empathy.toFloat()/100))
+//        entries.add(RadarEntry(memberData.humor.toFloat()/100))
+//        entries.add(RadarEntry(memberData.generous.toFloat()/100))
+//
+//        val labels = arrayOf("사교", "긍정", "활동", "공유", "이타", "공감", "감각", "관대")
+//
+//        val radarDataSet = RadarDataSet(entries, "Data Label")
+//
+//        radarDataSet.color = ContextCompat.getColor(requireContext(), R.color.darkorange)
+//        radarDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.grey)
+//
+//
+//        val radarData = RadarData()
+//        radarData.addDataSet(radarDataSet)
+//
+//        val radarChart = binding.radarChart
+//        radarChart.data = radarData
+//        radarChart.description.isEnabled = false
+//        radarChart.webLineWidth = 1f
+//        radarChart.webLineWidthInner = 2f
+//
+//        val xAxis: XAxis = radarChart.xAxis
+//        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
+//
+//        val yAxis: YAxis = radarChart.yAxis
+//        yAxis.axisMaximum = 90f
+//        yAxis.axisMinimum = 0f
+//
+//        xAxis.textSize = 16f
+//
+//        radarChart.invalidate()
 
 
 //        val kakao_logout_button = binding.kakaoLogoutButton // 로그아웃 버튼
@@ -195,5 +225,164 @@ class MyPageFragment : Fragment() {
                 )
             )
         )
+    }
+
+    enum class CharacteristicType(val value: String) {
+        socialbility("사교"),
+        positivity("긍정"),
+        activity("활동"),
+        communion("공유"),
+        altruism("이타"),
+        empathy("공감"),
+        humor("감각"),
+        generous("관대")
+    }
+
+    data class RadarChartData(
+        val type: CharacteristicType,
+        val value: Float
+    )
+
+    class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
+
+        private var dataList: ArrayList<RadarChartData>? = null
+
+        // 5개의 특성을 갖도록 한다
+        private var chartTypes = arrayListOf(
+            CharacteristicType.socialbility,
+            CharacteristicType.positivity,
+            CharacteristicType.activity,
+            CharacteristicType.communion,
+            CharacteristicType.altruism,
+            CharacteristicType.empathy,
+            CharacteristicType.humor,
+            CharacteristicType.generous
+        )
+
+        private val paint = Paint().apply {
+            isAntiAlias = true
+        }
+        private val textPaint = TextPaint().apply {
+            textSize = 48f
+            textAlign = Paint.Align.CENTER
+            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+        }
+        private var path = Path()
+
+        private fun Paint.FontMetrics.getBaseLine(y: Float): Float {
+            val halfTextAreaHeight = (bottom - top) / 2
+            return y - halfTextAreaHeight - top
+        }
+
+        override fun onDraw(canvas: Canvas) {
+            super.onDraw(canvas)
+            canvas ?: return
+
+            paint.color = Color.LTGRAY
+            paint.style = Paint.Style.STROKE
+            paint.strokeWidth = 4f
+            val radian = PI.toFloat() * 2 / 8 // 360도를 5분할한 각만큼 회전시키 위해
+            val step = 5 // 데이터 가이드 라인은 5단계로 표시한다
+            val heightMaxValue = height / 2 * 0.7f // RadarChartView영역내에 모든 그림이 그려지도록 max value가 그려질 높이
+            val heightStep = heightMaxValue / step // 1단계에 해당하는 높이
+            val cx = width / 2f
+            val cy = height / 2f
+            // 1. 단계별 가이드라인(5각형) 그리기
+            for (i in 0..step) {
+                var startX = cx
+                var startY = (cy - heightMaxValue) + heightStep * i
+                repeat(chartTypes.size) {
+                    // 중심좌표를 기준으로 점(startX,startY)를 radian만큼씩 회전시킨 점(stopX, stopY)을 계산한다.
+                    val stopPoint = transformRotate(radian, startX, startY, cx, cy)
+                    canvas.drawLine(startX, startY, stopPoint.x, stopPoint.y, paint)
+
+                    startX = stopPoint.x
+                    startY = stopPoint.y
+                }
+
+                // 각 단계별 기준값 표시
+                if (i < step) {
+                    val strValue = "${100 - 20 * i}"
+                    textPaint.textAlign = Paint.Align.LEFT
+                    textPaint.color = Color.GRAY
+                    canvas.drawText(
+                        strValue,
+                        startX + 10,
+                        textPaint.fontMetrics.getBaseLine(startY),
+                        textPaint
+                    )
+                }
+            }
+
+            // 2. 중심으로부터 5각형의 각 꼭지점까지 잇는 라인 그리기
+            var startX = cx
+            var startY = cy - heightMaxValue
+            repeat(chartTypes.size) {
+                val stopPoint = transformRotate(radian, startX, startY, cx, cy)
+                canvas.drawLine(cx, cy, stopPoint.x, stopPoint.y, paint)
+
+                startX = stopPoint.x
+                startY = stopPoint.y
+            }
+
+            // 3. 각 꼭지점 부근에 각 특성 문자열 표시하기
+            textPaint.color = Color.BLACK
+            textPaint.textSize = 56f
+            textPaint.textAlign = Paint.Align.CENTER
+            startX = cx
+            startY = (cy - heightMaxValue) * 0.5f // 값을 줄일수록 그래프와의 마진 높아짐
+            var r = 0f
+            path.reset()
+            chartTypes.forEach { type ->
+                val point = transformRotate(r, startX, startY, cx, cy)
+                canvas.drawText(
+                    type.value,
+                    point.x,
+                    textPaint.fontMetrics.getBaseLine(point.y),
+                    textPaint
+                )
+
+                // 전달된 데이터를 표시하는 path 계산
+                dataList?.firstOrNull { it.type == type }?.value?.let { value ->
+                    val conValue = heightMaxValue * value / 100 // 차트크기에 맞게 변환
+                    val valuePoint = transformRotate(r, startX, cy - conValue, cx, cy)
+                    if (path.isEmpty) {
+                        path.moveTo(valuePoint.x, valuePoint.y)
+                    } else {
+                        path.lineTo(valuePoint.x, valuePoint.y)
+                    }
+                }
+
+                r += radian
+            }
+
+            // 4. 전달된 데에터를 표시하기
+            path.close()
+            paint.color = 0x7FFF8A00
+            paint.style = Paint.Style.FILL
+            canvas.drawPath(path, paint)
+        }
+
+        fun setDataList(dataList: ArrayList<RadarChartData>) {
+            if (dataList.isEmpty()) {
+                return
+            }
+            this.dataList = dataList
+            invalidate()
+        }
+
+        // 점(x, y)를 특정 좌표(cx, cy)를 중심으로 radian만큼 회전시킨 점의 좌표를 반환
+        private fun transformRotate(radian: Float, x: Float, y: Float, cx: Float, cy: Float): PointF {
+            val stopX = cos(radian) * (x - cx) - sin(radian) * (y - cy) + cx
+            val stopY = sin(radian) * (x - cx) + cos(radian) * (y - cy) + cy
+
+            return PointF(stopX, stopY)
+        }
+    }
+
+    // y좌표가 중심이 오도록 문자열을 그릴수 있도록하는 baseline좌표를 반환
+    fun Paint.FontMetrics.getBaseLine(y: Float): Float {
+        val halfTextAreaHeight = (bottom - top) / 2
+        return y - halfTextAreaHeight - top
     }
 }
