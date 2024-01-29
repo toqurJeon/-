@@ -3,6 +3,7 @@ package com.example.moiroom.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
@@ -19,7 +20,9 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
 
     class CardViewHolder1(view: View) : CardViewHolder(view) {
         val summary: TextView = view.findViewById(R.id.summary)
+        val introduction: TextView = view.findViewById(R.id.introduction)
         val profileImage: ImageView = view.findViewById(R.id.profileImage)
+        val underline: View = view.findViewById(R.id.underline)  // 밑줄 뷰에 대한 참조 추가
     }
 
     class CardViewHolder2(view: View) : CardViewHolder(view) {
@@ -47,13 +50,40 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
         if (holder is CardViewHolder1) {
             holder.matchingRate.text = "${cardInfo.matchingRate}%"
             holder.summary.text = cardInfo.summary
-            holder.profileImage.setImageResource(cardInfo.profileImage)  // 이미지 설정하는 코드
+            holder.profileImage.setImageResource(cardInfo.profileImage)
             holder.name.text = cardInfo.name
             holder.location.text = cardInfo.location
+            holder.introduction.text = cardInfo.introduction
+
+            // 밑줄 뷰의 너비를 요약 텍스트뷰의 너비와 같게 설정
+            holder.summary.post {
+                val layoutParams = holder.underline.layoutParams
+                layoutParams.width = holder.summary.width
+                holder.underline.layoutParams = layoutParams
+            }
+
+            // 기존 리스너 제거
+            holder.summary.viewTreeObserver.removeOnGlobalLayoutListener(holder.summary.tag as? ViewTreeObserver.OnGlobalLayoutListener)
+
+            val summaryObserver = holder.summary.viewTreeObserver
+            val globalLayoutListener = object : ViewTreeObserver.OnGlobalLayoutListener {
+                override fun onGlobalLayout() {
+                    val layoutParams = holder.underline.layoutParams
+                    layoutParams.width = holder.summary.width
+                    holder.underline.layoutParams = layoutParams
+
+                    // 무한 루프를 방지하기 위해 콜백 제거
+                    holder.summary.viewTreeObserver.removeOnGlobalLayoutListener(this)
+                }
+            }
+
+            // 리스너를 태그에 저장
+            holder.summary.tag = globalLayoutListener
+            summaryObserver.addOnGlobalLayoutListener(globalLayoutListener)
         } else if (holder is CardViewHolder2) {
             holder.matchingRate.text = "${cardInfo.matchingRate}%"
             holder.introduction.text = cardInfo.introduction
-            holder.profileImage.setImageResource(cardInfo.profileImage)  // 이미지 설정하는 코드 추가
+            holder.profileImage.setImageResource(cardInfo.profileImage)
             holder.name.text = cardInfo.name
             holder.location.text = cardInfo.location
         }
@@ -62,3 +92,4 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
 
     override fun getItemCount() = cardInfoList.size
 }
+
