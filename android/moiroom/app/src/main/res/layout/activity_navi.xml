@@ -21,6 +21,7 @@
         app:itemTextColor="@drawable/menu_click_color"
         app:layout_constraintBottom_toBottomOf="parent"
         app:menu="@menu/navi_menu"
-        tools:ignore="MissingConstraints" />
+        tools:ignore="MissingConstraints"
+        app:itemActiveIndicatorStyle="@null"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

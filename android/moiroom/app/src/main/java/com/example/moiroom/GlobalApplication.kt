@@ -42,9 +42,9 @@ class GlobalApplication : Application() {
             .build()
 
         // 인스타그램 엑세스 토큰 용
-        retrofitInstagram = Retrofit.Builder()
-            .baseUrl("https://api.instagram.com/oauth/authorize?client_id=405314348528197&redirect_uri=YOUR_REDIRECT_URI&scope=user_profile,user_media&response_type=code")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+//        retrofitInstagram = Retrofit.Builder()
+//            .baseUrl("https://api.instagram.com/oauth/authorize?client_id=405314348528197&redirect_uri=YOUR_REDIRECT_URI&scope=user_profile,user_media&response_type=code")
+//            .addConverterFactory(GsonConverterFactory.create())
+//            .build()
     }
 }

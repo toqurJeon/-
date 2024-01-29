@@ -6,5 +6,6 @@
     <color name="grey">#818181</color>
     <color name="lightorange">#CECECE</color>
     <color name="lightgray">#F5F5F5</color>
+    <color name="BGgray">#EFEFEF</color>
     <color name="darkGray">#A9A9A9</color>
 </resources>

@@ -1,10 +1,9 @@
 package com.example.moiroom
 
 import com.example.moiroom.data.MyResponse
+import com.example.moiroom.data.Post
 import com.example.moiroom.data.RequestBody
 import retrofit2.http.GET
-import retrofit2.http.Path
-import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
 
