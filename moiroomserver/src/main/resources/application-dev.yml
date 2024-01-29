@@ -1,0 +1,32 @@
+spring:
+  config:
+    activate:
+      on-profile: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://stgyswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P12A308?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    hikari:
+      username: ssafy
+      password: ssafy123~
+    #      username: S10P12A308@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
+    #      password: DkjJ9q7ZiB
+    url: jdbc:mysql://localhost:3306/ssafy
+  jpa:
+    database: mysql
+    #    database-platform: org.hibernate.dialect.MySQL8Dialect
+    hibernate:
+      ddl-auto: none
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+  security:
+    user:
+      name: hello
+      password: 12345
+
+jwt:
+  secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4'
