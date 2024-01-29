@@ -9,6 +9,10 @@ def privacy():
     # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
     return render_template('index.html')
 
+@app.route('/moitest')
+def moitest():
+    # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
+    return render_template('test.html')
 
 @app.route('/receive_and_send', methods=['POST'])
 def receive_and_send():
