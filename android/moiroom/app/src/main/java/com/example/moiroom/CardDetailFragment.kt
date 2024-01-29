@@ -33,7 +33,7 @@ class CardDetailFragment : Fragment() {
         // "돌아가기" 버튼 클릭 리스너
         binding.buttonBack.setOnClickListener {
             // Fragment를 종료합니다
-            fragmentManager?.popBackStack()
+            parentFragmentManager.popBackStackImmediate()
         }
     }
 

@@ -143,9 +143,14 @@ class NowMatchingAfterFragment : Fragment() {
     private fun showDetailFragment(cardInfo: CardInfo) {
         val detailFragment = CardDetailFragment.newInstance(cardInfo)
         parentFragmentManager.beginTransaction().apply {
-            // RecyclerView나 ViewPager2가 표시되는 뷰를 대체합니다.
+            setCustomAnimations(
+                R.anim.slide_in_right, // enter
+                R.anim.slide_out_left, // exit
+                R.anim.slide_in_left, // popEnter
+                R.anim.slide_out_right // popExit
+            )
             add(R.id.cardDetail, detailFragment)
-            addToBackStack(null) // 사용자가 뒤로 가기를 눌렀을 때 이전 화면으로 돌아갈 수 있도록 합니다.
+            addToBackStack(null)
             commit()
         }
         // RecyclerView와 ViewPager2를 숨기고, 프래그먼트 컨테이너를 표시합니다.
