@@ -45,6 +45,13 @@
 
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
+    <FrameLayout
+        android:id="@+id/cardDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toggleButton"
+        android:visibility="gone" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -58,5 +65,12 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/toggleButton" />
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/detailViewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/toggleButton"
+        android:visibility="gone" />
 
 </RelativeLayout>

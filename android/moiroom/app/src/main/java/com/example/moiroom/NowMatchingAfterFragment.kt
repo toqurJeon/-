@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.os.Bundle
+import android.text.TextUtils.replace
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +11,17 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
+import com.example.moiroom.adapter.CardDetailPagerAdapter
+import com.example.moiroom.adapter.CardItemClickListener
+import com.example.moiroom.data.CardInfo
 import com.example.moiroom.data.TestData
+import com.example.moiroom.data.TestData.cardInfoList
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.google.android.material.button.MaterialButtonToggleGroup
+
+interface OnDetailBackClickListener {
+    fun onBackClick()
+}
 
 class NowMatchingAfterFragment : Fragment() {
     private lateinit var binding: FragmentNowMatchingAfterBinding
@@ -43,9 +52,8 @@ class NowMatchingAfterFragment : Fragment() {
         binding.recyclerView.visibility = View.GONE
         setCardAdapter(true)
 
-        // 토글 버튼의 체크 상태에 따라 RecyclerView나 ViewPager2를 보여줌
-        binding.toggleButton.addOnButtonCheckedListener { toggleButton, checkedId, isChecked ->
-            if (isChecked) { // 버튼이 체크된 경우에만 화면 전환을 수행합니다.
+        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
                 when (checkedId) {
                     R.id.button1 -> {
                         binding.viewPager2.visibility = View.VISIBLE
@@ -57,12 +65,72 @@ class NowMatchingAfterFragment : Fragment() {
                     }
                 }
                 setCardAdapter(checkedId == R.id.button1)
+                hideDetailFragment()
+            }
+        }
+
+        // 백스택 변경 리스너 등록
+        activity?.supportFragmentManager?.addOnBackStackChangedListener {
+            // 현재 표시되고 있는 프래그먼트를 찾습니다.
+            val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
+
+            // 프래그먼트가 없을 경우, RecyclerView나 ViewPager2를 다시 표시합니다.
+            if (fragment == null) {
+                if (binding.toggleButton.checkedButtonId == R.id.button1) {
+                    binding.viewPager2.visibility = View.VISIBLE
+                } else {
+                    binding.recyclerView.visibility = View.VISIBLE
+                }
+                // 프래그먼트 컨테이너를 숨깁니다.
+                binding.cardDetail.visibility = View.GONE
             }
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // 현재 표시되고 있는 프래그먼트를 찾습니다.
+        val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
+
+        // 프래그먼트가 없을 경우, RecyclerView나 ViewPager2를 다시 표시합니다.
+        if (fragment == null) {
+            if (binding.toggleButton.checkedButtonId == R.id.button1) {
+                binding.viewPager2.visibility = View.VISIBLE
+            } else {
+                binding.recyclerView.visibility = View.VISIBLE
+            }
+        }
+
+        // 프래그먼트 컨테이너를 숨깁니다.
+        binding.cardDetail.visibility = View.GONE
+    }
+
+
+    private fun hideDetailFragment() {
+        // 현재 표시되고 있는 프래그먼트를 찾습니다.
+        val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
+
+        // 프래그먼트가 있을 경우, 해당 프래그먼트를 제거합니다.
+        if (fragment != null) {
+            parentFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+
+        if (binding.toggleButton.checkedButtonId == R.id.button1) {
+            binding.viewPager2.visibility = View.VISIBLE
+        } else {
+            binding.recyclerView.visibility = View.VISIBLE
+        }
+
+        setCardAdapter(binding.toggleButton.checkedButtonId == R.id.button1)
+    }
+
     private fun setCardAdapter(isButton1Checked: Boolean) {
-        val cardAdapter = CardAdapter(cardInfoList, isButton1Checked)
+        val cardAdapter = CardAdapter(cardInfoList, isButton1Checked, object : CardItemClickListener {
+            override fun onCardDetailClick(cardInfo: CardInfo) {
+                showDetailFragment(cardInfo) // 이 메서드 내에서 프래그먼트 전환 로직을 처리합니다.
+            }
+        })
         if (isButton1Checked) {
             binding.viewPager2.adapter = cardAdapter
             binding.recyclerView.adapter = null
@@ -71,4 +139,21 @@ class NowMatchingAfterFragment : Fragment() {
             binding.recyclerView.adapter = cardAdapter
         }
     }
+
+    private fun showDetailFragment(cardInfo: CardInfo) {
+        val detailFragment = CardDetailFragment.newInstance(cardInfo)
+        parentFragmentManager.beginTransaction().apply {
+            // RecyclerView나 ViewPager2가 표시되는 뷰를 대체합니다.
+            add(R.id.cardDetail, detailFragment)
+            addToBackStack(null) // 사용자가 뒤로 가기를 눌렀을 때 이전 화면으로 돌아갈 수 있도록 합니다.
+            commit()
+        }
+        // RecyclerView와 ViewPager2를 숨기고, 프래그먼트 컨테이너를 표시합니다.
+        binding.recyclerView.visibility = View.GONE
+        binding.viewPager2.visibility = View.GONE
+        binding.cardDetail.visibility = View.VISIBLE // 프래그먼트 컨테이너를 표시합니다.
+    }
+
+
 }
+

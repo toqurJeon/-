@@ -1,16 +1,23 @@
 package com.example.moiroom.adapter
 
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.ViewTreeObserver
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.R
 import com.example.moiroom.data.CardInfo
 
-class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggleButtonChecked: Boolean) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+interface CardItemClickListener {
+    fun onCardDetailClick(cardInfo: CardInfo)
+}
+
+class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggleButtonChecked: Boolean,private val cardItemClickListener: CardItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     abstract class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val matchingRate: TextView = view.findViewById(R.id.matchingRate)
@@ -23,6 +30,7 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
         val introduction: TextView = view.findViewById(R.id.introduction)
         val profileImage: ImageView = view.findViewById(R.id.profileImage)
         val underline: View = view.findViewById(R.id.underline)  // 밑줄 뷰에 대한 참조 추가
+        val detailButton: Button = view.findViewById(R.id.detailButton)
     }
 
     class CardViewHolder2(view: View) : CardViewHolder(view) {
@@ -80,6 +88,11 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
             // 리스너를 태그에 저장
             holder.summary.tag = globalLayoutListener
             summaryObserver.addOnGlobalLayoutListener(globalLayoutListener)
+
+            holder.detailButton.setOnClickListener {
+                cardItemClickListener.onCardDetailClick(cardInfo) // 버튼 클릭 이벤트 처리
+            }
+
         } else if (holder is CardViewHolder2) {
             holder.matchingRate.text = "${cardInfo.matchingRate}%"
             holder.introduction.text = cardInfo.introduction
