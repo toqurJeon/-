@@ -1,9 +1,8 @@
 package com.ssafy.moiroomserver.oauth.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+//import com.ssafy.moiroomserver.oauth.dto.KakaoProfile;
+import com.ssafy.moiroomserver.oauth.dto.KakaoProfile;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,8 +17,11 @@ import lombok.Setter;
 public class KakaoMember {
 
     @Id
-    @Column(name = "kakao_member_id", columnDefinition = "CHAR(50)", nullable = false)
-    private String kakaoMemberId;
+    @Column(name = "id", columnDefinition = "CHAR(50)", nullable = false)
+    private String id;
+
+    @Embedded
+    private KakaoProfile kakaoProfile;
 
     @Column(name="kakao_id", columnDefinition = "VARCHAR(100)")
     private String kakaoId;
