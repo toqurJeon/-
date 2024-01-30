@@ -27,6 +27,24 @@ public class KakaoMember {
     @Column(name="email", columnDefinition="VARCHAR(100)")
     private String email;
 
+    @Column(name="name", columnDefinition="VARCHAR(100)")
+    private String name;
+
+    @Column(name="age_range", columnDefinition="VARCHAR(100)")
+    private String ageRange;
+
+    @Column(name="birthyear", columnDefinition="VARCHAR(100)")
+    private String birthyear;
+
+    @Column(name="birthday", columnDefinition="VARCHAR(100)")
+    private String birthday;
+
+    @Column(name="gender", columnDefinition="VARCHAR(100)")
+    private String gender;
+
+    @Column(name="phone_number", columnDefinition="VARCHAR(100)")
+    private String phoneNumber;
+
     @Column(name="oauth_type", columnDefinition="VARCHAR(50)")
     private String oauthType;
 }

@@ -27,17 +27,36 @@ public class OAuthService extends DefaultOAuth2UserService {
         Map<String, Object> attributes = super.loadUser(userRequest).getAttributes();
         log.info("ATTR INFO : {}", attributes.toString());
 
-        String email = null;
-        String kakaoId = null;
+        String email = null; // 카카오에서 사용할 이메일
+        String kakaoId = null; // 카카오 고유 id
+        String name = null; // 카카오 회원 이름
+        String ageRange = null; // 카카오 정보에 담긴 회원의 연령대
+        String birthyear = null; // 카카오 회원의 출생년도
+        String birthday = null; // 카카오 회원의 생일
+        String gender = null; // 카카오 회원의 성별
+        String phoneNumber = null; // 카카오 회원의 전화번호
+
         String oauthType = userRequest.getClientRegistration().getRegistrationId();
 
         OAuth2User user2 = super.loadUser(userRequest);
 
         // oauth 타입에 따라 데이터가 다르기에 분기
         if("kakao".equals(oauthType.toLowerCase())) {
+            System.out.println("attributes kakao_account = " + attributes.get("kakao_account"));
             // kakao는 kakao_account 내에 email이 존재함.
             kakaoId = attributes.get("id").toString();
             email = ((Map<String, Object>) attributes.get("kakao_account")).get("email").toString();
+            System.out.println("email = " + email);
+            name = ((Map<String, Object>) attributes.get("kakao_account")).get("name").toString();
+            System.out.println("name = " + name);
+            ageRange = ((Map<String, Object>) attributes.get("kakao_account")).get("age_range").toString();
+            System.out.println("ageRange = " + ageRange);
+            birthyear = ((Map<String, Object>) attributes.get("kakao_account")).get("birthyear").toString();
+            birthday = ((Map<String, Object>) attributes.get("kakao_account")).get("birthday").toString();
+            gender = ((Map<String, Object>) attributes.get("kakao_account")).get("gender").toString();
+            System.out.println("gender = " + gender);
+            phoneNumber = ((Map<String, Object>) attributes.get("kakao_account")).get("phone_number").toString();
+            System.out.println("phoneNumber = " + phoneNumber);
         }
         else if("google".equals(oauthType.toLowerCase())) {
             email = attributes.get("email").toString();
@@ -54,6 +73,12 @@ public class OAuthService extends DefaultOAuth2UserService {
             member.setKakaoMemberId(UUID.randomUUID().toString()); // 수정해야 할 듯
             member.setKakaoId(kakaoId);
             member.setEmail(email);
+            member.setName(name);
+            member.setAgeRange(ageRange);
+            member.setBirthyear(birthyear);
+            member.setBirthday(birthday);
+            member.setGender(gender);
+            member.setPhoneNumber(phoneNumber);
             member.setOauthType(oauthType);
 
             save(member);
