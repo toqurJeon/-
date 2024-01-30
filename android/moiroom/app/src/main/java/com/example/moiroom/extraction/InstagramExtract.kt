@@ -55,7 +55,7 @@ class InstagramExtract: AppCompatActivity() {
                 val code = redirectUrl.substring(46)
                 Log.d("코드", "$code")
 
-                getAccessTokenWithRetrofit(clientId, clientSecret, redirectUri, code)
+//                getAccessTokenWithRetrofit(clientId, clientSecret, redirectUri, code)
                 val intent = Intent(this@InstagramExtract, NowMatchingActivity::class.java)
                 startActivity(intent)
                 return true
@@ -86,17 +86,17 @@ class InstagramExtract: AppCompatActivity() {
             code
         )
 
-        call.enqueue(object : Callback<AccessTokenResponse> {
-            override fun onResponse(call: Call<AccessTokenResponse>, response: Response<AccessTokenResponse>) {
-                if (response.isSuccessful) {
-                    val accessTokenResponse = response.body()
-                    val accessToken = accessTokenResponse?.accessToken
-                    // accessToken을 사용하여 필요한 작업을 수행합니다.
-                    println("Access Token: $accessToken")
-                } else {
-                    println("Failed to retrieve access token.")
-                }
-            })
+//        call.enqueue(object : Callback<AccessTokenResponse> {
+//            override fun onResponse(call: Call<AccessTokenResponse>, response: Response<AccessTokenResponse>) {
+//                if (response.isSuccessful) {
+//                    val accessTokenResponse = response.body()
+//                    val accessToken = accessTokenResponse?.accessToken
+//                    // accessToken을 사용하여 필요한 작업을 수행합니다.
+//                    println("Access Token: $accessToken")
+//                } else {
+//                    println("Failed to retrieve access token.")
+//                }
+//            })
 
     }
 }
