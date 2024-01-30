@@ -1,60 +1,59 @@
-from flask import Flask, redirect, url_for, session, request
-from flask_oauthlib.client import OAuth
-
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # 반드시 안전한 랜덤한 키로 변경해야 합니다.
-
-oauth = OAuth(app)
-
-# Instagram API 설정
-instagram = oauth.remote_app(
-    'instagram',
-    consumer_key='wjswwkd@gmail.com',
-    consumer_secret='Lvp2016!',
-    request_token_params=None,
-    base_url='https://api.instagram.com/v1/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://api.instagram.com/oauth/authorize/',
-)
-
-
-@app.route('/')
-def index():
-    return 'Welcome to Flask Instagram API Example'
-
-
-@app.route('/login')
-def login():
-    return instagram.authorize(callback=url_for('authorized', _external=True))
-
-
-@app.route('/logout')
-def logout():
-    session.pop('instagram_token', None)
-    return 'Logged out'
-
-
-@app.route('/login/authorized')
-def authorized():
-    response = instagram.authorized_response()
-
-    if response is None or response.get('access_token') is None:
-        return 'Access denied: reason={} error={}'.format(
-            request.args['error_reason'],
-            request.args['error_description']
-        )
-
-    session['instagram_token'] = (response['access_token'], '')
-    user_info = instagram.get('users/self')
-    return 'Logged in as {}<br>Access Token: {}'.format(user_info.data['data']['username'],
-                                                        session['instagram_token'][0])
-
-
-@instagram.tokengetter
-def get_instagram_oauth_token():
-    return session.get('instagram_token')
-
+import numpy as np
+from sklearn.cluster import DBSCAN
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # 샘플 데이터
+    sample_json = {
+        1: {
+            'lon': 12.12345,
+            'len': 84.12345
+        },
+        2: {
+            'lon': 21.12445,
+            'len': 40.12345
+        },
+        3: {
+            'lon': 64.12345,
+            'len': 10.12345
+        }
+    }
+
+
+    # 학습 데이터 배열 초기화
+    X = np.array([[0, 0]])
+    # 전체 데이터 개수 카운팅
+    count = 0
+    # for문 돌면서 위도 경도 입력 받음
+    for i in sample_json:
+        X = np.append(X, [[sample_json[i]["lon"], sample_json[i]["len"]]], axis=0)
+        count += 1
+
+    #초기 데이터 삭제
+    X = np.delete(X, 0, 0)
+    print(X)
+
+
+    # DBSCAN 모델 초기화 및 훈련
+    dbscan = DBSCAN(eps=50, min_samples=2)
+
+    dbscan.fit(X)
+
+    # 각 데이터 포인트가 속한 클러스터 확인
+    labels = dbscan.labels_
+    print('Cluster Labels:', labels)
+
+    res = np.array([[0, 0]])
+    # 각 클러스터에 속한 데이터 포인트의 수 계산
+    unique_labels = set(labels)
+    for label in unique_labels:
+        if label != -1:    # 노이즈가 아니라면
+            res = np.append(res, [[label, np.sum(labels == label)]], axis=0)
+
+    res = np.delete(res, 0, 0)
+
+    # 클러스터링 결과를 소속 데이터 수에 따라 내림차순 정렬
+    sorted_array = np.flipud(res[res[:, 1].argsort()])
+    print(sorted_array)
+
+    # 가장 많은 데이터 보유 장소 (집으로 추정되는 곳) / 전체 데이터 수 결과 출력
+    print(sorted_array[0][1] / count)

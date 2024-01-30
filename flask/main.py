@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 
+from engines import gps
+
 app = Flask(__name__)
 
 
@@ -9,10 +11,6 @@ def privacy():
     # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
     return render_template('index.html')
 
-@app.route('/moitest')
-def moitest():
-    # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
-    return render_template('test.html')
 
 @app.route('/receive_and_send', methods=['POST'])
 def receive_and_send():
@@ -72,6 +70,18 @@ def send_json():
 
         # 처리 후 응답 반환
         return jsonify({'status': 'success', 'message': 'JSON received and processed successfully'})
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
+
+@app.route('/count_clusters', methods=['POST'])
+def count_clusters():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        return gps.count_result(json_data)
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
