@@ -7,6 +7,7 @@ import lombok.Setter;
 @Setter
 public class KakaoAccountDto {
 
+    private KakaoProfile kakaoProfile; // 카카오 프로필 추가 정보
     private String email; // 카카오에서 사용할 이메일
     private String kakaoId; // 카카오 고유 id
     private String name; // 카카오 회원 이름
