@@ -4,6 +4,8 @@
         <!-- Customize your light theme here. -->
         <item name="colorPrimaryDark">@color/darkorange</item>
         <item name="android:windowBackground">@color/white</item>
+        <item name="colorSwitchThumbNormal">@color/lightorange</item>
+        <item name="colorControlActivated">@color/darkorange</item>
     </style>
 
     <style name="Theme.Moiroom" parent="Base.Theme.Moiroom" />

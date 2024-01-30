@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
@@ -10,7 +11,6 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextPaint
 import android.util.AttributeSet
-import android.util.Half.toFloat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -20,13 +20,6 @@ import com.bumptech.glide.Glide
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.Member
 import com.example.moiroom.databinding.FragmentMyPageBinding
-
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.RadarData
-import com.github.mikephil.charting.data.RadarDataSet
-import com.github.mikephil.charting.data.RadarEntry
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -56,9 +49,8 @@ class MyPageFragment : Fragment() {
         binding.memberGender.text = memberData.memberGender
         binding.memberBirthYear.text = "${memberData.memberBirthYear}"
         binding.memberIntroduction.text = memberData.memberIntroduction
-        binding.metropolitanName.text = memberData.metropolitanName
-        binding.cityName.text = memberData.cityName
 
+        // 레이더 차트 만들기 ~~~~~
         val chartView = RadarChartView(context, null)
 
         chartView.setDataList(
@@ -75,46 +67,33 @@ class MyPageFragment : Fragment() {
         )
         binding.radarChartContainer.addView(chartView)
 
+        // 사용자 정보 PATCH 페이지 이동
+        binding.editButton.setOnClickListener {
+            val intent = Intent(requireContext(), InfoupdateActivity::class.java)
+            intent.putExtra("memberId", memberData.memberId)
+            intent.putExtra("memberProfileImage", memberData.memberProfileImageUrl)
+            intent.putExtra("memberNickname", memberData.memberNickname)
+            intent.putExtra("memberIntroduction", memberData.memberIntroduction)
+            intent.putExtra("metropolitanName", memberData.metropolitanName)
+            intent.putExtra("cityName", memberData.cityName)
+            intent.putExtra("memberRoomateSearchStatus", memberData.memberRoomateSearchStatus)
 
+            startActivity(intent)
+        }
 
-//        val entries: ArrayList<RadarEntry> = ArrayList()
-//        entries.add(RadarEntry(memberData.socialbility.toFloat()/100))
-//        entries.add(RadarEntry(memberData.positivity.toFloat()/100))
-//        entries.add(RadarEntry(memberData.activity.toFloat()/100))
-//        entries.add(RadarEntry(memberData.communion.toFloat()/100))
-//        entries.add(RadarEntry(memberData.altruism.toFloat()/100))
-//        entries.add(RadarEntry(memberData.empathy.toFloat()/100))
-//        entries.add(RadarEntry(memberData.humor.toFloat()/100))
-//        entries.add(RadarEntry(memberData.generous.toFloat()/100))
-//
-//        val labels = arrayOf("사교", "긍정", "활동", "공유", "이타", "공감", "감각", "관대")
-//
-//        val radarDataSet = RadarDataSet(entries, "Data Label")
-//
-//        radarDataSet.color = ContextCompat.getColor(requireContext(), R.color.darkorange)
-//        radarDataSet.valueTextColor = ContextCompat.getColor(requireContext(), R.color.grey)
-//
-//
-//        val radarData = RadarData()
-//        radarData.addDataSet(radarDataSet)
-//
-//        val radarChart = binding.radarChart
-//        radarChart.data = radarData
-//        radarChart.description.isEnabled = false
-//        radarChart.webLineWidth = 1f
-//        radarChart.webLineWidthInner = 2f
-//
-//        val xAxis: XAxis = radarChart.xAxis
-//        xAxis.valueFormatter = IndexAxisValueFormatter(labels)
-//
-//        val yAxis: YAxis = radarChart.yAxis
-//        yAxis.axisMaximum = 90f
-//        yAxis.axisMinimum = 0f
-//
-//        xAxis.textSize = 16f
-//
-//        radarChart.invalidate()
+        // 사용자 상세 정보 페이지 이동
+        binding.detailButton.setOnClickListener {
+            val intent = Intent(requireContext(), DetailchartActivity::class.java)
+            intent.putExtra("memberData", memberData)
 
+            startActivity(intent)
+        }
+
+        // 고급 설정 페이지 (로그아웃, 회원탈퇴)
+        binding.advancedSettingButton.setOnClickListener {
+            val intent = Intent(requireContext(), AdsettingActivity::class.java)
+            startActivity(intent)
+        }
 
 //        val kakao_logout_button = binding.kakaoLogoutButton // 로그아웃 버튼
 //        val kakao_unlink_button = binding.kakaoUnlinkButton // 회원탈퇴 버튼
