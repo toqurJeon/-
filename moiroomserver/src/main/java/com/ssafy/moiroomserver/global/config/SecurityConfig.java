@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.config;
+package com.ssafy.moiroomserver.global.config;
 
 import com.ssafy.moiroomserver.oauth.service.OAuthService;
 import org.springframework.beans.factory.annotation.Autowired;

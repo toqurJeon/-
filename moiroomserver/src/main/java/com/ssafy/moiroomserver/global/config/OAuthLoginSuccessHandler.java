@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.config;
+package com.ssafy.moiroomserver.global.config;
 
 import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
 import com.ssafy.moiroomserver.oauth.service.OAuthService;
