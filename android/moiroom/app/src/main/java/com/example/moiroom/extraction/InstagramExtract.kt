@@ -7,23 +7,14 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
-import com.example.moiroom.ApiInterface
-import com.example.moiroom.GlobalApplication
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
-import com.example.moiroom.data.InstaResponse
-import com.example.moiroom.data.MyResponse
-import com.example.moiroom.data.InstagramRequest
-import com.example.moiroom.data.RequestBody
-import com.example.moiroom.databinding.ActivityJaeeontestBinding
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
-import com.facebook.FacebookSdk.getApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import kotlinx.coroutines.GlobalScope
 
 
 class InstagramExtract: AppCompatActivity() {
@@ -47,56 +38,51 @@ class InstagramExtract: AppCompatActivity() {
             if (redirectUrl.startsWith("https://example.com/instagramredirection?code=")) {
                 // 여기에서 Redirect URI 처리 및 인증 코드 추출
                 // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
-//                handleInstagramRedirect(redirectUrl)
                 Log.d("허가 받음","$redirectUrl")
-                val clientId = "your_client_id"
-                val clientSecret = "your_client_secret"
-                val redirectUri = "your_redirect_uri"
                 val code = redirectUrl.substring(46)
                 Log.d("코드", "$code")
-
-//                getAccessTokenWithRetrofit(clientId, clientSecret, redirectUri, code)
+                postFuel(code)
                 val intent = Intent(this@InstagramExtract, NowMatchingActivity::class.java)
                 startActivity(intent)
                 return true
             } else {Log.d("엘스", "엘스")}
+            // else 부분은 추가로 구현해야할 듯
             return super.shouldOverrideUrlLoading(view, request)
         }
     }
 
-    private fun handleInstagramRedirect(redirectUrl: String) {
-        // 여기에서 Redirect URI 처리 및 인증 코드 추출
-        // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
-        // 예: URL 파싱 등의 작업
-    }
+    fun postFuel(code: String) {
+        // FuelManager 설정 (선택사항)
+        FuelManager.instance.basePath = "https://api.instagram.com"
 
-    fun getAccessTokenWithRetrofit(code: String) {
-        val retrofit = Retrofit.Builder()
-            .baseUrl("https://api.instagram.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+        val clientId = "802744445198772"
+        val clientSecret = "e7bbf7de75d08046d0f3c34570dfddcc"
+        val grantType = "authorization_code"
+        val redirectUri = "https://example.com/instagramredirection" // 실제 콜백 URL로 변경해야 함
+        val requestCode = code
 
-        val apiService = retrofit.create(ApiInterface::class.java)
+        // 코루틴 사용
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = Fuel.post("/oauth/access_token")
+                    .header("Content-Type" to "application/x-www-form-urlencoded")
+                    .body(
+                        "client_id=$clientId&" +
+                                "client_secret=$clientSecret&" +
+                                "grant_type=$grantType&" +
+                                "redirect_uri=$redirectUri&" +
+                                "code=$requestCode"
+                    )
+                    .responseString()
 
-        val call = apiService.getAccessToken(
-            "802744445198772",
-            "e7bbf7de75d08046d0f3c34570dfddcc",
-            "authorization_code",
-            "https://example.com/instagramredirection",
-            code
-        )
-
-//        call.enqueue(object : Callback<AccessTokenResponse> {
-//            override fun onResponse(call: Call<AccessTokenResponse>, response: Response<AccessTokenResponse>) {
-//                if (response.isSuccessful) {
-//                    val accessTokenResponse = response.body()
-//                    val accessToken = accessTokenResponse?.accessToken
-//                    // accessToken을 사용하여 필요한 작업을 수행합니다.
-//                    println("Access Token: $accessToken")
-//                } else {
-//                    println("Failed to retrieve access token.")
-//                }
-//            })
-
+                // 응답 확인
+                response.third.fold(
+                    success = { data -> Log.d("성공", "$data") },
+                    failure = { error -> Log.d("에러", "에러: $error") }
+                )
+            } catch (e: Exception) {
+                println("에러: $e")
+            }
+        }
     }
 }
