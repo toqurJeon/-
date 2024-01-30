@@ -61,13 +61,6 @@
         <activity
             android:name=".InfoinputActivity"
             android:exported="true">
-            <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
-            <!-- <intent-filter> -->
-            <!-- &lt;!&ndash; action.MAIN: 해당 액티비티를 앱의 메인 액티비티로 지정&ndash;&gt; -->
-            <!-- <action android:name="android.intent.action.MAIN" /> -->
-            <!-- &lt;!&ndash; category.LAUNCHER: 앱을 처음 실행할 때 실행되는 액티비티로 설정&ndash;&gt; -->
-            <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-            <!-- </intent-filter> -->
         </activity>
 
         <activity
@@ -80,16 +73,16 @@
         <activity
             android:name=".extraction.InstagramExtract"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <data
-                    android:scheme="https"
-                    android:host="example.com"
-                    android:path="/instagramredirection"
-                    />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data-->
+<!--                    android:scheme="https"-->
+<!--                    android:host="example.com"-->
+<!--                    android:path="/instagramredirection"-->
+<!--                    />-->
+<!--            </intent-filter>-->
         </activity>
         <activity
             android:name=".MainActivity"
@@ -133,7 +126,18 @@
             <meta-data android:name="health_permissions"
                 android:resource="@array/health_permissions" />
         </activity>
-
+        <activity
+            android:name=".extraction.RedirectActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="example.com" />
+            </intent-filter>
+        </activity>
         <!--
         콘텐트 프로바이더 등록
         콘텐트 프로바이더는 exported를 false 추천

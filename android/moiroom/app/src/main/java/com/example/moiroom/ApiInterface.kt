@@ -1,14 +1,19 @@
 package com.example.moiroom
 
+import com.example.moiroom.data.InstaResponse
 import com.example.moiroom.data.InstagramRequest
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
+import com.kakao.sdk.auth.model.AccessTokenResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
 import retrofit2.http.Query
+import retrofit2.http.Url
+import retrofit2.http.Field
 
 interface ApiInterface {
     @GET("posts")
@@ -25,13 +30,23 @@ interface ApiInterface {
     @POST("receive_and_send")
     suspend fun postData(@Body requestBody: RequestBody): MyResponse
 
-    @POST("receive_and_send")
-    suspend fun postData2(@Body requestBody: InstagramRequest): MyResponse
+    @FormUrlEncoded
+    @POST("oauth/access_token")
+    fun getAccessToken(
+        @Field("client_id") clientId: String,
+        @Field("client_secret") clientSecret: String,
+        @Field("grant_type") grantType: String,
+        @Field("redirect_uri") redirectUri: String,
+        @Field("code") code: String
+    ): Call<AccessTokenResponse>
 
 
     @GET
     suspend fun getJaeeon(): String
 
-    @GET("authorize/")
+    @GET("access_token")
     fun getRequest(@Query("client_id") cliend_id: String, @Query("redirect_uri") redirect_uri: String, @Query("scope") scope: String, @Query("response_type") response_type: String): Call<InstagramRequest>
+
+//    @GET
+//    suspend fun fetchData(@Url url: String): Response<InstagramRequest>
 }
