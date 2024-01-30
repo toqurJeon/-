@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.config;
+package com.ssafy.moiroomserver.global.config;
 
 import java.io.IOException;
 
