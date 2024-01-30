@@ -1,6 +1,7 @@
 package com.ssafy.moiroomserver.member.entity;
 
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
+import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -59,4 +60,11 @@ public class Member extends BaseEntity {
     @Column(name = "account_status", nullable = false)
     @ColumnDefault("1")
     private Integer accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
+
+    public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
+        this.metropolitanId = infoModifyRequest.getMetropolitanId();
+        this.cityId = infoModifyRequest.getCityId();
+        this.introduction = infoModifyRequest.getMemberIntroduction();
+        this.nickname = infoModifyRequest.getMemberNickname();
+    }
 }
