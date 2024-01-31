@@ -6,5 +6,8 @@
     <color name="grey">#818181</color>
     <color name="lightorange">#CECECE</color>
     <color name="lightgray">#F5F5F5</color>
+    <color name="BGgray">#F4F4F4</color>
     <color name="darkGray">#A9A9A9</color>
+    <color name="transparency">#00FFFFFF</color>
+    <color name="orangeTp">#33FF8A00</color>
 </resources>

@@ -20,7 +20,7 @@ class PhotoExtract: AppCompatActivity() {
         setContentView(binding.root)
         Log.d("함수 실행", "함수 실행")
         // 갤러리에서 모든 사진 가져오기
-        val photos = getAllPhotos().reversed()
+        val photos = getAllPhotos().reversed().subList(1,4)
         Log.d("사진들","$photos")
         binding.textview.text = "$photos"
         // 가져온 사진들에 대한 처리

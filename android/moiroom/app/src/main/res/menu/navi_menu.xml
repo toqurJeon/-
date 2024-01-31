@@ -3,7 +3,7 @@
 
     <item
         android:id="@+id/nowMatchingFragment"
-        android:title="지금매칭"
+        android:title="매칭"
         android:icon="@drawable/ic_now_matching"/>
 
     <item
@@ -13,7 +13,7 @@
 
     <item
         android:id="@+id/myPageFragment"
-        android:title="마이페이지"
+        android:title="내 정보"
         android:icon="@drawable/ic_my_page"/>
 
 </menu>

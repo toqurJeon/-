@@ -5,8 +5,11 @@ package com.example.moiroom
 
 import android.app.Application
 import com.kakao.sdk.common.KakaoSdk
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Converter
+import java.lang.reflect.Type
 
 // Application: 앱의 진입점에서 실행되는 컴포넌트
 class GlobalApplication : Application() {
@@ -41,10 +44,9 @@ class GlobalApplication : Application() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
 
-//        // 인스타그램 엑세스 토큰 용
-//        retrofitInstagram = Retrofit.Builder()
-//            .baseUrl("https://api.instagram.com/oauth/authorize?client_id=405314348528197&redirect_uri=YOUR_REDIRECT_URI&scope=user_profile,user_media&response_type=code")
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .build()
+        retrofitInstagram = Retrofit.Builder()
+            .baseUrl("https://api.instagram.com/oauth/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
     }
 }

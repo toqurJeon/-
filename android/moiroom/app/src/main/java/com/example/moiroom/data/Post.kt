@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.data
 
 data class Post(
     val userId: Int,
