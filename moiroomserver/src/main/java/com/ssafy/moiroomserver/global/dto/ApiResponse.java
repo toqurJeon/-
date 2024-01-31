@@ -6,12 +6,14 @@ import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 
 @JsonPropertyOrder({"code", "status", "message", "data"})
 @RequiredArgsConstructor(access = AccessLevel.PRIVATE)
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
+@Getter
 public class ApiResponse<T> {
 
     private final int code;
