@@ -1,6 +1,5 @@
 package com.ssafy.moiroomserver.member.entity;
 
-//import com.ssafy.moiroomserver.oauth.dto.KakaoProfile;
 import com.ssafy.moiroomserver.member.dto.KakaoProfile;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
