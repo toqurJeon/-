@@ -44,7 +44,7 @@ public class Member extends BaseEntity {
     private String introduction; // 자기 소개글
 
     @Column(name = "nickname", nullable = false)
-    @ColumnDefault("사용자")
+    @ColumnDefault("'사용자'")
     private String nickname;
 
     @Column(name = "social_access_token", nullable = false)
