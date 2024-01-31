@@ -11,6 +11,8 @@
     <!-- 위치 정보 권한 허용 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- 전화 기록 접근 권한 허용-->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
 
     <!-- queries: 사용자의 기기에서 연결할 다른 앱 설정-->
     <queries>
@@ -85,6 +87,15 @@
 
         <activity
             android:name=".extraction.AccessGallery"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.CallExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.PhotoExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.CalendarExtract"
             android:exported="true" />
         <activity
             android:name=".extraction.InstagramExtract"
@@ -164,7 +175,15 @@
             android:enabled="true"
             android:exported="false"
             android:grantUriPermissions="true" />
-
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.moiroom.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

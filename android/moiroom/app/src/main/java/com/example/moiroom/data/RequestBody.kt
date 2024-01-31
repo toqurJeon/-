@@ -26,27 +26,31 @@ data class PhotoInfo(
     val photoLatitude: String,
     val photoLongitude: String,
 )
-//?client_id=802744445198772
-//&redirect_uri=https://example.com/instagramredirection
-//&scope=user_profile,user_media
-//&response_type=code
-data class InstagramRequest(
-    val client_id: String,
-    val client_secret: String,
-    val grant_type: String,
-    val redirect_uri: String,
-    val code: String
+
+data class CallLogItem(
+    val number: String,
+    val date: Long,
+    val duration: Int,
+    val type: Int,
+    val location: String?,
+    val Latitude: Int,
+    val Longitude: Int
 )
 
-data class InstaResponse(
-    val access_token: String,
-    val user_id: Int
-) {
-    constructor() : this("", 0)
-}
-
-data class AccessTokenResponse(
-    @SerializedName("access_token") val accessToken: String?,
-    @SerializedName("user_id") val userId: String?,
-    // 다른 필요한 응답 필드들을 추가할 수 있습니다.
+data class CalendarEvent(
+    val eventId: Long,
+    val calendarId: Long,
+    val title: String?,
+    val description: String?,
+    val eventLocation: String?,
+    val startTime: Long,
+    val endTime: Long,
+    val duration: String?,
+    val isAllDay: Int,
+    val eventTimezone: String?,
+    val recurrenceRule: String?,
+    val recurrenceDate: String?,
+    val organizer: String?,
+    val accessLevel: Int,
+    val availability: Int
 )

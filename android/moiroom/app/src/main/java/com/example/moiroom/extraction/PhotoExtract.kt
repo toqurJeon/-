@@ -1,15 +1,19 @@
 package com.example.moiroom.extraction
 
+import android.content.ContentResolver
 import android.database.Cursor
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.FileProvider
 import com.example.moiroom.ApiInterface
 import com.example.moiroom.GlobalApplication
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityJaeeontestBinding
+import java.io.File
 
 class PhotoExtract: AppCompatActivity() {
     private lateinit var binding: ActivityJaeeontestBinding
@@ -91,8 +95,7 @@ class PhotoExtract: AppCompatActivity() {
                 val photoWidth = it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH))
                 val photoLongitude = it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LONGITUDE))
                 val photoLatitude = it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE))
-
-
+//
 //                lifecycleScope.launch {
 //                    val response = sendPostRequest(photoDayAdded.toDouble(), photoHeight.toDouble(), photoWidth.toDouble())
 //

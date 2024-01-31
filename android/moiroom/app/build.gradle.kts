@@ -121,5 +121,8 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
+    // fuel 라이브러리
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    // json to map 라이브러리
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 }
