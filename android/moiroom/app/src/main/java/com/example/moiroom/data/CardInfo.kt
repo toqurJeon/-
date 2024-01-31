@@ -1,5 +1,7 @@
 package com.example.moiroom.data
 
+import java.io.Serializable
+
 data class CardInfo(
     val matchingRate: Int,
     val summary: String,
@@ -7,4 +9,4 @@ data class CardInfo(
     val name: String,
     val location: String,
     val introduction: String
-)
+) : Serializable

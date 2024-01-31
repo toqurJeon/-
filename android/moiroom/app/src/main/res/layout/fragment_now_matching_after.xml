@@ -4,8 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NowMatchingAfterFragment"
-    android:paddingBottom="65dp" >
+    tools:context=".NowMatchingAfterFragment">
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggleButton"
@@ -13,7 +12,6 @@
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
         android:layout_alignParentTop="true"
-        android:layout_centerInParent="true"
         android:layout_marginTop="20dp"
         app:singleSelection="true">
 
@@ -48,15 +46,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toggleButton"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toggleButton"
         tools:listitem="@layout/card_layout"
         />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/toggleButton" />
+        android:layout_height="match_parent"
+        android:layout_below="@+id/toggleButton" />
+
+    <FrameLayout
+        android:id="@+id/cardDetail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/transparent"
+        android:visibility="gone" />
 
 </RelativeLayout>
+
