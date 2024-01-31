@@ -80,7 +80,7 @@ def count_clusters():
         # JSON 데이터 받아오기
         json_data = request.get_json()
 
-        return gps.count_result(json_data)
+        return jsonify(gps.count_result(json_data))
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
