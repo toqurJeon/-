@@ -6,11 +6,11 @@ import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
 import com.ssafy.moiroomserver.oauth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientService;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
-import org.springframework.security.oauth2.core.OAuth2AccessToken;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
-import org.springframework.security.oauth2.core.OAuth2RefreshToken;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
@@ -23,13 +23,10 @@ import java.util.UUID;
 public class OAuthService extends DefaultOAuth2UserService {
 
     private final OAuthRepository oAuthRepository;
+    private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        String accessToken = userRequest.getAccessToken().toString(); // accessToken 추출
-
-        //refreshToken 추출하기
-
         Map<String, Object> attributes = super.loadUser(userRequest).getAttributes();
         log.info("ATTR INFO : {}", attributes.toString());
 
@@ -47,6 +44,26 @@ public class OAuthService extends DefaultOAuth2UserService {
         // 그 이외의 소셜 로그인 영역이 추가되면 분기 추가
 
         return super.loadUser(userRequest);
+    }
+
+    public String getRefreshToken(String registrationId, String userName) {
+        OAuth2AuthorizedClient client = oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, userName);
+
+        if (client != null && client.getRefreshToken() != null) {
+            return client.getRefreshToken().getTokenValue();
+        }
+
+        return null;
+    }
+
+    public String getAccessToken(String registrationId, String userName) {
+        OAuth2AuthorizedClient client = oAuth2AuthorizedClientService.loadAuthorizedClient(registrationId, userName);
+
+        if (client != null && client.getAccessToken() != null) {
+            return client.getAccessToken().getTokenValue();
+        }
+
+        return null;
     }
 
     private void joinKakaoMember(String oauthType, KakaoAccountDto dto) {
