@@ -29,18 +29,24 @@ public class Member extends BaseEntity {
     @Column(name = "character_id")
     private Long characterId; //외래키는 지정 안 한 상태
 
-    @Column(name = "name")
+    @Column(name = "name", nullable = false)
     private String name;
 
-    @Column(name = "profile_image_url")
+    @Column(name = "profile_image_url", nullable = false)
     private String imageUrl;
 
-    @Column(name = "gender")
-    private Integer gender; //0: 남자, 1: 여자
+    @Column(name = "birthyear", nullable = false)
+    private String birthyear;
+
+    @Column(name = "birthday", nullable = false)
+    private String birthday;
+
+    @Column(name = "gender", nullable = false)
+    private String gender; //0: 남자, 1: 여자
 
     @Column(name = "roommate_search_status", nullable = false)
     @ColumnDefault("1")
-    private Integer roommateSearchStatus; // 0: 안 구하는 중, 1: 구하는 중
+    private int roommateSearchStatus; // 0: 안 구하는 중, 1: 구하는 중
 
     @Column(name = "introduction")
     private String introduction; // 자기 소개글
@@ -57,7 +63,7 @@ public class Member extends BaseEntity {
 
     @Column(name = "account_status", nullable = false)
     @ColumnDefault("1")
-    private Integer accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
+    private int accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
     public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
         this.metropolitanId = infoModifyRequest.getMetropolitanId();
