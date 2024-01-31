@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moiroom.CardDetailFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CardInfo
 
@@ -17,7 +18,11 @@ interface CardItemClickListener {
     fun onCardDetailClick(cardInfo: CardInfo)
 }
 
-class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggleButtonChecked: Boolean,private val cardItemClickListener: CardItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class CardAdapter(
+    private val cardInfoList: List<CardInfo>,
+    private val isToggleButtonChecked: Boolean,
+    private val cardItemClickListener: CardItemClickListener
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     abstract class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val matchingRate: TextView = view.findViewById(R.id.matchingRate)
@@ -25,11 +30,11 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
         val location: TextView = view.findViewById(R.id.location)
     }
 
-    class CardViewHolder1(view: View) : CardViewHolder(view) {
+    inner class CardViewHolder1(view: View) : CardViewHolder(view) {
         val summary: TextView = view.findViewById(R.id.summary)
         val introduction: TextView = view.findViewById(R.id.introduction)
         val profileImage: ImageView = view.findViewById(R.id.profileImage)
-        val underline: View = view.findViewById(R.id.underline)  // 밑줄 뷰에 대한 참조 추가
+        val underline: View = view.findViewById(R.id.underline)
         val detailButton: Button = view.findViewById(R.id.detailButton)
     }
 
@@ -93,6 +98,18 @@ class CardAdapter(private val cardInfoList: List<CardInfo>, private val isToggle
                 cardItemClickListener.onCardDetailClick(cardInfo) // 버튼 클릭 이벤트 처리
             }
 
+            holder.detailButton.setOnClickListener {
+                val fragmentManager = (holder.detailButton.context as AppCompatActivity).supportFragmentManager
+                val fragmentTransaction = fragmentManager.beginTransaction()
+
+                // 애니메이션 설정
+                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+
+                // 프래그먼트 교체
+                fragmentTransaction.replace(R.id.mainFrameLayout, CardDetailFragment.newInstance(cardInfo))
+
+                fragmentTransaction.commit()
+            }
         } else if (holder is CardViewHolder2) {
             holder.matchingRate.text = "${cardInfo.matchingRate}%"
             holder.introduction.text = cardInfo.introduction

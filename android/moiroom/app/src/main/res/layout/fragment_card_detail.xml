@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="16dp"
+    android:background="@android:color/transparent"
     tools:context=".CardDetailFragment">
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="58dp">
+
+    </Space>
 
     <!-- 이름을 표시하는 TextView -->
     <TextView
@@ -27,6 +34,7 @@
         tools:text="위치" />
 
     <!-- 요약 정보를 표시하는 TextView -->
+
     <TextView
         android:id="@+id/textViewSummary"
         android:layout_width="match_parent"
@@ -57,3 +65,5 @@
     </android.widget.Button>
 
 </LinearLayout>
+
+

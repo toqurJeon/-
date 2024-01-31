@@ -13,11 +13,31 @@
         android:layout_gravity="center"
         app:srcCompat="@drawable/moiroom2" />
 
-    <ProgressBar
-        android:id="@+id/progress_circular"
+    <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:indeterminate="true"
-        android:layout_gravity="center|bottom" />
+        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <View
+            android:id="@+id/loading_dot1"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_dot" />
+
+        <View
+            android:id="@+id/loading_dot2"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:layout_marginEnd="5dp"
+            android:background="@drawable/shape_dot" />
+
+        <View
+            android:id="@+id/loading_dot3"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/shape_dot" />
+    </LinearLayout>
 
 </FrameLayout>

@@ -5,6 +5,7 @@ import com.example.moiroom.data.CardInfo
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.Lifecycle
+import com.example.moiroom.CardDetailFragment
 
 
 class CardDetailPagerAdapter(

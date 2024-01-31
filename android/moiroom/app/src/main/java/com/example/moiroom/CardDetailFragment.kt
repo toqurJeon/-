@@ -1,3 +1,5 @@
+package com.example.moiroom
+
 import android.content.Context
 import android.os.Bundle
 import android.os.Looper
@@ -8,22 +10,22 @@ import androidx.fragment.app.Fragment
 import com.example.moiroom.data.CardInfo
 import com.example.moiroom.databinding.FragmentCardDetailBinding
 import android.os.Handler
+import com.example.moiroom.OnBackButtonClickListener
 
-//interface OnBackButtonClickListener {
-//    fun onBackButtonClicked()
-//}
 class CardDetailFragment : Fragment() {
+    private var listener: OnBackButtonClickListener? = null
 
-//    private var backButtonListener: OnBackButtonClickListener? = null
-//
-//    override fun onAttach(context: Context) {
-//        super.onAttach(context)
-//        if (context is OnBackButtonClickListener) {
-//            backButtonListener = context
-//        } else {
-//            throw RuntimeException("$context must implement OnBackButtonClickListener")
-//        }
-//    }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+
+        // 부모 액티비티 또는 프래그먼트가 OnBackButtonClickListener를 구현하고 있는지 확인
+        if (context is OnBackButtonClickListener) {
+            listener = context
+        } else {
+            throw RuntimeException("$context must implement OnBackButtonClickListener")
+        }
+    }
+
     private var _binding: FragmentCardDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -46,10 +48,8 @@ class CardDetailFragment : Fragment() {
             }
         }
 
-        // "돌아가기" 버튼 클릭 리스너
         binding.buttonBack.setOnClickListener {
-            // Fragment를 종료합니다
-            parentFragmentManager.popBackStack()
+            listener?.onBackButtonClicked()
         }
     }
 
@@ -66,5 +66,10 @@ class CardDetailFragment : Fragment() {
             fragment.arguments = args
             return fragment
         }
+    }
+
+    fun onSomeEvent() {
+        // 뒤로 가기 버튼이 클릭되었을 때 listener를 통해 이벤트를 전달
+        listener?.onBackButtonClicked()
     }
 }

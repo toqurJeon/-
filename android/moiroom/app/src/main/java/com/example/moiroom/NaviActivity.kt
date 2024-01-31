@@ -11,7 +11,7 @@ private const val TAG_NOW_MATCHING_AFTER = "now_matching_after_fragment"
 private const val TAG_CHATTING = "chatting_fragment"
 private const val TAG_MY_PAGE = "my_page_fragment"
 
-class NaviActivity : AppCompatActivity() {
+class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
 
     private lateinit var binding : ActivityNaviBinding
 
@@ -31,6 +31,19 @@ class NaviActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    override fun onBackButtonClicked() {
+        val fragmentManager = supportFragmentManager
+        val fragmentTransaction = fragmentManager.beginTransaction()
+
+        // 애니메이션 설정
+        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right)
+
+        // 프래그먼트 교체
+        fragmentTransaction.replace(R.id.mainFrameLayout, NowMatchingAfterFragment())
+
+        fragmentTransaction.commit()
     }
 
     private fun setFragment(tag: String, fragment: Fragment) {
