@@ -1,6 +1,7 @@
 package com.ssafy.moiroomserver.member.entity;
 
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
+import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -30,7 +31,7 @@ public class Member extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image_url")
+    @Column(name = "profile_image_url")
     private String imageUrl;
 
     @Column(name = "gender")
@@ -47,8 +48,8 @@ public class Member extends BaseEntity {
     @ColumnDefault("'사용자'")
     private String nickname;
 
-    @Column(name = "social_access_token", nullable = false)
-    private String socialAccessToken; // 카카오 소셜 accessToken(추후 수정할 수도 있다)
+//    @Column(name = "social_access_token", nullable = false)
+//    private String socialAccessToken; // 카카오 소셜 accessToken(추후 수정할 수도 있다)
 
     @Column(name = "access_token", nullable = false)
     private String accessToken;
@@ -59,4 +60,11 @@ public class Member extends BaseEntity {
     @Column(name = "account_status", nullable = false)
     @ColumnDefault("1")
     private Integer accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
+
+    public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
+        this.metropolitanId = infoModifyRequest.getMetropolitanId();
+        this.cityId = infoModifyRequest.getCityId();
+        this.introduction = infoModifyRequest.getMemberIntroduction();
+        this.nickname = infoModifyRequest.getMemberNickname();
+    }
 }

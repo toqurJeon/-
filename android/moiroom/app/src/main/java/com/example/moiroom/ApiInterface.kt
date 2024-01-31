@@ -1,12 +1,17 @@
 package com.example.moiroom
 
 import com.example.moiroom.data.MyResponse
+import com.example.moiroom.data.Post
 import com.example.moiroom.data.RequestBody
-import retrofit2.http.GET
-import retrofit2.http.Path
+import com.kakao.sdk.auth.model.AccessTokenResponse
 import retrofit2.Call
+import retrofit2.http.GET
 import retrofit2.http.Body
+import retrofit2.http.FormUrlEncoded
 import retrofit2.http.POST
+import retrofit2.http.Query
+import retrofit2.http.Url
+import retrofit2.http.Field
 
 interface ApiInterface {
     @GET("posts")
