@@ -1,13 +1,29 @@
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.example.moiroom.data.CardInfo
 import com.example.moiroom.databinding.FragmentCardDetailBinding
+import android.os.Handler
 
+//interface OnBackButtonClickListener {
+//    fun onBackButtonClicked()
+//}
 class CardDetailFragment : Fragment() {
+
+//    private var backButtonListener: OnBackButtonClickListener? = null
+//
+//    override fun onAttach(context: Context) {
+//        super.onAttach(context)
+//        if (context is OnBackButtonClickListener) {
+//            backButtonListener = context
+//        } else {
+//            throw RuntimeException("$context must implement OnBackButtonClickListener")
+//        }
+//    }
     private var _binding: FragmentCardDetailBinding? = null
     private val binding get() = _binding!!
 
@@ -33,7 +49,7 @@ class CardDetailFragment : Fragment() {
         // "돌아가기" 버튼 클릭 리스너
         binding.buttonBack.setOnClickListener {
             // Fragment를 종료합니다
-            parentFragmentManager.popBackStackImmediate()
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -52,4 +68,3 @@ class CardDetailFragment : Fragment() {
         }
     }
 }
-

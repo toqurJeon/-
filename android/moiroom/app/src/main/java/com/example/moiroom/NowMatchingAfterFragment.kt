@@ -1,7 +1,9 @@
 package com.example.moiroom
 
 import android.os.Bundle
+import android.os.Looper
 import android.text.TextUtils.replace
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -69,10 +71,9 @@ class NowMatchingAfterFragment : Fragment() {
             }
         }
 
-        // 백스택 변경 리스너 등록
         activity?.supportFragmentManager?.addOnBackStackChangedListener {
             // 현재 표시되고 있는 프래그먼트를 찾습니다.
-            val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
+            val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
 
             // 프래그먼트가 없을 경우, RecyclerView나 ViewPager2를 다시 표시합니다.
             if (fragment == null) {
@@ -102,18 +103,27 @@ class NowMatchingAfterFragment : Fragment() {
             }
         }
 
-        // 프래그먼트 컨테이너를 숨깁니다.
-        binding.cardDetail.visibility = View.GONE
+//        // 프래그먼트 컨테이너를 숨깁니다.
+//        binding.cardDetail.visibility = View.GONE
     }
 
 
     private fun hideDetailFragment() {
-        // 현재 표시되고 있는 프래그먼트를 찾습니다.
-        val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
+        Log.d("MainThreadCheck", "Is this main thread? ${Looper.myLooper() == Looper.getMainLooper()}")
+        val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
 
         // 프래그먼트가 있을 경우, 해당 프래그먼트를 제거합니다.
         if (fragment != null) {
-            parentFragmentManager.beginTransaction().remove(fragment).commit()
+            parentFragmentManager.beginTransaction().apply {
+                setCustomAnimations(
+                    R.anim.slide_in_right, // enter
+                    R.anim.slide_out_left, // exit
+                    R.anim.slide_in_right, // popEnter
+                    R.anim.slide_out_left // popExit
+                )
+                remove(fragment)
+                commit()
+            }
         }
 
         if (binding.toggleButton.checkedButtonId == R.id.button1) {
@@ -141,15 +151,17 @@ class NowMatchingAfterFragment : Fragment() {
     }
 
     private fun showDetailFragment(cardInfo: CardInfo) {
+        Log.d("MainThreadCheck", "Is this main thread? ${Looper.myLooper() == Looper.getMainLooper()}")
+
         val detailFragment = CardDetailFragment.newInstance(cardInfo)
         parentFragmentManager.beginTransaction().apply {
             setCustomAnimations(
                 R.anim.slide_in_right, // enter
                 R.anim.slide_out_left, // exit
-                R.anim.slide_in_left, // popEnter
-                R.anim.slide_out_right // popExit
+                R.anim.slide_in_right, // popEnter
+                R.anim.slide_out_left // popExit
             )
-            add(R.id.cardDetail, detailFragment)
+            replace(R.id.cardDetail, detailFragment, "cardDetail")
             addToBackStack(null)
             commit()
         }
@@ -158,7 +170,6 @@ class NowMatchingAfterFragment : Fragment() {
         binding.viewPager2.visibility = View.GONE
         binding.cardDetail.visibility = View.VISIBLE // 프래그먼트 컨테이너를 표시합니다.
     }
-
-
 }
+
 
