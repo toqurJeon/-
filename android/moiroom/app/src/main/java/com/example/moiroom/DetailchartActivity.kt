@@ -71,6 +71,11 @@ class DetailchartActivity : AppCompatActivity() {
 
             val adapter = CharacterAdapter(chartData)
             binding.recyclerView.adapter = adapter
+
+            // 관심사 사각형 파이 그래프
+
+            val squareChart = binding.squareChartView
+            squareChart.setData(memberData.interest)
         }
 
         binding.backwardButton.setOnClickListener {
