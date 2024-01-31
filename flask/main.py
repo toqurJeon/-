@@ -25,8 +25,29 @@ def count_clusters():
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+@app.route('/insta_token', methods=['POST'])
+def insta_token():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        # param1 = round(gps.count_result(json_data) * 10000) + 1
+        return jsonify(json_data)
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
+
+@app.route('/calling_history', methods=['POST'])
+def calling_history():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        return jsonify(json_data)
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 
 @app.route('/receive_and_send', methods=['POST'])
@@ -89,3 +110,7 @@ def send_json():
         return jsonify({'status': 'success', 'message': 'JSON received and processed successfully'})
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
