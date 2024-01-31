@@ -3,6 +3,7 @@ package com.ssafy.moiroomserver.member.service;
 import com.ssafy.moiroomserver.member.dto.KakaoAccountDto;
 import com.ssafy.moiroomserver.member.dto.KakaoProfile;
 import com.ssafy.moiroomserver.member.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
@@ -16,7 +17,6 @@ import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -38,10 +38,7 @@ public class OAuthService extends DefaultOAuth2UserService {
         if("kakao".equals(oauthType.toLowerCase())) {
             KakaoAccountDto dto = new KakaoAccountDto();
             setKakaoAccount(dto, attributes);
-
-            if (getKakaoMemberByKakaoId(dto.getKakaoId()) == null) {
-                joinKakaoMember(oauthType, dto);
-            }
+            joinKakaoMember(oauthType, dto);
         }
         // 그 이외의 소셜 로그인 영역이 추가되면 분기 추가
 
@@ -69,26 +66,17 @@ public class OAuthService extends DefaultOAuth2UserService {
     }
 
     private void joinKakaoMember(String oauthType, KakaoAccountDto dto) {
-        log.info("kakao({}) NOT EXISTS. REGISTER", dto.getKakaoId(), oauthType);
-        KakaoProfile kakaoProfile = new KakaoProfile();
-        kakaoProfile.setNickname(dto.getKakaoProfile().getNickname());
-        kakaoProfile.setThumbnailImageUrl(dto.getKakaoProfile().getThumbnailImageUrl());
-        kakaoProfile.setProfileImageUrl(dto.getKakaoProfile().getProfileImageUrl());
+        log.info("kakao NOT EXISTS. REGISTER");
 
-        KakaoMember member = new KakaoMember();
-        member.setId(UUID.randomUUID().toString()); // 수정해야 할 듯
-        member.setKakaoProfile(kakaoProfile);
-        member.setKakaoId(dto.getKakaoId());
-        member.setEmail(dto.getEmail());
-        member.setName(dto.getName());
-        member.setAgeRange(dto.getAgeRange());
+        Member member = new Member();
+        member.setNickname(dto.getKakaoProfile().getNickname());
+        member.setImageUrl(dto.getKakaoProfile().getProfileImageUrl());
         member.setBirthyear(dto.getBirthyear());
         member.setBirthday(dto.getBirthday());
+        member.setName(dto.getName());
         member.setGender(dto.getGender());
-        member.setPhoneNumber(dto.getPhoneNumber());
-        member.setOauthType(oauthType);
 
-        save(member);
+        memberRepository.save(member);
 
     }
 
@@ -101,7 +89,6 @@ public class OAuthService extends DefaultOAuth2UserService {
         kakaoProfile.setThumbnailImageUrl((String) profile.get("thumbnail_image_url")); // 프로필 미리보기 이미지 url
         kakaoProfile.setProfileImageUrl((String) profile.get("profile_image_url")); // 프로필 사진 url
 
-        dto.setKakaoId(attributes.get("id").toString());
         dto.setKakaoProfile(kakaoProfile);
         dto.setEmail(((Map<String, Object>) attributes.get("kakao_account")).get("email").toString());
         dto.setName(((Map<String, Object>) attributes.get("kakao_account")).get("name").toString());
