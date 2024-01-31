@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.view
 
 import android.content.Context
 import android.graphics.drawable.Drawable
