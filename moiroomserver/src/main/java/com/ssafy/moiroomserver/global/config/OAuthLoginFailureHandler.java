@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.global.config;
 
 import java.io.IOException;
 
-import com.ssafy.moiroomserver.oauth.service.OAuthService;
+import com.ssafy.moiroomserver.member.service.OAuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

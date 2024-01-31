@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.oauth.dto;
+package com.ssafy.moiroomserver.member.dto;
 
 import lombok.Getter;
 import lombok.Setter;

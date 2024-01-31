@@ -1,4 +1,4 @@
-package com.ssafy.moiroomserver.oauth.dto;
+package com.ssafy.moiroomserver.member.dto;
 
 import jakarta.persistence.Embeddable;
 import lombok.Getter;

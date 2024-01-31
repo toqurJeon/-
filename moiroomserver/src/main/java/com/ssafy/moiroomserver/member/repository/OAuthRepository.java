@@ -1,6 +1,6 @@
-package com.ssafy.moiroomserver.oauth.repository;
+package com.ssafy.moiroomserver.member.repository;
 
-import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.entity.KakaoMember;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

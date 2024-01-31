@@ -1,6 +1,6 @@
-package com.ssafy.moiroomserver.oauth.controller;
+package com.ssafy.moiroomserver.member.controller;
 
-import com.ssafy.moiroomserver.oauth.service.OAuthService;
+import com.ssafy.moiroomserver.member.service.OAuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;

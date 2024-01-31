@@ -1,7 +1,7 @@
 package com.ssafy.moiroomserver.global.config;
 
-import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
-import com.ssafy.moiroomserver.oauth.service.OAuthService;
+import com.ssafy.moiroomserver.member.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.service.OAuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

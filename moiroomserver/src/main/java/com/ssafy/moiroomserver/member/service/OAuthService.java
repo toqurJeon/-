@@ -1,9 +1,9 @@
-package com.ssafy.moiroomserver.oauth.service;
+package com.ssafy.moiroomserver.member.service;
 
-import com.ssafy.moiroomserver.oauth.dto.KakaoAccountDto;
-import com.ssafy.moiroomserver.oauth.dto.KakaoProfile;
-import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
-import com.ssafy.moiroomserver.oauth.repository.OAuthRepository;
+import com.ssafy.moiroomserver.member.dto.KakaoAccountDto;
+import com.ssafy.moiroomserver.member.dto.KakaoProfile;
+import com.ssafy.moiroomserver.member.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.oauth2.client.OAuth2AuthorizedClient;
