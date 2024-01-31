@@ -7,7 +7,7 @@ app = Flask(__name__)
 
 
 @app.route('/moiroom/test')
-def privacy():
+def test():
     # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
     return render_template('test.html')
 
