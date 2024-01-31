@@ -16,6 +16,10 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
 
+    /**
+     * 회원 정보 수정
+     * @param infoModifyRequest 수정 시 입력할 데이터
+     */
     @Transactional
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
