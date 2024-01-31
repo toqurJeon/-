@@ -3,14 +3,15 @@ package com.ssafy.moiroomserver.member.entity;
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @Getter
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Setter
+@NoArgsConstructor
 @Table(name = "member")
 public class Member extends BaseEntity {
 
@@ -48,13 +49,10 @@ public class Member extends BaseEntity {
     @ColumnDefault("'사용자'")
     private String nickname;
 
-//    @Column(name = "social_access_token", nullable = false)
-//    private String socialAccessToken; // 카카오 소셜 accessToken(추후 수정할 수도 있다)
-
-    @Column(name = "access_token", nullable = false)
+    @Column(name = "access_token") // 카카오 accessToken을 저장
     private String accessToken;
 
-    @Column(name = "refresh_token", nullable = false)
+    @Column(name = "refresh_token") // 카카오에서 발급 받은 refreshToken
     private String refreshToken;
 
     @Column(name = "account_status", nullable = false)
