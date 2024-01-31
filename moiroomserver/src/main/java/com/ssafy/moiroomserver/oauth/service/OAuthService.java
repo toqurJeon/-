@@ -6,7 +6,6 @@ import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
 import com.ssafy.moiroomserver.oauth.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
@@ -25,8 +24,6 @@ public class OAuthService extends DefaultOAuth2UserService {
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
-        System.out.println("OAuthService.loadUser");
-        // email, oauthType 호출
         Map<String, Object> attributes = super.loadUser(userRequest).getAttributes();
         log.info("ATTR INFO : {}", attributes.toString());
 
@@ -41,12 +38,7 @@ public class OAuthService extends DefaultOAuth2UserService {
                 joinKakaoMember(oauthType, dto);
             }
         }
-        else if("google".equals(oauthType.toLowerCase())) {
-            // 구글 소셜 로그인 영역
-        }
-        else if("naver".equals(oauthType.toLowerCase())) {
-            // 네이버 소셜 로그인 영역
-        }
+        // 그 이외의 소셜 로그인 영역이 추가되면 분기 추가
 
         return super.loadUser(userRequest);
     }
@@ -93,8 +85,7 @@ public class OAuthService extends DefaultOAuth2UserService {
         dto.setGender(((Map<String, Object>) attributes.get("kakao_account")).get("gender").toString());
         dto.setPhoneNumber(((Map<String, Object>) attributes.get("kakao_account")).get("phone_number").toString());
     }
-
-    // 저장, 조회만 수행. 기타 예외처리 및 다양한 로직은 연습용이므로
+    
     public void save(KakaoMember kakaoMember) {
         oAuthRepository.save(kakaoMember);
     }
