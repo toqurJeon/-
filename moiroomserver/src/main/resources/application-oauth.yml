@@ -10,19 +10,11 @@ spring:
             client-id: cfd8bf207f95e154c8f064581f71f655
             client-secret: gDhH4VBTHa19a5TNqmb2HGtEs0ERf2NB
             scope: account_email
-            #              - age_range
-            #              - birthday
-            #              - account_email
-            #              - profile_image
-            #              - gender
-            #              - birthyear
-            #              - openid
-            #              - name
-            #              - phone_number
+            #, age_range, birthday, gender, birthyear, openid, name, phone_number
             client-name: kakao
             authorization-grant-type: authorization_code
-            redirect-uri: http://127.0.0.1:8080/oauth/kakao
-            client-authentication-method: post
+            redirect-uri: http://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: client_secret_post
         provider:
           kakao:
             authorization-uri: https://kauth.kakao.com/oauth/authorize

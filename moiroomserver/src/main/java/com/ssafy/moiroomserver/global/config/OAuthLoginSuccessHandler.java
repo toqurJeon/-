@@ -1,13 +1,13 @@
-package com.ssafy.moiroomserver.config;
+package com.ssafy.moiroomserver.global.config;
 
-import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
-import com.ssafy.moiroomserver.oauth.service.OAuthService;
+import com.ssafy.moiroomserver.member.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.service.OAuthService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
@@ -18,16 +18,14 @@ import java.util.Map;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class OAuthLoginSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
-    @Autowired
-    OAuthService oauthService;
+    private final OAuthService oauthService;
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-        System.out.println("success 핸들러 추출");
-        // 토큰에서 추출해야 할 정보 (이메일, )
         OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) authentication;
 
         String email = null;
