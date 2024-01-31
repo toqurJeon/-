@@ -241,11 +241,18 @@ class MyPageFragment : Fragment() {
         private val paint = Paint().apply {
             isAntiAlias = true
         }
+
+        // 픽셀 단위의 텍스트 크기를 sp 단위의 텍스트 크기로 동적 설정
+        private val scaledDensity: Float = resources.displayMetrics.scaledDensity
+        private val dataGuideTextSizeInSp: Float = 14f // sp 단위의 텍스트 크기 지정
+        private val labelTextSizeInSp: Float = 18f
+
         private val textPaint = TextPaint().apply {
-            textSize = 48f
+            textSize = dataGuideTextSizeInSp * scaledDensity
             textAlign = Paint.Align.CENTER
-            typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
+            // typeface = Typeface.create(Typeface.DEFAULT, Typeface.BOLD)
         }
+
         private var path = Path()
 
         private fun Paint.FontMetrics.getBaseLine(y: Float): Float {
@@ -257,9 +264,15 @@ class MyPageFragment : Fragment() {
             super.onDraw(canvas)
             canvas ?: return
 
+            val strokeWidthInDp = 1f // 원하는 dp 크기로 설정
+            val scale = resources.displayMetrics.density
+            val strokeWidthInPixel = (strokeWidthInDp * scale + 0.5f).toInt() // dp를 픽셀로 변환
+            paint.strokeWidth = strokeWidthInPixel.toFloat()
+
+
             paint.color = Color.LTGRAY
             paint.style = Paint.Style.STROKE
-            paint.strokeWidth = 4f
+//            paint.strokeWidth = 4f
             val radian = PI.toFloat() * 2 / 8 // 360도를 5분할한 각만큼 회전시키 위해
             val step = 5 // 데이터 가이드 라인은 5단계로 표시한다
             val heightMaxValue = height / 2 * 0.7f // RadarChartView영역내에 모든 그림이 그려지도록 max value가 그려질 높이
@@ -305,11 +318,18 @@ class MyPageFragment : Fragment() {
             }
 
             // 3. 각 꼭지점 부근에 각 특성 문자열 표시하기
+
+            // dp 단위로 마진 설정
+            val marginInDp = 352f
+            val marginInPixel = (marginInDp * scale).toInt() // dp를 픽셀로 변환
+
             textPaint.color = Color.BLACK
-            textPaint.textSize = 56f
+            textPaint.textSize = labelTextSizeInSp * scaledDensity
             textPaint.textAlign = Paint.Align.CENTER
+
             startX = cx
-            startY = (cy - heightMaxValue) * 0.5f // 값을 줄일수록 그래프와의 마진 높아짐
+//            startY = (cy - heightMaxValue) * 0.5f // 값을 줄일수록 그래프와의 마진 높아짐
+            startY = cy - heightMaxValue * (marginInPixel / height.toFloat())
             var r = 0f
             path.reset()
             chartTypes.forEach { type ->
@@ -335,11 +355,27 @@ class MyPageFragment : Fragment() {
                 r += radian
             }
 
-            // 4. 전달된 데에터를 표시하기
+            val strokePaint = Paint().apply {
+                val outlineStrokeWidthInDp = 2f // 원하는 dp 크기로 설정
+
+                style = Paint.Style.STROKE
+                strokeWidth = outlineStrokeWidthInDp * scale
+                color = Color.parseColor("#FF8A00")
+            }
+            val fillPaint = Paint().apply {
+                style = Paint.Style.FILL
+                color = Color.parseColor("#33FF8A00")
+            }
+
+            // 4. 데이터 표시
             path.close()
-            paint.color = 0x7FFF8A00
-            paint.style = Paint.Style.FILL
-            canvas.drawPath(path, paint)
+
+            canvas.drawPath(path, fillPaint)
+            canvas.drawPath(path, strokePaint)
+
+            // paint.color = 0x7FFF8A00
+            // paint.style = Paint.Style.FILL_AND_STROKE
+            // canvas.drawPath(path, paint)
         }
 
         fun setDataList(dataList: ArrayList<RadarChartData>) {
