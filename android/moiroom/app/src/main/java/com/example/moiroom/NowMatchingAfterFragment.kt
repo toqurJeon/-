@@ -1,7 +1,9 @@
 package com.example.moiroom
 
+//import OnBackButtonClickListener
 import android.os.Bundle
 import android.os.Looper
+import android.system.Os.remove
 import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
@@ -20,14 +22,17 @@ import com.example.moiroom.data.TestData
 import com.example.moiroom.data.TestData.cardInfoList
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.google.android.material.button.MaterialButtonToggleGroup
+import com.example.moiroom.OnBackButtonClickListener
 
-interface OnDetailBackClickListener {
-    fun onBackClick()
-}
 
-class NowMatchingAfterFragment : Fragment() {
+class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private val cardInfoList = TestData.cardInfoList
+
+    // OnBackButtonClickListener 인터페이스의 메서드 구현
+    override fun onBackButtonClicked() {
+        hideDetailFragment()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -41,10 +46,10 @@ class NowMatchingAfterFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         // RecyclerView의 레이아웃 매니저를 설정
-        val gridLayoutManager = GridLayoutManager(context, 1) // 여기서 1은 한 줄에 표시될 아이템 수를 의미합니다.
+        val gridLayoutManager = GridLayoutManager(context, 1)
         binding.recyclerView.layoutManager = gridLayoutManager
         binding.viewPager2.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-        binding.viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL  // 방향을 수직으로 설정
+        binding.viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL
 
         // 체크된 상태로 시작하도록 설정
         binding.toggleButton.check(R.id.button1)
@@ -72,17 +77,13 @@ class NowMatchingAfterFragment : Fragment() {
         }
 
         activity?.supportFragmentManager?.addOnBackStackChangedListener {
-            // 현재 표시되고 있는 프래그먼트를 찾습니다.
             val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
-
-            // 프래그먼트가 없을 경우, RecyclerView나 ViewPager2를 다시 표시합니다.
             if (fragment == null) {
                 if (binding.toggleButton.checkedButtonId == R.id.button1) {
                     binding.viewPager2.visibility = View.VISIBLE
                 } else {
                     binding.recyclerView.visibility = View.VISIBLE
                 }
-                // 프래그먼트 컨테이너를 숨깁니다.
                 binding.cardDetail.visibility = View.GONE
             }
         }
@@ -90,11 +91,7 @@ class NowMatchingAfterFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-
-        // 현재 표시되고 있는 프래그먼트를 찾습니다.
         val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
-
-        // 프래그먼트가 없을 경우, RecyclerView나 ViewPager2를 다시 표시합니다.
         if (fragment == null) {
             if (binding.toggleButton.checkedButtonId == R.id.button1) {
                 binding.viewPager2.visibility = View.VISIBLE
@@ -102,24 +99,17 @@ class NowMatchingAfterFragment : Fragment() {
                 binding.recyclerView.visibility = View.VISIBLE
             }
         }
-
-//        // 프래그먼트 컨테이너를 숨깁니다.
-//        binding.cardDetail.visibility = View.GONE
     }
 
-
     private fun hideDetailFragment() {
-        Log.d("MainThreadCheck", "Is this main thread? ${Looper.myLooper() == Looper.getMainLooper()}")
         val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
-
-        // 프래그먼트가 있을 경우, 해당 프래그먼트를 제거합니다.
         if (fragment != null) {
             parentFragmentManager.beginTransaction().apply {
                 setCustomAnimations(
-                    R.anim.slide_in_right, // enter
-                    R.anim.slide_out_left, // exit
-                    R.anim.slide_in_right, // popEnter
-                    R.anim.slide_out_left // popExit
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left,
+                    R.anim.slide_in_right,
+                    R.anim.slide_out_left
                 )
                 remove(fragment)
                 commit()
@@ -132,13 +122,13 @@ class NowMatchingAfterFragment : Fragment() {
             binding.recyclerView.visibility = View.VISIBLE
         }
 
-        setCardAdapter(binding.toggleButton.checkedButtonId == R.id.button1)
+//        setCardAdapter(binding.toggleButton.checkedButtonId == R.id.button1)
     }
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
         val cardAdapter = CardAdapter(cardInfoList, isButton1Checked, object : CardItemClickListener {
             override fun onCardDetailClick(cardInfo: CardInfo) {
-                showDetailFragment(cardInfo) // 이 메서드 내에서 프래그먼트 전환 로직을 처리합니다.
+                showDetailFragment(cardInfo)
             }
         })
         if (isButton1Checked) {
@@ -151,25 +141,20 @@ class NowMatchingAfterFragment : Fragment() {
     }
 
     private fun showDetailFragment(cardInfo: CardInfo) {
-        Log.d("MainThreadCheck", "Is this main thread? ${Looper.myLooper() == Looper.getMainLooper()}")
-
         val detailFragment = CardDetailFragment.newInstance(cardInfo)
         parentFragmentManager.beginTransaction().apply {
             setCustomAnimations(
-                R.anim.slide_in_right, // enter
-                R.anim.slide_out_left, // exit
-                R.anim.slide_in_right, // popEnter
-                R.anim.slide_out_left // popExit
+                R.anim.slide_in_right,
+                R.anim.slide_out_left,
+                R.anim.slide_in_right,
+                R.anim.slide_out_left
             )
-            replace(R.id.cardDetail, detailFragment, "cardDetail")
+            add(R.id.viewPager2,detailFragment,"cardDetail")
             addToBackStack(null)
             commit()
         }
-        // RecyclerView와 ViewPager2를 숨기고, 프래그먼트 컨테이너를 표시합니다.
         binding.recyclerView.visibility = View.GONE
         binding.viewPager2.visibility = View.GONE
-        binding.cardDetail.visibility = View.VISIBLE // 프래그먼트 컨테이너를 표시합니다.
+//        binding.cardDetail.visibility = View.VISIBLE
     }
 }
-
-
