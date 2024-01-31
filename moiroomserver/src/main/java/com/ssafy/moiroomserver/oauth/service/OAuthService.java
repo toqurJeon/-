@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.oauth.dto.KakaoAccountDto;
 import com.ssafy.moiroomserver.oauth.dto.KakaoProfile;
 import com.ssafy.moiroomserver.oauth.entity.KakaoMember;
 import com.ssafy.moiroomserver.oauth.repository.OAuthRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
@@ -17,10 +18,10 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class OAuthService extends DefaultOAuth2UserService {
 
-    @Autowired
-    OAuthRepository oAuthRepository;
+    private final OAuthRepository oAuthRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
