@@ -5,9 +5,6 @@ from engines import gps
 
 app = Flask(__name__)
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
-
 
 @app.route('/moiroom/privacy')
 def privacy():
@@ -26,6 +23,10 @@ def count_clusters():
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
+
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', debug=True)
 
 
 @app.route('/receive_and_send', methods=['POST'])
