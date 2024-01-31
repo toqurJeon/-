@@ -1,5 +1,6 @@
 package com.ssafy.moiroomserver.member.controller;
 
+import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -14,8 +15,10 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    @PatchMapping("/member")
+    @PatchMapping
     public ApiResponse<?> modifyMemberInfo(@RequestBody MemberInfo.ModifyRequest infoModifyRequest) {
-        return null;
+        memberService.modifyMemberInfo(infoModifyRequest);
+
+        return ApiResponse.success(SuccessCode.MODIFY_MEMBER_INFO);
     }
 }

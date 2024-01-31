@@ -31,7 +31,7 @@ public class Member extends BaseEntity {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "image_url")
+    @Column(name = "profile_image_url")
     private String imageUrl;
 
     @Column(name = "gender")
@@ -48,8 +48,8 @@ public class Member extends BaseEntity {
     @ColumnDefault("사용자")
     private String nickname;
 
-    @Column(name = "social_access_token", nullable = false)
-    private String socialAccessToken; // 카카오 소셜 accessToken(추후 수정할 수도 있다)
+//    @Column(name = "social_access_token", nullable = false)
+//    private String socialAccessToken; // 카카오 소셜 accessToken(추후 수정할 수도 있다)
 
     @Column(name = "access_token", nullable = false)
     private String accessToken;
