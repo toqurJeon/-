@@ -10,7 +10,7 @@ def count_result(sample_json):
     count = 0
     # for문 돌면서 위도 경도 입력 받음
     for i in sample_json:
-        X = np.append(X, [[sample_json[i]["lon"], sample_json[i]["len"]]], axis=0)
+        X = np.append(X, [[sample_json[i]["longitude"], sample_json[i]["latitude"]]], axis=0)
         count += 1
 
     # 초기 데이터 삭제
