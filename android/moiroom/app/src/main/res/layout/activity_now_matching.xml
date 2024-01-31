@@ -3,18 +3,19 @@
     android:id="@+id/matchingFrameLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:onClick="startMatchingButton"
     tools:context=".NowMatchingActivity">
 
     <RelativeLayout
-        android:layout_width="344dp"
-        android:layout_height="504dp"
-        android:background="@drawable/gradient_background"
+        android:id="@+id/relativeLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="954dp"
         android:layout_gravity="center"
         android:layout_marginBottom="18dp"
-        android:padding="10dp"
+        android:background="@drawable/gradient_background"
         android:clickable="true"
         android:focusable="true"
-        android:id="@+id/relativeLayout">
+        android:padding="10dp">
 
         <ImageView
             android:id="@+id/image"
@@ -23,42 +24,65 @@
             android:layout_centerInParent="true"
             android:src="@drawable/ic_before_matching" />
 
+        <ImageView
+            android:id="@+id/image2"
+            android:layout_width="30sp"
+            android:layout_height="40sp"
+            android:layout_above="@+id/startMatchingButton"
+            android:layout_centerHorizontal="true"
+            android:src="@drawable/ic_touch" />
+
         <TextView
             android:id="@+id/moiroomText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/image"
-            android:layout_centerHorizontal="true"
-            android:text="moiroom"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:layout_marginTop="240dp"
+            android:layout_centerInParent="true"
             android:fontFamily="@font/pretendard_semibold"
+            android:text="moiroom"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
             android:textStyle="bold" />
 
         <TextView
+            android:id="@+id/startMatchingButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:text="매칭 시작하기"
-            android:textSize="20sp"
-            android:textColor="#FFFFFF"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="214dp"
             android:fontFamily="@font/pretendard_semibold"
-            android:textStyle="bold"
-            android:id="@+id/startMatchingButton"
-            android:onClick="startMatchingButton"/>
+            android:onClick="startMatchingButton"
+            android:text="터치해서 매칭 시작하기"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_above="@+id/startMatchingButton"
-            android:layout_marginBottom="337dp"
+            android:layout_marginBottom="408dp"
             android:fontFamily="@font/pretendard_semibold"
             android:gravity="center"
             android:padding="10dp"
-            android:text="매칭을 시작해보세요.\n룸메이트가 기다리고 있어요!"
+            android:text="매칭을 시작해보세요."
             android:textColor="#FFFFFF"
-            android:textSize="24sp"
+            android:textSize="38sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="120dp"
+            android:layout_above="@+id/startMatchingButton"
+            android:layout_marginBottom="357dp"
+            android:fontFamily="@font/pretendard_semibold"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="룸메이트가 기다리고 있어요!"
+            android:textColor="#FFFFFF"
+            android:textSize="28sp"
             android:textStyle="bold" />
 
     </RelativeLayout>

@@ -1,5 +1,7 @@
 package com.example.moiroom.data
 
+import com.google.gson.annotations.SerializedName
+
 data class RequestBody(
     val param1: Double,
     val param2: Double,
@@ -23,4 +25,32 @@ data class PhotoInfo(
     val photoWidth: String,
     val photoLatitude: String,
     val photoLongitude: String,
+)
+
+data class CallLogItem(
+    val number: String,
+    val date: Long,
+    val duration: Int,
+    val type: Int,
+    val location: String?,
+    val Latitude: Int,
+    val Longitude: Int
+)
+
+data class CalendarEvent(
+    val eventId: Long,
+    val calendarId: Long,
+    val title: String?,
+    val description: String?,
+    val eventLocation: String?,
+    val startTime: Long,
+    val endTime: Long,
+    val duration: String?,
+    val isAllDay: Int,
+    val eventTimezone: String?,
+    val recurrenceRule: String?,
+    val recurrenceDate: String?,
+    val organizer: String?,
+    val accessLevel: Int,
+    val availability: Int
 )

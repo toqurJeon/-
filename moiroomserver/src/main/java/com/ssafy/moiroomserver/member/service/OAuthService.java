@@ -3,6 +3,7 @@ package com.ssafy.moiroomserver.member.service;
 import com.ssafy.moiroomserver.member.dto.KakaoAccountDto;
 import com.ssafy.moiroomserver.member.dto.KakaoProfile;
 import com.ssafy.moiroomserver.member.entity.KakaoMember;
+import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.repository.OAuthRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,7 @@ public class OAuthService extends DefaultOAuth2UserService {
 
     private final OAuthRepository oAuthRepository;
     private final OAuth2AuthorizedClientService oAuth2AuthorizedClientService;
+    private final MemberRepository memberRepository;
 
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
@@ -87,6 +89,7 @@ public class OAuthService extends DefaultOAuth2UserService {
         member.setOauthType(oauthType);
 
         save(member);
+
     }
 
     private static void setKakaoAccount(KakaoAccountDto dto, Map<String, Object> attributes) {
