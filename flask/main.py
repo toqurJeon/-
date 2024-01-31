@@ -6,10 +6,54 @@ from engines import gps
 app = Flask(__name__)
 
 
+@app.route('/moiroom/test')
+def test():
+    # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
+    return render_template('test.html')
+
+
 @app.route('/moiroom/privacy')
 def privacy():
     # Flask의 render_template 함수를 사용하여 HTML 파일을 렌더링합니다.
     return render_template('index.html')
+
+
+@app.route('/count_clusters', methods=['POST'])
+def count_clusters():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        param1 = round(gps.count_result(json_data) * 10000) + 1
+        return jsonify({'param1': param1})
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
+
+@app.route('/insta_token', methods=['POST'])
+def insta_token():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        # param1 = round(gps.count_result(json_data) * 10000) + 1
+        return jsonify(json_data)
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
+
+
+@app.route('/calling_history', methods=['POST'])
+def calling_history():
+    try:
+        # JSON 데이터 받아오기
+        json_data = request.get_json()
+
+        return jsonify(json_data)
+
+    except Exception as e:
+        return jsonify({'status': 'error', 'message': str(e)})
 
 
 @app.route('/receive_and_send', methods=['POST'])
@@ -70,18 +114,6 @@ def send_json():
 
         # 처리 후 응답 반환
         return jsonify({'status': 'success', 'message': 'JSON received and processed successfully'})
-    except Exception as e:
-        return jsonify({'status': 'error', 'message': str(e)})
-
-
-@app.route('/count_clusters', methods=['POST'])
-def count_clusters():
-    try:
-        # JSON 데이터 받아오기
-        json_data = request.get_json()
-
-        return jsonify(gps.count_result(json_data))
-
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
