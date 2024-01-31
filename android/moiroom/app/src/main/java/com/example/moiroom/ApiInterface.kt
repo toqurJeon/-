@@ -6,6 +6,7 @@ import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.Post
 import com.example.moiroom.data.RequestBody
 import com.kakao.sdk.auth.model.AccessTokenResponse
+import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Body
 import retrofit2.http.FormUrlEncoded
