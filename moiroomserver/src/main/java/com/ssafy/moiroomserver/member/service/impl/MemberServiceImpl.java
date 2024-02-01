@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.service.impl;
 
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.NoIdException;
-import com.ssafy.moiroomserver.member.dto.KakaoAccountDto;
+import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
@@ -31,12 +31,18 @@ public class MemberServiceImpl implements MemberService {
         member.modify(infoModifyRequest);
     }
 
-    private void addKakaoMember(KakaoAccountDto dto) {
+    /**
+     * 카카오 회원 정보 추가
+     * @param dto
+     */
+    @Transactional
+    @Override
+    public void addMember(AddMemberDto dto) {
         log.info("kakao NOT EXISTS. REGISTER");
 
         Member member = new Member();
-        member.setNickname(dto.getKakaoProfile().getNickname());
-        member.setImageUrl(dto.getKakaoProfile().getProfileImageUrl());
+        member.setNickname(dto.getNickname());
+        member.setImageUrl(dto.getImageUrl());
         member.setBirthyear(dto.getBirthyear());
         member.setBirthday(dto.getBirthday());
         member.setName(dto.getName());
