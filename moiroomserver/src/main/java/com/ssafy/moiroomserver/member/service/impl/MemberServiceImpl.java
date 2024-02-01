@@ -47,6 +47,8 @@ public class MemberServiceImpl implements MemberService {
         member.setBirthday(dto.getBirthday());
         member.setName(dto.getName());
         member.setGender(dto.getGender());
+        member.setAccessToken(dto.getAccessToken());
+        member.setRefreshToken(dto.getRefreshToken());
 
         memberRepository.save(member);
 
