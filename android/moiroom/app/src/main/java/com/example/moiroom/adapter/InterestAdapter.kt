@@ -1,7 +1,10 @@
+package com.example.moiroom.adapter
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moiroom.R
 import com.example.moiroom.data.Interest
 import com.example.moiroom.databinding.InterestItemLayoutBinding
 import com.example.moiroom.utils.getColorInterest

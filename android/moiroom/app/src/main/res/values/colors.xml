@@ -16,7 +16,23 @@
     <color name="mediumGray">#D9D9D9</color>
 
     <!--성향 별 색상 설정-->
-    <color name="socialable">#4DCC42</color>
+    <color name="bg_socialable">#E4FFE1</color>
+    <color name="bg_positivity">#FFFBD5</color>
+    <color name="bg_activity">#FFD3D3</color>
+    <color name="bg_communion">#FFD0F4</color>
+    <color name="bg_altruism">#FFE3D1</color>
+    <color name="bg_empathy">#FFD0E3</color>
+    <color name="bg_humor">#D5FFF1</color>
+    <color name="bg_generous">#E2D5FF</color>
+
+    <color name="socialable">#3EAD33</color>
+    <color name="positivity">#FFE711</color>
+    <color name="activity">#E12B2B</color>
+    <color name="communion">#DF2ADC</color>
+    <color name="altruism">#E4621B</color>
+    <color name="empathy">#DA2C86</color>
+    <color name="humor">#0CDD97</color>
+    <color name="generous">#5F2CDA</color>
 
     <!--채도가 낮은 색상들-->
     <color name="pastelOrange">#FFC580</color>
