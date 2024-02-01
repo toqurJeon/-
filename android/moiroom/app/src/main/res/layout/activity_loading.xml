@@ -4,40 +4,50 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".LoadingActivity">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="238dp"
-        android:layout_gravity="center"
-        app:srcCompat="@drawable/moiroom2" />
-
     <LinearLayout
+        android:id="@+id/dot_layout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal">
 
         <View
-            android:id="@+id/loading_dot1"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginEnd="5dp"
+            android:id="@+id/dot_1"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
             android:background="@drawable/shape_dot" />
 
         <View
-            android:id="@+id/loading_dot2"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:layout_marginEnd="5dp"
+            android:id="@+id/dot_2"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
             android:background="@drawable/shape_dot" />
 
         <View
-            android:id="@+id/loading_dot3"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:id="@+id/dot_3"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
             android:background="@drawable/shape_dot" />
+
+        <View
+            android:id="@+id/dot_4"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_dot" />
+
+        <View
+            android:id="@+id/dot_5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/shape_dot" />
+
     </LinearLayout>
 
 </FrameLayout>
