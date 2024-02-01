@@ -9,6 +9,7 @@ private val interestColorMap = mapOf(
     "운동" to R.color.pastelBlue,
     "음악" to R.color.pastelOrange,
     "요리" to R.color.pastelYellow,
+    "게임" to R.color.pastelPurple,
 )
 
 fun getColorInterest(interestName: String,  context: Context): Int {

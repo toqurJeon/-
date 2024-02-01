@@ -45,14 +45,14 @@ class MyPageFragment : Fragment() {
 
         chartView.setDataList(
             arrayListOf(
-                RadarChartData(com.example.moiroom.data.CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.activity,memberData.activity.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.communion, memberData.communion.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.humor, memberData.humor.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.generous, memberData.generous.toFloat() / 100),
+                RadarChartData(CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity,memberData.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100),
             )
         )
         binding.radarChartContainer.addView(chartView)
@@ -111,33 +111,21 @@ class MyPageFragment : Fragment() {
             listOf(
                 Interest(
                     "운동",
-                    57
+                    48
                 ),
                 Interest(
                     "음악",
-                    33
+                    36
                 ),
                 Interest(
                     "요리",
-                    10
+                    11
+                ),
+                Interest(
+                    "게임",
+                    5
                 )
             )
         )
     }
-
-    enum class CharacteristicType(val value: String) {
-        socialbility("사교"),
-        positivity("긍정"),
-        activity("활동"),
-        communion("공유"),
-        altruism("이타"),
-        empathy("공감"),
-        humor("감각"),
-        generous("관대")
-    }
-
-    data class RadarChartData(
-        val type: CharacteristicType,
-        val value: Float
-    )
 }
