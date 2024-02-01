@@ -4,9 +4,13 @@ import android.content.Context
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.RectF
 import android.util.AttributeSet
 import android.view.View
+import androidx.core.content.ContextCompat
+import com.example.moiroom.R
 import com.example.moiroom.data.Interest
+import com.example.moiroom.utils.getColorInterest
 
 class SquareChartView(context: Context, attrs: AttributeSet? = null) : View(context, attrs) {
 
@@ -23,45 +27,58 @@ class SquareChartView(context: Context, attrs: AttributeSet? = null) : View(cont
     }
 
     private fun drawSquares(canvas: Canvas) {
-        val squareSize = width / 10 // 각 정사각형의 크기 계산
+        val rowCount = 10
+        val columnCount = 10
+        val totalSquares = rowCount * columnCount
 
-        var currentX = 0 // 현재 x 좌표 초기화
-        var currentY = 0 // 현재 y 좌표 초기화
+        // 각 정사각형 사이의 간격 설정
+        val space = width / (columnCount * 12) // (정사각형 개수 + 1) * 간격 개수 (좌우 간격이 모두 있어야 하므로)
 
-        for (interest in data) {
-            val squareCount = interest.interestPercent // 해당 항목의 퍼센트
-            val color = getRandomColor() // 랜덤한 색상 가져오기
+        val squareSize = (width - (columnCount + 1) * space) / columnCount // 간격을 고려한 정사각형의 실제 크기 계산
 
-            val paint = Paint().apply {
-                this.color = color
-                style = Paint.Style.FILL
-            }
+        var currentX = space // 시작 위치에 간격을 추가
+        var currentY = space // 시작 위치에 간격을 추가
 
-            repeat(squareCount) {
-                // 현재 x, y 좌표에서 정사각형 그리기
-                canvas.drawRect(
-                    currentX.toFloat(),
-                    currentY.toFloat(),
-                    (currentX + squareSize).toFloat(),
-                    (currentY + squareSize).toFloat(),
-                    paint
-                )
+        var dataIndex = 0 // 데이터 리스트 인덱스
 
-                // 다음 정사각형의 x 좌표 계산
-                currentX += squareSize
-                // x 좌표가 뷰의 가로 길이를 벗어나면 다음 행으로 이동
-                if (currentX >= width) {
-                    currentX = 0
-                    currentY += squareSize
+        // 정사각형 그리기
+        for (row in 0 until rowCount) {
+            for (col in 0 until columnCount) {
+                if (dataIndex >= data.size) return // 데이터 인덱스가 데이터 리스트 크기를 넘어가면 그리기를 중단합니다.
+
+                val interest = data[dataIndex]
+                val numOfSquares = interest.interestPercent
+
+                val color = getColorInterest(interest.interestName, context)
+
+                val paint = Paint().apply {
+                    this.color = color
+                    style = Paint.Style.FILL
                 }
+
+                // 정사각형 그리기
+                repeat(numOfSquares) {
+                    val rectF = RectF(
+                        currentX.toFloat(),
+                        currentY.toFloat(),
+                        (currentX + squareSize).toFloat(),
+                        (currentY + squareSize).toFloat()
+                    )
+                    canvas.drawRoundRect(rectF, 16f, 16f, paint)
+
+                    // 다음 정사각형의 위치로 이동
+                    currentX += squareSize + space
+
+                    // 만약 다음 열로 넘어가야 하는 경우
+                    if (currentX + squareSize > width - space) {
+                        currentX = space // 시작 위치에 간격을 추가
+                        currentY += squareSize + space
+                    }
+                }
+
+                dataIndex++
             }
         }
-    }
 
-    private fun getRandomColor(): Int {
-        val r = (0..255).random()
-        val g = (0..255).random()
-        val b = (0..255).random()
-        return Color.rgb(r, g, b)
     }
 }

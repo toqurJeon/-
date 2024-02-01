@@ -1,13 +1,16 @@
 package com.example.moiroom
 
 import CharacterAdapter
+import InterestAdapter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.databinding.ActivityDetailchartBinding
+
 import com.example.moiroom.view.RadarChartView
 
 
@@ -69,13 +72,19 @@ class DetailchartActivity : AppCompatActivity() {
             // 성향 데이터 카드 그리드
             binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
 
-            val adapter = CharacterAdapter(chartData)
-            binding.recyclerView.adapter = adapter
+            val characterAdapter = CharacterAdapter(chartData)
+            binding.recyclerView.adapter = characterAdapter
 
             // 관심사 사각형 파이 그래프
-
             val squareChart = binding.squareChartView
             squareChart.setData(memberData.interest)
+
+            // 관심사 데이터 카드 그리드
+            binding.interestRecyclerView.layoutManager = LinearLayoutManager(this)
+
+            val interestAdapter = InterestAdapter(this, memberData.interest)
+            binding.interestRecyclerView.adapter = interestAdapter
+
         }
 
         binding.backwardButton.setOnClickListener {

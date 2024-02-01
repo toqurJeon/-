@@ -15,5 +15,11 @@
     <color name="fontGray">#999999</color>
     <color name="mediumGray">#D9D9D9</color>
 
+    <!--성향 별 색상 설정-->
     <color name="socialable">#4DCC42</color>
+
+    <!--채도가 낮은 색상들-->
+    <color name="pastelOrange">#FFC580</color>
+    <color name="pastelBlue">#99D6FF</color>
+    <color name="pastelYellow">#FFF6A2</color>
 </resources>
