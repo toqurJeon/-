@@ -55,10 +55,10 @@ public class Member extends BaseEntity {
     @ColumnDefault("'사용자'")
     private String nickname;
 
-    @Column(name = "access_token") // 카카오 accessToken을 저장
+    @Column(name = "access_token", nullable = false) // 카카오 accessToken을 저장
     private String accessToken;
 
-    @Column(name = "refresh_token") // 카카오에서 발급 받은 refreshToken
+    @Column(name = "refresh_token", nullable = false) // 카카오에서 발급 받은 refreshToken
     private String refreshToken;
 
     @Column(name = "account_status", nullable = false)
