@@ -27,6 +27,11 @@ import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
+import fetchUserInfo
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // AppCompatActivity: AndroidX에서 제공하는 액티비티 클래스
 class MainActivity : AppCompatActivity() {
@@ -48,6 +53,7 @@ class MainActivity : AppCompatActivity() {
             }
             // 토큰 정보가 있으면 토스트 띄운 후 NaviActivity로 인텐트 보내기
             else if (tokenInfo != null) {
+
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
@@ -119,6 +125,17 @@ class MainActivity : AppCompatActivity() {
             }
             // 토큰이 있으면 토스트 띄우고 InfoinputActivity로 인텐트 보내기
             else if (token != null) {
+
+                val accessToken = token.accessToken
+                val refreshToken = token.refreshToken
+                System.out.println("Access Token: $accessToken")
+                System.out.println("Refresh Token: $refreshToken")
+                Log.d("KaKaoAccessToken", "Access Token: $accessToken")
+                Log.d("KaKaoRefreshToken", "Refresh Token: $refreshToken")
+
+                // 사용자 정보를 가져옵니다.
+                fetchUserInfo(accessToken, refreshToken)
+
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)

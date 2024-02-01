@@ -24,7 +24,6 @@ import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.example.moiroom.OnBackButtonClickListener
 
-
 class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private val cardInfoList = TestData.cardInfoList
@@ -95,7 +94,9 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         if (fragment == null) {
             if (binding.toggleButton.checkedButtonId == R.id.button1) {
                 binding.viewPager2.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
             } else {
+                binding.viewPager2.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
             }
         }
@@ -142,6 +143,14 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
 
     private fun showDetailFragment(cardInfo: CardInfo) {
         val detailFragment = CardDetailFragment.newInstance(cardInfo)
+
+        // 이전 Fragment를 제거합니다.
+        val oldFragment = parentFragmentManager.findFragmentByTag("cardDetail")
+        oldFragment?.let {
+            parentFragmentManager.beginTransaction().remove(it).commit()
+        }
+
+        // 새로운 Fragment를 추가합니다.
         parentFragmentManager.beginTransaction().apply {
             setCustomAnimations(
                 R.anim.slide_in_right,
@@ -155,6 +164,5 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         }
         binding.recyclerView.visibility = View.GONE
         binding.viewPager2.visibility = View.GONE
-//        binding.cardDetail.visibility = View.VISIBLE
     }
 }

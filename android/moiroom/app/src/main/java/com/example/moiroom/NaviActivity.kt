@@ -50,10 +50,6 @@ class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
 
-        if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
-        }
-
         val nowMatchingAfter = manager.findFragmentByTag(TAG_NOW_MATCHING_AFTER)
         val chatting = manager.findFragmentByTag(TAG_CHATTING)
         val myPage = manager.findFragmentByTag(TAG_MY_PAGE)
@@ -70,23 +66,16 @@ class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
             fragTransaction.hide(myPage)
         }
 
-        if (tag == TAG_NOW_MATCHING_AFTER) {
-            if (nowMatchingAfter!=null){
-                fragTransaction.show(nowMatchingAfter)
-            }
-        }
-        else if (tag == TAG_CHATTING) {
-            if (chatting != null) {
-                fragTransaction.show(chatting)
-            }
-        }
-
-        else if (tag == TAG_MY_PAGE){
-            if (myPage != null){
-                fragTransaction.show(myPage)
+        if (manager.findFragmentByTag(tag) == null){
+            fragTransaction.replace(R.id.mainFrameLayout, fragment, tag)
+        } else {
+            when(tag) {
+                TAG_NOW_MATCHING_AFTER -> nowMatchingAfter?.let { fragTransaction.show(it) }
+                TAG_CHATTING -> chatting?.let { fragTransaction.show(it) }
+                TAG_MY_PAGE -> myPage?.let { fragTransaction.show(it) }
             }
         }
 
-        fragTransaction.commitAllowingStateLoss()
+        fragTransaction.commit()
     }
 }
