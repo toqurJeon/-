@@ -2,16 +2,19 @@ package com.ssafy.moiroomserver.member.service.impl;
 
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.NoIdException;
+import com.ssafy.moiroomserver.member.dto.KakaoAccountDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
@@ -26,5 +29,20 @@ public class MemberServiceImpl implements MemberService {
         Member member = memberRepository.findById(2L)
                 .orElseThrow(() -> new NoIdException(ErrorCode.NOT_EXISTS_MEMBER_ID));
         member.modify(infoModifyRequest);
+    }
+
+    private void addKakaoMember(KakaoAccountDto dto) {
+        log.info("kakao NOT EXISTS. REGISTER");
+
+        Member member = new Member();
+        member.setNickname(dto.getKakaoProfile().getNickname());
+        member.setImageUrl(dto.getKakaoProfile().getProfileImageUrl());
+        member.setBirthyear(dto.getBirthyear());
+        member.setBirthday(dto.getBirthday());
+        member.setName(dto.getName());
+        member.setGender(dto.getGender());
+
+        memberRepository.save(member);
+
     }
 }
