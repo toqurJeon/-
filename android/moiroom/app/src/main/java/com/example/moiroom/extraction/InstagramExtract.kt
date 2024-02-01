@@ -54,7 +54,7 @@ class InstagramExtract: AppCompatActivity() {
         }
     }
 
-    fun postFuel(code: String) {
+    private fun postFuel(code: String) {
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://api.instagram.com"
 
