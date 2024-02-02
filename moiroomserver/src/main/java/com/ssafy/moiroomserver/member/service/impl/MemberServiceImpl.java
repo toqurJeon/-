@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.NoIdException;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
+import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -38,8 +39,6 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void addMember(AddMemberDto dto) {
-        log.info("kakao NOT EXISTS. REGISTER");
-
         Member member = new Member();
         member.setNickname(dto.getNickname());
         member.setImageUrl(dto.getImageUrl());
@@ -51,6 +50,21 @@ public class MemberServiceImpl implements MemberService {
         member.setRefreshToken(dto.getRefreshToken());
 
         memberRepository.save(member);
+    }
 
+    /**
+     * 카카오 회원 토큰 정보 업데이트
+     * @param memberId
+     */
+    @Transactional
+    @Override
+    public void modifyMemberToken(Long memberId, MemberTokenDto tokenDto) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow();
+
+        member.setAccessToken(tokenDto.getAccessToken());
+        member.setRefreshToken(tokenDto.getRefreshToken());
+
+        memberRepository.save(member);
     }
 }
