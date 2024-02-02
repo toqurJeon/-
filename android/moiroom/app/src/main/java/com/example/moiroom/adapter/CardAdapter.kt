@@ -123,3 +123,5 @@ class CardAdapter(
     override fun getItemCount() = cardInfoList.size
 }
 
+
+

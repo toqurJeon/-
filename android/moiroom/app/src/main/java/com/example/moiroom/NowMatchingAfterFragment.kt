@@ -166,3 +166,4 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         binding.viewPager2.visibility = View.GONE
     }
 }
+
