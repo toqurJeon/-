@@ -7,9 +7,10 @@
     android:layout_margin="4dp">
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/characterCard"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:backgroundTint="@color/BGgray"
+        app:cardBackgroundColor="@color/BGgray"
         app:cardCornerRadius="8dp"
         app:cardElevation="0dp">
 
@@ -20,8 +21,8 @@
             android:layout_gravity="top|start"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="16dp"
-            android:layout_marginHorizontal="8dp"
-            android:fontFamily="@font/pretendard_regular"
+            android:layout_marginHorizontal="10dp"
+            android:fontFamily="@font/pretendard_semibold"
             android:text="성향 이름"
             android:textSize="16dp"/>
 
@@ -31,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_marginBottom="8dp"
-            android:layout_marginHorizontal="8dp"
+            android:layout_marginHorizontal="10dp"
             android:fontFamily="@font/pretendard_bold"
             android:text="00.0%"
             android:textSize="16dp"/>

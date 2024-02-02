@@ -11,6 +11,8 @@ plugins {
     // 코틀린 어노테이션 프로세싱 플러그인 (아직 정확히 모르겠음)
     // 어노테이션: @ 뒤에 있는 거
     id("kotlin-kapt")
+    //serialization 플러그인 추가
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션
@@ -94,6 +96,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.12.0")
     implementation("com.drewnoakes:metadata-extractor:2.16.0")
 //    kapt("com.github.bumptech.glide:compiler:4.12.0")
+//    kapt("com.github.bumptech.glide:compiler:4.12.0")
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     // viewModel
@@ -126,5 +129,5 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
     // json to map 라이브러리
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
 }
