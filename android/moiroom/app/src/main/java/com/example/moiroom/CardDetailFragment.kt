@@ -73,3 +73,4 @@ class CardDetailFragment : Fragment() {
         listener?.onBackButtonClicked()
     }
 }
+
