@@ -22,6 +22,9 @@ import java.io.InputStream
 class MyForegroundService : Service() {
     private val handler = Handler()
     private val interval: Long = 5000 // 5 seconds
+
+    //        val serviceIntent = Intent(this, MyForegroundService::class.java)
+//        startService(serviceIntent)
     override fun onBind(intent: Intent?): IBinder? {
         return null
     }

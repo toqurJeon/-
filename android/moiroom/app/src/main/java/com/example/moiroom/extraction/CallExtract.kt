@@ -58,8 +58,9 @@ class CallExtract: AppCompatActivity() {
 
                 // CallLogItem 객체를 만들어 리스트에 추가
                 val callLogItem = CallLogItem(number, date, duration, type, location, Latitude, Longitude)
+                if (Latitude != -1) {
                 callLogList.add(callLogItem)
-            }
+            }}
         }
 
         // 리스트 반환

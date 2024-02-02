@@ -17,8 +17,6 @@ import com.github.kittinunf.fuel.core.FuelManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
-import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
 
 class InstagramExtract: AppCompatActivity() {
     private lateinit var binding: ActivityWebviewtestBinding
@@ -41,9 +39,7 @@ class InstagramExtract: AppCompatActivity() {
             if (redirectUrl.startsWith("https://example.com/instagramredirection?code=")) {
                 // 여기에서 Redirect URI 처리 및 인증 코드 추출
                 // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
-                Log.d("허가 받음","$redirectUrl")
                 val code = redirectUrl.substring(46)
-                Log.d("코드", "$code")
                 postFuel(code)
                 val intent = Intent(this@InstagramExtract, NowMatchingActivity::class.java)
                 startActivity(intent)
@@ -83,49 +79,49 @@ class InstagramExtract: AppCompatActivity() {
                     success = { data ->
                         sendInstagramAccessToken(data)
                     },
-                    failure = { error -> Log.d("에러", "에러: $error") }
+                    failure = { error -> Log.d("에러4", "에러: $error") }
                 )
             } catch (e: Exception) {
-                println("에러: $e")
+                println("에러3: $e")
             }
         }
     }
 
     fun sendInstagramAccessToken(res: String) {
-        Log.d("전달", "어세스토큰")
         // FuelManager 설정 (선택사항)
-
         // 경로 바꾸기
-        FuelManager.instance.basePath = "https://api.instagram.com"
+        FuelManager.instance.basePath = "http://i10a308.p.ssafy.io:5000"
 
 
         val gson = Gson()
         val type = object : TypeToken<Map<String, String>>() {}.type
         val instaMap: Map<String, String> = gson.fromJson(res, type)
 
-        Log.d("전달 정보", "$instaMap")
-
         val accessToken = instaMap.get("access_token")
         val userId = instaMap.get("user_id")
-        Log.d("전달 정보", "${accessToken}, ${userId}")
+        Log.d("전달 정보", "{ \"accessToken\": \"$accessToken\", \"userId\": \"$userId\" }")
 
         // 코루틴 사용
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = Fuel.post("/oauth/access_token") // 경로 바꾸기
-                    .header("Content-Type" to "application/x-www-form-urlencoded")
+                val response = Fuel.post("/insta_token") // 경로 바꾸기
+                    .header("Content-Type" to "application/json")
                     .body(
-                        "accessToken=$accessToken&" + "user_id=$userId&"
+                        """
+                            { "accessToken": "$accessToken", "userId": "$userId" }  
+                        """.trimIndent()
                     )
                     .responseString()
 
                 // 응답 확인
                 response.third.fold(
+                    // 데이터를 성공적으로 받으면 할 거 함수 구현
                     success = { data -> Log.d("성공", "$data") },
-                    failure = { error -> Log.d("에러", "에러: $error") }
+                    // 데이터 받는 걸 실패하면 할 거 함수 구현
+                    failure = { error -> Log.d("에러2", "에러: $error") }
                 )
             } catch (e: Exception) {
-                Log.d("에러", "트라이 에러")
+                Log.d("에러1", "트라이 에러")
             }
         }
     }
