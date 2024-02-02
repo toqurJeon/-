@@ -102,6 +102,9 @@
             android:name=".extraction.PhotoExtract"
             android:exported="true" />
         <activity
+            android:name=".extraction.VideoExtract"
+            android:exported="true" />
+        <activity
             android:name=".extraction.CalendarExtract"
             android:exported="true" />
         <activity
