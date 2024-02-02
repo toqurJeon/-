@@ -30,63 +30,44 @@ class DetailchartActivity : AppCompatActivity() {
         binding = ActivityDetailchartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 멤버 데이터 MyPageFragment로부터 받아오기
         val memberData: Member? = intent.getParcelableExtra<Member>("memberData")
 
         if (memberData != null) {
+            // 성향 레이더 차트
             val chartView = RadarChartView(this, null)
             val chartData = arrayListOf(
-                RadarChartData(
-                    CharacteristicType.socialbility,
-                    memberData.socialbility.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.positivity,
-                    memberData.positivity.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.activity,
-                    memberData.activity.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.communion,
-                    memberData.communion.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.altruism,
-                    memberData.altruism.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.empathy,
-                    memberData.empathy.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.humor,
-                    memberData.humor.toFloat() / 100
-                ),
-                RadarChartData(
-                    CharacteristicType.generous,
-                    memberData.generous.toFloat() / 100
-                )
+                RadarChartData(CharacteristicType.socialbility, memberData.socialbility.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity, memberData.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity, memberData.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100)
             )
-
             chartView.setDataList(chartData)
             binding.radarChartContainer.addView(chartView)
 
+            // 성향 목록
             binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
-
             val characterAdapter = CharacterAdapter(this, chartData) { clickedData, position ->
                 updateUI(clickedData)
                 performAnimation(clickedData)
             }
             binding.recyclerView.adapter = characterAdapter
 
+            // 관심사 차트
             val squareChart = binding.squareChartView
             squareChart.setData(memberData.interest)
 
+            // 관심사 목록
             binding.interestRecyclerView.layoutManager = LinearLayoutManager(this)
-
             val interestAdapter = InterestAdapter(this, memberData.interest)
             binding.interestRecyclerView.adapter = interestAdapter
+
+            // 수면 차트
+
         }
 
         binding.backwardButton.setOnClickListener {
@@ -94,6 +75,7 @@ class DetailchartActivity : AppCompatActivity() {
         }
     }
     override fun onBackPressed() {
+        super.onBackPressed()
         finish()
     }
 
@@ -104,6 +86,7 @@ class DetailchartActivity : AppCompatActivity() {
         binding.characterDetailDescription.text = getCharacterDescription(clickedData.type)
         binding.characterLocation.setColorFilter(getColorCharacter(clickedData.type.value, this))
         binding.pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData.type.value, this))
+
         val decimalFormat = DecimalFormat("#.##")
         binding.myCharacterDescription.text = "상위 ${decimalFormat.format(100 - clickedData.value)}%의 ${clickedData.type.value} 성향을 가지고 있어요"
     }
@@ -111,6 +94,7 @@ class DetailchartActivity : AppCompatActivity() {
     fun performAnimation(clickedData: RadarChartData) {
         val newValue = clickedData.value.coerceIn(0f, 100f)
 
+        // 레이아웃이 로딩되지 않았을 때, 애니메이션 재 시작
         if (binding == null || binding.pinWrapper.width == 0) {
             binding?.characterLocation?.post {
                 performAnimation(clickedData)

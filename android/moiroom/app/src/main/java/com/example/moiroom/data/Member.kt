@@ -22,6 +22,8 @@ data class Member(
     val empathy: Int,
     val humor: Int,
     val generous: Int,
+    val sleepAt: String,
+    val wakeUpAt: String,
     val interest: List<Interest>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
@@ -43,6 +45,8 @@ data class Member(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
+        parcel.readString()!!,
+        parcel.readString()!!,
         parcel.createTypedArrayList(Interest.CREATOR)!!
     )
 
@@ -65,6 +69,8 @@ data class Member(
         parcel.writeInt(empathy)
         parcel.writeInt(humor)
         parcel.writeInt(generous)
+        parcel.writeString(sleepAt)
+        parcel.writeString(wakeUpAt)
         parcel.writeTypedList(interest)
     }
 
