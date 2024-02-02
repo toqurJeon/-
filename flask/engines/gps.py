@@ -17,7 +17,7 @@ def count_result(json_arr):
     X = np.delete(X, 0, 0)
 
     # DBSCAN 모델 초기화 및 훈련
-    dbscan = DBSCAN(eps=0.4, min_samples=2)
+    dbscan = DBSCAN(eps=0.005, min_samples=5)
 
     dbscan.fit(X)
 
