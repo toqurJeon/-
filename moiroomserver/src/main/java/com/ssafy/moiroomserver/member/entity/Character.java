@@ -40,4 +40,10 @@ public class Character extends BaseEntity {
 
     @Column(name = "generous")
     private int generous;
+
+    @Column(name = "sleep_at")
+    private String sleepAt;
+
+    @Column(name = "wake_up_at")
+    private String wakeUpAt;
 }
