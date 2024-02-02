@@ -12,13 +12,24 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "member")
+@Table(
+        name = "member",
+uniqueConstraints = @UniqueConstraint(
+        name = "social_id_provider",
+        columnNames = {"social_id", "provider"}
+))
 public class Member extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
+
+    @Column(name = "social_id", nullable = false, unique = true)
+    private Long socialId;
+
+    @Column(name = "provider", nullable = false, unique = true)
+    private String provider;
 
     @Column(name = "metropolitan_id")
     private Long metropolitanId;
