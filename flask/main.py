@@ -36,7 +36,30 @@ def insta_token():
         # JSON 데이터 받아오기
         json_data = request.get_json()
 
-        # param1 = round(gps.count_result(json_data) * 10000) + 1
+        access_token = json_data["access_token"]
+
+        # 액세스 토큰으로 사용자 피드 목록 받아오기
+        feed_request = requests.get('https://graph.instagram.com/me/media?fields=id,caption&access_token='
+                                    + access_token)
+
+        if feed_request.status_code != 200:
+            return jsonify({'status': 'error', 'message': 'not 200 in feed list'})
+        feed_list = feed_request.json()['data']
+        print(feed_list)
+
+        # for문 돌면서 피드 정보 가져와서 저장
+        info = []
+        for i in range(feed_list):
+            print(i)
+            content_request = requests.get(
+                'https://graph.instagram.com/' + feed_list[i]['id'] + '?fields=media_type,media_url,'
+                                                                      'caption&access_token=' + access_token)
+            if content_request.status_code == 200:
+                info[i] = content_request.json()
+            else:
+                return jsonify({'status': 'error', 'message': 'not 200 in feed list'})
+
+        print(info)
         return jsonify(json_data)
 
     except Exception as e:
