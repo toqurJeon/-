@@ -108,6 +108,8 @@ class MyPageFragment : Fragment() {
             4210,
             6020,
             8758,
+            "23:47",
+            "06:32",
             listOf(
                 Interest(
                     "운동",

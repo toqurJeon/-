@@ -99,7 +99,7 @@ class AdsettingActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // 뒤로가기
+        super.onBackPressed()
         finish()
     }
 }

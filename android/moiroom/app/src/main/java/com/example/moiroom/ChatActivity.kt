@@ -115,13 +115,11 @@ class ChatActivity : AppCompatActivity() {
         val btnNo: Button = dialog.findViewById(R.id.btnNo)
 
         btnYes.setOnClickListener {
-
             dialog.dismiss() // 다이얼로그 닫기
             onBackPressed()
         }
 
         btnNo.setOnClickListener {
-
             dialog.dismiss()
         }
 
@@ -129,7 +127,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // 뒤로가기
+        super.onBackPressed()
         finish()
     }
 }

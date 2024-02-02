@@ -18,6 +18,8 @@ class InfoupdateActivity : AppCompatActivity() {
     // 레이아웃 바인딩
     private lateinit var binding: ActivityInfoupdateBinding
 
+    // 접근 권한 설정. 통화기록, 파일 및 미디어, 인스타그램.
+
     // 사진 선택 요청 코드
     private val PICK_IMAGE_REQUEST = 1
 
@@ -210,7 +212,7 @@ class InfoupdateActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // 뒤로가기
+        super.onBackPressed()
         finish()
     }
 }
