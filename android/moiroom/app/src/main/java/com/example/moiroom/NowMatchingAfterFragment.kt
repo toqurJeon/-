@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 //import OnBackButtonClickListener
+import android.content.Context
 import android.os.Bundle
 import android.os.Looper
 import android.system.Os.remove
@@ -13,6 +14,7 @@ import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
 import com.example.moiroom.adapter.CardDetailPagerAdapter
@@ -166,4 +168,3 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         binding.viewPager2.visibility = View.GONE
     }
 }
-
