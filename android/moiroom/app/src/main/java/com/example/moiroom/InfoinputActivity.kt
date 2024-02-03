@@ -62,12 +62,12 @@ class InfoinputActivity : AppCompatActivity() {
         })
 
         lifecycleScope.launch {
-            val response = sendPostRequest()
-
-            // response가 null이 아니면 로그에 출력
-            response?.let {
-                Log.d("결과", "Not null, POST 성공 - Message: ${it.message}, Status: ${it.status}")
-            }
+//            val response = sendPostRequest()
+//
+//            // response가 null이 아니면 로그에 출력
+//            response?.let {
+//                Log.d("결과", "Not null, POST 성공 - Message: ${it.message}, Status: ${it.status}")
+//            }
         }
 
         // 지역 찾기 버튼 누르기
@@ -121,20 +121,21 @@ class InfoinputActivity : AppCompatActivity() {
         alertDialog.show()
     }
 
-    private suspend fun sendPostRequest(): MyResponse? {
-        val globalApplication = application as GlobalApplication
-
-        val apiService = globalApplication.retrofit2.create(ApiInterface::class.java)
-
-        val requestBody = RequestBody(0.1354, 0.3159, 0.7561)
-        Log.d("정보", "$requestBody")
-        return try {
-            val response = apiService.postData(requestBody)
-            Log.d("결과", "POST 성공 - Message: ${response.message}, Status: ${response.status}")
-            response
-        } catch (e: Exception) {
-            Log.e("에러", "POST 요청 보내기 오류", e)
-            null
-        }
-    }
+    // 테스트
+//    private suspend fun sendPostRequest(): MyResponse? {
+//        val globalApplication = application as GlobalApplication
+//
+//        val apiService = globalApplication.retrofit2.create(ApiInterface::class.java)
+//
+//        val requestBody = RequestBody(0.1354, 0.3159, 0.7561)
+//        Log.d("정보", "$requestBody")
+//        return try {
+//            val response = apiService.postData(requestBody)
+//            Log.d("결과", "POST 성공 - Message: ${response.message}, Status: ${response.status}")
+//            response
+//        } catch (e: Exception) {
+//            Log.e("에러", "POST 요청 보내기 오류", e)
+//            null
+//        }
+//    }
 }
