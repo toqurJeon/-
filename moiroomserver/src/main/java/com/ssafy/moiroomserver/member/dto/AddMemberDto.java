@@ -7,6 +7,8 @@ import lombok.Setter;
 @Setter
 public class AddMemberDto {
 
+    private Long socialId;
+    private String provider;
     private String nickname;
     private String imageUrl;
     private String birthyear;

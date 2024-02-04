@@ -1,7 +1,8 @@
 package com.ssafy.moiroomserver.member.service.impl;
 
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
-import com.ssafy.moiroomserver.global.exception.NoIdException;
+import com.ssafy.moiroomserver.global.exception.ExistException;
+import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
@@ -28,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         Member member = memberRepository.findById(2L)
-                .orElseThrow(() -> new NoIdException(ErrorCode.NOT_EXISTS_MEMBER_ID));
+                .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
         member.modify(infoModifyRequest);
     }
 
@@ -39,7 +40,15 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void addMember(AddMemberDto dto) {
+
+        // 이미 존재하고 있는 회원이 있는 경우 예외처리
+        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId())) {
+            throw new ExistException(ErrorCode.MEMBER_EXIST_ERROR);
+        }
+
         Member member = new Member();
+        member.setSocialId(dto.getSocialId());
+        member.setProvider(dto.getProvider());
         member.setNickname(dto.getNickname());
         member.setImageUrl(dto.getImageUrl());
         member.setBirthyear(dto.getBirthyear());
