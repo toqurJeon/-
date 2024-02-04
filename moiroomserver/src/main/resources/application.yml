@@ -4,5 +4,5 @@ spring:
       - classpath:/application-dev.yml
       - classpath:/application-oauth.yml
       - classpath:/application-s3.yml
-  profiles:
-    active: dev, oauth, s3
+#  profiles:
+#    active: dev, oauth, s3
