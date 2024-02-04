@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.service.impl;
 
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.ExistException;
-import com.ssafy.moiroomserver.global.exception.NoIdException;
+import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
@@ -29,7 +29,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         Member member = memberRepository.findById(2L)
-                .orElseThrow(() -> new NoIdException(ErrorCode.NOT_EXISTS_MEMBER_ID));
+                .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
         member.modify(infoModifyRequest);
     }
 

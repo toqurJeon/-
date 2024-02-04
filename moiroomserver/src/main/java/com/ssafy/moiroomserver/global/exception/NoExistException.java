@@ -4,16 +4,16 @@ import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import lombok.Getter;
 
 @Getter
-public class NoIdException extends RuntimeException {
+public class NoExistException extends RuntimeException {
 
     private final ErrorCode code;
 
-    public NoIdException() {
+    public NoExistException() {
         super(ErrorCode.NOT_EXISTS_ID.getMessage());
         this.code = ErrorCode.NOT_EXISTS_ID;
     }
 
-    public NoIdException(ErrorCode code) {
+    public NoExistException(ErrorCode code) {
         super(code.getMessage());
         this.code = code;
     }
