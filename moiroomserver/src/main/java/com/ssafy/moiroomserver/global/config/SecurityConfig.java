@@ -13,8 +13,6 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain defaultSecurityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("필터 체인 진입");
-
         http
                 .cors(CorsConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
