@@ -29,6 +29,7 @@ import com.example.moiroom.OnBackButtonClickListener
 class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private val cardInfoList = TestData.cardInfoList
+    private var currentPage: Int = 0
 
     // OnBackButtonClickListener 인터페이스의 메서드 구현
     override fun onBackButtonClicked() {
@@ -88,10 +89,23 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
                 binding.cardDetail.visibility = View.GONE
             }
         }
+
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                currentPage = position
+            }
+        })
+
+        savedInstanceState?.let {
+            val restoredPage = it.getInt("current_page", 0)
+            binding.viewPager2.setCurrentItem(restoredPage, false)
+        }
+
     }
 
     override fun onResume() {
         super.onResume()
+        Log.d("NowMatchingAfterFragment", "onResume")
         val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
         if (fragment == null) {
             if (binding.toggleButton.checkedButtonId == R.id.button1) {
@@ -102,6 +116,26 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
                 binding.recyclerView.visibility = View.VISIBLE
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Log.d("NowMatchingAfterFragment", "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Log.d("NowMatchingAfterFragment", "onStop")
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Log.d("NowMatchingAfterFragment", "onDestroyView")
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("current_page", currentPage)
     }
 
     private fun hideDetailFragment() {
@@ -136,6 +170,7 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         })
         if (isButton1Checked) {
             binding.viewPager2.adapter = cardAdapter
+            binding.viewPager2.post { binding.viewPager2.setCurrentItem(currentPage, false) }
             binding.recyclerView.adapter = null
         } else {
             binding.viewPager2.adapter = null
@@ -160,7 +195,7 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
                 R.anim.slide_in_right,
                 R.anim.slide_out_left
             )
-            add(R.id.viewPager2,detailFragment,"cardDetail")
+            replace(R.id.viewPager2,detailFragment,"cardDetail")
             addToBackStack(null)
             commit()
         }
