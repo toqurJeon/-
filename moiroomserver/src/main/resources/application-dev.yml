@@ -1,21 +1,20 @@
 spring:
-  config:
-    activate:
-      on-profile: dev
+#  config:
+#    activate:
+#      on-profile: dev
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    #    url: jdbc:mysql://stg-yswa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P12A308?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+#    url: jdbc:mysql://stg-ys-wa-kr-practice-db-master.mariadb.database.azure.com:3306/S10P12A308?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
     url: jdbc:mysql://i10a308.p.ssafy.io:3306/moiroom?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
-    #    jdbc:mysql://localhost:3306/ssafy
-    hikari:
-      #      username: ssafy
-      #      password: ssafy123~
-      #      username: S10P12A308@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
-      #      password: ${MARIADB_PW}
-      username: root
-      password: ${MYSQL_PW}
-  #    url: jdbc:mysql://localhost:3306/ssafy
+#    url: jdbc:mysql://localhost:3306/ssafy
+#    hikari:
+#    username: ssafy
+#    password: ssafy123~
+#    username: S10P12A308@stg-yswa-kr-practice-db-master.mariadb.database.azure.com
+#    password: ${MARIADB_PW}
+    username: root
+    password: ${MYSQL_PW}
   jpa:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
