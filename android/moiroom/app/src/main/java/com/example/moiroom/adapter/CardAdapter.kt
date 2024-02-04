@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.CardDetailFragment
+import com.example.moiroom.NewCardDetailDialogFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CardInfo
 
@@ -100,16 +101,14 @@ class CardAdapter(
 
             holder.detailButton.setOnClickListener {
                 val fragmentManager = (holder.detailButton.context as AppCompatActivity).supportFragmentManager
-                val fragmentTransaction = fragmentManager.beginTransaction()
 
-                // 애니메이션 설정
-                fragmentTransaction.setCustomAnimations(R.anim.slide_in_right, R.anim.slide_out_left)
+                // NewCardDetailDialogFragment 인스턴스 생성
+                val newCardDetailDialogFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
 
-                // 프래그먼트 교체
-                fragmentTransaction.replace(R.id.mainFrameLayout, CardDetailFragment.newInstance(cardInfo))
-
-                fragmentTransaction.commit()
+                // DialogFragment를 보여주는 일반적인 방법을 사용
+                newCardDetailDialogFragment.show(fragmentManager, "cardDetail")
             }
+
         } else if (holder is CardViewHolder2) {
             holder.matchingRate.text = "${cardInfo.matchingRate}%"
             holder.introduction.text = cardInfo.introduction

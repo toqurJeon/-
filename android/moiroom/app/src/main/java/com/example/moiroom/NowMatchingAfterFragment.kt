@@ -179,26 +179,12 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
     }
 
     private fun showDetailFragment(cardInfo: CardInfo) {
-        val detailFragment = CardDetailFragment.newInstance(cardInfo)
-
-        // 이전 Fragment를 제거합니다.
+        val detailFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
         val oldFragment = parentFragmentManager.findFragmentByTag("cardDetail")
         oldFragment?.let {
             parentFragmentManager.beginTransaction().remove(it).commit()
         }
-
-        // 새로운 Fragment를 추가합니다.
-        parentFragmentManager.beginTransaction().apply {
-            setCustomAnimations(
-                R.anim.slide_in_right,
-                R.anim.slide_out_left,
-                R.anim.slide_in_right,
-                R.anim.slide_out_left
-            )
-            replace(R.id.viewPager2,detailFragment,"cardDetail")
-            addToBackStack(null)
-            commit()
-        }
+        detailFragment.show(parentFragmentManager, "cardDetail") // 변경된 부분입니다.
         binding.recyclerView.visibility = View.GONE
         binding.viewPager2.visibility = View.GONE
     }
