@@ -24,7 +24,7 @@ class NowMatchingActivity : AppCompatActivity() {
         } else {
             setContentView(R.layout.activity_now_matching)
 
-            val startMatchingButton: TextView = findViewById(R.id.startMatchingButton)
+//            val startMatchingButton: TextView = findViewById(R.id.startMatchingButton)
             val relativeLayout: RelativeLayout = findViewById(R.id.relativeLayout)
 
             val onClickListener = View.OnClickListener {
@@ -37,7 +37,7 @@ class NowMatchingActivity : AppCompatActivity() {
                 editor.apply()
             }
 
-            startMatchingButton.setOnClickListener(onClickListener)
+//            startMatchingButton.setOnClickListener(onClickListener)
             relativeLayout.setOnClickListener(onClickListener)
         }
     }
