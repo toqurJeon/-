@@ -19,6 +19,9 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 
+    private static final int LOGIN = 1;
+    private static final int LOGOUT = 0;
+
     private final MemberRepository memberRepository;
 
     /**
@@ -34,16 +37,24 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * 카카오 회원 정보 추가
+     * 카카오 회원 로그인 로직
      * @param dto
      */
     @Transactional
     @Override
-    public void addMember(AddMemberDto dto) {
+    public void login(AddMemberDto dto) {
 
-        // 이미 존재하고 있는 회원이 있는 경우 예외처리
-        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId())) {
-            throw new ExistException(ErrorCode.MEMBER_EXIST_ERROR);
+        // 이미 존재하고 있는 회원인데 로그인 상태인 경우
+        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
+        memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getLoginStatus() == LOGIN) {
+            throw new ExistException(ErrorCode.MEMBER_ALREADY_LOGIN_ERROR);
+        }
+
+        // 이미 존재하고 로그아웃 상태인 경우
+        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
+                memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getAccountStatus() == LOGOUT) {
+            memberRepository.updateLoginStatusBySocialIdAndProvider(dto.getSocialId(), dto.getProvider());
+            return;
         }
 
         Member member = new Member();
