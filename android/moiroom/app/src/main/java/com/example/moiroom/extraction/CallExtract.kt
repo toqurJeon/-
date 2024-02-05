@@ -10,6 +10,12 @@ import android.provider.CallLog.Calls
 import android.provider.CallLog.Locations
 import android.util.Log
 import com.example.moiroom.databinding.ActivityJaeeontestBinding
+import com.github.kittinunf.fuel.Fuel
+import com.github.kittinunf.fuel.core.FuelManager
+import com.github.kittinunf.fuel.core.extensions.jsonBody
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class CallExtract: AppCompatActivity() {
     private lateinit var binding: ActivityJaeeontestBinding
@@ -23,11 +29,17 @@ class CallExtract: AppCompatActivity() {
 //        val calls = getCallLog(this).reversed().subList(1, 4)
         val calls = getCallLog(this)
         Log.d("사진들", "$calls")
-        binding.textview.text = "$calls"
+        postFuel(calls)
+//        binding.textview.text = "$calls"
     }
-
-    fun getCallLog(context: Context): List<CallLogItem> {
+    fun callExtract() {
+        val calls = getCallLog(this)
+        return postFuel(calls)
+    }
+    fun getCallLog(context: Context): String {
         val callLogList = mutableListOf<CallLogItem>()
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("[")
 
         // ContentResolver를 사용하여 CallLog.Calls에 쿼리를 수행
         val contentResolver: ContentResolver = context.contentResolver
@@ -42,28 +54,68 @@ class CallExtract: AppCompatActivity() {
         // 쿼리 결과를 가지고 작업
         cursor?.use {
             val numberIndex = it.getColumnIndex(Calls.NUMBER)
+            val nameIndex = it.getColumnIndex(Calls.CACHED_NAME)
             val dateIndex = it.getColumnIndex(Calls.DATE)
             val durationIndex = it.getColumnIndex(Calls.DURATION)
             val typeIndex = it.getColumnIndex(Calls.TYPE)
             val locationIndex = it.getColumnIndex(Calls.GEOCODED_LOCATION)
             val Latitude = it.getColumnIndex(Locations.LATITUDE)
             val Longitude = it.getColumnIndex(Locations.LONGITUDE)
-
+            var a = 1
             while (it.moveToNext()) {
                 val number = if (numberIndex != -1) it.getString(numberIndex) else ""
                 val date = if (dateIndex != -1) it.getLong(dateIndex) else 0
                 val duration = if (durationIndex != -1) it.getInt(durationIndex) else 0
                 val type = if (typeIndex != -1) it.getInt(typeIndex) else 0
                 val location = if (locationIndex != -1) it.getString(locationIndex) else ""
+                val name = if (nameIndex != -1) it.getString(nameIndex) else ""
 
-                // CallLogItem 객체를 만들어 리스트에 추가
-                val callLogItem = CallLogItem(number, date, duration, type, location, Latitude, Longitude)
-
-                callLogList.add(callLogItem)
+                if (number.startsWith("010")) {
+                    stringBuilder.append("{ \"number\": \"$number\", \"name\": \"$name\", \"date\": $date, \"duration\": $duration, \"type\": $type, \"location\": \"$location\"}, ")
+                }
+//                a += 1
+//                if ( a > 5 ) {
+//                    break
+//                }
             }
         }
-
+        stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        stringBuilder.append("]")
         // 리스트 반환
-        return callLogList
+        return stringBuilder.toString()
+    }
+
+    private fun postFuel(data: String) {
+        val stringBuilder = StringBuilder()
+        stringBuilder.append("{ \"calls\": ")
+//        stringBuilder.append(data)
+        stringBuilder.append("$data")
+        stringBuilder.append("}")
+        // FuelManager 설정 (선택사항)
+        FuelManager.instance.basePath = "http://i10a308.p.ssafy.io:5000"
+        Log.d("최종 전송 데이터", stringBuilder.toString())
+        binding.textview.text = stringBuilder.toString()
+        // 코루틴 사용
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = Fuel.post("/calling_history")
+                    .header("Content-Type" to "application/json")
+                    .jsonBody(
+                        stringBuilder.toString()
+                    )
+                    .responseString()
+
+                // 응답 확인
+                response.third.fold(
+                    success = { data ->
+                        Log.d("서버 응답", "$data")
+                    },
+                    failure = { error -> Log.d("서버 에러", "에러: $error") }
+                )
+            } catch (e: Exception) {
+                println("에러: $e")
+            }
+        }
     }
 }

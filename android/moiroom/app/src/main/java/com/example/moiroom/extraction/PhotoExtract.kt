@@ -30,24 +30,26 @@ class PhotoExtract: AppCompatActivity() {
         val photos = getAllPhotos()
         postFuel(photos)
     }
+    fun photoExtract() {
+        val photos = getAllPhotos()
+        return postFuel(photos)
+    }
 
     fun getAllPhotos(): String {
         val projection = arrayOf(
             MediaStore.Images.Media.DATA,
-            MediaStore.Images.Media.DISPLAY_NAME,
-            MediaStore.Images.Media.DATE_ADDED,
-            MediaStore.Images.Media.IS_DOWNLOAD,
-            MediaStore.Images.Media.IS_FAVORITE,
-            MediaStore.Images.Media.IS_TRASHED,
-            MediaStore.Images.Media.HEIGHT,
-            MediaStore.Images.Media.WIDTH,
-            MediaStore.Images.Media.LONGITUDE,
-            MediaStore.Images.Media.LATITUDE,
+//            MediaStore.Images.Media.DISPLAY_NAME,
+//            MediaStore.Images.Media.DATE_ADDED,
+//            MediaStore.Images.Media.IS_DOWNLOAD,
+//            MediaStore.Images.Media.IS_FAVORITE,
+//            MediaStore.Images.Media.IS_TRASHED,
+//            MediaStore.Images.Media.HEIGHT,
+//            MediaStore.Images.Media.WIDTH,
+//            MediaStore.Images.Media.LONGITUDE,
+//            MediaStore.Images.Media.LATITUDE,
         )
         val stringBuilder = StringBuilder()
         stringBuilder.append("[")
-        val photos = ArrayList<String>()
-        val location = mutableListOf<Map<String, Double>>()
         // MediaStore에서 이미지를 가져오는 쿼리
         val cursor: Cursor? = contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
@@ -61,32 +63,31 @@ class PhotoExtract: AppCompatActivity() {
             val columnIndexData = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
             while (it.moveToNext()) {
                 val photoPath = it.getString(columnIndexData)
-                val photoDayAdded =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED))
-                val photoIsDownload =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_DOWNLOAD))
-                val photoIsFavorite =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_FAVORITE))
-                val photoIsTrashed =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_TRASHED))
-                val photoHeight =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT))
-                val photoWidth =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH))
-                val photoLongitude =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LONGITUDE))
-                val photoLatitude =
-                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE))
+//                val photoDayAdded =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.DATE_ADDED))
+//                val photoIsDownload =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_DOWNLOAD))
+//                val photoIsFavorite =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_FAVORITE))
+//                val photoIsTrashed =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.IS_TRASHED))
+//                val photoHeight =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.HEIGHT))
+//                val photoWidth =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.WIDTH))
+//                val photoLongitude =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LONGITUDE))
+//                val photoLatitude =
+//                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE))
 
                 val a = readMetadata(photoPath)
                 if (a != "{\"latitude\": null, \"longitude\": null}, ") {
                     stringBuilder.append(a)
-//                    photos.add("[$photoPath, $photoDayAdded, $photoIsDownload, $photoIsFavorite, $photoIsTrashed, $photoHeight, $photoWidth, $photoLongitude, $a]")
                 }
-                number += 1
-                if (number > 200 ) {
-                    break
-                }
+//                number += 1
+//                if (number > 200 ) {
+//                    break
+//                }
 
             }
         }

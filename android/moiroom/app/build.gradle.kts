@@ -130,4 +130,5 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
     // json to map 라이브러리
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+
 }

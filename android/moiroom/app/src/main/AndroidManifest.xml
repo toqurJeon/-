@@ -15,7 +15,12 @@
     <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
     <!-- 전화 기록 접근 권한 허용-->
     <uses-permission android:name="android.permission.READ_CALL_LOG" />
-
+    <!-- 어플별 사용 기록 -->
+    <uses-permission android:name="android.permission.ACTION_USAGE_ACCESS_SETTINGS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <!-- sms 접근 권한 허용 -->
+    <uses-feature android:name="android.hardware.telephony" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
     <!-- 캘린터 접근 권한 허용 -->
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <!-- 네트워크 엑세스 권한 -->
@@ -99,10 +104,16 @@
             android:name=".extraction.CallExtract"
             android:exported="true" />
         <activity
+            android:name=".extraction.SmsExtract"
+            android:exported="true" />
+        <activity
             android:name=".extraction.PhotoExtract"
             android:exported="true" />
         <activity
             android:name=".extraction.VideoExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.AppExtract"
             android:exported="true" />
         <activity
             android:name=".extraction.CalendarExtract"
