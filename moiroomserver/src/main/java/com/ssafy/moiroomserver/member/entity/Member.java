@@ -72,6 +72,10 @@ public class Member extends BaseEntity {
     @Column(name = "refresh_token", nullable = false) // 카카오에서 발급 받은 refreshToken
     private String refreshToken;
 
+    @Column(name = "login_status", nullable = false)
+    @ColumnDefault("1")
+    private int loginStatus;
+
     @Column(name = "account_status", nullable = false)
     @ColumnDefault("1")
     private int accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
