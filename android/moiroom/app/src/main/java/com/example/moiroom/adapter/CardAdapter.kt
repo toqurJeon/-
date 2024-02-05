@@ -1,6 +1,5 @@
 package com.example.moiroom.adapter
 
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +11,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.NewCardDetailDialogFragment
 import com.example.moiroom.R
-import com.example.moiroom.data.CardInfo
+import com.example.moiroom.data.MatchedMember
 
 interface CardItemClickListener {
-    fun onCardDetailClick(cardInfo: CardInfo)
+    fun onCardDetailClick(cardInfo: MatchedMember)
 }
 
 class CardAdapter(
-    private val cardInfoList: List<CardInfo>,
+    private val cardInfoList: List<MatchedMember>,
     private val isToggleButtonChecked: Boolean,
     private val cardItemClickListener: CardItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -61,12 +60,12 @@ class CardAdapter(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val cardInfo = cardInfoList[position]
         if (holder is CardViewHolder1) {
-            holder.matchingRate.text = "${cardInfo.matchingRate}%"
-            holder.summary.text = cardInfo.summary
-            holder.profileImage.setImageResource(cardInfo.profileImage)
-            holder.name.text = cardInfo.name
-            holder.location.text = cardInfo.location
-            holder.introduction.text = cardInfo.introduction
+            holder.matchingRate.text = "${cardInfo.matchRate}%"
+            holder.summary.text = cardInfo.matchIntroduction
+//            holder.profileImage.setImageResource(cardInfo.memberProfileImageUrl)
+            holder.name.text = cardInfo.memberNickname
+            holder.location.text = cardInfo.metropolitanName + cardInfo.cityName
+            holder.introduction.text = cardInfo.memberIntroduction
 
             // 밑줄 뷰의 너비를 요약 텍스트뷰의 너비와 같게 설정
             holder.summary.post {
@@ -94,26 +93,26 @@ class CardAdapter(
             holder.summary.tag = globalLayoutListener
             summaryObserver.addOnGlobalLayoutListener(globalLayoutListener)
 
-            holder.detailButton.setOnClickListener {
-                cardItemClickListener.onCardDetailClick(cardInfo) // 버튼 클릭 이벤트 처리
-            }
-
-            holder.detailButton.setOnClickListener {
-                val fragmentManager = (holder.detailButton.context as AppCompatActivity).supportFragmentManager
-
-                // NewCardDetailDialogFragment 인스턴스 생성
-                val newCardDetailDialogFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
-
-                // DialogFragment를 보여주는 일반적인 방법을 사용
-                newCardDetailDialogFragment.show(fragmentManager, "cardDetail")
-            }
+//            holder.detailButton.setOnClickListener {
+//                cardItemClickListener.onCardDetailClick(cardInfo) // 버튼 클릭 이벤트 처리
+//            }
+//
+//            holder.detailButton.setOnClickListener {
+//                val fragmentManager = (holder.detailButton.context as AppCompatActivity).supportFragmentManager
+//
+//                // NewCardDetailDialogFragment 인스턴스 생성
+//                val newCardDetailDialogFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
+//
+//                // DialogFragment를 보여주는 일반적인 방법을 사용
+//                newCardDetailDialogFragment.show(fragmentManager, "cardDetail")
+//            }
 
         } else if (holder is CardViewHolder2) {
-            holder.matchingRate.text = "${cardInfo.matchingRate}%"
-            holder.introduction.text = cardInfo.introduction
-            holder.profileImage.setImageResource(cardInfo.profileImage)
-            holder.name.text = cardInfo.name
-            holder.location.text = cardInfo.location
+            holder.matchingRate.text = "${cardInfo.matchRate}%"
+            holder.introduction.text = cardInfo.matchIntroduction
+//            holder.profileImage.setImageResource(cardInfo.profileImage)
+            holder.name.text = cardInfo.memberNickname
+            holder.location.text = cardInfo.metropolitanName + cardInfo.cityName
         }
     }
 

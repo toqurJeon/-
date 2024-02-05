@@ -12,6 +12,7 @@ import com.example.moiroom.data.Interest
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.databinding.FragmentMyPageBinding
+import com.example.moiroom.utils.cacheUserInfo
 import com.example.moiroom.view.RadarChartView
 
 
@@ -26,8 +27,16 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
 
-        val memberData: Member = getMemberData()
+        val cachedUserInfo: Member? = cacheUserInfo.get("userInfo")
+        if (cachedUserInfo != null) {
+            val memberData: Member = cachedUserInfo
+            setUI(memberData)
+        }
 
+        return binding.root
+    }
+
+    private fun setUI(memberData: Member) {
         val profileImageUrl = memberData.memberProfileImageUrl
         if (profileImageUrl != null) {
             val profileImageView = binding.memberProfileImage
@@ -84,50 +93,5 @@ class MyPageFragment : Fragment() {
             val intent = Intent(requireContext(), AdsettingActivity::class.java)
             startActivity(intent)
         }
-
-        return binding.root
-    }
-
-    private fun getMemberData(): Member {
-        return Member(
-            1,
-            "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
-            "안드레이",
-            "남자",
-            "김민식",
-            1999,
-            "서울특별시",
-            "강남구",
-            "멍멍이를 엄청 좋아해요. 댕댕.",
-            1,
-            6520,
-            7552,
-            6993,
-            7653,
-            5683,
-            4210,
-            6020,
-            8758,
-            "23:47",
-            "06:32",
-            listOf(
-                Interest(
-                    "운동",
-                    48
-                ),
-                Interest(
-                    "음악",
-                    36
-                ),
-                Interest(
-                    "요리",
-                    11
-                ),
-                Interest(
-                    "게임",
-                    5
-                )
-            )
-        )
     }
 }
