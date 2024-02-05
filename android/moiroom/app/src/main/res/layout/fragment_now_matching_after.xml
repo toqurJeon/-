@@ -58,12 +58,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/toggleButton" />
 
-    <FrameLayout
-        android:id="@+id/cardDetail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/transparent"
-        android:visibility="gone" />
-
 </RelativeLayout>
+
 
