@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moiroom.CardDetailFragment
 import com.example.moiroom.NewCardDetailDialogFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CardInfo

@@ -1,6 +1,5 @@
 package com.example.moiroom
 
-//import OnBackButtonClickListener
 import android.content.Context
 import android.os.Bundle
 import android.os.Looper
@@ -17,7 +16,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
-import com.example.moiroom.adapter.CardDetailPagerAdapter
 import com.example.moiroom.adapter.CardItemClickListener
 import com.example.moiroom.data.CardInfo
 import com.example.moiroom.data.TestData
@@ -26,16 +24,11 @@ import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.example.moiroom.OnBackButtonClickListener
 
-class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
+class NowMatchingAfterFragment : Fragment() {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private val cardInfoList = TestData.cardInfoList
-    private var currentPage: Int = 0
 
-    // OnBackButtonClickListener 인터페이스의 메서드 구현
-    override fun onBackButtonClicked() {
-        hideDetailFragment()
-    }
-
+    // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -44,6 +37,7 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         return binding.root
     }
 
+    // 뷰 생성 이후 동작
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -51,7 +45,6 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         val gridLayoutManager = GridLayoutManager(context, 1)
         binding.recyclerView.layoutManager = gridLayoutManager
         binding.viewPager2.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
-        binding.viewPager2.orientation = ViewPager2.ORIENTATION_VERTICAL
 
         // 체크된 상태로 시작하도록 설정
         binding.toggleButton.check(R.id.button1)
@@ -74,92 +67,9 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
                     }
                 }
                 setCardAdapter(checkedId == R.id.button1)
-                hideDetailFragment()
             }
         }
 
-        activity?.supportFragmentManager?.addOnBackStackChangedListener {
-            val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
-            if (fragment == null) {
-                if (binding.toggleButton.checkedButtonId == R.id.button1) {
-                    binding.viewPager2.visibility = View.VISIBLE
-                } else {
-                    binding.recyclerView.visibility = View.VISIBLE
-                }
-                binding.cardDetail.visibility = View.GONE
-            }
-        }
-
-        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
-            override fun onPageSelected(position: Int) {
-                currentPage = position
-            }
-        })
-
-        savedInstanceState?.let {
-            val restoredPage = it.getInt("current_page", 0)
-            binding.viewPager2.setCurrentItem(restoredPage, false)
-        }
-
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("NowMatchingAfterFragment", "onResume")
-        val fragment = parentFragmentManager.findFragmentById(R.id.cardDetail)
-        if (fragment == null) {
-            if (binding.toggleButton.checkedButtonId == R.id.button1) {
-                binding.viewPager2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-            } else {
-                binding.viewPager2.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("NowMatchingAfterFragment", "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("NowMatchingAfterFragment", "onStop")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("NowMatchingAfterFragment", "onDestroyView")
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putInt("current_page", currentPage)
-    }
-
-    private fun hideDetailFragment() {
-        val fragment = parentFragmentManager.findFragmentByTag("cardDetail")
-        if (fragment != null) {
-            parentFragmentManager.beginTransaction().apply {
-                setCustomAnimations(
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left,
-                    R.anim.slide_in_right,
-                    R.anim.slide_out_left
-                )
-                remove(fragment)
-                commit()
-            }
-        }
-
-        if (binding.toggleButton.checkedButtonId == R.id.button1) {
-            binding.viewPager2.visibility = View.VISIBLE
-        } else {
-            binding.recyclerView.visibility = View.VISIBLE
-        }
-
-//        setCardAdapter(binding.toggleButton.checkedButtonId == R.id.button1)
     }
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
@@ -170,7 +80,6 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         })
         if (isButton1Checked) {
             binding.viewPager2.adapter = cardAdapter
-            binding.viewPager2.post { binding.viewPager2.setCurrentItem(currentPage, false) }
             binding.recyclerView.adapter = null
         } else {
             binding.viewPager2.adapter = null
@@ -184,7 +93,7 @@ class NowMatchingAfterFragment : Fragment(), OnBackButtonClickListener {
         oldFragment?.let {
             parentFragmentManager.beginTransaction().remove(it).commit()
         }
-        detailFragment.show(parentFragmentManager, "cardDetail") // 변경된 부분입니다.
+        detailFragment.show(parentFragmentManager, "cardDetail")
         binding.recyclerView.visibility = View.GONE
         binding.viewPager2.visibility = View.GONE
     }
