@@ -15,8 +15,8 @@ import org.hibernate.annotations.ColumnDefault;
 @Table(
         name = "member",
 uniqueConstraints = @UniqueConstraint(
-        name = "social_id_provider",
-        columnNames = {"social_id", "provider"}
+        name = "social_id",
+        columnNames = {"social_id"}
 ))
 public class Member extends BaseEntity {
 
@@ -28,7 +28,7 @@ public class Member extends BaseEntity {
     @Column(name = "social_id", nullable = false, unique = true)
     private Long socialId;
 
-    @Column(name = "provider", nullable = false, unique = true)
+    @Column(name = "provider", nullable = false)
     private String provider;
 
     @Column(name = "metropolitan_id")
