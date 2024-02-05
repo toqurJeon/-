@@ -15,7 +15,7 @@ public enum SuccessCode {
     //회원
     UPLOAD_PROFILE_IMAGE(OK, "프로필 사진 업로드 성공"),
     MODIFY_MEMBER_INFO(OK, "회원 정보 수정 성공"),
-    ADD_MEMBER_INFO(CREATED, "회원 정보 추가 성공"),
+    LOGIN_MEMBER(CREATED, "로그인 성공"),
     MODIFY_MEMBER_TOKEN(OK, "토큰 업데이트를 완료하였습니다!");
 
     private final HttpStatus status;

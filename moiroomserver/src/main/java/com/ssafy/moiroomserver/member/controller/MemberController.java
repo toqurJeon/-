@@ -30,9 +30,9 @@ public class MemberController {
      * @return
      */
     @PostMapping
-    public ApiResponse<?> addMember(@RequestBody AddMemberDto accountDto) {
-        memberService.addMember(accountDto);
-        return ApiResponse.success(SuccessCode.ADD_MEMBER_INFO);
+    public ApiResponse<?> login(@RequestBody AddMemberDto accountDto) {
+        memberService.login(accountDto);
+        return ApiResponse.success(SuccessCode.LOGIN_MEMBER);
     }
 
     /**

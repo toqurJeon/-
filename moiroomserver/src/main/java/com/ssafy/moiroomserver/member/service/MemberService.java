@@ -8,7 +8,7 @@ public interface MemberService {
 
     void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest);
 
-    void addMember(AddMemberDto dto);
+    void login(AddMemberDto dto);
 
     void modifyMemberToken(Long memberId, MemberTokenDto tokenDto);
 }
