@@ -59,6 +59,12 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.GET_MEMBER_BY_ID, member);
     }
 
+    /**
+     * 로그아웃 api
+     * @param socialId
+     * @param provider
+     * @return
+     */
     @PostMapping("/logout")
     public ApiResponse<?> logout(@RequestParam Long socialId, @RequestParam String provider) {
         memberService.logout(socialId, provider);
