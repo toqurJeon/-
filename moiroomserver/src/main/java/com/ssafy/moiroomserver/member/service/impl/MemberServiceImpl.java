@@ -54,9 +54,8 @@ public class MemberServiceImpl implements MemberService {
 
         // 이미 존재하고 로그아웃 상태인 경우
         if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
-                memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getAccountStatus() == LOGOUT) {
+                memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getLoginStatus() == LOGOUT) {
             memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).setLoginStatus(LOGIN);
-
             return;
         }
 
