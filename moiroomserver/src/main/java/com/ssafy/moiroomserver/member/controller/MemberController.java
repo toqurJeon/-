@@ -25,7 +25,7 @@ public class MemberController {
     }
 
     /**
-     * 카카오 회원 정보 저장
+     * 카카오 회원 로그인
      * @param accountDto
      * @return
      */
