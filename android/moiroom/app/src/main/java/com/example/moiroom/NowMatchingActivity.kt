@@ -23,8 +23,6 @@ import android.widget.Toast
 class NowMatchingActivity : AppCompatActivity() {
 
     private val PERMISSION_REQUEST_CODE = 103
-    private val CALL_LOG_PERMISSION_REQUEST_CODE = 101
-    private val STORAGE_PERMISSION_REQUEST_CODE = 102
 
     private lateinit var binding: ActivityNowMatchingBinding
 
@@ -38,9 +36,9 @@ class NowMatchingActivity : AppCompatActivity() {
 
         if (isButtonClicked) {
 
-//            val intent = Intent(this, NaviActivity::class.java)
-//            startActivity(intent)
-//            finish()
+            val intent = Intent(this, NaviActivity::class.java)
+            startActivity(intent)
+            finish()
 
         } else {
             setContentView(binding.root)
@@ -49,13 +47,18 @@ class NowMatchingActivity : AppCompatActivity() {
 
                 showAuthorityDialog()
 
-                // 클릭 여부를 SharedPreferences에 저장
-                // val editor = sharedPreferences.edit()
-                // editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
-                // editor.apply()
+                 // 클릭 여부를 SharedPreferences에 저장
+                 val editor = sharedPreferences.edit()
+                 editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
+                 editor.apply()
             }
         }
     }
+
+    companion object {
+        const val REQUEST_CODE_SETTINGS = 1001
+    }
+
     private fun showAuthorityDialog() {
 
         val dialog = Dialog(this)
@@ -65,7 +68,7 @@ class NowMatchingActivity : AppCompatActivity() {
         dialogBinding.authorityMessage.text = "앞으로의 권한을 설정해주시면, 나에게 맞는 룸메이트를 찾을 가능성이 올라가요!"
 
         dialogBinding.confirmButton.setOnClickListener {
-            requestCallLogPermission()
+            permissionRequest()
             dialog.dismiss()
         }
         dialog.show()
@@ -74,44 +77,89 @@ class NowMatchingActivity : AppCompatActivity() {
     private fun goSettingActivityAlertDialog() {
         AlertDialog.Builder(this)
             .setTitle("권한 승인이 필요합니다.")
-            .setMessage("앨범에 접근 하기 위한 권한이 필요합니다.\n권한 -> 저장공간 -> 허용")
+            .setMessage("권한이 필요합니다.\n권한 -> 통화 및 저장공간 -> 허용")
             .setPositiveButton("허용하러 가기") { _, _ ->
                 val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                 goSettingPermission.data = Uri.parse("package:$packageName")
-                startActivity(goSettingPermission)
+                startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
             }
-            .setNegativeButton("취소") { _, _ -> }
+            .setNegativeButton("취소") { _, _ ->
+                goInsta()
+            }
             .create()
             .show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        // 설정 화면에서 돌아왔을 때 처리
+        if (requestCode == REQUEST_CODE_SETTINGS) {
+            Log.d("TAG", "Settings Activity Returned")
+
+            goInsta()
+        }
+    }
+
     private fun goInsta() {
-        Log.d("TAG", "goInsta: 인스타까지 옴")
+        Log.d("TAG", "goInsta: 인스타그램 추출 액티비티로 이동")
         val intent = Intent(this, InstagramExtract::class.java)
         startActivity(intent)
     }
 
-    private fun requestCallLogPermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CALL_LOG)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(Manifest.permission.READ_CALL_LOG),
-                CALL_LOG_PERMISSION_REQUEST_CODE
-            )
-        }
-    }
+    private fun permissionRequest() {
 
-    private fun requestStoragePermission() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED
-        ) {
+        // 통화 기록 읽기 허용 여부
+        val isReadCallGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CALL_LOG
+        ) == PackageManager.PERMISSION_GRANTED
+
+        // 저장소 접근 허용 여부
+        val isExternalStorageGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if (isReadCallGranted && isExternalStorageGranted) {
+            Log.d("권한 설정", "permissionRequest: 이미 모든 권한이 허용됨")
+
+            goInsta()
+
+        } else if (isReadCallGranted) {
+            Log.d("권한 설정", "permissionRequest: Call Permission만 허용됨")
+
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-                STORAGE_PERMISSION_REQUEST_CODE
+                arrayOf(
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                PERMISSION_REQUEST_CODE
             )
+
+        } else if (isExternalStorageGranted) {
+            Log.d("권한 설정", "permissionRequest: External Storage Permission만 허용됨")
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.READ_CALL_LOG
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+
+        } else {
+            Log.d("권한 설정", "permissionRequest: 모든 권한이 허용되지 않음")
+
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(
+                    Manifest.permission.READ_CALL_LOG,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                ),
+                PERMISSION_REQUEST_CODE
+            )
+
         }
     }
 
@@ -121,42 +169,39 @@ class NowMatchingActivity : AppCompatActivity() {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            CALL_LOG_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 통화 기록 권한을 얻은 경우, 저장소 권한 요청
-                    requestStoragePermission()
+
+        var neverFlag: Boolean = false
+
+        if (requestCode == PERMISSION_REQUEST_CODE) {
+            for (i in permissions.indices) {
+                if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
+                    Log.d("TAG", "${permissions[i]} 권한이 허용되었습니다.")
+                    // 권한이 허용된 경우
                 } else {
+                    Log.d("TAG", "${permissions[i]} 권한이 거부되었습니다.")
+
+                    neverFlag = true
+
                     if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
                         // 사용자가 "다시 묻지 않음" 옵션을 선택하지 않고 권한을 거부한 경우
-                        Log.d("TAG", "onRequestPermissionsResult: Call 권한이 거부되었습니다. $permissions[0]")
-                        ActivityCompat.requestPermissions(this, arrayOf(permissions[0]), PERMISSION_REQUEST_CODE)
+
+                        Log.d("TAG", "onRequestPermissionsResult: 권한이 거부되었습니다.]")
                     } else {
                         // 사용자가 "다시 묻지 않음" 옵션을 선택하고 권한을 거부한 경우
-                        // 사용자에게 설정 메뉴를 통해 권한을 활성화하도록 안내합니다.
-                        Log.d("TAG", "onRequestPermissionsResult: Call 다시 묻지 않음 설정. $permissions[0]")
-                        Toast.makeText(this, "Call 권한을 활성화하려면 설정 메뉴로 이동해주세요.", Toast.LENGTH_SHORT).show()
+
+                        Log.d("TAG", "onRequestPermissionsResult: 다시 묻지 않음 설정.")
+//                        Toast.makeText(this, "권한을 활성화하려면 설정 메뉴로 이동해주세요.", Toast.LENGTH_SHORT)
+//                            .show()
                     }
                 }
             }
-            STORAGE_PERMISSION_REQUEST_CODE -> {
-                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // 저장소 권한을 얻은 경우, Instagram 추출 실행
-                    goInsta()
-                } else {
-                    // Storage 권한을 허용하지 않은 경우, 원하는 동작 수행
-                    // 여기에 처리하고자 하는 작업을 추가하십시오.
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, permissions[0])) {
-                        // 사용자가 "다시 묻지 않음" 옵션을 선택하지 않고 권한을 거부한 경우
-                        Log.d("TAG", "onRequestPermissionsResult: Storage 권한이 거부되었습니다. $permissions[0]")
-                        ActivityCompat.requestPermissions(this, arrayOf(permissions[0]), PERMISSION_REQUEST_CODE)
-                    } else {
-                        // 사용자가 "다시 묻지 않음" 옵션을 선택하고 권한을 거부한 경우
-                        // 사용자에게 설정 메뉴를 통해 권한을 활성화하도록 안내합니다.
-                        Log.d("TAG", "onRequestPermissionsResult: Storage 다시 묻지 않음 설정. $permissions[0]")
-                        Toast.makeText(this, "Storage 권한을 활성화하려면 설정 메뉴로 이동해주세요.", Toast.LENGTH_SHORT).show()
-                    }
-                }
+            if (neverFlag) {
+                // 다시 묻지않음 설정이 활성화되어있을 경우
+                // 사용자에게 설정으로 이동하여 접근권한을 허용하도록 권유
+                goSettingActivityAlertDialog()
+            } else {
+                // 허용되어 있음
+                goInsta()
             }
         }
     }

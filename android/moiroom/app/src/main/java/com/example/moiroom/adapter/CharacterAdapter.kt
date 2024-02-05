@@ -8,6 +8,7 @@ import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.databinding.CharacteristicItemLayoutBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getColorCharacter
+import java.text.DecimalFormat
 
 class CharacterAdapter(
     private val context: Context,
@@ -36,10 +37,11 @@ class CharacterAdapter(
         val data = dataList[position]
         val color = getBGColorCharacter(data.type.value, context)
         val defaultColor = getColorCharacter("default", context)
+        val decimalFormat = DecimalFormat("#.#")
 
         holder.binding.apply {
             characterName.text = data.type.value
-            characterPercentage.text = "${data.value}%"
+            characterPercentage.text = "${decimalFormat.format(data.value)}%"
 
             // 아이템 클릭 시
             root.setOnClickListener {

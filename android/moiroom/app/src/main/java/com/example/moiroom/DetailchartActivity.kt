@@ -23,7 +23,7 @@ import java.text.DecimalFormat
 
 class DetailchartActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityDetailchartBinding
+    private lateinit var binding: com.example.moiroom.databinding.ActivityDetailchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +67,10 @@ class DetailchartActivity : AppCompatActivity() {
             binding.interestRecyclerView.adapter = interestAdapter
 
             // 수면 차트
-
+            val sleepChart = binding.sleepChartView
+            sleepChart.setSleepTime(memberData.sleepAt, memberData.wakeUpAt)
+            binding.sleepTimeText.text = memberData.sleepAt
+            binding.wakeTimeText.text = memberData.wakeUpAt
         }
 
         binding.backwardButton.setOnClickListener {
@@ -104,7 +107,7 @@ class DetailchartActivity : AppCompatActivity() {
         val currentMargin = (binding.characterLocation.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
         val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
 
-        Log.d("MYTAGGGGGGG", "performAnimation: $newValue, $currentMargin, $newMargin")
+        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
             duration = 1000
