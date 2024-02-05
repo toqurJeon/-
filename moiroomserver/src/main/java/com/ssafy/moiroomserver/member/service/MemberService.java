@@ -5,8 +5,6 @@ import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 
-import java.util.Optional;
-
 public interface MemberService {
 
     void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest);
@@ -16,4 +14,6 @@ public interface MemberService {
     void modifyMemberToken(Long memberId, MemberTokenDto tokenDto);
 
     Member getMemberById(Long memberId);
+
+    void logout(Long socialId, String provider);
 }

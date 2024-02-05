@@ -49,7 +49,7 @@ public class MemberController {
     }
 
     /**
-     * 회원 정보 조회
+     * 회원 정보 조회 -> 단순히 pk를 가져와서 조회하는 api
      * @param memberId
      * @return
      */
@@ -57,5 +57,11 @@ public class MemberController {
     public ApiResponse<?> getMemberById(@PathVariable Long memberId) {
         Member member = memberService.getMemberById(memberId);
         return ApiResponse.success(SuccessCode.GET_MEMBER_BY_ID, member);
+    }
+
+    @PostMapping("/logout")
+    public ApiResponse<?> logout(@RequestParam Long socialId, @RequestParam String provider) {
+        memberService.logout(socialId, provider);
+        return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
     }
 }
