@@ -73,12 +73,10 @@ public class Member extends BaseEntity {
     private String refreshToken;
 
     @Column(name = "login_status", nullable = false)
-    @ColumnDefault("1")
-    private int loginStatus;
+    private int loginStatus = 1; // 0: 로그아웃, 1: 로그인
 
     @Column(name = "account_status", nullable = false)
-    @ColumnDefault("1")
-    private int accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
+    private int accountStatus = 1; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
     public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
         this.metropolitanId = infoModifyRequest.getMetropolitanId();
