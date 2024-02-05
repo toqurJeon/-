@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import static com.ssafy.moiroomserver.global.constants.ErrorCode.NOT_EXISTS_MEMBER_ID;
+import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
@@ -55,7 +55,8 @@ public class MemberServiceImpl implements MemberService {
         // 이미 존재하고 로그아웃 상태인 경우
         if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
                 memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getAccountStatus() == LOGOUT) {
-            memberRepository.updateLoginStatusBySocialIdAndProvider(dto.getSocialId(), dto.getProvider());
+            memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).setLoginStatus(LOGIN);
+
             return;
         }
 
@@ -94,5 +95,26 @@ public class MemberServiceImpl implements MemberService {
     public Member getMemberById(Long memberId) {
         return memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+    }
+
+    @Transactional
+    @Override
+    public void logout(Long socialId, String provider) {
+        // 회원이 존재하지 않는경우
+        if (!memberRepository.existsMemberByProviderAndSocialId(provider,
+                socialId)) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
+
+        // 이미 로그아웃 된 회원인 경우
+        if (memberRepository.findMemberBySocialIdAndProvider(socialId,
+                provider).getLoginStatus() == LOGOUT) {
+            throw new ExistException(MEMBER_ALREADY_LOGOUT_ERROR);
+        }
+
+        // 로그아웃 진행
+        memberRepository.findMemberBySocialIdAndProvider(socialId, provider)
+                .setLoginStatus(LOGOUT);
+
     }
 }
