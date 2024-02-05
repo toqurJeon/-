@@ -12,12 +12,7 @@ import org.hibernate.annotations.ColumnDefault;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(
-        name = "member",
-uniqueConstraints = @UniqueConstraint(
-        name = "social_id_provider",
-        columnNames = {"social_id", "provider"}
-))
+@Table(name = "member")
 public class Member extends BaseEntity {
 
     @Id
@@ -25,10 +20,10 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long memberId;
 
-    @Column(name = "social_id", nullable = false, unique = true)
+    @Column(name = "social_id", nullable = false)
     private Long socialId;
 
-    @Column(name = "provider", nullable = false, unique = true)
+    @Column(name = "provider", nullable = false)
     private String provider;
 
     @Column(name = "metropolitan_id")
@@ -72,9 +67,11 @@ public class Member extends BaseEntity {
     @Column(name = "refresh_token", nullable = false) // 카카오에서 발급 받은 refreshToken
     private String refreshToken;
 
+    @Column(name = "login_status", nullable = false)
+    private int loginStatus = 1; // 0: 로그아웃, 1: 로그인
+
     @Column(name = "account_status", nullable = false)
-    @ColumnDefault("1")
-    private int accountStatus; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
+    private int accountStatus = 1; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
     public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
         this.metropolitanId = infoModifyRequest.getMetropolitanId();
