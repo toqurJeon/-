@@ -24,7 +24,7 @@
             android:layout_marginHorizontal="10dp"
             android:fontFamily="@font/pretendard_semibold"
             android:text="성향 이름"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
         <TextView
             android:id="@+id/characterPercentage"
@@ -35,7 +35,7 @@
             android:layout_marginHorizontal="10dp"
             android:fontFamily="@font/pretendard_bold"
             android:text="00.0%"
-            android:textSize="16dp"/>
+            android:textSize="16sp"/>
 
     </androidx.cardview.widget.CardView>
 

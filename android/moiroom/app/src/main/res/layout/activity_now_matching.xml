@@ -1,90 +1,78 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/matchingFrameLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".NowMatchingActivity"
+    android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="startMatchingButton"
-    tools:context=".NowMatchingActivity">
+    android:background="@drawable/gradient_background"
+    android:clickable="true"
+    android:focusable="true"
+    android:orientation="vertical">
 
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="954dp"
-        android:layout_gravity="center"
-        android:layout_marginBottom="18dp"
-        android:background="@drawable/gradient_background"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="10dp">
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/subHeader"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/white"
+        android:textSize="38sp"
+        android:text="@string/nowMatchingHeader"/>
 
-        <ImageView
-            android:id="@+id/image"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:src="@drawable/ic_before_matching" />
+    <TextView
+        android:id="@+id/subHeader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/mainImage"
+        android:layout_marginBottom="48dp"
+        android:fontFamily="@font/pretendard_bold"
+        android:textColor="@color/white"
+        android:textSize="28sp"
+        android:text="@string/nowMatchingHeader2"/>
 
-        <ImageView
-            android:id="@+id/image2"
-            android:layout_width="30sp"
-            android:layout_height="40sp"
-            android:layout_above="@+id/startMatchingButton"
-            android:layout_centerHorizontal="true"
-            android:src="@drawable/ic_touch" />
+    <ImageView
+        android:id="@+id/mainImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="8dp"
+        android:contentDescription="@string/nowMatchingMainImage"
+        android:src="@drawable/ic_before_matching" />
 
-        <TextView
-            android:id="@+id/moiroomText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/image"
-            android:layout_marginTop="240dp"
-            android:layout_centerInParent="true"
-            android:fontFamily="@font/pretendard_semibold"
-            android:text="moiroom"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/touchIcon"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/mainImage"
+        android:layout_marginTop="96dp"
+        android:contentDescription="@string/iconTouch"
+        android:src="@drawable/ic_touch" />
 
-        <TextView
-            android:id="@+id/startMatchingButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerInParent="true"
-            android:layout_marginBottom="214dp"
-            android:fontFamily="@font/pretendard_semibold"
-            android:onClick="startMatchingButton"
-            android:text="터치해서 매칭 시작하기"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/touchText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/touchIcon"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/pretendard_semibold"
+        android:text="@string/nowMatchingSign"
+        android:textColor="@color/white"
+        android:textSize="20sp"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_above="@+id/startMatchingButton"
-            android:layout_marginBottom="408dp"
-            android:fontFamily="@font/pretendard_semibold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="매칭을 시작해보세요."
-            android:textColor="#FFFFFF"
-            android:textSize="38sp"
-            android:textStyle="bold" />
+    <ImageView
+        android:id="@+id/letterLogo"
+        android:layout_width="88dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        app:tint="@color/white"
+        android:contentDescription="@string/logoLetter"
+        android:src="@drawable/letter_logo"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="120dp"
-            android:layout_above="@+id/startMatchingButton"
-            android:layout_marginBottom="357dp"
-            android:fontFamily="@font/pretendard_semibold"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="룸메이트가 기다리고 있어요!"
-            android:textColor="#FFFFFF"
-            android:textSize="28sp"
-            android:textStyle="bold" />
-
-    </RelativeLayout>
-
-</FrameLayout>
+</RelativeLayout>
