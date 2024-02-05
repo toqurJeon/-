@@ -29,7 +29,7 @@ public class MemberController {
      * @param accountDto
      * @return
      */
-    @PostMapping
+    @PostMapping("/login")
     public ApiResponse<?> login(@RequestBody AddMemberDto accountDto) {
         memberService.login(accountDto);
         return ApiResponse.success(SuccessCode.LOGIN_MEMBER);
