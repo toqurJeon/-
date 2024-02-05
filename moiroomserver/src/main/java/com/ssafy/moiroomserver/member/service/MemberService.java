@@ -3,6 +3,9 @@ package com.ssafy.moiroomserver.member.service;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
+import com.ssafy.moiroomserver.member.entity.Member;
+
+import java.util.Optional;
 
 public interface MemberService {
 
@@ -11,4 +14,6 @@ public interface MemberService {
     void login(AddMemberDto dto);
 
     void modifyMemberToken(Long memberId, MemberTokenDto tokenDto);
+
+    Member getMemberById(Long memberId);
 }

@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import static com.ssafy.moiroomserver.global.constants.ErrorCode.NOT_EXISTS_MEMBER_ID;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -32,7 +34,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         Member member = memberRepository.findById(2L)
-                .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
         member.modify(infoModifyRequest);
     }
 
@@ -86,5 +88,11 @@ public class MemberServiceImpl implements MemberService {
         member.setRefreshToken(tokenDto.getRefreshToken());
 
         memberRepository.save(member);
+    }
+
+    @Override
+    public Member getMemberById(Long memberId) {
+        return memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
     }
 }
