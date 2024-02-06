@@ -63,6 +63,7 @@ class InfoinputActivity : AppCompatActivity() {
 
         lifecycleScope.launch {
 //            val response = sendPostRequest()
+//
 //            // response가 null이 아니면 로그에 출력
 //            response?.let {
 //                Log.d("결과", "Not null, POST 성공 - Message: ${it.message}, Status: ${it.status}")
