@@ -1,6 +1,8 @@
 package com.ssafy.moiroomserver.area.service.impl;
 
+import com.ssafy.moiroomserver.area.dto.GetCity;
 import com.ssafy.moiroomserver.area.dto.GetMetropolitan;
+import com.ssafy.moiroomserver.area.entity.City;
 import com.ssafy.moiroomserver.area.entity.Metropolitan;
 import org.springframework.stereotype.Service;
 
@@ -31,5 +33,19 @@ public class AreaServiceImpl implements AreaService {
 		}
 
 		return metropolitansDto;
+	}
+
+	@Override
+	public List<GetCity> getCities() {
+		List<City> cities = cityRepository.findAll();
+		List<GetCity> citiesDto = new ArrayList<>();
+
+		for (City city : cities) {
+			citiesDto.add(new GetCity(city.getCityId(),
+					city.getMetropolitan().getMetropolitanId(),
+					city.getName()));
+		}
+
+		return citiesDto;
 	}
 }
