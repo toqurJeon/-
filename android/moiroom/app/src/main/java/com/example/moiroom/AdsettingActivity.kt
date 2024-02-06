@@ -4,10 +4,19 @@ import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.example.moiroom.databinding.ActivityAdsettingBinding
 import com.kakao.sdk.user.UserApiClient
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import androidx.lifecycle.lifecycleScope
+import com.google.gson.JsonParser
+
+private const val TAG = "UserInfo"
 
 class AdsettingActivity : AppCompatActivity() {
 
@@ -27,22 +36,20 @@ class AdsettingActivity : AppCompatActivity() {
             onBackPressed()
         }
 
-        // 로그아웃 기능 구현
         logoutButton.setOnClickListener {
-            UserApiClient.instance.logout { error ->
+            UserApiClient.instance.me { user, error ->
                 if (error != null) {
-                    Toast.makeText(this, "로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
-                } else {
-                    // 로그아웃 성공 시, 'isButtonClicked' 값을 초기화
-                    val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
-                    val editor = sharedPreferences?.edit()
-                    editor?.putBoolean("isButtonClicked", false)
-                    editor?.apply()
-
-                    Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
-                    finish()
+                    Toast.makeText(this, "사용자 정보 요청 실패 $error", Toast.LENGTH_SHORT).show()
+                } else if (user != null) {
+                    val userId = user.id
+                    UserApiClient.instance.logout { error ->
+                        if (error != null) {
+                            Toast.makeText(this, "카카오 로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
+                        } else {
+                            // 카카오 로그아웃 성공, 이제 백엔드 서버에 로그아웃 요청을 보낸다.
+                            lifecycleScope.launch { logoutUser(userId) }
+                        }
+                    }
                 }
             }
         }
@@ -66,40 +73,59 @@ class AdsettingActivity : AppCompatActivity() {
                 }
             }
         }
+    }
 
-//        // 사용자 정보 요청
-//        UserApiClient.instance.me { user, error ->
-//            if (error != null) {
-//                Toast.makeText(context, "사용자 정보 요청 실패: $error", Toast.LENGTH_SHORT).show()
-//            } else if (user != null) {
-//                val profile = user.kakaoAccount?.profile
-//                val email = user.kakaoAccount?.email
-//                val gender = user.kakaoAccount?.gender
-//                val ageRange = user.kakaoAccount?.ageRange
-//                val birthday = user.kakaoAccount?.birthday
-//                val birthyear = user.kakaoAccount?.birthyear
-//                val phoneNumber = user.kakaoAccount?.phoneNumber
-//
-//                // 사용자 정보를 TextView에 출력
-//                binding.nickname.text = "닉네임: ${profile?.nickname}"
-//                binding.email.text = "이메일: $email"
-//                binding.gender.text = "성별: ${gender?.name}"
-//                binding.ageRange.text = "연령대: ${ageRange?.name}"
-//                binding.birthday.text = "생일: $birthday"
-//                binding.birthyear.text = "출생연도: $birthyear"
-//                binding.phoneNumber.text = "전화번호: $phoneNumber"
-//
-//                val profileImageUrl = profile?.profileImageUrl
-//                if (profileImageUrl != null) {
-//                    val profileImageView = binding.profileImage
-//                    Glide.with(this).load(profileImageUrl).into(profileImageView)
-//                }
-//            }
-//        }
+    suspend fun logoutUser(socialId : Long) {
+        val response = withContext(Dispatchers.IO) {
+            NetworkModule.apiService.logoutUser(socialId, "kakao")
+        }
+
+        withContext(Dispatchers.Main) {
+            if (response.isSuccessful) {
+                val responseData = response.body()
+                if (responseData != null) {
+                    val jsonObject = JsonParser.parseString(responseData.string()).asJsonObject
+                    val message = jsonObject.get("message").asString
+                    Log.d(TAG, "서버 응답: $message")
+                    if (message == "로그아웃 성공") {
+                        logoutSuccess()
+                    } else {
+                        logoutFailure(message)
+                    }
+                } else {
+                    // 응답 본문이 null인 경우 처리
+                    Log.e(TAG, "로그아웃 실패, 응답 본문이 없음")
+                    logoutFailure("응답 본문이 없음")
+                }
+            } else {
+                // 요청 실패 처리
+                Log.e(TAG, "로그아웃 요청 실패, 상태 코드: ${response.code()}")
+                logoutFailure("로그아웃 요청 실패, 상태 코드: ${response.code()}")
+            }
+        }
+    }
+    fun logoutSuccess() {
+        Log.d(TAG, "logoutSuccess 호출됨")
+        // 'isButtonClicked' 값을 초기화
+        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val editor = sharedPreferences?.edit()
+        editor?.putBoolean("isButtonClicked", false)
+        editor?.apply()
+
+        Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
+        finish()
     }
 
     override fun onBackPressed() {
         super.onBackPressed()
         finish()
     }
+
+    fun logoutFailure(message: String) {
+        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
 }
+
+

@@ -10,6 +10,8 @@ import kotlinx.serialization.json.Json
 
 @Serializable
 data class User(
+    val socialId : Long,
+    val provider : String,
     val nickname: String,
     val imageUrl: String,
     val birthyear: String,
@@ -35,6 +37,8 @@ fun fetchUserInfo(accessToken: String, refreshToken: String) {
                     "\n프로필 링크: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
 
             val userInfo = User(
+                socialId = user.id ?: 0L,
+                provider = "kakao",
                 nickname = user.kakaoAccount?.profile?.nickname ?: "",
                 imageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl ?: "",
                 birthyear = user.kakaoAccount?.birthyear ?: "",
