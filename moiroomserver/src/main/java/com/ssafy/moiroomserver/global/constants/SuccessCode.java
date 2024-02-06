@@ -20,7 +20,9 @@ public enum SuccessCode {
     GET_MEMBER_BY_ID(CREATED, "회원 정보 조회 성공"),
     MODIFY_MEMBER_TOKEN(OK, "토큰 업데이트를 완료하였습니다!"),
     //지역
-    GET_METROPOLITANS(OK, "광역시 정보를 성공적으로 가져왔습니다!");
+    GET_METROPOLITANS(OK, "광역시 정보를 성공적으로 가져왔습니다!"),
+    GET_CITIES(OK, "시군구 정보를 성공적으로 가져왔습니다!");
+
 
     private final HttpStatus status;
     private final String message;
