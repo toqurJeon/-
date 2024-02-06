@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify, render_template
 import requests
 
-from engines import gps
+from engines import gps, insta, call
 
 app = Flask(__name__)
 
@@ -18,20 +18,20 @@ def privacy():
     return render_template('index.html')
 
 
-@app.route('/count_clusters', methods=['POST'])
-def count_clusters():
+@app.route('/gps', methods=['POST'])
+def gps_func():
     try:
         # JSON 데이터 받아오기
         json_data = request.get_json()
 
-        return jsonify(gps.count_result(json_data["data"]))
+        return jsonify(gps.calc(json_data["data"]))
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-@app.route('/insta_token', methods=['POST'])
-def insta_token():
+@app.route('/insta', methods=['POST'])
+def insta_func():
     try:
         # JSON 데이터 받아오기
         json_data = request.get_json()
@@ -45,34 +45,32 @@ def insta_token():
         if feed_request.status_code != 200:
             return jsonify({'status': 'error', 'message': 'not 200 in feed list'})
         feed_list = feed_request.json()['data']
-        print(feed_list)
 
         # for문 돌면서 피드 정보 가져와서 저장
         info = []
-        for i in range(feed_list):
-            print(i)
+        for feed in feed_list:
+            print(feed)
             content_request = requests.get(
-                'https://graph.instagram.com/' + feed_list[i]['id'] + '?fields=media_type,media_url,'
-                                                                      'caption&access_token=' + access_token)
+                'https://graph.instagram.com/' + feed['id'] + '?fields=media_type,media_url,'
+                                                              'caption&access_token=' + access_token)
             if content_request.status_code == 200:
-                info[i] = content_request.json()
+                info.append(content_request.json())
             else:
                 return jsonify({'status': 'error', 'message': 'not 200 in feed list'})
 
-        print(info)
-        return jsonify(json_data)
+        return jsonify(insta.calc(info))
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-@app.route('/calling_history', methods=['POST'])
-def calling_history():
+@app.route('/call', methods=['POST'])
+def call_func():
     try:
         # JSON 데이터 받아오기
         json_data = request.get_json()
 
-        return jsonify(json_data)
+        return jsonify(call.calc(json_data["calls"]))
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
