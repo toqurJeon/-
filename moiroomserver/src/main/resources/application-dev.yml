@@ -35,7 +35,7 @@ spring:
     init:
       data-locations:
       - "classpath:db/*"
-      mode: always
+      mode: never
 
 jwt:
   secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4'
