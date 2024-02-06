@@ -7,9 +7,11 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import com.example.moiroom.LoadingActivity
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
+import com.example.moiroom.utils.getRequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.github.kittinunf.fuel.Fuel
@@ -26,6 +28,7 @@ class InstagramExtract: AppCompatActivity() {
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
+        getRequestResult(true)
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = InstagramAuthWebViewClient()
@@ -52,7 +55,7 @@ class InstagramExtract: AppCompatActivity() {
                 // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
                 val code = redirectUrl.substring(46)
                 postFuel(code)
-                val intent = Intent(this@InstagramExtract, NowMatchingActivity::class.java)
+                val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
                 startActivity(intent)
                 return true
             } else {Log.d("엘스", "엘스")}

@@ -1,32 +1,39 @@
 package com.example.moiroom
 
-import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.os.Looper
-import android.system.Os.remove
-import android.text.TextUtils.replace
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
+import android.widget.RelativeLayout
+import android.widget.ScrollView
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
 import com.example.moiroom.adapter.CardItemClickListener
-import com.example.moiroom.data.CardInfo
-import com.example.moiroom.data.TestData
-import com.example.moiroom.data.TestData.cardInfoList
+import com.example.moiroom.adapter.CharacterAdapter
+import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
-import com.google.android.material.button.MaterialButtonToggleGroup
-import com.example.moiroom.OnBackButtonClickListener
+import com.example.moiroom.data.MatchedMember
+import com.example.moiroom.data.MatchedMemberList
+import com.example.moiroom.data.Member
+import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.databinding.CardLayoutBinding
+import com.example.moiroom.utils.cacheMatchedMemberList
+import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.view.RadarChartView
+import com.facebook.internal.Utility.logd
 
 class NowMatchingAfterFragment : Fragment() {
     private lateinit var binding: FragmentNowMatchingAfterBinding
-    private val cardInfoList = TestData.cardInfoList
+    private lateinit var cardBinding: CardLayoutBinding
+    private var toggled: Boolean = true
+
+    val cachedUserInfo: Member? by lazy { cacheUserInfo.get("userInfo") }
+    val cachedMatchedMemberList: MatchedMemberList? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
+
+//    private val cardInfoList = TestData.cardInfoList
 
     // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
     override fun onCreateView(
@@ -47,54 +54,91 @@ class NowMatchingAfterFragment : Fragment() {
         binding.viewPager2.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
 
         // 체크된 상태로 시작하도록 설정
-        binding.toggleButton.check(R.id.button1)
+//        binding.toggleButton.check(R.id.button1)
 
         // 체크된 상태에 따른 초기 화면 설정
         binding.viewPager2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         setCardAdapter(true)
 
-        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-            if (isChecked) {
-                when (checkedId) {
-                    R.id.button1 -> {
-                        binding.viewPager2.visibility = View.VISIBLE
-                        binding.recyclerView.visibility = View.GONE
-                    }
-                    R.id.button2 -> {
-                        binding.viewPager2.visibility = View.GONE
-                        binding.recyclerView.visibility = View.VISIBLE
-                    }
-                }
-                setCardAdapter(checkedId == R.id.button1)
+//        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
+//            if (isChecked) {
+//                when (checkedId) {
+//                    R.id.button1 -> {
+//                        binding.viewPager2.visibility = View.VISIBLE
+//                        binding.recyclerView.visibility = View.GONE
+//                    }
+//                    R.id.button2 -> {
+//                        binding.viewPager2.visibility = View.GONE
+//                        binding.recyclerView.visibility = View.VISIBLE
+//                    }
+//                }
+//                setCardAdapter(checkedId == R.id.button1)
+//            }
+//        }
+
+        binding.layoutChanger.setOnClickListener {
+            toggled = !toggled
+            if (toggled) {
+                binding.viewPager2.visibility = View.VISIBLE
+                binding.recyclerView.visibility = View.GONE
+            } else {
+                binding.viewPager2.visibility = View.GONE
+                binding.recyclerView.visibility = View.VISIBLE
             }
+            setCardAdapter(toggled)
         }
 
+//        val cardBinding = CardLayoutBinding.inflate(layoutInflater)
+//
+//        cardBinding.scrollView.viewTreeObserver.addOnScrollChangedListener {
+//            val scrollY = cardBinding.scrollView.scrollY
+//            val headerProfileHeight = cardBinding.headerProfile.height
+//            val screenHeight = resources.displayMetrics.heightPixels
+//
+//            if (scrollY >= screenHeight / 2 - headerProfileHeight / 2) {
+//                Log.d("TAG", "onViewCreated: !!!!!!!!!!!!!!!!!!!!!!!!!1")
+//                val params = cardBinding.headerProfile.layoutParams as RelativeLayout.LayoutParams
+//                params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
+//                params.addRule(RelativeLayout.CENTER_HORIZONTAL)
+//                cardBinding.headerProfile.layoutParams = params
+//            } else {
+//                Log.d("TAG", "onViewCreated: ???????????????????????????????")
+//                val params = cardBinding.headerProfile.layoutParams as RelativeLayout.LayoutParams
+//                params.removeRule(RelativeLayout.ALIGN_PARENT_TOP)
+//                params.addRule(RelativeLayout.BELOW, R.id.scrollView)
+//                cardBinding.headerProfile.layoutParams = params
+//            }
+//        }
     }
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
-        val cardAdapter = CardAdapter(cardInfoList, isButton1Checked, object : CardItemClickListener {
-            override fun onCardDetailClick(cardInfo: CardInfo) {
-                showDetailFragment(cardInfo)
+        if (cachedMatchedMemberList != null && cachedUserInfo != null) {
+            val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.content,
+                cachedUserInfo!!, isButton1Checked, object : CardItemClickListener {
+                override fun onCardDetailClick(cardInfo: MatchedMember) {
+//                    showDetailFragment(cardInfo)
+                }
+            })
+
+            if (isButton1Checked) {
+                binding.viewPager2.adapter = cardAdapter
+                binding.recyclerView.adapter = null
+            } else {
+                binding.viewPager2.adapter = null
+                binding.recyclerView.adapter = cardAdapter
             }
-        })
-        if (isButton1Checked) {
-            binding.viewPager2.adapter = cardAdapter
-            binding.recyclerView.adapter = null
-        } else {
-            binding.viewPager2.adapter = null
-            binding.recyclerView.adapter = cardAdapter
         }
     }
 
-    private fun showDetailFragment(cardInfo: CardInfo) {
-        val detailFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
-        val oldFragment = parentFragmentManager.findFragmentByTag("cardDetail")
-        oldFragment?.let {
-            parentFragmentManager.beginTransaction().remove(it).commit()
-        }
-        detailFragment.show(parentFragmentManager, "cardDetail")
-        binding.recyclerView.visibility = View.GONE
-        binding.viewPager2.visibility = View.GONE
-    }
+//    private fun showDetailFragment(cardInfo: CardInfo) {
+//        val detailFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
+//        val oldFragment = parentFragmentManager.findFragmentByTag("cardDetail")
+//        oldFragment?.let {
+//            parentFragmentManager.beginTransaction().remove(it).commit()
+//        }
+//        detailFragment.show(parentFragmentManager, "cardDetail")
+//        binding.recyclerView.visibility = View.GONE
+//        binding.viewPager2.visibility = View.GONE
+//    }
 }

@@ -20,6 +20,7 @@ import android.Manifest
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.moiroom.utils.getRequestResult
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -35,7 +36,7 @@ class NowMatchingActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
 
-        if (isButtonClicked) {
+        if (isButtonClicked == false) {
 
             val intent = Intent(this, NaviActivity::class.java)
             startActivity(intent)
@@ -85,7 +86,7 @@ class NowMatchingActivity : AppCompatActivity() {
                 startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
             }
             .setNegativeButton("취소") { _, _ ->
-                goInsta()
+                instagramPermissionDialog()
             }
             .create()
             .show()
@@ -98,7 +99,7 @@ class NowMatchingActivity : AppCompatActivity() {
         if (requestCode == REQUEST_CODE_SETTINGS) {
             Log.d("TAG", "Settings Activity Returned")
 
-            goInsta()
+            instagramPermissionDialog()
         }
     }
 
@@ -106,6 +107,27 @@ class NowMatchingActivity : AppCompatActivity() {
         Log.d("TAG", "goInsta: 인스타그램 추출 액티비티로 이동")
         val intent = Intent(this, InstagramExtract::class.java)
         startActivity(intent)
+    }
+
+    private fun instagramPermissionDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("인스타그램 권한 승인이 필요합니다.")
+            .setMessage("인스타그램으로 이동하시겠습니까?")
+            .setPositiveButton("이동하기") { _, _ ->
+                goInsta()
+            }
+            .setNegativeButton("취소") { _, _ ->
+                Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 매칭 중 액티비티로 이동")
+                // 인스타그램 이동을 거절했을때의 요청 보내기
+
+                // 더미 응답
+                getRequestResult(true)
+                // 매칭중 액티비티로 이동
+                val intent = Intent(this, LoadingActivity::class.java)
+                startActivity(intent)
+            }
+            .create()
+            .show()
     }
 
     private fun permissionRequest() {
@@ -124,11 +146,15 @@ class NowMatchingActivity : AppCompatActivity() {
 
         if (isReadCallGranted && isExternalStorageGranted) {
             Log.d("권한 설정", "permissionRequest: 이미 모든 권한이 허용됨")
+            getRequestResult(true)
+            getRequestResult(true)
 
-            goInsta()
+            instagramPermissionDialog()
 
         } else if (isReadCallGranted) {
             Log.d("권한 설정", "permissionRequest: Call Permission만 허용됨")
+            getRequestResult(true)
+            getRequestResult(true)
 
             ActivityCompat.requestPermissions(
                 this,
@@ -140,6 +166,8 @@ class NowMatchingActivity : AppCompatActivity() {
 
         } else if (isExternalStorageGranted) {
             Log.d("권한 설정", "permissionRequest: External Storage Permission만 허용됨")
+            getRequestResult(true)
+            getRequestResult(true)
 
             ActivityCompat.requestPermissions(
                 this,
@@ -151,6 +179,8 @@ class NowMatchingActivity : AppCompatActivity() {
 
         } else {
             Log.d("권한 설정", "permissionRequest: 모든 권한이 허용되지 않음")
+            getRequestResult(true)
+            getRequestResult(true)
 
             ActivityCompat.requestPermissions(
                 this,
@@ -202,7 +232,7 @@ class NowMatchingActivity : AppCompatActivity() {
                 goSettingActivityAlertDialog()
             } else {
                 // 허용되어 있음
-                goInsta()
+                instagramPermissionDialog()
             }
         }
     }

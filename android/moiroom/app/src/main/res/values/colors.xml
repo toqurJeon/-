@@ -43,4 +43,8 @@
     <!--SleepChart 색상-->
     <color name="sleepIndigo">#5C60A7</color>
     <color name="wakeOrange">#FFE2BF</color>
+
+    <!-- 반투명 인디케이터 -->
+    <color name="transparentWhite">#CCFFFFFF</color>
+    <color name="iconGray">#A1A1A1</color>
 </resources>

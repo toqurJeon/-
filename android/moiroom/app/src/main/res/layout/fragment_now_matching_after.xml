@@ -7,7 +7,7 @@
     tools:context=".NowMatchingAfterFragment"
     android:id="@+id/nowMatchingAfter">
 
-    <com.google.android.material.button.MaterialButtonToggleGroup
+    <!-- com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggleButton"
         android:layout_width="110dp"
         android:layout_height="40dp"
@@ -42,21 +42,42 @@
             android:paddingEnd="0dp"
             android:foreground="@null"/>
 
-    </com.google.android.material.button.MaterialButtonToggleGroup>
+    </com.google.android.material.button.MaterialButtonToggleGroup -->
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toggleButton"
-        tools:listitem="@layout/card_layout"
-        />
+        tools:listitem="@layout/card_layout" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPager2"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/toggleButton" />
+        android:layout_height="match_parent" />
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layoutChanger"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="112dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        app:cardBackgroundColor="@color/transparentWhite"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="@color/mediumGray">
+
+        <ImageView
+            android:id="@+id/layoutChangerIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            app:tint="@color/darkGray"
+            android:src="@drawable/ic_chat_one"/>
+
+    </com.google.android.material.card.MaterialCardView>
 
 </RelativeLayout>
 
