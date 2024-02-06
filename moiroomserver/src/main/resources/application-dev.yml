@@ -19,7 +19,7 @@ spring:
     database: mysql
     database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
-      ddl-auto: none
+      ddl-auto: update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     properties:
@@ -31,6 +31,11 @@ spring:
     user:
       name: hello
       password: 12345
+  sql:
+    init:
+      data-locations:
+      - "classpath:db/*"
+      mode: always
 
 jwt:
   secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4'
