@@ -62,7 +62,8 @@ class MyPageFragment : Fragment() {
                 RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
                 RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
                 RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100),
-            )
+            ),
+            null
         )
         binding.radarChartContainer.addView(chartView)
 

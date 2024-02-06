@@ -19,7 +19,8 @@ import kotlin.math.sin
 
 class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, attrs) {
 
-    private var dataList: ArrayList<RadarChartData>? = null
+    private var dataList1: ArrayList<RadarChartData>? = null
+    private var dataList2: ArrayList<RadarChartData>? = null
 
     // 5개의 특성을 갖도록 한다
     private var chartTypes = arrayListOf(
@@ -140,7 +141,7 @@ class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, at
             )
 
             // 전달된 데이터를 표시하는 path 계산
-            dataList?.firstOrNull { it.type == type }?.value?.let { value ->
+            dataList1?.firstOrNull { it.type == type }?.value?.let { value ->
                 val conValue = heightMaxValue * value / 100 // 차트크기에 맞게 변환
                 val valuePoint = transformRotate(r, startX, cy - conValue, cx, cy)
                 if (path.isEmpty) {
@@ -171,16 +172,61 @@ class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, at
         canvas.drawPath(path, fillPaint)
         canvas.drawPath(path, strokePaint)
 
+        if (dataList2 != null) {
+            path.reset()
+            chartTypes.forEach { type ->
+                val point = transformRotate(r, startX, startY, cx, cy)
+                canvas.drawText(
+                    type.value,
+                    point.x,
+                    textPaint.fontMetrics.getBaseLine(point.y),
+                    textPaint
+                )
+
+                // 전달된 데이터를 표시하는 path 계산
+                dataList2?.firstOrNull { it.type == type }?.value?.let { value ->
+                    val conValue = heightMaxValue * value / 100 // 차트크기에 맞게 변환
+                    val valuePoint = transformRotate(r, startX, cy - conValue, cx, cy)
+                    if (path.isEmpty) {
+                        path.moveTo(valuePoint.x, valuePoint.y)
+                    } else {
+                        path.lineTo(valuePoint.x, valuePoint.y)
+                    }
+                }
+
+                r += radian
+            }
+
+            val strokePaint = Paint().apply {
+                val outlineStrokeWidthInDp = 2f // 원하는 dp 크기로 설정
+
+                style = Paint.Style.STROKE
+                strokeWidth = outlineStrokeWidthInDp * scale
+                color = Color.parseColor("#28E016")
+            }
+            val fillPaint = Paint().apply {
+                style = Paint.Style.FILL
+                color = Color.parseColor("#1A28E016")
+            }
+
+            // 4. 데이터 표시
+            path.close()
+
+            canvas.drawPath(path, fillPaint)
+            canvas.drawPath(path, strokePaint)
+        }
+
         // paint.color = 0x7FFF8A00
         // paint.style = Paint.Style.FILL_AND_STROKE
         // canvas.drawPath(path, paint)
     }
 
-    fun setDataList(dataList: ArrayList<RadarChartData>) {
-        if (dataList.isEmpty()) {
+    fun setDataList(dataList1: ArrayList<RadarChartData>, dataList2: ArrayList<RadarChartData>?) {
+        if (dataList1.isEmpty()) {
             return
         }
-        this.dataList = dataList
+        this.dataList1 = dataList1
+        this.dataList2 = dataList2
         invalidate()
     }
 

@@ -59,10 +59,12 @@
             android:exported="false" />
         <activity
             android:name=".ChatActivity"
+            android:theme="@style/ChatActivityTheme"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
         <activity
             android:name=".NowMatchingActivity"
+            android:theme="@style/NowMatchingTheme"
             android:exported="true" />
         <!--
        activity 태그: 화면에 나타날 액티비티들을 정의

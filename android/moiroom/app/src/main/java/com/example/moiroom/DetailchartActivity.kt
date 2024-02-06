@@ -23,7 +23,7 @@ import java.text.DecimalFormat
 
 class DetailchartActivity : AppCompatActivity() {
 
-    private lateinit var binding: com.example.moiroom.databinding.ActivityDetailchartBinding
+    private lateinit var binding: ActivityDetailchartBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +46,7 @@ class DetailchartActivity : AppCompatActivity() {
                 RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
                 RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100)
             )
-            chartView.setDataList(chartData)
+            chartView.setDataList(chartData, null)
             binding.radarChartContainer.addView(chartView)
 
             // 성향 목록
