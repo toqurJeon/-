@@ -32,6 +32,17 @@ class InstagramExtract: AppCompatActivity() {
         val url = "https://api.instagram.com/oauth/authorize?client_id=802744445198772&redirect_uri=https://example.com/instagramredirection&scope=user_profile,user_media&response_type=code"
         webView.loadUrl(url)
     }
+
+    fun instagramExtract () {
+        binding = ActivityWebviewtestBinding.inflate(layoutInflater)
+//        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
+        setContentView(binding.root)
+        val webView: WebView = findViewById(R.id.webView)
+        webView.settings.javaScriptEnabled = true
+        webView.webViewClient = InstagramAuthWebViewClient()
+        val url = "https://api.instagram.com/oauth/authorize?client_id=802744445198772&redirect_uri=https://example.com/instagramredirection&scope=user_profile,user_media&response_type=code"
+        webView.loadUrl(url)
+    }
     private inner class InstagramAuthWebViewClient : WebViewClient() {
         override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
             // Redirect URI를 캐치하여 처리
