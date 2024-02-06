@@ -32,6 +32,7 @@ class AppExtract: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJaeeontestBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        appExtract()
     }
 
     fun appExtract() {

@@ -25,6 +25,8 @@
     <uses-permission android:name="android.permission.READ_CALENDAR" />
     <!-- 네트워크 엑세스 권한 -->
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <!-- queries: 사용자의 기기에서 연결할 다른 앱 설정-->
     <queries>
@@ -53,6 +55,9 @@
         android:theme="@style/Theme.Moiroom"
         android:usesCleartextTraffic="true">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.google.android.gms.signin.466064898648-j9ar26egoiv5te26oj7v4j297mlmjmll"
+            android:value="466064898648-j9ar26egoiv5te26oj7v4j297mlmjmll.apps.googleusercontent.com" />
         <activity
             android:name=".DetailchartActivity"
             android:exported="true" />
@@ -118,6 +123,12 @@
         <activity
             android:name=".extraction.CalendarExtract"
             android:exported="true" />
+        <activity
+            android:name=".extraction.YoutubeExtract"
+            android:exported="true">
+
+        </activity>
+
         <activity
             android:name=".extraction.InstagramExtract"
             android:exported="true">

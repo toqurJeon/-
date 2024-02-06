@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375271686045",
+    "project_id": "moiroom-1d1c3",
+    "storage_bucket": "moiroom-1d1c3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375271686045:android:a056ff7fc3f8506c113974",
+        "android_client_info": {
+          "package_name": "com.example.moiroom"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxBWkb83kpCMzwL2OOYl_RBB_Gdc--dAc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

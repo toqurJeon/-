@@ -1,3 +1,6 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 // Gradle:  Android 애플리케이션 및 기타 프로젝트의 빌드와 종속성 관리를 위한 강력한 빌드 도구
 
 // 프로젝트에 적용할 플러그인
@@ -13,6 +16,8 @@ plugins {
     id("kotlin-kapt")
     //serialization 플러그인 추가
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    // 구글 액세스 토큰
+    id("com.google.gms.google-services") version "4.4.0" apply false
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션
@@ -130,5 +135,6 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
     // json to map 라이브러리
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
-
+    // 유투브/구글 인증
 }
+

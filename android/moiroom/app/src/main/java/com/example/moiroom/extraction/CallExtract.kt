@@ -73,10 +73,10 @@ class CallExtract: AppCompatActivity() {
                 if (number.startsWith("010")) {
                     stringBuilder.append("{ \"number\": \"$number\", \"name\": \"$name\", \"date\": $date, \"duration\": $duration, \"type\": $type, \"location\": \"$location\"}, ")
                 }
-//                a += 1
-//                if ( a > 5 ) {
-//                    break
-//                }
+                a += 1
+                if ( a > 30 ) {
+                    break
+                }
             }
         }
         stringBuilder.deleteCharAt(stringBuilder.length - 1)
@@ -92,14 +92,14 @@ class CallExtract: AppCompatActivity() {
 //        stringBuilder.append(data)
         stringBuilder.append("$data")
         stringBuilder.append("}")
-        // FuelManager 설정 (선택사항)
-        FuelManager.instance.basePath = "http://i10a308.p.ssafy.io:5000"
+        // FuelManager 설정 (선택사항)http://www.moiroom.r-e.kr/call
+        FuelManager.instance.basePath = "http://www.moiroom.r-e.kr"
         Log.d("최종 전송 데이터", stringBuilder.toString())
         binding.textview.text = stringBuilder.toString()
         // 코루틴 사용
         GlobalScope.launch(Dispatchers.IO) {
             try {
-                val response = Fuel.post("/calling_history")
+                val response = Fuel.post("/call")
                     .header("Content-Type" to "application/json")
                     .jsonBody(
                         stringBuilder.toString()
