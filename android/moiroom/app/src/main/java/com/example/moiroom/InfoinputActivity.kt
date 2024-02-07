@@ -1,5 +1,6 @@
 package com.example.moiroom
 
+import ApiService
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
@@ -18,7 +19,10 @@ import androidx.lifecycle.lifecycleScope
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityInfoinputBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Call
 import retrofit2.create
 import java.util.logging.Logger.global
@@ -31,6 +35,8 @@ class InfoinputActivity : AppCompatActivity() {
     private var userInput: String = ""
     // 입력 글자 수에 따라 추후 수정
     private var textLength: String = "0/30"
+    // ApiService 인스턴스를 저장할 변수
+    private lateinit var apiService: ApiService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,64 +47,65 @@ class InfoinputActivity : AppCompatActivity() {
         // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
 
-        // GlobalApplication 클래스에 쉽게 접근할 수 있도록 변수명 생성
-        val globalApplication = application as GlobalApplication
-        // GlobalApplication 클래스에 있는 Retofit 인스턴스를 활용해서
-        // API 요청을 보낼 수 있는 인터페이스(ApiInterface) 구현체 생성
-        val apiInterface = globalApplication.retrofit.create(ApiInterface::class.java)
-        val apiInterface2 = globalApplication.retrofit2.create(ApiInterface::class.java)
-
+        // ApiService 인스턴스 생성
+        apiService = NetworkModule.provideRetrofit(this)
         // 입력 글자 수 업데이트
         binding.textLength.text = textLength
         // 사용자 입력 자기소개 저장하기
         binding.editText.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(charSequence: CharSequence?, start: Int, before: Int, count: Int) {
+            override fun onTextChanged(
+                charSequence: CharSequence?,
+                start: Int,
+                before: Int,
+                count: Int
+            ) {
                 userInput = charSequence.toString()
                 textLength = "${charSequence?.length ?: 0}/30"
                 binding.textLength.text = textLength
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
 
         lifecycleScope.launch {
 //            val response = sendPostRequest()
-//
 //            // response가 null이 아니면 로그에 출력
 //            response?.let {
 //                Log.d("결과", "Not null, POST 성공 - Message: ${it.message}, Status: ${it.status}")
 //            }
         }
 
-        // 지역 찾기 버튼 누르기
         binding.findInput.setOnClickListener {
-            // GET 요청 보내기 1
-            lifecycleScope.launch {
-                val posts = apiInterface.getPosts()
-
-                // Posts를 선택하는 다이얼로그
-                showItemSelectionDialog("Choose a title", posts.map { it.title }) { selectedTitle ->
-                    val selectedPosts = posts.find { it.title == selectedTitle }
-                    if (selectedPosts != null) {
-                        // GET 요청 보내기 2
-                        lifecycleScope.launch {
-                            val posts2 = apiInterface.getAnother()
-
-                            // Posts2를 선택하는 다이얼로그
-                            showItemSelectionDialog("Choose a detail", posts2.map { it.title }) { selectedDetail ->
-                                val selectedPosts2 = posts2.find { it.title == selectedDetail }
-                                if (selectedPosts2 != null) {
-                                    binding.findInput.text =
-                                            "${selectedPosts.title}, ${selectedPosts2.title}"
-
-                                    // 확인 버튼
-                                    binding.saveButton.setOnClickListener {
-                                        println("UserInput: ${selectedPosts.id}, ${selectedPosts2.id}, $userInput")
-                                        // POST 요청 구현 필요
-
-                                        // 액티비티 이동
-                                        val intent = Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
-                                        startActivity(intent)
+            CoroutineScope(Dispatchers.IO).launch {
+                val response = apiService.getMetropolitan()
+                Log.d("결과", "광역시 데이터 요청 결과: $response")
+                if (response.isSuccessful) {
+                    val metropolitans = response.body()?.data ?: emptyList()  // 수정된 부분
+                    Log.d("결과", "광역시 데이터: $metropolitans")
+                    withContext(Dispatchers.Main) {
+                        showItemSelectionDialog(
+                            "광역시 선택",
+                            metropolitans.map { it.metropolitanName }) { selectedMetropolitanName ->
+                            val selectedMetropolitan =
+                                metropolitans.find { it.metropolitanName == selectedMetropolitanName }
+                            if (selectedMetropolitan != null) {
+                                CoroutineScope(Dispatchers.IO).launch {
+                                    val cityResponse =
+                                        apiService.getCities(selectedMetropolitan.metropolitanId)
+                                    Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
+                                    if (cityResponse.isSuccessful) {
+                                        val cities =
+                                            cityResponse.body()?.data ?: emptyList()  // 수정된 부분
+                                        Log.d("결과", "군/구 데이터: $cities")
+                                        withContext(Dispatchers.Main) {
+                                            showItemSelectionDialog(
+                                                "군/구 선택",
+                                                cities.map { it.cityName }) { selectedCityName ->
+                                                binding.findInput.text =
+                                                    "$selectedMetropolitanName, $selectedCityName"
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -109,13 +116,14 @@ class InfoinputActivity : AppCompatActivity() {
         }
     }
 
-    private fun showItemSelectionDialog(title: String, items: List<String>, onItemSelected: (String) -> Unit) {
+        private fun showItemSelectionDialog(title: String, items: List<String>, onItemSelected: (String) -> Unit) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setItems(items.toTypedArray()) { _, which ->
-            val selectedTitle = items[which]
-            onItemSelected(selectedTitle)
+            val selectedItem = items[which]
+            onItemSelected(selectedItem)
         }
+        builder.show()
 
         val alertDialog = builder.create()
         alertDialog.show()
@@ -139,3 +147,4 @@ class InfoinputActivity : AppCompatActivity() {
 //        }
 //    }
 }
+

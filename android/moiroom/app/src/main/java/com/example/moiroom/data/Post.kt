@@ -2,12 +2,42 @@ package com.example.moiroom.data
 
 import kotlinx.serialization.Serializable
 
-data class Post(
-    val userId: Int,
-    val id: Int,
-    val title: String,
-    val body: String
+@Serializable
+data class Metropolitan(
+    val metropolitanId: Int,
+    val metropolitanName: String
+)
+@Serializable
+data class MetropolitanData(
+    val metropolitan: List<Metropolitan>
+)
+
+@Serializable
+data class MetropolitanResponse(
+    val code: Int,
+    val status: String,
+    val message: String,
+    val data: List<Metropolitan>
 )
 
 @Serializable
 data class MyResponse2(val latitude: String, val longitude: String)
+
+@Serializable
+data class City(
+    val cityId: Int,
+    val cityName: String
+)
+
+@Serializable
+data class CityData(
+    val city: List<City>
+)
+
+@Serializable
+data class CityResponse(
+    val code: Int,
+    val status: String,
+    val message: String,
+    val data: List<City>
+)

@@ -47,12 +47,21 @@ class AdsettingActivity : AppCompatActivity() {
                             Toast.makeText(this, "카카오 로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                         } else {
                             // 카카오 로그아웃 성공, 이제 백엔드 서버에 로그아웃 요청을 보낸다.
-                            lifecycleScope.launch { logoutUser(userId) }
+                            val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                            val accessToken = sharedPreferences.getString("accessToken", null)
+                            if (accessToken != null) {
+                                val token = "Bearer $accessToken"
+                                Log.d(TAG, "토큰: $token")
+                                lifecycleScope.launch {
+                                    logoutUser(token, userId)
+                                }
+                            }
                         }
                     }
                 }
             }
         }
+
 
         // 회원탈퇴 기능 구현
         unregisterButton.setOnClickListener {
@@ -75,9 +84,10 @@ class AdsettingActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun logoutUser(socialId : Long) {
+    suspend fun logoutUser(token : String, socialId : Long) {
+        val apiService = NetworkModule.provideRetrofit(this)
         val response = withContext(Dispatchers.IO) {
-            NetworkModule.apiService.logoutUser(socialId, "kakao")
+            apiService.logoutUser(socialId, "kakao")
         }
 
         withContext(Dispatchers.Main) {
@@ -127,5 +137,6 @@ class AdsettingActivity : AppCompatActivity() {
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
+
 
 

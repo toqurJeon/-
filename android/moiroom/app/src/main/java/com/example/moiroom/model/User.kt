@@ -1,3 +1,4 @@
+import android.content.Context
 import android.util.Log
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +25,10 @@ data class User(
 
 private const val TAG = "UserInfoFetcher"
 
-fun fetchUserInfo(accessToken: String, refreshToken: String) {
+fun fetchUserInfo(context: Context, accessToken: String, refreshToken: String) {
+    // ApiService 인스턴스 생성
+    val apiService = NetworkModule.provideRetrofit(context)
+
     UserApiClient.instance.me { user, error ->
         if (error != null) {
             Log.e(TAG, "사용자 정보 요청 실패", error)
@@ -55,7 +59,7 @@ fun fetchUserInfo(accessToken: String, refreshToken: String) {
             // 백엔드 서버로 POST 요청 보내기
             GlobalScope.launch(Dispatchers.Main) {
                 val response = withContext(Dispatchers.IO) {
-                    NetworkModule.apiService.postUser(userInfo)
+                    apiService.postUser(userInfo)
                 }
 
                 if (response.isSuccessful) {

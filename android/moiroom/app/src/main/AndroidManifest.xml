@@ -179,12 +179,12 @@
         콘텐트 프로바이더 등록
         콘텐트 프로바이더는 exported를 false 추천
         -->
-        <provider
-            android:name=".extraction.MyContentProvider"
-            android:authorities="com.example.moiroom_content_provider"
-            android:enabled="true"
-            android:exported="false"
-            android:grantUriPermissions="true" />
+<!--        <provider-->
+<!--            android:name=".extraction.MyContentProvider"-->
+<!--            android:authorities="com.example.moiroom_content_provider"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true" />-->
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="com.example.moiroom.fileprovider"
