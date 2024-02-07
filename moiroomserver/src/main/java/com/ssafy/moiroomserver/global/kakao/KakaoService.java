@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 @Service
-public class KakaoTokenValidator {
+public class KakaoService {
 
     public boolean validateToken(String accessToken) {
         final String url = "https://kapi.kakao.com/v2/user/me";
