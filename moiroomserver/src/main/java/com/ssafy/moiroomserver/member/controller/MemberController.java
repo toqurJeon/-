@@ -18,6 +18,10 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    /**
+     * 회원 정보 수정
+     * @param infoModifyRequest 수정 시 입력할 데이터
+     */
     @PatchMapping
     public ApiResponse<?> modifyMemberInfo(@RequestBody MemberInfo.ModifyRequest infoModifyRequest) {
         memberService.modifyMemberInfo(infoModifyRequest);
