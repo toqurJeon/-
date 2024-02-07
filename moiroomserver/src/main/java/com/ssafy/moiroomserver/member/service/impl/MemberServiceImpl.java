@@ -33,7 +33,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
-        Member member = memberRepository.findById(2L)
+        Member member = memberRepository.findById(16L)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
         member.modify(infoModifyRequest);
     }
