@@ -2,7 +2,6 @@ package com.ssafy.moiroomserver.area.service.impl;
 
 import com.ssafy.moiroomserver.area.dto.GetCity;
 import com.ssafy.moiroomserver.area.dto.GetMetropolitan;
-import com.ssafy.moiroomserver.area.entity.City;
 import com.ssafy.moiroomserver.area.entity.Metropolitan;
 import org.springframework.stereotype.Service;
 
