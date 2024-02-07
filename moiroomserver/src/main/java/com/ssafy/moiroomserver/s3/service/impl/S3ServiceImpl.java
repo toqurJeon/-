@@ -5,6 +5,9 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
+import com.ssafy.moiroomserver.global.exception.NoExistException;
+import com.ssafy.moiroomserver.member.entity.Member;
+import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.s3.service.S3Service;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +27,8 @@ public class S3ServiceImpl implements S3Service {
     private String bucket;
     @Value("${cloud.aws.region.static}")
     private String region;
+
+    private final MemberRepository memberRepository;
 
     /**
      * s3에 파일 (이미지 등) 업로드
@@ -69,8 +74,13 @@ public class S3ServiceImpl implements S3Service {
      * @return 업로드한 프로필 사진 url
      */
     @Override
-    public String uploadProfileImage(MultipartFile file) {
+    public String uploadProfileImage(MultipartFile file, Long memberId) {
         try {
+            Member member = memberRepository.findById(memberId)
+                .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
+            if (member.getImageUrl().matches("^https://(. *)com/$")) {
+                delete(member.getImageUrl());
+            }
 
             return upload(file, "profileImage");
         } catch (IOException e) {

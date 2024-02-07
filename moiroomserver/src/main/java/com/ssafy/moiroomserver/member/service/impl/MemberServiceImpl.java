@@ -3,12 +3,15 @@ package com.ssafy.moiroomserver.member.service.impl;
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.ExistException;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
+import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
+import com.ssafy.moiroomserver.s3.service.S3Service;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +28,7 @@ public class MemberServiceImpl implements MemberService {
     private static final int LOGOUT = 0;
 
     private final MemberRepository memberRepository;
+    private final S3Service s3Service;
 
     /**
      * 회원 정보 수정
@@ -33,8 +37,15 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
-        Member member = memberRepository.findById(16L)
+        Long memberId = 16L; //임시 회원 아이디 변수
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        if (!infoModifyRequest.getMemberProfileImage().isEmpty()) {
+            infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), memberId));
+        }
+        if (infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
+            throw new WrongValueException(); //추가하기
+        }
         member.modify(infoModifyRequest);
     }
 

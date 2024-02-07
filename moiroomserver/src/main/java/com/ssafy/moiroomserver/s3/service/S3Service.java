@@ -6,5 +6,5 @@ import java.io.IOException;
 
 public interface S3Service {
 
-    String uploadProfileImage(MultipartFile file);
+    String uploadProfileImage(MultipartFile file, Long memberId);
 }
