@@ -34,9 +34,9 @@ public class AreaController {
 	 * 시군구 조회 api
 	 * @return
 	 */
-	@GetMapping("/city")
-	public ApiResponse<?> getCities() {
-		List<GetCity> cities = areaService.getCities();
+	@GetMapping("/{metropolitanId}/city")
+	public ApiResponse<?> getCities(@PathVariable Long metropolitanId) {
+		List<GetCity> cities = areaService.getCitiesByMetropolitanId(metropolitanId);
 		return ApiResponse.success(SuccessCode.GET_METROPOLITANS, cities);
 	}
 }
