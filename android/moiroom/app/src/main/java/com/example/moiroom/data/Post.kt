@@ -41,3 +41,11 @@ data class CityResponse(
     val message: String,
     val data: List<City>
 )
+
+@Serializable
+data class MemberInfoUpdateRequest(
+    val metropolitanId: Long,
+    val cityId: Long,
+    val memberNickname: String,
+    val memberIntroduction: String
+)

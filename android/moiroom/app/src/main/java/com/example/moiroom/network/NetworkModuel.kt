@@ -1,7 +1,9 @@
 import android.content.Context
 import com.example.moiroom.data.CityResponse
+import com.example.moiroom.data.MemberInfoUpdateRequest
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MetropolitanResponse
+import com.example.moiroom.data.MyResponse
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -11,6 +13,7 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.Response
+import retrofit2.http.PATCH
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -25,10 +28,13 @@ interface ApiService {
     ): Response<ResponseBody>
 
     @GET("/area/metropolitan")
-    suspend fun getMetropolitan(): Response<MetropolitanResponse>  // 수정된 부분
+    suspend fun getMetropolitan(): Response<MetropolitanResponse>
 
     @GET("/area/{metropolitanId}/city")
-    suspend fun getCities(@Path("metropolitanId") metropolitanId: Int): Response<CityResponse>  // 수정된 부분
+    suspend fun getCities(@Path("metropolitanId") metropolitanId: Int): Response<CityResponse>
+
+    @PATCH("/member")
+    suspend fun updateMemberInfo(@Body request: MemberInfoUpdateRequest): Response<MyResponse>
 }
 
 object NetworkModule {

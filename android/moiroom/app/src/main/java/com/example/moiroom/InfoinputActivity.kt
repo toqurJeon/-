@@ -16,9 +16,13 @@ import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.moiroom.data.City
+import com.example.moiroom.data.MemberInfoUpdateRequest
+import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityInfoinputBinding
+import fetchUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -31,12 +35,18 @@ class InfoinputActivity : AppCompatActivity() {
 
     // activity_infoinput.xml에 뷰바인딩
     private lateinit var binding: ActivityInfoinputBinding
+
     // 사용자가 입력한 자기소개 저장
     private var userInput: String = ""
+
     // 입력 글자 수에 따라 추후 수정
     private var textLength: String = "0/30"
+
     // ApiService 인스턴스를 저장할 변수
     private lateinit var apiService: ApiService
+
+    private var metropolitans: List<Metropolitan> = listOf()
+    private var cities: List<City> = listOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +91,7 @@ class InfoinputActivity : AppCompatActivity() {
                 val response = apiService.getMetropolitan()
                 Log.d("결과", "광역시 데이터 요청 결과: $response")
                 if (response.isSuccessful) {
-                    val metropolitans = response.body()?.data ?: emptyList()  // 수정된 부분
+                    metropolitans = response.body()?.data ?: emptyList()  // 수정된 부분
                     Log.d("결과", "광역시 데이터: $metropolitans")
                     withContext(Dispatchers.Main) {
                         showItemSelectionDialog(
@@ -95,8 +105,7 @@ class InfoinputActivity : AppCompatActivity() {
                                         apiService.getCities(selectedMetropolitan.metropolitanId)
                                     Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
                                     if (cityResponse.isSuccessful) {
-                                        val cities =
-                                            cityResponse.body()?.data ?: emptyList()  // 수정된 부분
+                                        cities = cityResponse.body()?.data ?: emptyList()  // 수정된 부분
                                         Log.d("결과", "군/구 데이터: $cities")
                                         withContext(Dispatchers.Main) {
                                             showItemSelectionDialog(
@@ -114,19 +123,112 @@ class InfoinputActivity : AppCompatActivity() {
                 }
             }
         }
-    }
 
-    private fun showItemSelectionDialog(title: String, items: List<String>, onItemSelected: (String) -> Unit) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle(title)
-        builder.setItems(items.toTypedArray()) { _, which ->
-            val selectedItem = items[which]
-            onItemSelected(selectedItem)
+        binding.saveButton.setOnClickListener {
+            CoroutineScope(Dispatchers.Main).launch {
+
+                val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val accessToken = sharedPreferences.getString("accessToken", null)
+                val refreshToken = sharedPreferences.getString("refreshToken", null)
+
+                Log.d("결과", "accessToken: $accessToken, refreshToken: $refreshToken")
+
+                // accessToken과 refreshToken이 null인지 검사합니다.
+                if (accessToken != null && refreshToken != null) {
+                    // 사용자 정보를 가져옵니다.
+                    val userInfo = fetchUserInfo(this@InfoinputActivity, accessToken, refreshToken)
+                    Log.d("결과", "$userInfo")
+
+                    // 사용자 정보가 null이 아니라면
+                    if (userInfo != null) {
+                        // metropolitanId와 cityId를 저장할 변수를 선언합니다.
+                        var metropolitanId: Long = 0
+                        var cityId: Long = 0
+
+                        // 사용자가 선택한 광역시/도와 시/군/구 이름을 저장할 변수를 선언합니다.
+                        val selectedLocation = binding.findInput.text.toString()
+
+                        // selectedLocation을 쉼표로 분리하여 광역시/도 이름과 시/군/구 이름을 가져옵니다.
+                        val locationParts = selectedLocation.split(", ")
+
+                        // locationParts에서 광역시/도 이름과 시/군/구 이름을 가져옵니다.
+                        val selectedMetropolitanName = locationParts[0]
+                        val selectedCityName = locationParts[1]
+
+                        // 광역시/도 리스트에서 사용자가 선택한 광역시/도를 찾습니다.
+                        val selectedMetropolitan =
+                            metropolitans.find { it.metropolitanName == selectedMetropolitanName }
+                        metropolitanId = selectedMetropolitan?.metropolitanId?.toLong() ?: 0
+
+                        // 시/군/구 리스트에서 사용자가 선택한 시/군/구를 찾습니다.
+                        val selectedCity = cities.find { it.cityName == selectedCityName }
+                        cityId = selectedCity?.cityId?.toLong() ?: 0
+
+                        // 카카오에서 가져온 닉네임을 가져옵니다.
+                        val memberNickname: String = userInfo.nickname
+                        val memberIntroduction: String = binding.editText.text.toString()
+
+                        // 요청 객체를 생성합니다.
+                        val request = MemberInfoUpdateRequest(
+                            metropolitanId,
+                            cityId,
+                            memberNickname,
+                            memberIntroduction
+                        )
+
+                        // 코루틴을 사용하여 네트워크 요청을 비동기적으로 실행합니다.
+                        val response = withContext(Dispatchers.IO) {
+                            apiService.updateMemberInfo(request)
+                        }
+
+                        if (response.isSuccessful) {
+                            // 요청이 성공했을 때의 처리
+                            Toast.makeText(
+                                this@InfoinputActivity,
+                                "회원 정보 수정 성공",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            // 요청이 실패했을 때의 처리
+                            Toast.makeText(
+                                this@InfoinputActivity,
+                                "회원 정보 수정 실패",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                    } else {
+                        // 사용자 정보를 가져오지 못한 경우 처리
+                        Toast.makeText(
+                            this@InfoinputActivity,
+                            "사용자 정보를 가져오지 못했습니다",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                } else {
+                    // accessToken 또는 refreshToken이 null인 경우 처리
+                    Toast.makeText(this@InfoinputActivity, "토큰 정보를 가져오지 못했습니다", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            }
         }
-        builder.show()
     }
 
-    // 테스트
+
+        private fun showItemSelectionDialog(
+            title: String,
+            items: List<String>,
+            onItemSelected: (String) -> Unit
+        ) {
+            val builder = AlertDialog.Builder(this)
+            builder.setTitle(title)
+            builder.setItems(items.toTypedArray()) { _, which ->
+                val selectedItem = items[which]
+                onItemSelected(selectedItem)
+            }
+            builder.show()
+        }
+
+        // 테스트
 //    private suspend fun sendPostRequest(): MyResponse? {
 //        val globalApplication = application as GlobalApplication
 //

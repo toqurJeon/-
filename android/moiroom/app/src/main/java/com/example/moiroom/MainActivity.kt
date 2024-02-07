@@ -28,6 +28,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
 import fetchUserInfo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -132,6 +133,7 @@ class MainActivity : AppCompatActivity() {
                 val sharedAccessToken = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
                 val editor = sharedAccessToken.edit()
                 editor.putString("accessToken", accessToken)
+                editor.putString("refreshToken", refreshToken)
                 editor.apply()
 
                 System.out.println("Access Token: $accessToken")
@@ -139,8 +141,9 @@ class MainActivity : AppCompatActivity() {
                 Log.d("KaKaoAccessToken", "Access Token: $accessToken")
                 Log.d("KaKaoRefreshToken", "Refresh Token: $refreshToken")
 
-                // 사용자 정보를 가져옵니다.
-                fetchUserInfo(this, accessToken, refreshToken)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val userInfo = fetchUserInfo(this@MainActivity, accessToken, refreshToken)
+                }
 
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
