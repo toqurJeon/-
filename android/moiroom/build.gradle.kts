@@ -16,8 +16,16 @@ plugins {
     // 적용(apply) 플래그를 false로 설정하여 플러그인을 조건부로 적용할 수 있습니다.
     id("com.android.application") version "8.2.1" apply false
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
+    // 구글 액세스 토큰
+    id("com.google.gms.google-services") version "4.4.0" apply false
 }
 
 tasks.register("clean", Delete::class) {
     delete(rootProject.buildDir)
+}
+
+allprojects {
+    repositories {
+        google()
+    }
 }

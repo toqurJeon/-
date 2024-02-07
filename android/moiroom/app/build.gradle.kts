@@ -17,7 +17,7 @@ plugins {
     //serialization 플러그인 추가
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     // 구글 액세스 토큰
-    id("com.google.gms.google-services") version "4.4.0" apply false
+    id("com.google.gms.google-services")
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션
@@ -40,6 +40,8 @@ android {
         versionName = "1.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // 멀티덱스 활성화
+        multiDexEnabled = true
     }
     // 빌드 유형을 구성
     buildTypes {
@@ -136,5 +138,20 @@ dependencies {
     // json to map 라이브러리
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     // 유투브/구글 인증
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.gms:google-services:4.4.0")
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    // 멀티덱스 지원 라이브러리 추가
+    implementation("androidx.multidex:multidex:2.0.1")
+    // Firebase Firestore SDK 추가
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
+    // Firebase Storage SDK 추가
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+
+
 }
 

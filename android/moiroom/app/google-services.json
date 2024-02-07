@@ -1,26 +1,44 @@
 {
   "project_info": {
-    "project_number": "375271686045",
-    "project_id": "moiroom-1d1c3",
-    "storage_bucket": "moiroom-1d1c3.appspot.com"
+    "project_number": "466064898648",
+    "project_id": "moiroom",
+    "storage_bucket": "moiroom.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:375271686045:android:a056ff7fc3f8506c113974",
+        "mobilesdk_app_id": "1:466064898648:android:e54433fd28b6e15a28282d",
         "android_client_info": {
-          "package_name": "com.example.moiroom"
+          "package_name": "com.moiroom.moiroom"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "466064898648-6ltcj14s1eccn3qmb8lkdhdip3ud98ho.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.moiroom.moiroom",
+            "certificate_hash": "0f95e28c01228ec0428d750ae67b9b2d61a68509"
+          }
+        },
+        {
+          "client_id": "466064898648-d03omb79q96tgt5a94fed1u4ljnepij5.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
-          "current_key": "AIzaSyDxBWkb83kpCMzwL2OOYl_RBB_Gdc--dAc"
+          "current_key": "AIzaSyDXA4Zm5Axq75Qw_M31PN1S4rUBGJIRSxc"
         }
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466064898648-d03omb79q96tgt5a94fed1u4ljnepij5.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         }
       }
     }
