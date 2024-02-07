@@ -35,10 +35,12 @@
     <color name="generous">#662CF3</color>
 
     <!--채도가 낮은 색상들-->
-    <color name="pastelOrange">#FFE1BE</color>
-    <color name="pastelBlue">#B8E3FF</color>
+    <color name="pastelOrange">#FFE8CF</color>
+    <color name="pastelBlue">#CFECFF</color>
     <color name="pastelYellow">#FFF7B0</color>
     <color name="pastelPurple">#EFD6FF</color>
+    <color name="pastelGreen">#E1FFD6</color>
+    <color name="pastelPink">#FFD6F1</color>
 
     <!--SleepChart 색상-->
     <color name="sleepIndigo">#5C60A7</color>

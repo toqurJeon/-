@@ -7,9 +7,11 @@ import com.example.moiroom.R
 
 private val interestColorMap = mapOf(
     "운동" to R.color.pastelBlue,
-    "음악" to R.color.pastelOrange,
+    "음악" to R.color.pastelGreen,
     "요리" to R.color.pastelYellow,
     "게임" to R.color.pastelPurple,
+    "그림" to R.color.pastelOrange,
+    "여행" to R.color.pastelPink,
 )
 
 fun getColorInterest(interestName: String,  context: Context): Int {

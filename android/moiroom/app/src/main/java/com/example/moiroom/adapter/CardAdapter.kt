@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.ChatActivity
@@ -29,7 +30,8 @@ import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
-import com.example.moiroom.databinding.CardLayoutSeveralBinding
+import com.example.moiroom.data.TestData.cardInfoList
+import com.example.moiroom.databinding.MatchedListLayoutBinding
 import com.example.moiroom.databinding.MatchedLayoutBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
@@ -42,17 +44,22 @@ import kotlin.math.abs
 import kotlin.math.log
 import kotlin.math.roundToInt
 
-interface CardItemClickListener {
-    fun onCardDetailClick(cardInfo: MatchedMember)
-}
-
 class CardAdapter(
     private val context: Context,
     private val cardInfoList: List<MatchedMember>,
     private val myInfo: Member,
     private val isToggleButtonChecked: Boolean,
-    private val cardItemClickListener: CardItemClickListener
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+
+    interface OnItemClickListener {
+        fun onItemClick(position: Int)
+    }
+
+    var itemClickListener: ((position: Int) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: ((position: Int) -> Unit)?) {
+        this.itemClickListener = listener
+    }
 
     override fun getItemViewType(position: Int): Int {
         return if (isToggleButtonChecked) 1 else 2
@@ -64,14 +71,13 @@ class CardAdapter(
             val binding = MatchedLayoutBinding.inflate(inflater, parent, false)
             CardViewHolder1(binding)
         } else {
-            val binding = CardLayoutSeveralBinding.inflate(inflater, parent, false)
+            val binding = MatchedListLayoutBinding.inflate(inflater, parent, false)
             CardViewHolder2(binding)
         }
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val cardInfo = cardInfoList[position]
-        val myInfo = myInfo
         if (holder is CardViewHolder1) {
             holder.bind(cardInfo)
         } else if (holder is CardViewHolder2) {
@@ -126,6 +132,20 @@ class CardAdapter(
                 }
                 recyclerView.adapter = characterAdapter
 
+                val squareChart = binding.squareChartView
+                squareChart.setData(cardInfo.interest)
+
+                // 관심사 목록
+                binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
+                val interestAdapter = InterestAdapter(context, cardInfo.interest)
+                binding.interestRecyclerView.adapter = interestAdapter
+
+                // 수면 차트
+                val sleepChart = binding.sleepChartView
+                sleepChart.setSleepTime(cardInfo.sleepAt, cardInfo.wakeUpAt)
+                binding.sleepTimeText.text = cardInfo.sleepAt
+                binding.wakeTimeText.text = cardInfo.wakeUpAt
+
                 matchRate.text = "${cardInfo.matchRate}%"
                 matchIntroduction.text = cardInfo.matchIntroduction
                 nickname.text = cardInfo.memberNickname
@@ -160,42 +180,34 @@ class CardAdapter(
                     Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.memberId}")
                     context.startActivity(intent)
                 }
-
-//                scrollView.viewTreeObserver.addOnScrollChangedListener {
-//                    val scrollY = scrollView.scrollY
-//                    val headerProfileHeight = headerProfile.height
-//                    val screenHeight = context.resources.displayMetrics.heightPixels
-//                    Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1$screenHeight, $headerProfileHeight, $scrollY")
-//
-//                    // 스크롤이 maxScrollY를 넘으면 headerProfile를 상단에 고정
-//                    if (scrollY >= headerProfileHeight / 2) {
-//                        Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1")
-//                        introductionContainer.visibility = View.GONE
-//                        matchIntroductionContainer.visibility = View.GONE
-//
-//                    } else {
-//                        Log.d("in CardAdapter", "bind:???????????????????????")
-//                        introductionContainer.visibility = View.VISIBLE
-//                        matchIntroductionContainer.visibility = View.VISIBLE
-//                    }
-//                }
-                // clickListener 추가
-//                detailButton.setOnClickListener {
-//                    cardItemClickListener.onCardDetailClick(cardInfo)
-//                }
             }
         }
     }
 
-    inner class CardViewHolder2(private val binding: CardLayoutSeveralBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CardViewHolder2(private val binding: MatchedListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+        init {
+            // 클릭 이벤트 처리
+            binding.parentLayout.setOnClickListener {
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    itemClickListener?.invoke(position)
+                }
+            }
+        }
         fun bind(cardInfo: MatchedMember) {
             binding.apply {
-                matchingRate.text = "${cardInfo.matchRate}%"
-                introduction.text = cardInfo.matchIntroduction
-                name.text = cardInfo.memberNickname
+                matchRate.text = "${cardInfo.matchRate}%"
+                nickname.text = cardInfo.memberNickname
                 location.text = "${cardInfo.metropolitanName} ${cardInfo.cityName}"
 
                 Glide.with(binding.root.context).load(cardInfo.memberProfileImageUrl).into(binding.profileImage)
+
+                chatbuttonContainer.setOnClickListener {
+                    val intent = Intent(context, ChatActivity::class.java)
+                    intent.putExtra("memberId", cardInfo.memberId)
+                    Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.memberId}")
+                    context.startActivity(intent)
+                }
             }
         }
     }

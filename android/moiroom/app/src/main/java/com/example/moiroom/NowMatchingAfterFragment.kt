@@ -14,7 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
-import com.example.moiroom.adapter.CardItemClickListener
 import com.example.moiroom.adapter.CharacterAdapter
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
@@ -97,18 +96,9 @@ class NowMatchingAfterFragment : Fragment() {
         binding.layoutChanger.setOnClickListener {
             toggled = !toggled
             if (toggled) {
-                binding.viewPager2.visibility = View.VISIBLE
-                binding.recyclerView.visibility = View.GONE
-                binding.cardIndicator.visibility = View.VISIBLE
-
-                binding.layoutChangerIcon.setImageDrawable(iconListDrawable)
-
+                setToViewPager()
             } else {
-                binding.viewPager2.visibility = View.GONE
-                binding.recyclerView.visibility = View.VISIBLE
-                binding.cardIndicator.visibility = View.GONE
-
-                binding.layoutChangerIcon.setImageDrawable(iconDrawable)
+                setToRecyclerView()
             }
             setCardAdapter(toggled)
         }
@@ -136,14 +126,29 @@ class NowMatchingAfterFragment : Fragment() {
 //        }
     }
 
+    private fun setToViewPager() {
+        val iconListDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_several)!!
+
+        binding.viewPager2.visibility = View.VISIBLE
+        binding.recyclerView.visibility = View.GONE
+        binding.cardIndicator.visibility = View.VISIBLE
+
+        binding.layoutChangerIcon.setImageDrawable(iconListDrawable)
+    }
+
+    private fun setToRecyclerView() {
+        val iconDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_one)!!
+
+        binding.viewPager2.visibility = View.GONE
+        binding.recyclerView.visibility = View.VISIBLE
+        binding.cardIndicator.visibility = View.GONE
+
+        binding.layoutChangerIcon.setImageDrawable(iconDrawable)
+    }
+
     private fun setCardAdapter(isButton1Checked: Boolean) {
         if (cachedMatchedMemberList != null && cachedUserInfo != null) {
-            val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.content,
-                cachedUserInfo!!, isButton1Checked, object : CardItemClickListener {
-                override fun onCardDetailClick(cardInfo: MatchedMember) {
-//                    showDetailFragment(cardInfo)
-                }
-            })
+            val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.content, cachedUserInfo!!, isButton1Checked)
 
             if (isButton1Checked) {
                 binding.viewPager2.adapter = cardAdapter
@@ -151,6 +156,18 @@ class NowMatchingAfterFragment : Fragment() {
             } else {
                 binding.viewPager2.adapter = null
                 binding.recyclerView.adapter = cardAdapter
+
+                cardAdapter.setOnItemClickListener { position ->
+                    Log.d("MYTAG", "setCardAdapter: $position")
+                    val cardAdapter2 = CardAdapter(requireContext(), cachedMatchedMemberList!!.content, cachedUserInfo!!, !isButton1Checked)
+                    setToViewPager()
+
+                    binding.viewPager2.adapter = cardAdapter2
+                    binding.recyclerView.adapter = null
+                    toggled = !toggled
+                    binding.viewPager2.currentItem = position
+
+                }
             }
         }
     }

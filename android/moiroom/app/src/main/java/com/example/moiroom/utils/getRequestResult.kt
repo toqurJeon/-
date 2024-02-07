@@ -103,11 +103,47 @@ fun getRequestResult(result: Boolean) {
                             )
                         )
                     ),
+                    MatchedMember(
+                        4,
+                        "https://images.dog.ceo/breeds/malamute/n02110063_15580.jpg",
+                        "모바모바일",
+                        "여자",
+                        1998,
+                        "서울특별시",
+                        "강남구",
+                        "ㅎㅇㅎㅇ~~",
+                        88,
+                        "취미가 비슷해요!",
+                        5423,
+                        8956,
+                        7934,
+                        6456,
+                        5187,
+                        6545,
+                        6634,
+                        2565,
+                        "00:10",
+                        "08:38",
+                        listOf(
+                            Interest(
+                                "음악",
+                                60
+                            ),
+                            Interest(
+                                "그림",
+                                25
+                            ),
+                            Interest(
+                                "여행",
+                                15
+                            )
+                        )
+                    ),
                 ),
                 1,
-                2,
+                3,
                 1,
-                2
+                3
             )
             // 메모리 캐시에 저장
             cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)
