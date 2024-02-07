@@ -51,9 +51,9 @@ class DetailchartActivity : AppCompatActivity() {
 
             // 성향 목록
             binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
-            val characterAdapter = CharacterAdapter(this, chartData) { clickedData, position ->
-                updateUI(clickedData)
-                performAnimation(clickedData)
+            val characterAdapter = CharacterAdapter(this, chartData, null) { clickedData, position ->
+                updateUI(clickedData[0])
+                performAnimation(clickedData[0])
             }
             binding.recyclerView.adapter = characterAdapter
 

@@ -1,5 +1,6 @@
 package com.example.moiroom
 
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -8,8 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.RelativeLayout
 import android.widget.ScrollView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
 import com.example.moiroom.adapter.CardItemClickListener
 import com.example.moiroom.adapter.CharacterAdapter
@@ -27,7 +30,6 @@ import com.facebook.internal.Utility.logd
 
 class NowMatchingAfterFragment : Fragment() {
     private lateinit var binding: FragmentNowMatchingAfterBinding
-    private lateinit var cardBinding: CardLayoutBinding
     private var toggled: Boolean = true
 
     val cachedUserInfo: Member? by lazy { cacheUserInfo.get("userInfo") }
@@ -77,14 +79,36 @@ class NowMatchingAfterFragment : Fragment() {
 //            }
 //        }
 
+        // 현재 몇번째 뷰페이저를 보고 있는지 확인
+        binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
+            override fun onPageSelected(position: Int) {
+                // 새 페이지가 선택되었을 때 호출됩니다.
+                Log.d("ViewPager", "Current Page: $position")
+                binding.currentCard.text = "${position + 1}"
+            }
+        })
+        if (cachedMatchedMemberList != null) {
+            binding.totalCard.text = "${cachedMatchedMemberList?.totalElememts}"
+        }
+
+        val iconDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_one)!!
+        val iconListDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_several)!!
+
         binding.layoutChanger.setOnClickListener {
             toggled = !toggled
             if (toggled) {
                 binding.viewPager2.visibility = View.VISIBLE
                 binding.recyclerView.visibility = View.GONE
+                binding.cardIndicator.visibility = View.VISIBLE
+
+                binding.layoutChangerIcon.setImageDrawable(iconListDrawable)
+
             } else {
                 binding.viewPager2.visibility = View.GONE
                 binding.recyclerView.visibility = View.VISIBLE
+                binding.cardIndicator.visibility = View.GONE
+
+                binding.layoutChangerIcon.setImageDrawable(iconDrawable)
             }
             setCardAdapter(toggled)
         }

@@ -104,10 +104,10 @@ fun getRequestResult(result: Boolean) {
                         )
                     ),
                 ),
-                5,
-                50,
                 1,
-                10
+                2,
+                1,
+                2
             )
             // 메모리 캐시에 저장
             cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)

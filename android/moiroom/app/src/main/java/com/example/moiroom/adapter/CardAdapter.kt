@@ -1,7 +1,11 @@
 package com.example.moiroom.adapter
 
+import android.animation.Animator
+import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
+import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,23 +17,29 @@ import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.example.moiroom.ChatActivity
 import com.example.moiroom.NewCardDetailDialogFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
-import com.example.moiroom.databinding.CardLayoutBinding
 import com.example.moiroom.databinding.CardLayoutSeveralBinding
+import com.example.moiroom.databinding.MatchedLayoutBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.view.RadarChartView
+import com.google.android.material.appbar.AppBarLayout
 import java.text.DecimalFormat
+import kotlin.math.abs
+import kotlin.math.log
 import kotlin.math.roundToInt
 
 interface CardItemClickListener {
@@ -51,7 +61,7 @@ class CardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == 1) {
-            val binding = CardLayoutBinding.inflate(inflater, parent, false)
+            val binding = MatchedLayoutBinding.inflate(inflater, parent, false)
             CardViewHolder1(binding)
         } else {
             val binding = CardLayoutSeveralBinding.inflate(inflater, parent, false)
@@ -69,7 +79,7 @@ class CardAdapter(
         }
     }
 
-    inner class CardViewHolder1(private val binding: CardLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CardViewHolder1(private val binding: MatchedLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         val chartView = RadarChartView(context, null)
 
         fun bind(cardInfo: MatchedMember) {
@@ -101,17 +111,18 @@ class CardAdapter(
                 radarChartContainer.addView(chartView)
 
                 recyclerView.layoutManager = GridLayoutManager(context, 4)
-                val characterAdapter = CharacterAdapter(context, dataList) { clickedData, position ->
-                    characterIcon.setImageResource(getCharacterIcon(clickedData.type))
-                    characterIcon.setColorFilter(getColorCharacter(clickedData.type.value, context))
-                    characterDetailName.text = clickedData.type.value
-                    characterDetailDescription.text = getCharacterDescription(clickedData.type)
-                    characterLocation.setColorFilter(getColorCharacter(clickedData.type.value, context))
-                    pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData.type.value, context))
+                val characterAdapter = CharacterAdapter(context, dataList, myDataList) { clickedData, position ->
+                    characterIcon.setImageResource(getCharacterIcon(clickedData[0].type))
+                    characterIcon.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
+                    characterDetailName.text = clickedData[0].type.value
+                    characterDetailDescription.text = getCharacterDescription(clickedData[0].type)
+                    characterLocation.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
+                    pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData[0].type.value, context))
 
                     val decimalFormat = DecimalFormat("#.##")
-                    myCharacterDescription.text = "상위 ${decimalFormat.format(100 - clickedData.value)}%의 ${clickedData.type.value} 성향을 가지고 있어요"
-                    performAnimation(clickedData, binding)
+                    val abs = abs(clickedData[0].value - clickedData[1].value)
+                    myCharacterDescription.text = "나와 ${cardInfo.memberNickname}님은 ${clickedData[0].type.value} 성향이 ${decimalFormat.format(abs)}% 차이가 나요"
+                    performAnimation(clickedData[0], clickedData[1], binding)
                 }
                 recyclerView.adapter = characterAdapter
 
@@ -132,24 +143,42 @@ class CardAdapter(
                     underline.visibility = View.VISIBLE
                 }
 
-                scrollView.viewTreeObserver.addOnScrollChangedListener {
-                    val scrollY = scrollView.scrollY
-                    val headerProfileHeight = headerProfile.height
-                    val screenHeight = context.resources.displayMetrics.heightPixels
-                    Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1$screenHeight, $headerProfileHeight, $scrollY")
+                appBar.addOnOffsetChangedListener(AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+                    val collapsedRange = appBarLayout.totalScrollRange
+                    val currentOffset = abs(verticalOffset)
 
-                    // 스크롤이 maxScrollY를 넘으면 headerProfile를 상단에 고정
-                    if (scrollY >= headerProfileHeight / 2) {
-                        Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1")
-                        introductionContainer.visibility = View.GONE
-                        matchIntroductionContainer.visibility = View.GONE
+                    val alpha = (currentOffset.toFloat() / collapsedRange.toFloat() * 255).toInt()
+                    val backgroundColor = Color.argb(200, 255, 255, 255)
 
-                    } else {
-                        Log.d("in CardAdapter", "bind:???????????????????????")
-                        introductionContainer.visibility = View.VISIBLE
-                        matchIntroductionContainer.visibility = View.VISIBLE
-                    }
+                    // 변경할 배경색을 설정합니다.
+                    appBar.setBackgroundColor(backgroundColor)
+                })
+
+                chatbuttonContainer.setOnClickListener {
+                    val intent = Intent(context, ChatActivity::class.java)
+                    intent.putExtra("memberId", cardInfo.memberId)
+                    Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.memberId}")
+                    context.startActivity(intent)
                 }
+
+//                scrollView.viewTreeObserver.addOnScrollChangedListener {
+//                    val scrollY = scrollView.scrollY
+//                    val headerProfileHeight = headerProfile.height
+//                    val screenHeight = context.resources.displayMetrics.heightPixels
+//                    Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1$screenHeight, $headerProfileHeight, $scrollY")
+//
+//                    // 스크롤이 maxScrollY를 넘으면 headerProfile를 상단에 고정
+//                    if (scrollY >= headerProfileHeight / 2) {
+//                        Log.d("in CardAdapter", "bind:!!!!!!!!!!!!!!!!!!!!!1")
+//                        introductionContainer.visibility = View.GONE
+//                        matchIntroductionContainer.visibility = View.GONE
+//
+//                    } else {
+//                        Log.d("in CardAdapter", "bind:???????????????????????")
+//                        introductionContainer.visibility = View.VISIBLE
+//                        matchIntroductionContainer.visibility = View.VISIBLE
+//                    }
+//                }
                 // clickListener 추가
 //                detailButton.setOnClickListener {
 //                    cardItemClickListener.onCardDetailClick(cardInfo)
@@ -173,13 +202,13 @@ class CardAdapter(
 
     override fun getItemCount() = cardInfoList.size
 
-    fun performAnimation(clickedData: RadarChartData, binding: CardLayoutBinding) {
+    fun performAnimation(clickedData: RadarChartData, clickedData2: RadarChartData, binding: MatchedLayoutBinding) {
         val newValue = clickedData.value.coerceIn(0f, 100f)
 
         // 레이아웃이 로딩되지 않았을 때, 애니메이션 재 시작
         if (binding == null || binding.pinWrapper.width == 0) {
             binding?.characterLocation?.post {
-                performAnimation(clickedData, binding)
+                performAnimation(clickedData, clickedData2, binding)
             }
         }
 
@@ -195,6 +224,33 @@ class CardAdapter(
                 val params = binding.characterLocation.layoutParams as ViewGroup.MarginLayoutParams
                 params.leftMargin = animator.animatedValue as Int
                 binding.characterLocation.layoutParams = params
+            }
+            addListener(object : AnimatorListenerAdapter() {
+                override fun onAnimationEnd(animation: Animator) {
+                    super.onAnimationEnd(animation)
+                    // 애니메이션 종료
+                    performAnimation2(clickedData2, binding)
+                }
+            })
+            start()
+        }
+    }
+
+    fun performAnimation2(clickedData: RadarChartData, binding: MatchedLayoutBinding) {
+        val newValue = clickedData.value.coerceIn(0f, 100f)
+
+        val currentMargin = (binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
+        val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
+
+        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
+
+        ValueAnimator.ofInt(currentMargin, newMargin).apply {
+            duration = 1000
+            interpolator = AccelerateDecelerateInterpolator()
+            addUpdateListener { animator ->
+                val params = binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams
+                params.leftMargin = animator.animatedValue as Int
+                binding.characterLocation2.layoutParams = params
             }
             start()
         }

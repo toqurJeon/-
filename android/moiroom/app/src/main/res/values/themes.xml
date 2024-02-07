@@ -11,7 +11,8 @@
         <item name="android:textColor">@color/black</item>
 
         <!-- 상태 바 색상 설정 -->
-        <item name="android:statusBarColor">@color/white</item>
+        <item name="android:statusBarColor">@color/transparentWhite</item>
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

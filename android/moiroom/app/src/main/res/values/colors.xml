@@ -45,6 +45,6 @@
     <color name="wakeOrange">#FFE2BF</color>
 
     <!-- 반투명 인디케이터 -->
-    <color name="transparentWhite">#CCFFFFFF</color>
-    <color name="iconGray">#A1A1A1</color>
+    <color name="transparentWhite">#E6FFFFFF</color>
+    <color name="iconGray">#8A8A8A</color>
 </resources>
