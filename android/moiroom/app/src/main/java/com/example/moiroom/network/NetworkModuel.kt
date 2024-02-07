@@ -25,10 +25,10 @@ interface ApiService {
     ): Response<ResponseBody>
 
     @GET("/area/metropolitan")
-    suspend fun getMetropolitan(): Response<MetropolitanResponse>
+    suspend fun getMetropolitan(): Response<MetropolitanResponse>  // 수정된 부분
 
     @GET("/area/{metropolitanId}/city")
-    suspend fun getCities(@Path("id") metropolitanId: Int): Response<CityResponse>
+    suspend fun getCities(@Path("metropolitanId") metropolitanId: Int): Response<CityResponse>  // 수정된 부분
 }
 
 object NetworkModule {

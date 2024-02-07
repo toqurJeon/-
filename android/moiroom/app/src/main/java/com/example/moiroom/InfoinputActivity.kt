@@ -116,7 +116,7 @@ class InfoinputActivity : AppCompatActivity() {
         }
     }
 
-        private fun showItemSelectionDialog(title: String, items: List<String>, onItemSelected: (String) -> Unit) {
+    private fun showItemSelectionDialog(title: String, items: List<String>, onItemSelected: (String) -> Unit) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle(title)
         builder.setItems(items.toTypedArray()) { _, which ->
@@ -124,9 +124,6 @@ class InfoinputActivity : AppCompatActivity() {
             onItemSelected(selectedItem)
         }
         builder.show()
-
-        val alertDialog = builder.create()
-        alertDialog.show()
     }
 
     // 테스트
