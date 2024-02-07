@@ -4,7 +4,6 @@ import com.ssafy.moiroomserver.area.dto.GetCity;
 import com.ssafy.moiroomserver.area.dto.GetMetropolitan;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
-import lombok.Getter;
 import org.springframework.web.bind.annotation.*;
 
 import com.ssafy.moiroomserver.area.service.AreaService;
