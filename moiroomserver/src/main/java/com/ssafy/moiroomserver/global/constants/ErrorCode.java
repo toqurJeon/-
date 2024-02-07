@@ -12,6 +12,8 @@ public enum ErrorCode {
 
     //일반
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
+    NOT_EXISTS_ACCESS_TOKEN(BAD_REQUEST, "유효하지 않는 access token 입니다."),
+
     //회원
     NOT_EXISTS_MEMBER_ID(BAD_REQUEST, "존재하지 않는 회원 id 입니다."),
     NOT_EXISTS_MEMBER(BAD_REQUEST, "존재하지 않는 회원입니다."),
