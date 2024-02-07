@@ -34,7 +34,7 @@ public class SecurityConfig {
                 .sessionManagement(management ->
                         management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(request ->
-                        request.requestMatchers("/api/public/**", "/member/login/**").permitAll()
+                        request.requestMatchers("/api/public/**", "/member/login/**", "/member/logout/**").permitAll()
                                 .anyRequest().authenticated()
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
