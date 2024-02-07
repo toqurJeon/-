@@ -21,12 +21,20 @@ public class AreaController {
 
 	private final AreaService areaService;
 
+	/**
+	 * 광역시 조회 api
+	 * @return
+	 */
 	@GetMapping("/metropolitan")
 	public ApiResponse<?> getMetropolitans() {
 		List<GetMetropolitan> metropolitans = areaService.getMetropolitans();
 		return ApiResponse.success(SuccessCode.GET_METROPOLITANS, metropolitans);
 	}
 
+	/**
+	 * 시군구 조회 api
+	 * @return
+	 */
 	@GetMapping("/city")
 	public ApiResponse<?> getCities() {
 		List<GetCity> cities = areaService.getCities();
