@@ -18,11 +18,8 @@ public class KakaoTokenValidator {
         HttpEntity<?> entity = new HttpEntity<>(headers);
 
         try {
-            System.out.println("진입");
-            System.out.println("entity = " + entity);
             ResponseEntity<String> response
                     = template.exchange(url, HttpMethod.GET, entity, String.class);
-            System.out.println("통과");
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
             return false;
