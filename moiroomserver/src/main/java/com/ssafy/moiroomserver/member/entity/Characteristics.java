@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "character")
-public class Character extends BaseEntity {
+@Table(name = "characteristics")
+public class Characteristics extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long characterId;
+    private Long characteristicsId;
 
     @Column(name = "sociability")
     private int sociability;

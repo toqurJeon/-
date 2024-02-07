@@ -16,7 +16,7 @@ import java.util.Collections;
 public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
     @Autowired
-    private KakaoTokenValidator kakaoTokenValidator;
+    private KakaoService kakaoTokenValidator;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response,
