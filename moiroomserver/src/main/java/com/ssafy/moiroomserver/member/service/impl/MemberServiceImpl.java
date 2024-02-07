@@ -52,10 +52,13 @@ public class MemberServiceImpl implements MemberService {
             throw new ExistException(ErrorCode.MEMBER_ALREADY_LOGIN_ERROR);
         }
 
-        // 이미 존재하고 로그아웃 상태인 경우
+        // 이미 존재하고 로그아웃 상태인 경우 -> accessToken 및 refreshToken 갱신해주기
         if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
                 memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getLoginStatus() == LOGOUT) {
-            memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).setLoginStatus(LOGIN);
+            Member member = memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider());
+            member.setLoginStatus(LOGIN);
+            member.setAccessToken(dto.getAccessToken());
+            member.setRefreshToken(dto.getRefreshToken());
             return;
         }
 
