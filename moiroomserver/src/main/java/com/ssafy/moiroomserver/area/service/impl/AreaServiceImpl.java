@@ -36,15 +36,8 @@ public class AreaServiceImpl implements AreaService {
 	}
 
 	@Override
-	public List<GetCity> getCities() {
-		List<City> cities = cityRepository.findAll();
-		List<GetCity> citiesDto = new ArrayList<>();
-
-		for (City city : cities) {
-			citiesDto.add(new GetCity(city.getCityId(),
-					city.getMetropolitan().getMetropolitanId(),
-					city.getName()));
-		}
+	public List<GetCity> getCitiesByMetropolitanId(Long metropolitanId) {
+		List<GetCity> citiesDto = cityRepository.findCitiesByMetropolitanId(metropolitanId);
 
 		return citiesDto;
 	}

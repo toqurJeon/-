@@ -8,5 +8,5 @@ import java.util.List;
 public interface AreaService {
     List<GetMetropolitan> getMetropolitans();
 
-    List<GetCity> getCities();
+    List<GetCity> getCitiesByMetropolitanId(Long metropolitanId);
 }

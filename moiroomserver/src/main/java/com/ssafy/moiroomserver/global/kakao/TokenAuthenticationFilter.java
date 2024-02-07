@@ -39,8 +39,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                 return;
             }
         }
-
-        System.out.println("이상없음");
         filterChain.doFilter(request, response);
     }
 }
