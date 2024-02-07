@@ -4,12 +4,21 @@
 package com.example.moiroom
 
 import android.app.Application
+import androidx.multidex.MultiDexApplication
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.kakao.sdk.common.KakaoSdk
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.Converter
 import java.lang.reflect.Type
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.storage.ktx.storage
 
 // Application: 앱의 진입점에서 실행되는 컴포넌트
 class GlobalApplication : Application() {
@@ -48,5 +57,25 @@ class GlobalApplication : Application() {
             .baseUrl("https://api.instagram.com/oauth/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        GlobalApplication.auth = Firebase.auth
+        GlobalApplication.db = FirebaseFirestore.getInstance()
+        GlobalApplication.storage = Firebase.storage
+    }
+
+    companion object {
+        lateinit var auth: FirebaseAuth
+        var email: String? = null
+        lateinit var db: FirebaseFirestore
+        lateinit var storage: FirebaseStorage
+        fun checkAuth(): Boolean {
+            var currentUser = auth.currentUser
+            return currentUser?.let {
+                email = currentUser.email
+                currentUser.isEmailVerified
+            } ?: let {
+                false
+            }
+        }
     }
 }

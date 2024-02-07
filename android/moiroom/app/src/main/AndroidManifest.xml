@@ -27,6 +27,8 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.gms.auth.api.signin.permission.SIGN_IN" />
+
 
     <!-- queries: 사용자의 기기에서 연결할 다른 앱 설정-->
     <queries>
@@ -56,8 +58,8 @@
         android:usesCleartextTraffic="true">
         <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
         <meta-data
-            android:name="com.google.android.gms.signin.466064898648-j9ar26egoiv5te26oj7v4j297mlmjmll"
-            android:value="466064898648-j9ar26egoiv5te26oj7v4j297mlmjmll.apps.googleusercontent.com" />
+            android:name="com.google.android.gms.signin.389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0"
+            android:value="389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0.apps.googleusercontent.com" />
         <activity
             android:name=".DetailchartActivity"
             android:exported="true" />
@@ -72,6 +74,7 @@
             android:theme="@style/ChatActivityTheme"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".NowMatchingActivity"
             android:theme="@style/NowMatchingTheme"
