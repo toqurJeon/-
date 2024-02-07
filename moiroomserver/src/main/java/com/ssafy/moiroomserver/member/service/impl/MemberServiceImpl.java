@@ -9,6 +9,8 @@ import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
+import com.ssafy.moiroomserver.s3.service.S3Service;
+
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class MemberServiceImpl implements MemberService {
     private static final int LOGOUT = 0;
 
     private final MemberRepository memberRepository;
+    private final S3Service s3Service;
 
     /**
      * 회원 정보 수정
@@ -35,6 +38,7 @@ public class MemberServiceImpl implements MemberService {
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         Member member = memberRepository.findById(16L)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+        infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage()));
         member.modify(infoModifyRequest);
     }
 
