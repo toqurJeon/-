@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -14,6 +15,9 @@ private const val TAG_MY_PAGE = "my_page_fragment"
 class NaviActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityNaviBinding
+
+    //뒤로가기 버튼 누른 시간
+    var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +35,22 @@ class NaviActivity : AppCompatActivity() {
             }
             true
         }
+    }
+
+    override fun onBackPressed() {
+
+        //현재시간보다 크면 종료
+        if(backPressedTime + 3000 > System.currentTimeMillis()){
+
+            super.onBackPressed()
+            finish()//액티비티 종료
+        }else{
+            Toast.makeText(applicationContext, "한번 더 뒤로가기 버튼을 누르면 종료됩니다.",
+                Toast.LENGTH_SHORT).show()
+        }
+
+        //현재 시간 담기
+        backPressedTime = System.currentTimeMillis()
     }
 
     private fun setFragment(tag: String, fragment: Fragment) {

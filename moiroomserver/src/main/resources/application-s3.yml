@@ -1,0 +1,17 @@
+#spring:
+#  config:
+#    activate:
+#      on-profile: s3
+
+cloud:
+  aws:
+    s3:
+      bucket: moiroom
+    credentials:
+      accessKey: ${S3_ACCESSKEY}
+      secretKey: ${S3_SECRETKEY}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

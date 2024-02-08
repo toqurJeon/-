@@ -1,3 +1,4 @@
+import android.content.Context
 import android.util.Log
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.Dispatchers
@@ -7,9 +8,14 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 @Serializable
 data class User(
+    val socialId : Long,
+    val provider : String,
     val nickname: String,
     val imageUrl: String,
     val birthyear: String,
@@ -22,19 +28,25 @@ data class User(
 
 private const val TAG = "UserInfoFetcher"
 
-fun fetchUserInfo(accessToken: String, refreshToken: String) {
+suspend fun fetchUserInfo(context: Context, accessToken: String, refreshToken: String): User? = suspendCoroutine { cont ->
+    val apiService = NetworkModule.provideRetrofit(context)
+
     UserApiClient.instance.me { user, error ->
         if (error != null) {
             Log.e(TAG, "사용자 정보 요청 실패", error)
-        }
-        else if (user != null) {
-            Log.i(TAG, "사용자 정보 요청 성공" +
-                    "\n회원번호: ${user.id}" +
-                    "\n이메일: ${user.kakaoAccount?.email}" +
-                    "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
-                    "\n프로필 링크: ${user.kakaoAccount?.profile?.thumbnailImageUrl}")
+            cont.resumeWithException(error) // error가 있을 경우 예외를 발생시키고 코루틴을 종료합니다.
+        } else if (user != null) {
+            Log.i(
+                TAG, "사용자 정보 요청 성공" +
+                        "\n회원번호: ${user.id}" +
+                        "\n이메일: ${user.kakaoAccount?.email}" +
+                        "\n닉네임: ${user.kakaoAccount?.profile?.nickname}" +
+                        "\n프로필 링크: ${user.kakaoAccount?.profile?.thumbnailImageUrl}"
+            )
 
             val userInfo = User(
+                socialId = user.id ?: 0L,
+                provider = "kakao",
                 nickname = user.kakaoAccount?.profile?.nickname ?: "",
                 imageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl ?: "",
                 birthyear = user.kakaoAccount?.birthyear ?: "",
@@ -48,29 +60,8 @@ fun fetchUserInfo(accessToken: String, refreshToken: String) {
             val jsonString = Json.encodeToString(userInfo)
             Log.i(TAG, jsonString)
 
-            // 백엔드 서버로 POST 요청 보내기
-            GlobalScope.launch(Dispatchers.Main) {
-                val response = withContext(Dispatchers.IO) {
-                    NetworkModule.apiService.postUser(userInfo)
-                }
-
-                if (response.isSuccessful) {
-                    val responseData = response.body()
-                    if (responseData != null) {
-                        // 응답 처리
-                        Log.d("Success", "Code: ${response.code()}, Body: ${responseData.string()}")
-                    } else {
-                        // 응답 본문이 null인 경우 처리
-                        Log.e("Error", "Response body is null")
-                    }
-                } else {
-                    // 요청 실패 처리
-                    Log.e("Error", "Request failed with status code: ${response.code()}")
-                }
-            }
+            cont.resume(userInfo) // userInfo를 반환하고 코루틴을 종료합니다.
         }
     }
 }
-
-
 

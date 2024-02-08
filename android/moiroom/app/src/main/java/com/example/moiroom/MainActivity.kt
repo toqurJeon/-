@@ -28,6 +28,7 @@ import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
 import fetchUserInfo
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
@@ -44,7 +45,6 @@ class MainActivity : AppCompatActivity() {
         // res/layout/activity_login.xml 파일을 화면에 띄움
         // 수정 필요!!! 카카오 토큰이 있으면 바로 activity_navi로 가도록 수정 필요
         setContentView(R.layout.activity_login)
-
         // 로그인 정보 확인(성현)
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             // 토큰 정보가 없어서 에러가 나면 토스트 띄운 후 현재 화면 유지
@@ -128,13 +128,22 @@ class MainActivity : AppCompatActivity() {
 
                 val accessToken = token.accessToken
                 val refreshToken = token.refreshToken
+
+                // 액세스 토큰을 SharedPreferences에 저장
+                val sharedAccessToken = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val editor = sharedAccessToken.edit()
+                editor.putString("accessToken", accessToken)
+                editor.putString("refreshToken", refreshToken)
+                editor.apply()
+
                 System.out.println("Access Token: $accessToken")
                 System.out.println("Refresh Token: $refreshToken")
                 Log.d("KaKaoAccessToken", "Access Token: $accessToken")
                 Log.d("KaKaoRefreshToken", "Refresh Token: $refreshToken")
 
-                // 사용자 정보를 가져옵니다.
-                fetchUserInfo(accessToken, refreshToken)
+                CoroutineScope(Dispatchers.Main).launch {
+                    val userInfo = fetchUserInfo(this@MainActivity, accessToken, refreshToken)
+                }
 
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
