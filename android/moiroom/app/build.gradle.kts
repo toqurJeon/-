@@ -1,3 +1,6 @@
+import org.gradle.internal.impldep.bsh.commands.dir
+import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+
 // Gradle:  Android 애플리케이션 및 기타 프로젝트의 빌드와 종속성 관리를 위한 강력한 빌드 도구
 
 // 프로젝트에 적용할 플러그인
@@ -11,6 +14,10 @@ plugins {
     // 코틀린 어노테이션 프로세싱 플러그인 (아직 정확히 모르겠음)
     // 어노테이션: @ 뒤에 있는 거
     id("kotlin-kapt")
+    //serialization 플러그인 추가
+    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
+    // 구글 액세스 토큰
+    id("com.google.gms.google-services")
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션
@@ -33,6 +40,8 @@ android {
         versionName = "1.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        // 멀티덱스 활성화
+        multiDexEnabled = true
     }
     // 빌드 유형을 구성
     buildTypes {
@@ -92,7 +101,9 @@ dependencies {
     implementation("androidx.activity:activity-ktx:1.4.0")
     implementation("androidx.fragment:fragment-ktx:1.3.6")
     implementation("com.github.bumptech.glide:glide:4.12.0")
-    kapt("com.github.bumptech.glide:compiler:4.12.0")
+    implementation("com.drewnoakes:metadata-extractor:2.16.0")
+//    kapt("com.github.bumptech.glide:compiler:4.12.0")
+//    kapt("com.github.bumptech.glide:compiler:4.12.0")
     // RecyclerView
     implementation("androidx.recyclerview:recyclerview:1.3.2")
     // viewModel
@@ -123,6 +134,24 @@ dependencies {
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.1")
     // fuel 라이브러리
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
+    implementation("com.github.kittinunf.fuel:fuel-android:2.3.1")
     // json to map 라이브러리
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    // 유투브/구글 인증
+    implementation(platform("com.google.firebase:firebase-bom:32.7.1"))
+    implementation("com.google.firebase:firebase-analytics")
+//    implementation("com.google.gms:google-services:4.4.0")
+    // Firebase Authentication
+    implementation("com.google.firebase:firebase-auth:22.3.1")
+    implementation("com.google.android.gms:play-services-auth:20.7.0")
+    // 멀티덱스 지원 라이브러리 추가
+    implementation("androidx.multidex:multidex:2.0.1")
+    // Firebase Firestore SDK 추가
+    implementation("com.google.firebase:firebase-firestore-ktx:24.10.1")
+    // Firebase Storage SDK 추가
+    implementation("com.google.firebase:firebase-storage:20.3.0")
+    implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
+
+
 }
+

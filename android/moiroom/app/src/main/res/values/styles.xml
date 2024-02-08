@@ -20,5 +20,22 @@
         <item name="strokeColor">@color/white</item>
         <item name="android:textColor">@color/black</item>
     </style>
+    <style name="NowMatchingTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="colorPrimaryDark">@color/darkorange</item>
+        <item name="android:windowBackground">@color/white</item>
+        <item name="colorSwitchThumbNormal">@color/lightorange</item>
+        <item name="colorControlActivated">@color/darkorange</item>
+
+        <item name="android:fontFamily">@font/pretendard_regular</item>
+        <item name="android:textColor">@color/black</item>
+
+        <!-- 상태 바 색상 설정 -->
+        <item name="android:statusBarColor">@color/darkorange</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+    <style name="ChatActivityTheme" parent="Theme.Material3.DayNight.NoActionBar">
+        <item name="android:statusBarColor">@color/lightgray</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
 
 </resources>

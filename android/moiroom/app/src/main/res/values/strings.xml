@@ -6,6 +6,22 @@
     <string name="chatting">This is chatting page</string>
     <string name="now_matching">This is now Matching page</string>
     <string name="detailButtonText">&lt;&lt;\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020이 룸메이트의 정보 더보기</string>
-    <string name="facebook_app_id">1429064924713303
-</string>
+    <string name="facebook_app_id">1429064924713303</string>
+
+    <!-- NowMatchingActivity 용 -->
+    <string name="nowMatchingHeader">매칭을 시작해보세요.</string>
+    <string name="nowMatchingHeader2">룸메이트가 기다리고 있어요!</string>
+    <string name="nowMatchingSign">터치해서 매칭 시작하기</string>
+    <string name="nowMatchingMainImage">메인 이미지</string>
+
+    <!-- 아이콘 설명 -->
+    <string name="iconTouch">터치 아이콘</string>
+
+    <!-- 로고 설명 -->
+    <string name="logoLetter">모이룸 글자 로고</string>
+
+    <!-- sample -->
+    <string name="sampleString">이것은 샘플 테스트 문장입니다.</string>
+    <string name="sampleMatchRate">99%</string>
+    <string name="sampleNickname">Abraham</string>
 </resources>

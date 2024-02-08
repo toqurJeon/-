@@ -12,6 +12,7 @@ import com.example.moiroom.data.Interest
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.databinding.FragmentMyPageBinding
+import com.example.moiroom.utils.cacheUserInfo
 import com.example.moiroom.view.RadarChartView
 
 
@@ -26,8 +27,16 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
 
-        val memberData: Member = getMemberData()
+        val cachedUserInfo: Member? = cacheUserInfo.get("userInfo")
+        if (cachedUserInfo != null) {
+            val memberData: Member = cachedUserInfo
+            setUI(memberData)
+        }
 
+        return binding.root
+    }
+
+    private fun setUI(memberData: Member) {
         val profileImageUrl = memberData.memberProfileImageUrl
         if (profileImageUrl != null) {
             val profileImageView = binding.memberProfileImage
@@ -45,15 +54,16 @@ class MyPageFragment : Fragment() {
 
         chartView.setDataList(
             arrayListOf(
-                RadarChartData(com.example.moiroom.data.CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.activity,memberData.activity.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.communion, memberData.communion.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.humor, memberData.humor.toFloat() / 100),
-                RadarChartData(com.example.moiroom.data.CharacteristicType.generous, memberData.generous.toFloat() / 100),
-            )
+                RadarChartData(CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity,memberData.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100),
+            ),
+            null
         )
         binding.radarChartContainer.addView(chartView)
 
@@ -84,60 +94,5 @@ class MyPageFragment : Fragment() {
             val intent = Intent(requireContext(), AdsettingActivity::class.java)
             startActivity(intent)
         }
-
-        return binding.root
     }
-
-    private fun getMemberData(): Member {
-        return Member(
-            1,
-            "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
-            "안드레이",
-            "남자",
-            "김민식",
-            1999,
-            "서울특별시",
-            "강남구",
-            "멍멍이를 엄청 좋아해요. 댕댕.",
-            1,
-            6520,
-            6952,
-            6893,
-            7653,
-            6783,
-            4210,
-            6520,
-            8758,
-            listOf(
-                Interest(
-                    "운동",
-                    57
-                ),
-                Interest(
-                    "음악",
-                    33
-                ),
-                Interest(
-                    "요리",
-                    10
-                )
-            )
-        )
-    }
-
-    enum class CharacteristicType(val value: String) {
-        socialbility("사교"),
-        positivity("긍정"),
-        activity("활동"),
-        communion("공유"),
-        altruism("이타"),
-        empathy("공감"),
-        humor("감각"),
-        generous("관대")
-    }
-
-    data class RadarChartData(
-        val type: CharacteristicType,
-        val value: Float
-    )
 }

@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -11,9 +12,12 @@ private const val TAG_NOW_MATCHING_AFTER = "now_matching_after_fragment"
 private const val TAG_CHATTING = "chatting_fragment"
 private const val TAG_MY_PAGE = "my_page_fragment"
 
-class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
+class NaviActivity : AppCompatActivity() {
 
     private lateinit var binding : ActivityNaviBinding
+
+    //뒤로가기 버튼 누른 시간
+    var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,26 +37,25 @@ class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
         }
     }
 
-    override fun onBackButtonClicked() {
-        val fragmentManager = supportFragmentManager
-        val fragmentTransaction = fragmentManager.beginTransaction()
+    override fun onBackPressed() {
 
-        // 애니메이션 설정
-        fragmentTransaction.setCustomAnimations(R.anim.slide_in_left,R.anim.slide_out_right)
+        //현재시간보다 크면 종료
+        if(backPressedTime + 3000 > System.currentTimeMillis()){
 
-        // 프래그먼트 교체
-        fragmentTransaction.replace(R.id.mainFrameLayout, NowMatchingAfterFragment())
+            super.onBackPressed()
+            finish()//액티비티 종료
+        }else{
+            Toast.makeText(applicationContext, "한번 더 뒤로가기 버튼을 누르면 종료됩니다.",
+                Toast.LENGTH_SHORT).show()
+        }
 
-        fragmentTransaction.commit()
+        //현재 시간 담기
+        backPressedTime = System.currentTimeMillis()
     }
 
     private fun setFragment(tag: String, fragment: Fragment) {
         val manager: FragmentManager = supportFragmentManager
         val fragTransaction = manager.beginTransaction()
-
-        if (manager.findFragmentByTag(tag) == null){
-            fragTransaction.add(R.id.mainFrameLayout, fragment, tag)
-        }
 
         val nowMatchingAfter = manager.findFragmentByTag(TAG_NOW_MATCHING_AFTER)
         val chatting = manager.findFragmentByTag(TAG_CHATTING)
@@ -70,23 +73,16 @@ class NaviActivity : AppCompatActivity(), OnBackButtonClickListener {
             fragTransaction.hide(myPage)
         }
 
-        if (tag == TAG_NOW_MATCHING_AFTER) {
-            if (nowMatchingAfter!=null){
-                fragTransaction.show(nowMatchingAfter)
-            }
-        }
-        else if (tag == TAG_CHATTING) {
-            if (chatting != null) {
-                fragTransaction.show(chatting)
-            }
-        }
-
-        else if (tag == TAG_MY_PAGE){
-            if (myPage != null){
-                fragTransaction.show(myPage)
+        if (manager.findFragmentByTag(tag) == null){
+            fragTransaction.replace(R.id.mainFrameLayout, fragment, tag)
+        } else {
+            when(tag) {
+                TAG_NOW_MATCHING_AFTER -> nowMatchingAfter?.let { fragTransaction.show(it) }
+                TAG_CHATTING -> chatting?.let { fragTransaction.show(it) }
+                TAG_MY_PAGE -> myPage?.let { fragTransaction.show(it) }
             }
         }
 
-        fragTransaction.commitAllowingStateLoss()
+        fragTransaction.commit()
     }
 }
