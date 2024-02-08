@@ -4,10 +4,11 @@ import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
+import jakarta.servlet.http.HttpServletRequest;
 
 public interface MemberService {
 
-    void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest);
+    void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest infoModifyRequest);
 
     void login(AddMemberDto dto);
 

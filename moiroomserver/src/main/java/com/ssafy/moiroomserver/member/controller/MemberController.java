@@ -8,6 +8,7 @@ import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +25,8 @@ public class MemberController {
      * @param infoModifyRequest 수정 시 입력할 데이터
      */
     @PatchMapping
-    public ApiResponse<?> modifyMemberInfo(@ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
-        memberService.modifyMemberInfo(infoModifyRequest);
+    public ApiResponse<?> modifyMemberInfo(HttpServletRequest request, @ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
+        memberService.modifyMemberInfo(request, infoModifyRequest);
 
         return ApiResponse.success(SuccessCode.MODIFY_MEMBER_INFO);
     }

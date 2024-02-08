@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.ExistException;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
+import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
@@ -12,6 +13,7 @@ import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import com.ssafy.moiroomserver.s3.service.S3Service;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -29,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final S3Service s3Service;
+    private final KakaoService kakaoService;
 
     /**
      * 회원 정보 수정
@@ -36,12 +39,11 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
-        Long memberId = 6L; //임시 회원 아이디 변수
-        Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+    public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest infoModifyRequest) {
+        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
+        Member member = memberRepository.findMemberBySocialIdAndProvider(1237L, "kakao");
         if (infoModifyRequest.getMemberProfileImage() != null) {
-            infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), memberId));
+            infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), member));
         }
         if (infoModifyRequest.getRoommateSearchStatus() != null && infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
             throw new WrongValueException(WRONG_ROOMMATE_SEARCH_STATUS_VALUE);
