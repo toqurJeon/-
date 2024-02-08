@@ -54,3 +54,11 @@ data class CalendarEvent(
     val accessLevel: Int,
     val availability: Int
 )
+
+data class VideoInfo(
+    val id: Long,
+    val title: String,
+    val path: String,
+    val duration: Long,
+    val dateAdded: Long
+)

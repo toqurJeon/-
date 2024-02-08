@@ -26,6 +26,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var adapter: ChatAdapter
     // chatRoomId의 초기값
     private var chatRoomId: Int = -1
+    private var memberId: Long = -1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,9 +36,15 @@ class ChatActivity : AppCompatActivity() {
 
         // 채팅방 리스트 (ChattingFragment)로부터 전달된 chatRoomId 받기
         chatRoomId = intent.getIntExtra("chatRoomId", -1)
+        memberId = intent.getLongExtra("memberId", -1)
+        Log.d("TAG!!!!!!!!!!1", "receivedData: $memberId")
 
         // chatRoomId 적용
-        binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+        if (chatRoomId == -1) {
+            binding.chatRoomName.text = "chatRoomName : $memberId"
+        } else {
+            binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+        }
 
         // 뒤로 가기 버튼
         binding.backwardButton.setOnClickListener {
@@ -115,13 +122,11 @@ class ChatActivity : AppCompatActivity() {
         val btnNo: Button = dialog.findViewById(R.id.btnNo)
 
         btnYes.setOnClickListener {
-
             dialog.dismiss() // 다이얼로그 닫기
             onBackPressed()
         }
 
         btnNo.setOnClickListener {
-
             dialog.dismiss()
         }
 
@@ -129,7 +134,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        // 뒤로가기
+        super.onBackPressed()
         finish()
     }
 }

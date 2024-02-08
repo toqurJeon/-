@@ -90,7 +90,6 @@
                 android:layout_gravity="center"
                 android:src="@drawable/send_fill0_wght400_grad0_opsz24"/>
 
-
         </FrameLayout>
 
     </LinearLayout>
