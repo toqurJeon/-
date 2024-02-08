@@ -3,7 +3,7 @@ package com.ssafy.moiroomserver.member.controller;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
-import com.ssafy.moiroomserver.member.dto.CharacterInfo;
+import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -77,8 +77,14 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
     }
 
-    @PostMapping("/character")
-    public ApiResponse<?> addCharacter(@RequestBody CharacterInfo.AddRequest infoAddRequest) {
+    /**
+     * 특성 및 관심사 추가 및 수정
+     * @param request
+     * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
+     */
+    @PostMapping("/characteristic")
+    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
+        memberService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
         return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
     }

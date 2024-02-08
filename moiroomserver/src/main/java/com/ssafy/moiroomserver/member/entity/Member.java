@@ -73,12 +73,16 @@ public class Member extends BaseEntity {
     @Column(name = "account_status", nullable = false)
     private int accountStatus = 1; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
-    public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
+    public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         this.imageUrl = (infoModifyRequest.getProfileImageUrl() == null) ? imageUrl : infoModifyRequest.getProfileImageUrl();
         this.metropolitanId = (infoModifyRequest.getMetropolitanId() == null) ? metropolitanId : infoModifyRequest.getMetropolitanId();
         this.cityId = (infoModifyRequest.getCityId() == null) ? cityId : infoModifyRequest.getCityId();
         this.nickname = (infoModifyRequest.getMemberNickname() == null) ? nickname : infoModifyRequest.getMemberNickname();
         this.introduction = (infoModifyRequest.getMemberIntroduction() == null) ? introduction : infoModifyRequest.getMemberIntroduction();
         this.roommateSearchStatus = (infoModifyRequest.getRoommateSearchStatus() == null) ? roommateSearchStatus : infoModifyRequest.getRoommateSearchStatus();
+    }
+
+    public void modifyCharacteristicId(Long characteristicId) {
+        this.characteristicId = characteristicId;
     }
 }
