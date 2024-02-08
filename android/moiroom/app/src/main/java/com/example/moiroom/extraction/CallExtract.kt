@@ -9,6 +9,7 @@ import com.example.moiroom.data.CallLogItem
 import android.provider.CallLog.Calls
 import android.provider.CallLog.Locations
 import android.util.Log
+import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.databinding.ActivityJaeeontestBinding
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
@@ -19,6 +20,7 @@ import kotlinx.coroutines.launch
 
 class CallExtract: AppCompatActivity() {
     private lateinit var binding: ActivityJaeeontestBinding
+    var calldata = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityJaeeontestBinding.inflate(layoutInflater)
@@ -36,10 +38,12 @@ class CallExtract: AppCompatActivity() {
         val calls = getCallLog(this)
         return postFuel(calls)
     }
+
+
     fun getCallLog(context: Context): String {
         val callLogList = mutableListOf<CallLogItem>()
         val stringBuilder = StringBuilder()
-        stringBuilder.append("[")
+        stringBuilder.append(" \"calls\": [")
 
         // ContentResolver를 사용하여 CallLog.Calls에 쿼리를 수행
         val contentResolver: ContentResolver = context.contentResolver
@@ -82,6 +86,7 @@ class CallExtract: AppCompatActivity() {
         stringBuilder.deleteCharAt(stringBuilder.length - 1)
         stringBuilder.deleteCharAt(stringBuilder.length - 1)
         stringBuilder.append("]")
+
         // 리스트 반환
         return stringBuilder.toString()
     }

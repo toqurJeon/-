@@ -8,6 +8,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moiroom.LoadingActivity
+import com.example.moiroom.NaviActivity
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
@@ -22,7 +23,7 @@ import kotlinx.coroutines.GlobalScope
 
 class InstagramExtract: AppCompatActivity() {
     private lateinit var binding: ActivityWebviewtestBinding
-
+    var instadata = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
@@ -91,14 +92,20 @@ class InstagramExtract: AppCompatActivity() {
                 // 응답 확인
                 response.third.fold(
                     success = { data ->
-                        sendInstagramAccessToken(data)
+                        NowMatchingActivity.instaAuth = true
+                        instadata = data
+//                        sendInstagramAccessToken(data)
                     },
-                    failure = { error -> Log.d("에러4", "에러: $error") }
+                    failure = { error ->
+                        Log.d("에러4", "에러: $error")
+                    }
                 )
             } catch (e: Exception) {
                 println("에러3: $e")
             }
         }
+        val intent = Intent(this, LoadingActivity::class.java)
+        startActivity(intent)
     }
 
     fun sendInstagramAccessToken(res: String) {
