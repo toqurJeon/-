@@ -10,6 +10,7 @@ import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
+import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import com.ssafy.moiroomserver.s3.service.S3Service;
@@ -140,6 +141,7 @@ public class MemberServiceImpl implements MemberService {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
         if (member.getCharacteristicId() == null) {
+            characteristicRepository.save(infoAddRequest.toEntity());
         }
     }
 }
