@@ -5,7 +5,7 @@ import lombok.Setter;
 
 import java.util.List;
 
-public class CharacterInfo {
+public class CharacteristicInfo {
 
     @Getter
     @Setter
@@ -21,5 +21,6 @@ public class CharacterInfo {
         private String sleepAt;
         private String wakeUpAt;
         private List<InterestInfo.AddRequest> interest;
+
     }
 }

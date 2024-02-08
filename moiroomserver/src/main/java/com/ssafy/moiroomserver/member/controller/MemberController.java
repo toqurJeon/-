@@ -3,7 +3,7 @@ package com.ssafy.moiroomserver.member.controller;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
-import com.ssafy.moiroomserver.member.dto.CharacterInfo;
+import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -77,8 +77,8 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
     }
 
-    @PostMapping("/character")
-    public ApiResponse<?> addCharacter(@RequestBody CharacterInfo.AddRequest infoAddRequest) {
+    @PostMapping("/characteristic")
+    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddRequest infoAddRequest) {
 
         return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
     }

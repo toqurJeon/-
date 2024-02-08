@@ -6,6 +6,7 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
+import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -131,5 +132,14 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.findMemberBySocialIdAndProvider(socialId, provider)
                 .setLoginStatus(LOGOUT);
 
+    }
+
+    @Override
+    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest infoAddRequest) {
+        //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
+        Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
+        if (member.getCharacteristicsId() == null) {
+            ;
+        }
     }
 }
