@@ -73,6 +73,10 @@ public class Member extends BaseEntity {
     @Column(name = "account_status", nullable = false)
     private int accountStatus = 1; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
+    /**
+     * 회원 정보 수정
+     * @param infoModifyRequest 수정 시 입력할 회원 정보
+     */
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
         this.imageUrl = (infoModifyRequest.getProfileImageUrl() == null) ? imageUrl : infoModifyRequest.getProfileImageUrl();
         this.metropolitanId = (infoModifyRequest.getMetropolitanId() == null) ? metropolitanId : infoModifyRequest.getMetropolitanId();
@@ -80,8 +84,13 @@ public class Member extends BaseEntity {
         this.nickname = (infoModifyRequest.getMemberNickname() == null) ? nickname : infoModifyRequest.getMemberNickname();
         this.introduction = (infoModifyRequest.getMemberIntroduction() == null) ? introduction : infoModifyRequest.getMemberIntroduction();
         this.roommateSearchStatus = (infoModifyRequest.getRoommateSearchStatus() == null) ? roommateSearchStatus : infoModifyRequest.getRoommateSearchStatus();
+        this.gender = (infoModifyRequest.getMemberGender() == null) ? gender : infoModifyRequest.getMemberGender();
     }
 
+    /**
+     * 특성 아이디 수정
+     * @param characteristicId 수정 시 입력할 특성 아이디
+     */
     public void modifyCharacteristicId(Long characteristicId) {
         this.characteristicId = characteristicId;
     }

@@ -17,5 +17,6 @@ public class MemberInfo {
         private String memberNickname;
         private String memberIntroduction;
         private Integer roommateSearchStatus;
+        private String memberGender;
     }
 }
