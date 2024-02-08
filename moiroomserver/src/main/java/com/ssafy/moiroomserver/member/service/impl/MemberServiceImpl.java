@@ -168,6 +168,7 @@ public class MemberServiceImpl implements MemberService {
             memberInterestRepository.deleteByMember(member); //기존의 관심사 데이터 전부 삭제
         }
         //관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
+        if (characteristicInfoAddModifyReq.getInterestList() == null) return;
         for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
             Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)");
             if (interest == null) {
