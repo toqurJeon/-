@@ -188,6 +188,11 @@ class InfoinputActivity : AppCompatActivity() {
                                 "회원 정보 수정 성공",
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            // 요청이 성공했으므로 NowMatchingActivity로 화면을 전환합니다.
+                            val intent = Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
+                            startActivity(intent)
+
                         } else {
                             // 요청이 실패했을 때의 처리
                             Toast.makeText(
