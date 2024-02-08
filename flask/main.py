@@ -134,7 +134,7 @@ def user_init():
         params['interest'] = None
 
         # print(params)
-        send_response = requests.post('https://www.moiroom.n-e.kr/member/characteristic', json=params)
+        send_response = requests.post('https://moiroom.n-e.kr/member/characteristic', json=params)
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
 
@@ -146,7 +146,7 @@ def user_init():
 @app.route('/match', methods=['POST'])
 def match_users():
     try:
-        users_request = requests.get('https://www.moiroom.n-e.kr/matching/info')
+        users_request = requests.get('https://moiroom.n-e.kr/matching/info')
         if users_request.status_code != 200:
             return jsonify({'status': 'error', 'message': 'not 200 in users info'})
         users_info = users_request.json()['data']
@@ -162,7 +162,7 @@ def match_users():
                     min_gap[0] = gap
                     min_gap[1] = match_introduction[func.__name__]
             # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
-            send_response = requests.post('https://www.moiroom.n-e.kr/matching/result/' + users['memberId'],
+            send_response = requests.post('https://moiroom.n-e.kr/matching/result/' + users['memberId'],
                                           json={'rate': percentage, 'rateIntroduction': min_gap[1]})
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
