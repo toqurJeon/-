@@ -15,7 +15,7 @@ var okCount: Int = 0
 
 fun getRequestResult(result: Boolean) {
     // ok response를 받아야 하는 갯수
-    val targetCount: Int = 3
+    val targetCount: Int = 1
     Log.d("TAG", "getRequestResult: $result 응답 받음! okCount: $okCount")
 
     if (result) {
@@ -30,7 +30,7 @@ fun getRequestResult(result: Boolean) {
     }
 }
 
-fun getUserInfo() {
+fun getMatchedMember() {
     // 응답 데이터 저장 (현재: 더미 데이터)
     val responseMatchedMemberList: MatchedMemberList = MatchedMemberList(
         listOf(
@@ -156,7 +156,7 @@ fun getUserInfo() {
     cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)
 }
 
-fun getMatchedMember() {
+fun getUserInfo() {
     // 본인 정보 GET 요청
 
     // 응답 데이터 저장 (현재: 더미 데이터)

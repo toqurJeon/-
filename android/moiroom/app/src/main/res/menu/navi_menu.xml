@@ -4,7 +4,7 @@
     <item
         android:id="@+id/nowMatchingFragment"
         android:title="매칭"
-        android:icon="@drawable/ic_now_matching"/>
+        android:icon="@drawable/nav_matching"/>
 
     <item
         android:id="@+id/chattingFragment"

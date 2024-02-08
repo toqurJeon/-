@@ -37,6 +37,7 @@ class NowMatchingActivity : AppCompatActivity() {
         // SharedPreferences에서 'isButtonClicked' 값을 가져옴
         val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+        Log.d("MYTAG", "isButtonClicked(이전에 매칭을 진행했는지 확인): $isButtonClicked")
 
         if (isButtonClicked) {
 
@@ -67,7 +68,7 @@ class NowMatchingActivity : AppCompatActivity() {
 
     private fun showAuthorityDialog() {
 
-        val dialog = Dialog(this)
+        val dialog = Dialog(this, R.style.DialogTheme)
         val dialogBinding = DialogAuthorityBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 

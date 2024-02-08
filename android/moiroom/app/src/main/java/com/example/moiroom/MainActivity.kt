@@ -23,6 +23,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
@@ -153,6 +155,9 @@ class MainActivity : AppCompatActivity() {
                 // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
                 if (isButtonClicked) {
                     intent = Intent(this, NaviActivity::class.java)
+                    // 통신 구현 후 삭제 필요
+                    getUserInfo()
+                    getMatchedMember()
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)
