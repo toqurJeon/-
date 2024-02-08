@@ -23,7 +23,7 @@ public class MemberController {
      * @param infoModifyRequest 수정 시 입력할 데이터
      */
     @PatchMapping
-    public ApiResponse<?> modifyMemberInfo(@RequestBody MemberInfo.ModifyRequest infoModifyRequest) {
+    public ApiResponse<?> modifyMemberInfo(@ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
         memberService.modifyMemberInfo(infoModifyRequest);
 
         return ApiResponse.success(SuccessCode.MODIFY_MEMBER_INFO);
