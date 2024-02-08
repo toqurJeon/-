@@ -5,12 +5,12 @@ import com.ssafy.moiroomserver.global.exception.ExistException;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
-import com.ssafy.moiroomserver.member.dto.AddMemberDto;
-import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
-import com.ssafy.moiroomserver.member.dto.MemberInfo;
-import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
+import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.entity.Interest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
+import com.ssafy.moiroomserver.member.repository.InterestRepository;
+import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import com.ssafy.moiroomserver.s3.service.S3Service;
@@ -33,25 +33,27 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
     private final CharacteristicRepository characteristicRepository;
+    private final MemberInterestRepository memberInterestRepository;
+    private final InterestRepository interestRepository;
     private final S3Service s3Service;
     private final KakaoService kakaoService;
 
     /**
      * 회원 정보 수정
-     * @param infoModifyRequest 수정 시 입력할 데이터
+     * @param memberInfoModifyReq 수정 시 입력할 데이터
      */
     @Transactional
     @Override
-    public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest infoModifyRequest) {
+    public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest memberInfoModifyReq) {
 //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (infoModifyRequest.getMemberProfileImage() != null) {
-            infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), member));
+        if (memberInfoModifyReq.getMemberProfileImage() != null) {
+            memberInfoModifyReq.setProfileImageUrl(s3Service.uploadProfileImage(memberInfoModifyReq.getMemberProfileImage(), member));
         }
-        if (infoModifyRequest.getRoommateSearchStatus() != null && infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
+        if (memberInfoModifyReq.getRoommateSearchStatus() != null && memberInfoModifyReq.getRoommateSearchStatus() != 0 && memberInfoModifyReq.getRoommateSearchStatus() != 1) {
             throw new WrongValueException(WRONG_ROOMMATE_SEARCH_STATUS_VALUE);
         }
-        member.modify(infoModifyRequest);
+        member.modify(memberInfoModifyReq);
     }
 
     /**
@@ -137,11 +139,15 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest infoAddRequest) {
+    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest characteristicInfoAddReq) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member.getCharacteristicId() == null) {
-            characteristicRepository.save(infoAddRequest.toEntity());
-        }
+//        if (member.getCharacteristicId() == null) {
+            characteristicRepository.save(characteristicInfoAddReq.toEntity());
+            for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddReq.getInterestList()) {
+                Interest interest = interestRepository.findByName(interestAddReq.getInterestName());
+                memberInterestRepository.save(interestAddReq.toEntity(member, interest));
+            }
+//        }
     }
 }

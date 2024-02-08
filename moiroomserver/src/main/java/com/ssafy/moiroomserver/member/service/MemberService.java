@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface MemberService {
 
-    void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest infoModifyRequest);
+    void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest MemberInfoModifyReq);
 
     void login(AddMemberDto dto);
 
@@ -19,5 +19,5 @@ public interface MemberService {
 
     void logout(Long socialId, String provider);
 
-    void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest infoAddRequest);
+    void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest characteristicInfoAddReq);
 }
