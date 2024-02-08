@@ -50,6 +50,9 @@ public class MemberServiceImpl implements MemberService {
     public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest memberInfoModifyReq) {
 //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
+        if (member == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
         if (memberInfoModifyReq.getMemberProfileImage() != null) {
             memberInfoModifyReq.setProfileImageUrl(s3Service.uploadProfileImage(memberInfoModifyReq.getMemberProfileImage(), member));
         }
@@ -141,23 +144,35 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    /**
+     * 특성 및 관심사 데이터 추가 및 수정
+     * @param request
+     * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
+     */
     @Transactional
     @Override
     public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member.getCharacteristicId() == null) {
-            Characteristic characteristic = characteristicRepository.save(characteristicInfoAddModifyReq.toEntity());
-            member.modifyCharacteristicId(characteristic.getCharacteristicsId());
+        if (member == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
         }
-        if (member.getCharacteristicId() != null) {
+        if (member.getCharacteristicId() == null) { //특성 및 관심사 첫 데이터 입력 (회원가입 후 첫 매칭 시작)
+            Characteristic characteristic = characteristicRepository.save(characteristicInfoAddModifyReq.toEntity()); //특성 데이터 추가
+            member.modifyCharacteristicId(characteristic.getCharacteristicsId()); //추가한 특성 아이디 회원 테이블의 특성 아이디 컬럼에 추가
+        }
+        if (member.getCharacteristicId() != null) { //특성 및 관심사 데이터 수정 (기존 특성 데이터 존재)
             Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
-                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
-            characteristic.modifyCharacteristicInfo(characteristicInfoAddModifyReq);
-            memberInterestRepository.deleteByMember(member);
+                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)); //기존의 특성 데이터 찾기
+            characteristic.modifyCharacteristicInfo(characteristicInfoAddModifyReq); //특성 데이터 수정
+            memberInterestRepository.deleteByMember(member); //기존의 관심사 데이터 전부 삭제
         }
+        //관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
         for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
             Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)");
+            if (interest == null) {
+                throw new NoExistException(NOT_EXISTS_INTEREST_NAME);
+            }
             memberInterestRepository.save(interestAddReq.toEntity(member, interest));
         }
     }

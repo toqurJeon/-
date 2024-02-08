@@ -77,6 +77,11 @@ public class MemberController {
         return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
     }
 
+    /**
+     * 특성 및 관심사 추가 및 수정
+     * @param request
+     * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
+     */
     @PostMapping("/characteristic")
     public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
         memberService.addCharacteristic(request, characteristicInfoAddModifyReq);
