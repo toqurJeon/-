@@ -26,6 +26,7 @@ import com.example.moiroom.utils.getUserInfo
 
 class NowMatchingActivity : AppCompatActivity() {
 
+
     private val PERMISSION_REQUEST_CODE = 103
 
     private lateinit var binding: ActivityNowMatchingBinding
@@ -64,6 +65,10 @@ class NowMatchingActivity : AppCompatActivity() {
 
     companion object {
         const val REQUEST_CODE_SETTINGS = 1001
+        var callAuth = false
+        var mediaAuth = false
+        var instaAuth = false
+        var googleAuth = false
     }
 
     private fun showAuthorityDialog() {
@@ -151,16 +156,17 @@ class NowMatchingActivity : AppCompatActivity() {
 
         if (isReadCallGranted && isExternalStorageGranted) {
             Log.d("권한 설정", "permissionRequest: 이미 모든 권한이 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
-
+//            getRequestResult(true)
+//            getRequestResult(true)
+            callAuth = true
+            mediaAuth = true
             instagramPermissionDialog()
 
         } else if (isReadCallGranted) {
             Log.d("권한 설정", "permissionRequest: Call Permission만 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
-
+//            getRequestResult(true)
+//            getRequestResult(true)
+            callAuth = true
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
@@ -171,9 +177,9 @@ class NowMatchingActivity : AppCompatActivity() {
 
         } else if (isExternalStorageGranted) {
             Log.d("권한 설정", "permissionRequest: External Storage Permission만 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
-
+//            getRequestResult(true)
+//            getRequestResult(true)
+            mediaAuth = true
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(
@@ -212,6 +218,14 @@ class NowMatchingActivity : AppCompatActivity() {
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("TAG", "${permissions[i]} 권한이 허용되었습니다.")
+                    if (permissions[i] == "android.permission.READ_CALL_LOG") {
+                        Log.d("오스 바꾸기", "전화")
+                        turnToTrue()
+                    }
+                    if (permissions[i] == "android.permission.READ_EXTERNAL_STORAGE") {
+                        Log.d("오스 바꾸기", "사진")
+                        mediaAuth = true
+                    }
                     // 권한이 허용된 경우
                 } else {
                     Log.d("TAG", "${permissions[i]} 권한이 거부되었습니다.")
@@ -240,5 +254,9 @@ class NowMatchingActivity : AppCompatActivity() {
                 instagramPermissionDialog()
             }
         }
+    }
+
+    fun turnToTrue() {
+        callAuth = true
     }
 }

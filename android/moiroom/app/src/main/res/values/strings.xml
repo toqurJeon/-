@@ -24,4 +24,10 @@
     <string name="sampleString">이것은 샘플 테스트 문장입니다.</string>
     <string name="sampleMatchRate">99%</string>
     <string name="sampleNickname">Abraham</string>
+
+    <!-- 권한 확인 용 -->
+    <string name="callAuth">true</string>
+    <string name="mediaAuth">true</string>
+    <string name="instaAuth">true</string>
+    <string name="googleAuth">true</string>
 </resources>
