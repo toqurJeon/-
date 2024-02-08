@@ -3,10 +3,12 @@ package com.ssafy.moiroomserver.member.controller;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
+import com.ssafy.moiroomserver.member.dto.CharacterInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.service.MemberService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,8 +25,8 @@ public class MemberController {
      * @param infoModifyRequest 수정 시 입력할 데이터
      */
     @PatchMapping
-    public ApiResponse<?> modifyMemberInfo(@ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
-        memberService.modifyMemberInfo(infoModifyRequest);
+    public ApiResponse<?> modifyMemberInfo(HttpServletRequest request, @ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
+        memberService.modifyMemberInfo(request, infoModifyRequest);
 
         return ApiResponse.success(SuccessCode.MODIFY_MEMBER_INFO);
     }
@@ -73,5 +75,11 @@ public class MemberController {
     public ApiResponse<?> logout(@RequestParam Long socialId, @RequestParam String provider) {
         memberService.logout(socialId, provider);
         return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
+    }
+
+    @PostMapping("/character")
+    public ApiResponse<?> addCharacter(@RequestBody CharacterInfo.AddRequest infoAddRequest) {
+
+        return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
     }
 }

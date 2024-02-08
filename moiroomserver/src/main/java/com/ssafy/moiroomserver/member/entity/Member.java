@@ -74,11 +74,11 @@ public class Member extends BaseEntity {
     private int accountStatus = 1; // 0:탈퇴, 1:존재, 2:비활성, 3:정지
 
     public void modify(MemberInfo.ModifyRequest infoModifyRequest) {
-        this.imageUrl = infoModifyRequest.getProfileImageUrl();
-        this.metropolitanId = infoModifyRequest.getMetropolitanId();
-        this.cityId = infoModifyRequest.getCityId();
-        this.nickname = infoModifyRequest.getMemberNickname();
-        this.introduction = infoModifyRequest.getMemberIntroduction();
-        this.roommateSearchStatus = infoModifyRequest.getRoommateSearchStatus();
+        this.imageUrl = (infoModifyRequest.getProfileImageUrl() == null) ? imageUrl : infoModifyRequest.getProfileImageUrl();
+        this.metropolitanId = (infoModifyRequest.getMetropolitanId() == null) ? metropolitanId : infoModifyRequest.getMetropolitanId();
+        this.cityId = (infoModifyRequest.getCityId() == null) ? cityId : infoModifyRequest.getCityId();
+        this.nickname = (infoModifyRequest.getMemberNickname() == null) ? nickname : infoModifyRequest.getMemberNickname();
+        this.introduction = (infoModifyRequest.getMemberIntroduction() == null) ? introduction : infoModifyRequest.getMemberIntroduction();
+        this.roommateSearchStatus = (infoModifyRequest.getRoommateSearchStatus() == null) ? roommateSearchStatus : infoModifyRequest.getRoommateSearchStatus();
     }
 }

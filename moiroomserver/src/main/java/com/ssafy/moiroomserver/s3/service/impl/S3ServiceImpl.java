@@ -74,11 +74,9 @@ public class S3ServiceImpl implements S3Service {
      * @return 업로드한 프로필 사진 url
      */
     @Override
-    public String uploadProfileImage(MultipartFile file, Long memberId) {
+    public String uploadProfileImage(MultipartFile file, Member member) {
         try {
-            Member member = memberRepository.findById(memberId)
-                .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
-            if (member.getImageUrl().matches("^https://(. *)com/$")) {
+            if (member.getImageUrl() != null && member.getImageUrl().contains(String.format("https://%s.s3.%s.amazonaws.com/", bucket, region))) {
                 delete(member.getImageUrl());
             }
 

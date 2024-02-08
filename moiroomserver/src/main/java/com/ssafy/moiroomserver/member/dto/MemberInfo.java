@@ -16,6 +16,6 @@ public class MemberInfo {
         private Long cityId;
         private String memberNickname;
         private String memberIntroduction;
-        private int roommateSearchStatus;
+        private Integer roommateSearchStatus;
     }
 }
