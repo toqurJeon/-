@@ -128,7 +128,7 @@ def user_init():
         params['interest'] = None
 
         # print(params)
-        send_response = requests.post('https://www.moiroom.n-e.kr/member/character', json=params)
+        send_response = requests.post('https://www.moiroom.n-e.kr/member/characteristics', json=params)
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
 
