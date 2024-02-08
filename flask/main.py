@@ -86,7 +86,10 @@ def positivity(json_data):
 
 
 def activity(json_data):
-    return gps.calc(json_data['images'])
+    if not json_data['images']:
+        return 0
+    else:
+        return gps.calc(json_data['images'])
 
 
 def communion(json_data):
@@ -98,7 +101,10 @@ def altruism(json_data):
 
 
 def empathy(json_data):
-    return call.calc(json_data["calls"])
+    if not json_data['calls']:
+        return 0
+    else:
+        return call.calc(json_data["calls"])
 
 
 def humor(json_data):
@@ -128,7 +134,7 @@ def user_init():
         params['interest'] = None
 
         # print(params)
-        send_response = requests.post('https://www.moiroom.n-e.kr/member/characteristics', json=params)
+        send_response = requests.post('https://www.moiroom.n-e.kr/member/characteristic', json=params)
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
 
