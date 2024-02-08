@@ -37,13 +37,13 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
-        Long memberId = 1L; //임시 회원 아이디 변수
+        Long memberId = 6L; //임시 회원 아이디 변수
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
-        if (!infoModifyRequest.getMemberProfileImage().isEmpty()) {
+        if (infoModifyRequest.getMemberProfileImage() != null) {
             infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), memberId));
         }
-        if (infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
+        if (infoModifyRequest.getRoommateSearchStatus() != null && infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
             throw new WrongValueException(WRONG_ROOMMATE_SEARCH_STATUS_VALUE);
         }
         member.modify(infoModifyRequest);

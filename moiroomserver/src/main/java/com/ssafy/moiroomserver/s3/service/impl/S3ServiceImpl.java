@@ -78,7 +78,7 @@ public class S3ServiceImpl implements S3Service {
         try {
             Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new NoExistException(ErrorCode.NOT_EXISTS_MEMBER_ID));
-            if (member.getImageUrl().matches("^https://(. *)com/$")) {
+            if (member.getImageUrl().contains(String.format("https://%s.s3.%s.amazonaws.com/", bucket, region))) {
                 delete(member.getImageUrl());
             }
 
