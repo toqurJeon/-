@@ -2,26 +2,35 @@ package com.example.moiroom
 
 import ApiService
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
+import android.widget.GridView
 import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
+import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
 import com.example.moiroom.data.MemberInfoUpdateRequest
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityInfoinputBinding
+import com.example.moiroom.databinding.DialogAuthorityBinding
+import com.example.moiroom.databinding.DialogFindCityBinding
+import com.example.moiroom.databinding.DialogFindMetropolitanBinding
 import fetchUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -88,27 +97,33 @@ class InfoinputActivity : AppCompatActivity() {
 
         binding.findInput.setOnClickListener {
             CoroutineScope(Dispatchers.IO).launch {
+
                 val response = apiService.getMetropolitan()
                 Log.d("결과", "광역시 데이터 요청 결과: $response")
+
                 if (response.isSuccessful) {
+
                     metropolitans = response.body()?.data ?: emptyList()  // 수정된 부분
                     Log.d("결과", "광역시 데이터: $metropolitans")
                     withContext(Dispatchers.Main) {
-                        showItemSelectionDialog(
+
+                        showMetropolitanSelectDialog(
                             "광역시 선택",
                             metropolitans.map { it.metropolitanName }) { selectedMetropolitanName ->
                             val selectedMetropolitan =
                                 metropolitans.find { it.metropolitanName == selectedMetropolitanName }
                             if (selectedMetropolitan != null) {
                                 CoroutineScope(Dispatchers.IO).launch {
+
                                     val cityResponse =
                                         apiService.getCities(selectedMetropolitan.metropolitanId)
                                     Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
                                     if (cityResponse.isSuccessful) {
-                                        cities = cityResponse.body()?.data ?: emptyList()  // 수정된 부분
+                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName } ?: emptyList()  // 수정된 부분
                                         Log.d("결과", "군/구 데이터: $cities")
                                         withContext(Dispatchers.Main) {
-                                            showItemSelectionDialog(
+
+                                            showCitySelectDialog(
                                                 "군/구 선택",
                                                 cities.map { it.cityName }) { selectedCityName ->
                                                 binding.findInput.text =
@@ -219,21 +234,63 @@ class InfoinputActivity : AppCompatActivity() {
     }
 
 
-        private fun showItemSelectionDialog(
-            title: String,
-            items: List<String>,
-            onItemSelected: (String) -> Unit
-        ) {
-            val builder = AlertDialog.Builder(this)
-            builder.setTitle(title)
-            builder.setItems(items.toTypedArray()) { _, which ->
-                val selectedItem = items[which]
-                onItemSelected(selectedItem)
-            }
-            builder.show()
+    private fun showItemSelectionDialog(
+        title: String,
+        items: List<String>,
+        onItemSelected: (String) -> Unit
+    ) {
+        val builder = AlertDialog.Builder(this)
+        builder.setTitle(title)
+        builder.setItems(items.toTypedArray()) { _, which ->
+            val selectedItem = items[which]
+            onItemSelected(selectedItem)
+        }
+        builder.show()
+    }
+
+    private fun showMetropolitanSelectDialog(
+        title: String,
+        items: List<String>,
+        onItemSelected: (String) -> Unit
+    ) {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogFindMetropolitanBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        val adapter = DialogAdapter(this, items)
+        dialogBinding.dataGrid.adapter = adapter
+
+        dialogBinding.dataGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val selectedItem = items[position]
+            onItemSelected(selectedItem)
+            dialog.dismiss()
         }
 
-        // 테스트
+        dialog.show()
+    }
+
+    private fun showCitySelectDialog(
+        title: String,
+        items: List<String>,
+        onItemSelected: (String) -> Unit
+    ) {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogFindCityBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        val adapter = DialogAdapter(this, items)
+        dialogBinding.dataGrid.adapter = adapter
+
+        dialogBinding.dataGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val selectedItem = items[position]
+            onItemSelected(selectedItem)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    // 테스트
 //    private suspend fun sendPostRequest(): MyResponse? {
 //        val globalApplication = application as GlobalApplication
 //

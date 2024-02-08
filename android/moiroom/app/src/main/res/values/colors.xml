@@ -16,23 +16,23 @@
     <color name="mediumGray">#E0E0E0</color>
 
     <!--성향 별 색상 설정-->
-    <color name="bg_socialable">#D4FFCF</color>
+    <color name="bg_socialable">#E4F8E2</color>
     <color name="bg_positivity">#F6F1BF</color>
-    <color name="bg_activity">#FFD3D3</color>
-    <color name="bg_communion">#FFD0F4</color>
+    <color name="bg_activity">#FADCDC</color>
+    <color name="bg_communion">#F3D5EC</color>
     <color name="bg_altruism">#FFE3D1</color>
-    <color name="bg_empathy">#FFD6E7</color>
-    <color name="bg_humor">#BCF4E2</color>
-    <color name="bg_generous">#E2D5FF</color>
+    <color name="bg_empathy">#FDE6EB</color>
+    <color name="bg_humor">#D1F6EA</color>
+    <color name="bg_generous">#E8E0FB</color>
 
-    <color name="socialable">#28E016</color>
+    <color name="socialable">#73DA60</color>
     <color name="positivity">#DCC500</color>
     <color name="activity">#EC1414</color>
-    <color name="communion">#ED27EA</color>
+    <color name="communion">#EC35E9</color>
     <color name="altruism">#E65E14</color>
-    <color name="empathy">#FF229C</color>
-    <color name="humor">#00E196</color>
-    <color name="generous">#662CF3</color>
+    <color name="empathy">#E32772</color>
+    <color name="humor">#18E4A0</color>
+    <color name="generous">#6D37F1</color>
 
     <!--채도가 낮은 색상들-->
     <color name="pastelOrange">#FFE8CF</color>

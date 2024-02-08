@@ -230,7 +230,7 @@ class CardAdapter(
         Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
-            duration = 1000
+            duration = 800
             interpolator = AccelerateDecelerateInterpolator()
             addUpdateListener { animator ->
                 val params = binding.characterLocation.layoutParams as ViewGroup.MarginLayoutParams
@@ -257,7 +257,7 @@ class CardAdapter(
         Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
-            duration = 1000
+            duration = 600
             interpolator = AccelerateDecelerateInterpolator()
             addUpdateListener { animator ->
                 val params = binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams

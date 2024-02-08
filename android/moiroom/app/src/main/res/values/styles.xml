@@ -38,4 +38,10 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <!-- 다이얼로그 배경 설정 -->
+    <style name="DialogTheme" parent="Theme.AppCompat.Dialog">
+        <!-- 다이얼로그의 배경 색상을 설정합니다. -->
+        <item name="android:windowBackground">@drawable/dialog_background</item>
+    </style>
+
 </resources>
