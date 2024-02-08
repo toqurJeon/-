@@ -2,6 +2,7 @@ package com.ssafy.moiroomserver.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -24,4 +25,11 @@ public class MemberInterest {
 
     @Column(name = "percent", nullable = false)
     private int percent;
+
+    @Builder
+    public MemberInterest(Member member, Interest interest, int percent) {
+        this.member = member;
+        this.interest = interest;
+        this.percent = percent;
+    }
 }

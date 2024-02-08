@@ -31,6 +31,7 @@ public class MemberServiceImpl implements MemberService {
     private static final int LOGOUT = 0;
 
     private final MemberRepository memberRepository;
+    private final CharacteristicRepository characteristicRepository;
     private final S3Service s3Service;
     private final KakaoService kakaoService;
 
@@ -138,8 +139,7 @@ public class MemberServiceImpl implements MemberService {
     public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest infoAddRequest) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member.getCharacteristicsId() == null) {
-            ;
+        if (member.getCharacteristicId() == null) {
         }
     }
 }
