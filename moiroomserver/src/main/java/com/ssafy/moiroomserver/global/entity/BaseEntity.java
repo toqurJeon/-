@@ -7,6 +7,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
@@ -14,11 +17,20 @@ public abstract class BaseEntity {
 
     @CreatedDate
     @Column(name = "created_at", updatable = false, nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime createdAt;
+    private String createdAt;
 
     @LastModifiedDate
     @Column(name = "updated_at", nullable = false)
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime updatedAt;
+    private String updatedAt;
+
+    @PrePersist
+    void onPrePersist() {
+        this.createdAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        this.updatedAt = createdAt;
+    }
+
+    @PreUpdate
+    void onPreUpdate() {
+        this.updatedAt = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+    }
 }
