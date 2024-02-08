@@ -44,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
             infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), memberId));
         }
         if (infoModifyRequest.getRoommateSearchStatus() != 0 && infoModifyRequest.getRoommateSearchStatus() != 1) {
-            throw new WrongValueException();
+            throw new WrongValueException(WRONG_ROOMMATE_SEARCH_STATUS_VALUE);
         }
         member.modify(infoModifyRequest);
     }

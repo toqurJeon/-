@@ -20,6 +20,7 @@ public enum ErrorCode {
     NOT_EXISTS_MEMBER(BAD_REQUEST, "존재하지 않는 회원입니다."),
     MEMBER_ALREADY_LOGOUT_ERROR(BAD_REQUEST, "이미 로그아웃 된 회원입니다."),
     MEMBER_ALREADY_LOGIN_ERROR(CONFLICT, "이미 로그인 된 회원입니다."),
+    WRONG_ROOMMATE_SEARCH_STATUS_VALUE(BAD_REQUEST, "잘못된 룸메이트 구하는 여부 값이 전송되었습니다."),
     //파일
     NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다.");
 
