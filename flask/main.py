@@ -135,8 +135,7 @@ def user_init():
 
         # print(params)
         send_response = requests.post('https://moiroom.n-e.kr/member/characteristic', json=params)
-
-        return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
+        return send_response.json()
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
@@ -164,6 +163,7 @@ def match_users():
             # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
             send_response = requests.post('https://moiroom.n-e.kr/matching/result/' + users['memberId'],
                                           json={'rate': percentage, 'rateIntroduction': min_gap[1]})
+            # if error occurs, return error
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
 
