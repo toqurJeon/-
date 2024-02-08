@@ -1,10 +1,11 @@
 from flask import Flask, request, jsonify, render_template
+from flask_cors import CORS
 import requests
 
 from engines import gps, insta, call
 
 app = Flask(__name__)
-
+CORS(app)
 
 @app.route('/moiroom/test')
 def test():
@@ -76,64 +77,90 @@ def call_func():
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-@app.route('/receive_and_send', methods=['POST'])
-def receive_and_send():
+def sociability(json_data):
+    return 5000
+
+
+def positivity(json_data):
+    return 5000
+
+
+def activity(json_data):
+    return gps.calc(json_data['images'])
+
+
+def communion(json_data):
+    return 5000
+
+
+def altruism(json_data):
+    return 5000
+
+
+def empathy(json_data):
+    return call.calc(json_data["calls"])
+
+
+def humor(json_data):
+    return 5000
+
+
+def generous(json_data):
+    return 5000
+
+
+func_list = [sociability, positivity, activity, communion, altruism, empathy, humor, generous]
+match_introduction = {}
+for f in func_list:
+    match_introduction[f.__name__] = f.__name__ + ' fits well'
+
+
+@app.route('/init', methods=['POST'])
+def user_init():
     try:
         # JSON 데이터 받아오기
         json_data = request.get_json()
+        params = {}
+        for function in func_list:
+            params[function.__name__] = function(json_data)
+        params['sleepAt'] = None
+        params['wakeUpAt'] = None
+        params['interest'] = None
 
-        # JSON 데이터의 각 요소에 접근
-        param1 = json_data.get('param1', -0.0001)
-        param2 = json_data.get('param2', -0.0001)
-        param3 = json_data.get('param3', -0.0001)
-
-        # 받은 데이터 출력
-        # 여기서 데이터 가공
-
-        # print("Received JSON: Name={}, Age={}".format(name, age))
-
-        component1 = round(param1 * 10000)
-        component2 = round((param1 + param2) * 5000)
-        component3 = round(param2 * 10000)
-        component4 = round(param3 * 10000)
-        component5 = round(param1 * 10000)
-        component6 = round(param2 * 10000)
-        component7 = round(param3 * 10000)
-        component8 = round(param1 * 10000)
-
-        # /send_json 엔드포인트로 POST 요청 보내기
-        # 이 url에 springboot url 들어갈 예정
-        send_response = (
-            requests.post('http://i10a308.p.ssafy.io:8080/member',
-                          json={'component1': component1,
-                                'component2': component2,
-                                'component3': component3,
-                                'component4': component4,
-                                'component5': component5,
-                                'component6': component6,
-                                'component7': component7,
-                                'component8': component8}))
-
-        # /send_json 엔드포인트에서 받은 응답 출력
-        print("Response from /send_json:", send_response.json())
+        # print(params)
+        send_response = requests.post('https://www.moiroom.n-e.kr/member/character', json=params)
 
         return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
 
-# 실제로는 spring이 대체할 예정이나, 테스트를 위해 작성
-@app.route('/send_json', methods=['POST'])
-def send_json():
+# @app.route('/match', methods=['POST'])
+@app.route('/match', methods=['POST'])
+def match_users():
     try:
-        # JSON 데이터 받아오기
-        json_data = request.get_json()
+        users_request = requests.get('https://www.moiroom.n-e.kr/matching/info')
+        if users_request.status_code != 200:
+            return jsonify({'status': 'error', 'message': 'not 200 in users info'})
+        users_info = users_request.json()['data']
+        # users_info = request.get_json()['data']
 
-        # 받은 데이터 출력
-        print("Received JSON for /send_json:", json_data)
+        for users in users_info['memberTwoList']:
+            percentage = 10000
+            min_gap = [10000, '']
+            for func in func_list:
+                gap = abs(users_info['memberOne'][func.__name__] - users[func.__name__])
+                percentage -= gap
+                if gap < min_gap[0]:
+                    min_gap[0] = gap
+                    min_gap[1] = match_introduction[func.__name__]
+            # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
+            send_response = requests.post('https://www.moiroom.n-e.kr/matching/result/' + users['memberId'],
+                                          json={'rate': percentage, 'rateIntroduction': min_gap[1]})
 
-        # 처리 후 응답 반환
-        return jsonify({'status': 'success', 'message': 'JSON received and processed successfully'})
+        return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
+
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 

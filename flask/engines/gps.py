@@ -42,7 +42,7 @@ def calc(json_arr):
     res = np.delete(res, 0, 0)
 
     # 시각화
-    # colors = ["g.", "r.", "b.", "y."]
+    # colors = ["g.", "r.", "b.", "y.", "w."]
     # for i in range(len(X)):
     #     plt.plot(X[i][0], X[i][1], colors[labels[i]], markersize=10)
     #
@@ -53,10 +53,10 @@ def calc(json_arr):
 
 
     # 가장 많은 데이터 보유 장소 (집으로 추정되는 곳) / 전체 데이터 수 결과 출력
-    calc = sorted_array[0][1] / count
+    res = len(sorted_array) / count
     # print(calc)
-    result['result'] = str(round(calc*10000))
+    result['result'] = str(round(res*10000))
     # print(result)
 
     del result['key']
-    return result
+    return round(res*10000)
