@@ -20,7 +20,9 @@ import android.Manifest
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
+import com.example.moiroom.utils.getUserInfo
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -36,9 +38,11 @@ class NowMatchingActivity : AppCompatActivity() {
         val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
 
-        if (isButtonClicked == false) {
+        if (isButtonClicked) {
 
             val intent = Intent(this, NaviActivity::class.java)
+            getUserInfo()
+            getMatchedMember()
             startActivity(intent)
             finish()
 

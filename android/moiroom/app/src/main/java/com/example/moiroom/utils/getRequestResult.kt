@@ -24,154 +24,37 @@ fun getRequestResult(result: Boolean) {
             // 매칭 리스트 GET 요청
             Log.d("TAG", "getRequestResult: 매칭리스트 요청 보내기!")
 
-            // 응답 데이터 저장 (현재: 더미 데이터)
-            val responseMatchedMemberList: MatchedMemberList = MatchedMemberList(
-                listOf(
-                    MatchedMember(
-                        2,
-                        "https://images.dog.ceo/breeds/labrador/n02099712_7866.jpg",
-                        "모이루미",
-                        "여자",
-                        2000,
-                        "서울특별시",
-                        "강남구",
-                        "운동을 좋아해서 같이 운동할 수 있는 분이 좋아요.",
-                        98,
-                        "비슷한 생활루틴을 가졌어요!",
-                        5123,
-                        6656,
-                        8634,
-                        4156,
-                        3223,
-                        1278,
-                        6723,
-                        3534,
-                        "23:40",
-                        "06:30",
-                        listOf(
-                            Interest(
-                                "운동",
-                                48
-                            ),
-                            Interest(
-                                "음악",
-                                36
-                            ),
-                            Interest(
-                                "요리",
-                                11
-                            ),
-                            Interest(
-                                "게임",
-                                5
-                            )
-                        )
-                    ),
-                    MatchedMember(
-                        3,
-                        "https://images.dog.ceo/breeds/pembroke/n02113023_7275.jpg",
-                        "모이라",
-                        "여자",
-                        1998,
-                        "서울특별시",
-                        "강남구",
-                        "반가워요. 잘 살고 싶어요.",
-                        90,
-                        "취미가 비슷해요!",
-                        4423,
-                        8156,
-                        8034,
-                        2456,
-                        1187,
-                        7545,
-                        3634,
-                        3565,
-                        "00:10",
-                        "08:38",
-                        listOf(
-                            Interest(
-                                "음악",
-                                60
-                            ),
-                            Interest(
-                                "그림",
-                                25
-                            ),
-                            Interest(
-                                "여행",
-                                15
-                            )
-                        )
-                    ),
-                    MatchedMember(
-                        4,
-                        "https://images.dog.ceo/breeds/malamute/n02110063_15580.jpg",
-                        "모바모바일",
-                        "여자",
-                        1998,
-                        "서울특별시",
-                        "강남구",
-                        "ㅎㅇㅎㅇ~~",
-                        88,
-                        "취미가 비슷해요!",
-                        5423,
-                        8956,
-                        7934,
-                        6456,
-                        5187,
-                        6545,
-                        6634,
-                        2565,
-                        "00:10",
-                        "08:38",
-                        listOf(
-                            Interest(
-                                "음악",
-                                60
-                            ),
-                            Interest(
-                                "그림",
-                                25
-                            ),
-                            Interest(
-                                "여행",
-                                15
-                            )
-                        )
-                    ),
-                ),
-                1,
-                3,
-                1,
-                3
-            )
-            // 메모리 캐시에 저장
-            cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)
+            getUserInfo()
+            getMatchedMember()
+        }
+    }
+}
 
-            // 본인 정보 GET 요청
-
-            // 응답 데이터 저장 (현재: 더미 데이터)
-            val responseUserInfo: Member = Member(
-                1,
-                "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
-                "안드레이",
-                "남자",
-                "김민식",
-                1999,
+fun getUserInfo() {
+    // 응답 데이터 저장 (현재: 더미 데이터)
+    val responseMatchedMemberList: MatchedMemberList = MatchedMemberList(
+        listOf(
+            MatchedMember(
+                2,
+                "https://images.dog.ceo/breeds/labrador/n02099712_7866.jpg",
+                "모이루미",
+                "여자",
+                2000,
                 "서울특별시",
                 "강남구",
-                "멍멍이를 엄청 좋아해요. 댕댕.",
-                1,
-                6520,
-                7552,
-                6993,
-                7653,
-                5683,
-                4210,
-                6020,
-                8758,
-                "23:47",
-                "06:32",
+                "운동을 좋아해서 같이 운동할 수 있는 분이 좋아요.",
+                98,
+                "비슷한 생활루틴을 가졌어요!",
+                5123,
+                6656,
+                8634,
+                4156,
+                3223,
+                1278,
+                6723,
+                3534,
+                "23:40",
+                "06:30",
                 listOf(
                     Interest(
                         "운동",
@@ -190,9 +73,133 @@ fun getRequestResult(result: Boolean) {
                         5
                     )
                 )
+            ),
+            MatchedMember(
+                3,
+                "https://images.dog.ceo/breeds/pembroke/n02113023_7275.jpg",
+                "모이라",
+                "여자",
+                1998,
+                "서울특별시",
+                "강남구",
+                "반가워요. 잘 살고 싶어요.",
+                90,
+                "취미가 비슷해요!",
+                4423,
+                8156,
+                8034,
+                2456,
+                1187,
+                7545,
+                3634,
+                3565,
+                "00:10",
+                "08:38",
+                listOf(
+                    Interest(
+                        "음악",
+                        60
+                    ),
+                    Interest(
+                        "그림",
+                        25
+                    ),
+                    Interest(
+                        "여행",
+                        15
+                    )
+                )
+            ),
+            MatchedMember(
+                4,
+                "https://images.dog.ceo/breeds/malamute/n02110063_15580.jpg",
+                "모바모바일",
+                "여자",
+                1998,
+                "서울특별시",
+                "강남구",
+                "ㅎㅇㅎㅇ~~",
+                88,
+                "취미가 비슷해요!",
+                5423,
+                8956,
+                7934,
+                6456,
+                5187,
+                6545,
+                6634,
+                2565,
+                "00:10",
+                "08:38",
+                listOf(
+                    Interest(
+                        "음악",
+                        60
+                    ),
+                    Interest(
+                        "그림",
+                        25
+                    ),
+                    Interest(
+                        "여행",
+                        15
+                    )
+                )
+            ),
+        ),
+        1,
+        3,
+        1,
+        3
+    )
+    // 메모리 캐시에 저장
+    cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)
+}
+
+fun getMatchedMember() {
+    // 본인 정보 GET 요청
+
+    // 응답 데이터 저장 (현재: 더미 데이터)
+    val responseUserInfo: Member = Member(
+        1,
+        "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
+        "안드레이",
+        "남자",
+        "김민식",
+        1999,
+        "서울특별시",
+        "강남구",
+        "멍멍이를 엄청 좋아해요. 댕댕.",
+        1,
+        6520,
+        7552,
+        6993,
+        7653,
+        5683,
+        4210,
+        6020,
+        8758,
+        "23:47",
+        "06:32",
+        listOf(
+            Interest(
+                "운동",
+                48
+            ),
+            Interest(
+                "음악",
+                36
+            ),
+            Interest(
+                "요리",
+                11
+            ),
+            Interest(
+                "게임",
+                5
             )
-            // 메모리 캐시에 저장
-            cacheUserInfo.put("userInfo", responseUserInfo)
-        }
-    }
+        )
+    )
+    // 메모리 캐시에 저장
+    cacheUserInfo.put("userInfo", responseUserInfo)
 }
