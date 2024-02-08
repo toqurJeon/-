@@ -22,8 +22,9 @@ public enum ErrorCode {
     MEMBER_ALREADY_LOGIN_ERROR(CONFLICT, "이미 로그인 된 회원입니다."),
     WRONG_ROOMMATE_SEARCH_STATUS_VALUE(BAD_REQUEST, "잘못된 룸메이트 구하는 여부 값이 전송되었습니다."),
     //파일
-    NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다.");
-
+    NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다."),
+    //특성
+    NOT_EXISTS_CHARACTERISTIC_ID(BAD_REQUEST, "존재하지 않는 특성 id 입니다.");
     private final HttpStatus status;
     private final String message;
 }

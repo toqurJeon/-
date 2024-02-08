@@ -1,6 +1,7 @@
 package com.ssafy.moiroomserver.member.entity;
 
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
+import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -23,28 +24,28 @@ public class Characteristic extends BaseEntity {
     private Long characteristicsId;
 
     @Column(name = "sociability")
-    private int sociability;
+    private Integer sociability;
 
     @Column(name = "positivity")
-    private int positivity;
+    private Integer positivity;
 
     @Column(name = "activity")
-    private int activity;
+    private Integer activity;
 
     @Column(name = "communion")
-    private int communion;
+    private Integer communion;
 
     @Column(name = "altruism")
-    private int altruism;
+    private Integer altruism;
 
     @Column(name = "empathy")
-    private int empathy;
+    private Integer empathy;
 
     @Column(name = "humor")
-    private int humor;
+    private Integer humor;
 
     @Column(name = "generous")
-    private int generous;
+    private Integer generous;
 
     @Column(name = "sleep_at")
     private String sleepAt;
@@ -64,5 +65,18 @@ public class Characteristic extends BaseEntity {
         this.generous = generous;
         this.sleepAt = sleepAt;
         this.wakeUpAt = wakeUpAt;
+    }
+
+    public void modifyCharacteristicInfo(CharacteristicInfo.AddModifyRequest characteristicAddModifyReq) {
+        this.sociability = (characteristicAddModifyReq.getSociability() == null) ? sociability : characteristicAddModifyReq.getSociability();
+        this.positivity = (characteristicAddModifyReq.getPositivity() == null) ? positivity : characteristicAddModifyReq.getPositivity();
+        this.activity = (characteristicAddModifyReq.getActivity() == null) ? activity : characteristicAddModifyReq.getActivity();
+        this.communion = (characteristicAddModifyReq.getCommunion() == null) ? communion : characteristicAddModifyReq.getCommunion();
+        this.altruism = (characteristicAddModifyReq.getAltruism() == null) ? altruism : characteristicAddModifyReq.getAltruism();
+        this.empathy = (characteristicAddModifyReq.getEmpathy() == null) ? empathy : characteristicAddModifyReq.getEmpathy();
+        this.humor = (characteristicAddModifyReq.getHumor() == null) ? humor : characteristicAddModifyReq.getHumor();
+        this.generous = (characteristicAddModifyReq.getGenerous() == null) ? generous : characteristicAddModifyReq.getGenerous();
+        this.sleepAt = (characteristicAddModifyReq.getSleepAt() == null) ? sleepAt : characteristicAddModifyReq.getSleepAt();
+        this.wakeUpAt = (characteristicAddModifyReq.getWakeUpAt() == null) ? wakeUpAt : characteristicAddModifyReq.getWakeUpAt();
     }
 }

@@ -6,6 +6,7 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Interest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
@@ -20,6 +21,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
@@ -53,7 +56,7 @@ public class MemberServiceImpl implements MemberService {
         if (memberInfoModifyReq.getRoommateSearchStatus() != null && memberInfoModifyReq.getRoommateSearchStatus() != 0 && memberInfoModifyReq.getRoommateSearchStatus() != 1) {
             throw new WrongValueException(WRONG_ROOMMATE_SEARCH_STATUS_VALUE);
         }
-        member.modify(memberInfoModifyReq);
+        member.modifyMemberInfo(memberInfoModifyReq);
     }
 
     /**
@@ -138,16 +141,24 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
+    @Transactional
     @Override
-    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddRequest characteristicInfoAddReq) {
+    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-//        if (member.getCharacteristicId() == null) {
-            characteristicRepository.save(characteristicInfoAddReq.toEntity());
-            for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddReq.getInterestList()) {
-                Interest interest = interestRepository.findByName(interestAddReq.getInterestName());
-                memberInterestRepository.save(interestAddReq.toEntity(member, interest));
-            }
-//        }
+        if (member.getCharacteristicId() == null) {
+            Characteristic characteristic = characteristicRepository.save(characteristicInfoAddModifyReq.toEntity());
+            member.modifyCharacteristicId(characteristic.getCharacteristicsId());
+        }
+        if (member.getCharacteristicId() != null) {
+            Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
+                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
+            characteristic.modifyCharacteristicInfo(characteristicInfoAddModifyReq);
+            memberInterestRepository.deleteByMember(member);
+        }
+        for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
+            Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)");
+            memberInterestRepository.save(interestAddReq.toEntity(member, interest));
+        }
     }
 }

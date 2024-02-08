@@ -78,7 +78,8 @@ public class MemberController {
     }
 
     @PostMapping("/characteristic")
-    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddRequest infoAddRequest) {
+    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
+        memberService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
         return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
     }
