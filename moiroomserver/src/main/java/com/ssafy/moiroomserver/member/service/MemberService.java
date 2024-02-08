@@ -17,5 +17,4 @@ public interface MemberService {
     Member getMemberById(Long memberId);
 
     void logout(Long socialId, String provider);
-
 }

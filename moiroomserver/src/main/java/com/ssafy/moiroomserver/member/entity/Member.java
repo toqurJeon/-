@@ -32,8 +32,8 @@ public class Member extends BaseEntity {
     @Column(name = "city_id")
     private Long cityId;
 
-    @Column(name = "characteristics_id")
-    private Long characteristicsId; //외래키는 지정 안 한 상태
+    @Column(name = "characteristic_id")
+    private Long characteristicId; //외래키는 지정 안 한 상태
 
     @Column(name = "name", nullable = false)
     private String name;

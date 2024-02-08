@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Table(name = "characteristics")
-public class Characteristics extends BaseEntity {
+@Table(name = "characteristic")
+public class Characteristic extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false)
