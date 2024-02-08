@@ -36,7 +36,7 @@ class GlobalApplication : Application() {
         super.onCreate()
 
         // 발급받은 카카오키를 통해 카카오SDK 초기화
-        KakaoSdk.init(this, "1cbfb61d83c4ab599a7d1b1771485417")
+        KakaoSdk.init(this, "dafe1201ec34d9c314a0564155c291ba")
 
         // Retrofit 인스턴스 생성
         retrofit = Retrofit.Builder()

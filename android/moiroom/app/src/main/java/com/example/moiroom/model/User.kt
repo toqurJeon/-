@@ -49,10 +49,10 @@ suspend fun fetchUserInfo(context: Context, accessToken: String, refreshToken: S
                 provider = "kakao",
                 nickname = user.kakaoAccount?.profile?.nickname ?: "",
                 imageUrl = user.kakaoAccount?.profile?.thumbnailImageUrl ?: "",
-                birthyear = user.kakaoAccount?.birthyear ?: "",
-                birthday = user.kakaoAccount?.birthday ?: "",
-                name = user.kakaoAccount?.profile?.nickname ?: "",
-                gender = user.kakaoAccount?.gender?.toString() ?: "",
+                birthyear = user.kakaoAccount?.birthyear ?: "0000",
+                birthday = user.kakaoAccount?.birthday ?: "0000",
+                name = user.kakaoAccount?.profile?.nickname ?: "홍길동",
+                gender = user.kakaoAccount?.gender?.toString() ?: "male",
                 accessToken = accessToken,
                 refreshToken = refreshToken
             )

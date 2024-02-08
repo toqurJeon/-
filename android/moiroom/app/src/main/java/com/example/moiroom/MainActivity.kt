@@ -23,6 +23,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
@@ -63,6 +65,9 @@ class MainActivity : AppCompatActivity() {
                 // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
                 if (isButtonClicked) {
                     intent = Intent(this, NaviActivity::class.java)
+                    // 통신 구현 후 삭제 필요
+                    getUserInfo()
+                    getMatchedMember()
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)
@@ -143,7 +148,22 @@ class MainActivity : AppCompatActivity() {
 
                 CoroutineScope(Dispatchers.Main).launch {
                     val userInfo = fetchUserInfo(this@MainActivity, accessToken, refreshToken)
+                    if (userInfo == null) {
+                        Toast.makeText(this@MainActivity, "사용자 정보를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+                    val apiService = NetworkModule.provideRetrofit(this@MainActivity)
+                    val response = apiService.postUser(userInfo)
+                    if (response.isSuccessful) {
+                        Log.d("Login", "Response body: ${response.body()?.string()}")
+                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 상태 코드와 메시지를 로그에 출력합니다.
+                        Log.d("Login", "Status code: ${response.code()}, message: ${response.message()}")
+                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보내는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
                 }
+
 
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
