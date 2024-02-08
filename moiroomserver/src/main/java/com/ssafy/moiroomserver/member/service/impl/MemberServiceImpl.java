@@ -40,7 +40,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest infoModifyRequest) {
-        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
+//        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(1237L, "kakao");
         if (infoModifyRequest.getMemberProfileImage() != null) {
             infoModifyRequest.setProfileImageUrl(s3Service.uploadProfileImage(infoModifyRequest.getMemberProfileImage(), member));
