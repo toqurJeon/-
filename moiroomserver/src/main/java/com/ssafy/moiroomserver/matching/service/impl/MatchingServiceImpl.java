@@ -8,6 +8,8 @@ import java.util.List;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
+import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
+import com.ssafy.moiroomserver.matching.repository.MatchingResultRepository;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -15,6 +17,7 @@ import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +28,7 @@ public class MatchingServiceImpl implements MatchingService {
 	private final MemberRepository memberRepository;
 	private final KakaoService kakaoService;
 	private final CharacteristicService characteristicService;
+	private final MatchingResultRepository matchingResultRepository;
 
 	/**
 	 * 매칭을 위한 정보 조회
@@ -55,12 +59,16 @@ public class MatchingServiceImpl implements MatchingService {
 			.build();
 	}
 
+	@Transactional
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
 		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
 		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
 		if (member == null) {
 			throw new NoExistException(NOT_EXISTS_MEMBER);
+		}
+		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResultList()) {
+			matchingResultRepository.save(matchingResultInfoAddReq.toEntity(member.getMemberId()));
 		}
 	}
 }

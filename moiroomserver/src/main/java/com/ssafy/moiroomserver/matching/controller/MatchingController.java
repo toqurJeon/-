@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -33,7 +34,8 @@ public class MatchingController {
     }
 
     @PostMapping("/result")
-    public ApiResponse<?> addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
+    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
+        System.out.println("매칭 결과 요청: " + matchingInfoAddReq.getMatchingResultList());
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);
