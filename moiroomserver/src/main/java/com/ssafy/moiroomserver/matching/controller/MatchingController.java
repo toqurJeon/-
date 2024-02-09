@@ -2,6 +2,7 @@ package com.ssafy.moiroomserver.matching.controller;
 
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
+import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 
 import jakarta.servlet.http.HttpServletRequest;

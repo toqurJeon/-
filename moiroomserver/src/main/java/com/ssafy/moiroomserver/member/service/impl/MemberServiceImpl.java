@@ -22,8 +22,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
 @Service
@@ -151,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
+    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.requestResponse characteristicInfoAddModifyReq) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
         if (member == null) {

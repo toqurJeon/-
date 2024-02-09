@@ -10,7 +10,8 @@ public class CharacteristicInfo {
 
     @Getter
     @Setter
-    public static class AddModifyRequest {
+    public static class requestResponse {
+        private Long memberId;
         private Integer sociability;
         private Integer positivity;
         private Integer activity;
