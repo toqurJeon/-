@@ -150,7 +150,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq) {
-        //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
+        // Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
         if (member == null) {
             throw new NoExistException(NOT_EXISTS_MEMBER);
@@ -167,7 +167,7 @@ public class MemberServiceImpl implements MemberService {
         }
         //관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
         if (characteristicInfoAddModifyReq.getInterestList() == null) return;
-        for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
+        for (InterestInfo.RequestResponse interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
             Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)");
             if (interest == null) {
                 throw new NoExistException(NOT_EXISTS_INTEREST_NAME);
