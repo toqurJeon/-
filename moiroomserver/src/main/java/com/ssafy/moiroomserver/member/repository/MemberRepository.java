@@ -11,5 +11,5 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsMemberByProviderAndSocialId(String provider, Long socialId);
     Member findMemberBySocialIdAndProvider(Long socialId, String provider);
-    List<Member> findByIdNotGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(Long id, String gender, Long metropolitanId, Long cityId, int roommateSearchStatus);
+    List<Member> findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(Long memberId, String gender, Long metropolitanId, Long cityId, int roommateSearchStatus);
 }

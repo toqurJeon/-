@@ -6,12 +6,14 @@ import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class MatchingInfo {
 
 	@Getter
 	@Setter
+	@NoArgsConstructor
 	public static class GetResponse {
 		private CharacteristicInfo.RequestResponse memberOne;
 		private List<CharacteristicInfo.RequestResponse> memberTwoList;

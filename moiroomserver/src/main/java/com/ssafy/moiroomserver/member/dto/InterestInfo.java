@@ -6,12 +6,14 @@ import com.ssafy.moiroomserver.member.entity.MemberInterest;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 public class InterestInfo {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class RequestResponse {
         private String interestName;
         private int interestPercent;

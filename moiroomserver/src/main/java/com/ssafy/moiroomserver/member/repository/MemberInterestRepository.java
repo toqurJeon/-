@@ -11,5 +11,5 @@ import org.springframework.stereotype.Repository;
 public interface MemberInterestRepository extends JpaRepository<MemberInterest, Long> {
 
     void deleteByMember(Member member);
-    List<MemberInterest> findByMember(Member member);
+    List<MemberInterest> findByMemberOrderByPercentDesc(Member member);
 }

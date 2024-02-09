@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.member.entity.Characteristic;
 
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
@@ -12,6 +13,7 @@ public class CharacteristicInfo {
 
     @Getter
     @Setter
+    @NoArgsConstructor
     public static class RequestResponse {
         private Long memberId;
         private Integer sociability;

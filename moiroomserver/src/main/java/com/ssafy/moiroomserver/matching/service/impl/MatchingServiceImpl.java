@@ -11,8 +11,6 @@ import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
-import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
-import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 
@@ -43,7 +41,7 @@ public class MatchingServiceImpl implements MatchingService {
 		//로그인 사용자의 특성 및 관심사 데이터 조회
 		CharacteristicInfo.RequestResponse memberOne = characteristicService.getCharacteristicAndInterestOfMember(member);
 		//매칭 상대방의 특성 및 관심사 데이터 조회
-		List<Member> matchingMemberList = memberRepository.findByIdNotGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
+		List<Member> matchingMemberList = memberRepository.findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
 			member.getMemberId(), member.getGender(), member.getMetropolitanId(), member.getCityId(), 1);
 		List<CharacteristicInfo.RequestResponse> memberTwoList = new ArrayList<>();
 		for (Member matchingMember : matchingMemberList) {
