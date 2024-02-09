@@ -8,5 +8,5 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface MatchingService {
 
-	List<MatchingInfo.GetResponse> getInfoForMatching(HttpServletRequest request);
+	MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request);
 }

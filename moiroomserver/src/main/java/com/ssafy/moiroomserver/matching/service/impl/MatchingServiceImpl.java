@@ -17,6 +17,7 @@ import com.ssafy.moiroomserver.member.entity.MemberInterest;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
+import com.ssafy.moiroomserver.member.service.CharacteristicService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -30,31 +31,29 @@ public class MatchingServiceImpl implements MatchingService {
 	private final KakaoService kakaoService;
 	private final CharacteristicRepository characteristicRepository;
 	private final MemberInterestRepository memberInterestRepository;
+	private final CharacteristicService characteristicService;
 
 	@Override
-	public List<MatchingInfo.GetResponse> getInfoForMatching(HttpServletRequest request) {
+	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
 	   // Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
 		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
 		if (member == null) {
 			throw new NoExistException(NOT_EXISTS_MEMBER);
 		}
 		//로그인 사용자의 특성 및 관심사 데이터 조회
-		List<MemberInterest> memberInterestList = memberInterestRepository.findByMember(member);
-		List<InterestInfo.RequestResponse> interestInfoResList = new ArrayList<>();
-		for (MemberInterest memberInterest : memberInterestList) {
-			interestInfoResList.add(InterestInfo.RequestResponse.builder()
-				.memberInterest(memberInterest)
-				.build());
-		}
-		Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
-			.orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
-		CharacteristicInfo.RequestResponse memberOne = CharacteristicInfo.RequestResponse.builder()
-			.characteristic(characteristic)
-			.memberId(member.getMemberId())
-			.interestList(interestInfoResList)
-			.build();
+		CharacteristicInfo.RequestResponse memberOne = characteristicService.getCharacteristicAndInterestOfMember(member);
 		//매칭 상대방의 특성 및 관심사 데이터 조회
+		List<Member> matchingMemberList = memberRepository.findByIdNotGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
+			member.getMemberId(), member.getGender(), member.getMetropolitanId(), member.getCityId(), 1);
+		List<CharacteristicInfo.RequestResponse> memberTwoList = new ArrayList<>();
+		for (Member matchingMember : matchingMemberList) {
+			CharacteristicInfo.RequestResponse memberTwo = characteristicService.getCharacteristicAndInterestOfMember(matchingMember);
+			memberTwoList.add(memberTwo);
+		}
 
-		return null;
+		return MatchingInfo.GetResponse.builder()
+			.memberOne(memberOne)
+			.memberTwoList(memberTwoList)
+			.build();
 	}
 }
