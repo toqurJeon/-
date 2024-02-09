@@ -1,5 +1,7 @@
 package com.ssafy.moiroomserver.matching.controller;
 
+import java.util.List;
+
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
@@ -20,7 +22,8 @@ public class MatchingController {
 
     @GetMapping("/info")
     public ApiResponse<?> getInfoForMatching(HttpServletRequest request) {
+        List<MatchingInfo.GetResponse> matchingInfoResList = matchingService.getInfoForMatching(request);
 
-        return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING);
+        return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING, matchingInfoResList);
     }
 }

@@ -83,7 +83,7 @@ public class MemberController {
      * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
      */
     @PostMapping("/characteristic")
-    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.requestResponse characteristicInfoAddModifyReq) {
+    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq) {
         memberService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
         return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);

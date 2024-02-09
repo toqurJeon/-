@@ -149,7 +149,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.requestResponse characteristicInfoAddModifyReq) {
+    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq) {
         //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
         Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
         if (member == null) {

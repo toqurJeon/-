@@ -12,7 +12,7 @@ public class MatchingInfo {
 	@Getter
 	@Setter
 	public static class GetResponse {
-		private CharacteristicInfo.requestResponse memberOne;
-		List<CharacteristicInfo.requestResponse> memberTwoList;
+		private CharacteristicInfo.RequestResponse memberOne;
+		List<CharacteristicInfo.RequestResponse> memberTwoList;
 	}
 }

@@ -19,5 +19,5 @@ public interface MemberService {
 
     void logout(Long socialId, String provider);
 
-    void addCharacteristic(HttpServletRequest request, CharacteristicInfo.requestResponse characteristicInfoAddModifyReq);
+    void addCharacteristic(HttpServletRequest request, CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq);
 }
