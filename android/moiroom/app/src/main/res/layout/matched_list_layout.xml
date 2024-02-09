@@ -13,20 +13,35 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginHorizontal="16dp"
-        android:layout_marginVertical="14dp"
-        android:background="@color/transparentWhite"
-        android:layout_below="@id/matchIntroductionContainer">
+        android:layout_marginVertical="12dp"
+        android:background="@color/transparentWhite" >
 
-        <TextView
-            android:id="@+id/matchRate"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:orientation="horizontal"
             android:layout_gravity="center_vertical"
-            android:layout_marginRight="4dp"
-            android:fontFamily="@font/pretendard_bold"
-            android:textColor="@color/darkorange"
-            android:textSize="22sp"
-            android:text="@string/sampleMatchRate"/>
+            android:layout_marginEnd="4dp">
+
+            <TextView
+                android:id="@+id/matchRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/darkorange"
+                android:textSize="22sp"
+                android:text="@string/sampleMatchRate"/>
+
+            <TextView
+                android:id="@+id/matchRateSymbol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:textColor="@color/darkorange"
+                android:textSize="16sp"
+                android:text="%"/>
+
+        </LinearLayout>
 
         <androidx.cardview.widget.CardView
             android:id="@+id/profileImageContainer"
@@ -60,7 +75,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_semibold"
                 android:gravity="center"
-                android:textSize="22sp"
+                android:textSize="20sp"
                 android:text="@string/sampleNickname"/>
 
             <TextView
@@ -68,8 +83,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
-                android:gravity="center"
-                android:textSize="18sp"
+                android:gravity="start"
+                android:textColor="@color/font_Gray_2"
+                android:textSize="16sp"
                 android:text="@string/sampleString"/>
 
         </LinearLayout>

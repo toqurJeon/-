@@ -7,43 +7,6 @@
     tools:context=".NowMatchingAfterFragment"
     android:id="@+id/nowMatchingAfter">
 
-    <!-- com.google.android.material.button.MaterialButtonToggleGroup
-        android:id="@+id/toggleButton"
-        android:layout_width="110dp"
-        android:layout_height="40dp"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        app:singleSelection="true">
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button1"
-            style="@style/ToggleButtonGroupStyle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            app:icon="@drawable/ic_chat_one"
-            app:iconTint="@drawable/menu_click_color"
-            android:paddingStart="19dp"
-            android:paddingEnd="0dp"
-            android:foreground="@null"/>
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/button2"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="wrap_content"
-            style="@style/ToggleButtonGroupStyle"
-            app:icon="@drawable/ic_chat_several"
-            app:iconTint="@drawable/menu_click_color"
-            android:gravity="center"
-            android:paddingStart="17dp"
-            android:paddingEnd="0dp"
-            android:foreground="@null"/>
-
-    </com.google.android.material.button.MaterialButtonToggleGroup -->
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
@@ -76,7 +39,7 @@
             android:layout_gravity="center_horizontal|top"
             android:layout_marginTop="14dp"
             android:fontFamily="@font/pretendard_semibold"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="1"
             android:textColor="@color/iconGray"/>
 
@@ -93,7 +56,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|bottom"
             android:layout_marginBottom="14dp"
-            android:textSize="18dp"
+            android:textSize="18sp"
             android:text="50"
             android:textColor="@color/iconGray"/>
 
@@ -103,10 +66,10 @@
         android:id="@+id/layoutChanger"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="20dp"
+        android:layout_marginEnd="20dp"
         android:layout_marginBottom="112dp"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         app:cardBackgroundColor="@color/transparentWhite"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
@@ -123,6 +86,69 @@
 
     </com.google.android.material.card.MaterialCardView>
 
+    <FrameLayout
+        android:id="@+id/pagerRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="48dp"
+            android:src="@drawable/shape_pager_more_right"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_pager_left"
+            android:layout_gravity="center"
+            android:layout_marginStart="2dp"
+            app:tint="@color/font_Gray_3"/>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/pagerLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="48dp"
+            android:src="@drawable/shape_pager_more_left"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_pager_right"
+            android:layout_gravity="center"
+            android:layout_marginEnd="2dp"
+            app:tint="@color/font_Gray_3"/>
+
+    </FrameLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/reMatchButton"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="112dp"
+        app:cardBackgroundColor="@color/main_orange"
+        app:cardElevation="6dp"
+        app:cardCornerRadius="28dp">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_re_match"
+            app:tint="@color/white" />
+
+    </androidx.cardview.widget.CardView>
+
 </RelativeLayout>
-
-

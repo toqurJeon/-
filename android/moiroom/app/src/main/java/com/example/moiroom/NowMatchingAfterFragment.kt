@@ -1,31 +1,22 @@
 package com.example.moiroom
 
+import android.content.Intent
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.RelativeLayout
-import android.widget.ScrollView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
-import com.example.moiroom.adapter.CharacterAdapter
-import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
-import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
-import com.example.moiroom.data.RadarChartData
-import com.example.moiroom.databinding.CardLayoutBinding
 import com.example.moiroom.utils.cacheMatchedMemberList
 import com.example.moiroom.utils.cacheUserInfo
-import com.example.moiroom.view.RadarChartView
-import com.facebook.internal.Utility.logd
 
 class NowMatchingAfterFragment : Fragment() {
     private lateinit var binding: FragmentNowMatchingAfterBinding
@@ -54,29 +45,10 @@ class NowMatchingAfterFragment : Fragment() {
         binding.recyclerView.layoutManager = gridLayoutManager
         binding.viewPager2.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
 
-        // 체크된 상태로 시작하도록 설정
-//        binding.toggleButton.check(R.id.button1)
-
         // 체크된 상태에 따른 초기 화면 설정
         binding.viewPager2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         setCardAdapter(true)
-
-//        binding.toggleButton.addOnButtonCheckedListener { _, checkedId, isChecked ->
-//            if (isChecked) {
-//                when (checkedId) {
-//                    R.id.button1 -> {
-//                        binding.viewPager2.visibility = View.VISIBLE
-//                        binding.recyclerView.visibility = View.GONE
-//                    }
-//                    R.id.button2 -> {
-//                        binding.viewPager2.visibility = View.GONE
-//                        binding.recyclerView.visibility = View.VISIBLE
-//                    }
-//                }
-//                setCardAdapter(checkedId == R.id.button1)
-//            }
-//        }
 
         // 현재 몇번째 뷰페이저를 보고 있는지 확인
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -84,14 +56,20 @@ class NowMatchingAfterFragment : Fragment() {
                 // 새 페이지가 선택되었을 때 호출됩니다.
                 Log.d("ViewPager", "Current Page: $position")
                 binding.currentCard.text = "${position + 1}"
+
+                if (position == 0) {
+                    binding.pagerLeft.visibility = View.GONE
+                } else if (position + 1 == cachedMatchedMemberList?.totalElememts) {
+                    binding.pagerRight.visibility = View.GONE
+                } else {
+                    binding.pagerLeft.visibility = View.VISIBLE
+                    binding.pagerRight.visibility = View.VISIBLE
+                }
             }
         })
         if (cachedMatchedMemberList != null) {
             binding.totalCard.text = "${cachedMatchedMemberList?.totalElememts}"
         }
-
-        val iconDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_one)!!
-        val iconListDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_several)!!
 
         binding.layoutChanger.setOnClickListener {
             toggled = !toggled
@@ -103,27 +81,10 @@ class NowMatchingAfterFragment : Fragment() {
             setCardAdapter(toggled)
         }
 
-//        val cardBinding = CardLayoutBinding.inflate(layoutInflater)
-//
-//        cardBinding.scrollView.viewTreeObserver.addOnScrollChangedListener {
-//            val scrollY = cardBinding.scrollView.scrollY
-//            val headerProfileHeight = cardBinding.headerProfile.height
-//            val screenHeight = resources.displayMetrics.heightPixels
-//
-//            if (scrollY >= screenHeight / 2 - headerProfileHeight / 2) {
-//                Log.d("TAG", "onViewCreated: !!!!!!!!!!!!!!!!!!!!!!!!!1")
-//                val params = cardBinding.headerProfile.layoutParams as RelativeLayout.LayoutParams
-//                params.addRule(RelativeLayout.ALIGN_PARENT_TOP)
-//                params.addRule(RelativeLayout.CENTER_HORIZONTAL)
-//                cardBinding.headerProfile.layoutParams = params
-//            } else {
-//                Log.d("TAG", "onViewCreated: ???????????????????????????????")
-//                val params = cardBinding.headerProfile.layoutParams as RelativeLayout.LayoutParams
-//                params.removeRule(RelativeLayout.ALIGN_PARENT_TOP)
-//                params.addRule(RelativeLayout.BELOW, R.id.scrollView)
-//                cardBinding.headerProfile.layoutParams = params
-//            }
-//        }
+        binding.reMatchButton.setOnClickListener {
+            val intent = Intent(context, LoadingActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun setToViewPager() {
@@ -142,6 +103,9 @@ class NowMatchingAfterFragment : Fragment() {
         binding.viewPager2.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
         binding.cardIndicator.visibility = View.GONE
+
+        binding.pagerLeft.visibility = View.GONE
+        binding.pagerRight.visibility = View.GONE
 
         binding.layoutChangerIcon.setImageDrawable(iconDrawable)
     }

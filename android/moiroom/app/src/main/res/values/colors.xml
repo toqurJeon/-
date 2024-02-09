@@ -15,6 +15,19 @@
     <color name="fontGray">#999999</color>
     <color name="mediumGray">#E0E0E0</color>
 
+    <!-- 메인 컬러 -->
+    <color name="main_orange">#FF8A00</color>
+    <color name="transparent_orange">#80FF8A00</color>
+
+    <!-- 회색 색상 -->
+    <color name="gray_medium_brightness">#C8C8C8</color>
+    <color name="gray_high_brightness">#E1E1E1</color>
+    <color name="gray_high_brightness_60">#99E1E1E1</color>
+
+    <!-- 폰트 색상 -->
+    <color name="font_Gray_2">#6E6E6E</color>
+    <color name="font_Gray_3">#C8C8C8</color>
+
     <!--성향 별 색상 설정-->
     <color name="bg_socialable">#E4F8E2</color>
     <color name="bg_positivity">#F6F1BF</color>
@@ -47,6 +60,12 @@
     <color name="wakeOrange">#FFE2BF</color>
 
     <!-- 반투명 인디케이터 -->
-    <color name="transparentWhite">#E6FFFFFF</color>
+    <color name="transparentWhite">#CCFFFFFF</color>
     <color name="iconGray">#8A8A8A</color>
+
+    <!-- 매칭 결과 색상 -->
+    <color name="rate_over80">#12C319</color>
+    <color name="rate_over70">#BBCA06</color>
+    <color name="rate_over60">#E3C147</color>
+    <color name="rate_else">#AEA7A1</color>
 </resources>

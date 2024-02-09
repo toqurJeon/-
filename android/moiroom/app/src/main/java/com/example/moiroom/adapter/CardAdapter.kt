@@ -5,32 +5,24 @@ import android.animation.AnimatorListenerAdapter
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.RelativeLayout
-import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.ChatActivity
-import com.example.moiroom.NewCardDetailDialogFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
-import com.example.moiroom.data.TestData.cardInfoList
 import com.example.moiroom.databinding.MatchedListLayoutBinding
 import com.example.moiroom.databinding.MatchedLayoutBinding
 import com.example.moiroom.utils.getBGColorCharacter
@@ -41,7 +33,6 @@ import com.example.moiroom.view.RadarChartView
 import com.google.android.material.appbar.AppBarLayout
 import java.text.DecimalFormat
 import kotlin.math.abs
-import kotlin.math.log
 import kotlin.math.roundToInt
 
 class CardAdapter(
@@ -82,6 +73,13 @@ class CardAdapter(
             holder.bind(cardInfo)
         } else if (holder is CardViewHolder2) {
             holder.bind(cardInfo)
+
+            if (position == cardInfoList.size - 1) {
+                val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+                val marginBottomInPx = convertDpToPixel(96)
+                layoutParams.bottomMargin = marginBottomInPx
+                holder.itemView.layoutParams = layoutParams
+            }
         }
     }
 
@@ -90,6 +88,37 @@ class CardAdapter(
 
         fun bind(cardInfo: MatchedMember) {
             binding.apply {
+
+                // 상대방 정보 데이터 바인딩
+                matchRate.text = "${cardInfo.matchRate}"
+                matchIntroduction.text = cardInfo.matchIntroduction
+                nickname.text = cardInfo.memberNickname
+                location.text = "${cardInfo.metropolitanName} ${cardInfo.cityName}"
+                introduction.text = cardInfo.memberIntroduction
+
+                // 상대방 프로필 이미지 불러오기
+                Glide.with(binding.root.context).load(cardInfo.memberProfileImageUrl).into(binding.profileImage)
+
+                // 매칭률에 따라서 색상 설정
+                val matchRateResult = cardInfo.matchRate
+                if (matchRateResult >= 90) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
+                } else if (matchRateResult >= 80) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                } else if (matchRateResult >= 70) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                } else if (matchRateResult >= 60) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                } else {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
+                }
+
+                // 상대방 성향 데이터 삽입
                 val dataList = arrayListOf(
                     RadarChartData(CharacteristicType.socialbility, cardInfo.socialbility.toFloat() / 100),
                     RadarChartData(CharacteristicType.positivity, cardInfo.positivity.toFloat() / 100),
@@ -100,6 +129,7 @@ class CardAdapter(
                     RadarChartData(CharacteristicType.humor, cardInfo.humor.toFloat() / 100),
                     RadarChartData(CharacteristicType.generous, cardInfo.generous.toFloat() / 100)
                 )
+                // 본인 성향 데이터 삽입
                 val myDataList = arrayListOf(
                     RadarChartData(CharacteristicType.socialbility, myInfo.socialbility.toFloat() / 100),
                     RadarChartData(CharacteristicType.positivity, myInfo.positivity.toFloat() / 100),
@@ -110,12 +140,13 @@ class CardAdapter(
                     RadarChartData(CharacteristicType.humor, myInfo.humor.toFloat() / 100),
                     RadarChartData(CharacteristicType.generous, myInfo.generous.toFloat() / 100)
                 )
-
                 chartView.setDataList(myDataList, dataList)
 
+                // 성향 레이더 차트 생성
                 radarChartContainer.removeAllViews()
                 radarChartContainer.addView(chartView)
 
+                // 성향 비교 카드
                 recyclerView.layoutManager = GridLayoutManager(context, 4)
                 val characterAdapter = CharacterAdapter(context, dataList, myDataList) { clickedData, position ->
                     characterIcon.setImageResource(getCharacterIcon(clickedData[0].type))
@@ -145,14 +176,6 @@ class CardAdapter(
                 sleepChart.setSleepTime(cardInfo.sleepAt, cardInfo.wakeUpAt)
                 binding.sleepTimeText.text = cardInfo.sleepAt
                 binding.wakeTimeText.text = cardInfo.wakeUpAt
-
-                matchRate.text = "${cardInfo.matchRate}%"
-                matchIntroduction.text = cardInfo.matchIntroduction
-                nickname.text = cardInfo.memberNickname
-                location.text = "${cardInfo.metropolitanName} ${cardInfo.cityName}"
-                introduction.text = cardInfo.memberIntroduction
-
-                Glide.with(binding.root.context).load(cardInfo.memberProfileImageUrl).into(binding.profileImage)
 
                 // 밑줄 뷰의 너비 조정
                 matchIntroduction.post {
@@ -196,16 +219,38 @@ class CardAdapter(
         }
         fun bind(cardInfo: MatchedMember) {
             binding.apply {
-                matchRate.text = "${cardInfo.matchRate}%"
-                nickname.text = cardInfo.memberNickname
-                location.text = "${cardInfo.metropolitanName} ${cardInfo.cityName}"
 
+                // 상대방 정보 바인딩
+                matchRate.text = "${cardInfo.matchRate}"
+                nickname.text = cardInfo.memberNickname
+                location.text = "${cardInfo.metropolitanName}, ${cardInfo.cityName}"
+                // 상대방 프로필 이미지 불러오기
                 Glide.with(binding.root.context).load(cardInfo.memberProfileImageUrl).into(binding.profileImage)
 
+                // 매칭률에 따라서 색상 변경
+                val matchRateResult = cardInfo.matchRate
+                if (matchRateResult >= 90) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
+                } else if (matchRateResult >= 80) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                } else if (matchRateResult >= 70) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                } else if (matchRateResult >= 60) {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                } else {
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
+                }
+
+                // 채팅방 생성 및 이동
                 chatbuttonContainer.setOnClickListener {
                     val intent = Intent(context, ChatActivity::class.java)
                     intent.putExtra("memberId", cardInfo.memberId)
-                    Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.memberId}")
+                    Log.d("MY TAG", "bind: ${cardInfo.memberId}")
                     context.startActivity(intent)
                 }
             }
@@ -266,6 +311,11 @@ class CardAdapter(
             }
             start()
         }
+    }
+
+    private fun convertDpToPixel(dp: Int): Int {
+        val density = Resources.getSystem().displayMetrics.density
+        return (dp * density).toInt()
     }
 
 //    abstract class CardViewHolder(view: View) : RecyclerView.ViewHolder(view) {
