@@ -9,7 +9,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -33,8 +32,9 @@ public class MatchingController {
         return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING, matchingInfoRes);
     }
 
-    @PostMapping("/result/{memberTwoId}")
-    public ApiResponse<?> addMatchingResult(@PathVariable Long memberTwoId, HttpServletRequest request) {
+    @PostMapping("/result")
+    public ApiResponse<?> addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
+        matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);
     }
