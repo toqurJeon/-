@@ -7,6 +7,7 @@ import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
+import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
 
     private final MemberService memberService;
+    private final CharacteristicService characteristicService;
 
     /**
      * 회원 정보 수정
@@ -83,8 +85,8 @@ public class MemberController {
      * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
      */
     @PostMapping("/characteristic")
-    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
-        memberService.addCharacteristic(request, characteristicInfoAddModifyReq);
+    public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq) {
+        characteristicService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
         return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
     }
