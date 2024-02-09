@@ -35,7 +35,6 @@ public class MatchingController {
 
     @PostMapping("/result")
     public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
-        System.out.println("매칭 결과 요청: " + matchingInfoAddReq.getMatchingResultList());
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);

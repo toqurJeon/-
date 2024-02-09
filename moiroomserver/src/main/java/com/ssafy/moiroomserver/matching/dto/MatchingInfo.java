@@ -8,7 +8,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 public class MatchingInfo {
 
@@ -28,7 +27,6 @@ public class MatchingInfo {
 
 	@Getter
 	@Setter
-	@ToString
 	public static class AddRequest {
 		private List<MatchingResultInfo.AddRequest> matchingResultList;
 	}
