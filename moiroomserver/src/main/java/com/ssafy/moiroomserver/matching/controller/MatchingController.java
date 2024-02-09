@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -33,10 +34,22 @@ public class MatchingController {
         return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING, matchingInfoRes);
     }
 
+    /**
+     * 매칭 결과 추가
+     * @param request
+     * @param matchingInfoAddReq 추가할 매칭 결과 리스트
+     */
     @PostMapping("/result")
     public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);
+    }
+
+    @GetMapping("/result")
+    public ApiResponse<?> getMatchingRoommateList(HttpServletRequest request,
+                                                @RequestParam(required = false, defaultValue = "1") int pgno) {
+
+        return ApiResponse.success(SuccessCode.GET_MATCHING_ROOMMATE_LIST);
     }
 }

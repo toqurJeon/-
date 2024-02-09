@@ -59,6 +59,11 @@ public class MatchingServiceImpl implements MatchingService {
 			.build();
 	}
 
+	/**
+	 * 매칭 결과 추가
+	 * @param request
+	 * @param matchingInfoAddReq 추가할 매칭 결과 리스트
+	 */
 	@Transactional
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {

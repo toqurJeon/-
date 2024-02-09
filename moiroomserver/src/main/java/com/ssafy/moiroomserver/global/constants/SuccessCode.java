@@ -25,7 +25,9 @@ public enum SuccessCode {
     //Flask
     ADD_ALL_CHARACTER_INFO(CREATED, "회원의 전체 특성 및 관심사 정보 추가 성공"),
     GET_INFO_FOR_MATCHING(OK, "매칭 계산을 위한 정보 조회 성공"),
-    ADD_MATCHING_RESULT(CREATED, "매칭 결과 추가 성공");
+    ADD_MATCHING_RESULT(CREATED, "매칭 결과 추가 성공"),
+    //매칭
+    GET_MATCHING_ROOMMATE_LIST(OK, "추천 룸메이트 리스트 조회 성공");
 
     private final HttpStatus status;
     private final String message;
