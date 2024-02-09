@@ -15,11 +15,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.WindowManager
+import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.GridView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
@@ -51,6 +53,9 @@ class InfoinputActivity : AppCompatActivity() {
     // 입력 글자 수에 따라 추후 수정
     private var textLength: String = "0/30"
 
+    // 사용자 성별 저장
+    private var memberGender: String = "default"
+
     // ApiService 인스턴스를 저장할 변수
     private lateinit var apiService: ApiService
 
@@ -68,6 +73,7 @@ class InfoinputActivity : AppCompatActivity() {
 
         // ApiService 인스턴스 생성
         apiService = NetworkModule.provideRetrofit(this)
+
         // 입력 글자 수 업데이트
         binding.textLength.text = textLength
         // 사용자 입력 자기소개 저장하기
@@ -82,10 +88,44 @@ class InfoinputActivity : AppCompatActivity() {
                 userInput = charSequence.toString()
                 textLength = "${charSequence?.length ?: 0}/30"
                 binding.textLength.text = textLength
+
+                if (charSequence?.length!! > 0) {
+                    binding.textCancel.visibility = View.VISIBLE
+                } else {
+                    binding.textCancel.visibility = View.GONE
+                }
             }
 
             override fun afterTextChanged(s: Editable?) {}
         })
+        // 자기소개 지우기
+        binding.textCancel.setOnClickListener {
+            binding.editText.text.clear()
+        }
+
+        // 성별 선택
+        binding.maleCard.setOnClickListener {
+            memberGender = "male"
+
+            binding.maleCard.strokeColor = ContextCompat.getColor(this, R.color.sub_yellow)
+            binding.maleImage.setColorFilter(ContextCompat.getColor(this, R.color.sub_yellow))
+            binding.maleText.setTextColor(ContextCompat.getColor(this, R.color.sub_yellow))
+
+            binding.femaleCard.strokeColor = ContextCompat.getColor(this, R.color.gray_high_brightness)
+            binding.femaleImage.setColorFilter(ContextCompat.getColor(this, R.color.gray_high_brightness))
+            binding.femaleText.setTextColor(ContextCompat.getColor(this, R.color.gray_high_brightness))
+        }
+        binding.femaleCard.setOnClickListener {
+            memberGender = "female"
+
+            binding.femaleCard.strokeColor = ContextCompat.getColor(this, R.color.sub_yellow)
+            binding.femaleImage.setColorFilter(ContextCompat.getColor(this, R.color.sub_yellow))
+            binding.femaleText.setTextColor(ContextCompat.getColor(this, R.color.sub_yellow))
+
+            binding.maleCard.strokeColor = ContextCompat.getColor(this, R.color.gray_high_brightness)
+            binding.maleImage.setColorFilter(ContextCompat.getColor(this, R.color.gray_high_brightness))
+            binding.maleText.setTextColor(ContextCompat.getColor(this, R.color.gray_high_brightness))
+        }
 
         lifecycleScope.launch {
 //            val response = sendPostRequest()
@@ -126,7 +166,7 @@ class InfoinputActivity : AppCompatActivity() {
                                             showCitySelectDialog(
                                                 "군/구 선택",
                                                 cities.map { it.cityName }) { selectedCityName ->
-                                                binding.findInput.text =
+                                                binding.findInputText.text =
                                                     "$selectedMetropolitanName, $selectedCityName"
                                             }
                                         }
@@ -161,7 +201,7 @@ class InfoinputActivity : AppCompatActivity() {
                         var cityId: Long = 0
 
                         // 사용자가 선택한 광역시/도와 시/군/구 이름을 저장할 변수를 선언합니다.
-                        val selectedLocation = binding.findInput.text.toString()
+                        val selectedLocation = binding.findInputText.text.toString()
 
                         // selectedLocation을 쉼표로 분리하여 광역시/도 이름과 시/군/구 이름을 가져옵니다.
                         val locationParts = selectedLocation.split(", ")

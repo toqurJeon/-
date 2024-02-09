@@ -281,7 +281,7 @@
                 android:layout_marginRight="12dp"
                 android:layout_gravity="end|center_vertical"
                 app:tint="@color/darkorange"
-                android:src="@drawable/search_black_36dp"/>
+                android:src="@drawable/ic_search"/>
 
         </androidx.cardview.widget.CardView>
 

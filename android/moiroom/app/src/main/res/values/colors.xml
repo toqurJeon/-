@@ -19,6 +19,9 @@
     <color name="main_orange">#FF8A00</color>
     <color name="transparent_orange">#80FF8A00</color>
 
+    <!-- 서브 컬러 -->
+    <color name="sub_yellow">#FFC639</color>
+
     <!-- 회색 색상 -->
     <color name="gray_medium_brightness">#C8C8C8</color>
     <color name="gray_high_brightness">#E1E1E1</color>
