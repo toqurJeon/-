@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.global.entity.BaseEntity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "chat_message")
 public class ChatMessage extends BaseEntity {
 
     @Id
@@ -12,6 +13,5 @@ public class ChatMessage extends BaseEntity {
     private Long chatMessageId;
 
     private String content;
-
 
 }
