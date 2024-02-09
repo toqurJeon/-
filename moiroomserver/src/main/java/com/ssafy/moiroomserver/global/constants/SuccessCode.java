@@ -23,8 +23,8 @@ public enum SuccessCode {
     GET_METROPOLITANS(OK, "광역시 정보를 성공적으로 가져왔습니다!"),
     GET_CITIES(OK, "시군구 정보를 성공적으로 가져왔습니다!"),
     //Flask
-    ADD_ALL_CHARACTER_INFO(CREATED, "회원의 전체 특성 및 관심사 정보 추가 성공");
-
+    ADD_ALL_CHARACTER_INFO(CREATED, "회원의 전체 특성 및 관심사 정보 추가 성공"),
+    GET_INFO_FOR_MATCHING(OK, "매칭 계산을 위한 정보 조회 성공");
 
     private final HttpStatus status;
     private final String message;
