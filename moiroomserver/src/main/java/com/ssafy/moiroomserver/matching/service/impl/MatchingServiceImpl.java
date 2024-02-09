@@ -10,10 +10,7 @@ import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
-import com.ssafy.moiroomserver.member.dto.InterestInfo;
-import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
-import com.ssafy.moiroomserver.member.entity.MemberInterest;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
@@ -29,10 +26,13 @@ public class MatchingServiceImpl implements MatchingService {
 
 	private final MemberRepository memberRepository;
 	private final KakaoService kakaoService;
-	private final CharacteristicRepository characteristicRepository;
-	private final MemberInterestRepository memberInterestRepository;
 	private final CharacteristicService characteristicService;
 
+	/**
+	 * 매칭을 위한 정보 조회
+	 * @param request
+	 * @return 로그인 사용자와 상대방의 특성 및 관심사 정보
+	 */
 	@Override
 	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
 	   // Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));

@@ -20,6 +20,10 @@ public class MatchingController {
 
     private final MatchingService matchingService;
 
+    /**
+     * 매칭 계산을 위한 정보 조회
+     * @param request
+     */
     @GetMapping("/info")
     public ApiResponse<?> getInfoForMatching(HttpServletRequest request) {
         MatchingInfo.GetResponse matchingInfoRes = matchingService.getInfoForMatching(request);

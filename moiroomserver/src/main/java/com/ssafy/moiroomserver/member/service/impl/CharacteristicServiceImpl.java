@@ -69,6 +69,11 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 		}
 	}
 
+	/**
+	 * 회원의 특성 및 관심사 정보 조회
+	 * @param member 조회 대상이 되는 회원
+	 * @return 회원의 특성 및 관심사 정보
+	 */
 	@Override
 	public CharacteristicInfo.RequestResponse getCharacteristicAndInterestOfMember(Member member) {
 		List<MemberInterest> memberInterestList = memberInterestRepository.findByMember(member);
