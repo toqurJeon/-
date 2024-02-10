@@ -34,6 +34,7 @@ public class KakaoService {
             System.out.println("response.getStatusCode().is2xxSuccessful() : " + response.getStatusCode().is2xxSuccessful());
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
+            e.printStackTrace();
             System.out.println("TEST 14 - 에러");
             return false;
         }
