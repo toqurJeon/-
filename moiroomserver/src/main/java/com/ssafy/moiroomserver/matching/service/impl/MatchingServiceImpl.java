@@ -71,11 +71,7 @@ public class MatchingServiceImpl implements MatchingService {
 	@Transactional
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
-		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
+		Member member = memberService.getMemberByHttpServletRequest(request);
 		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResultList()) {
 			matchingResultRepository.save(matchingResultInfoAddReq.toEntity(member.getMemberId()));
 		}
