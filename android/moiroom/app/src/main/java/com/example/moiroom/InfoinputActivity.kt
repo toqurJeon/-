@@ -227,6 +227,7 @@ class InfoinputActivity : AppCompatActivity() {
                         val request = MemberInfoUpdateRequest(
                             metropolitanId,
                             cityId,
+                            memberGender,
                             memberNickname,
                             memberIntroduction
                         )
