@@ -25,6 +25,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        System.out.println("TEST 1 - 에러");
         http
                 .cors(CorsConfigurer::disable)
                 .httpBasic(HttpBasicConfigurer::disable)
@@ -38,7 +39,7 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
+        System.out.println("TEST 2 - 에러");
         return http.build();
     }
 
