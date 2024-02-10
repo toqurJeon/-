@@ -25,7 +25,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
 
         if (authorization != null && authorization.startsWith("Bearer ")) {
             String token = authorization.substring(7);
-            System.out.println("TEST 3 - 에러");
             if (kakaoTokenValidator.validateToken(token)) {
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
@@ -33,12 +32,9 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                 null,
                                 Collections.singletonList(new SimpleGrantedAuthority("USER"))
                         );
-                System.out.println("TEST 4 - 에러");
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
-                System.out.println("TEST 5 - 에러");
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Access Token");
-                System.out.println("TEST 6 - 에러");
                 return;
             }
         }
