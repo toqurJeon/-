@@ -37,4 +37,9 @@ public class MatchingResult {
         this.rate = rate;
         this.rateIntroduction = rateIntroduction;
     }
+
+    public void modifyRating(int rate, String rateIntroduction) {
+        this.rate = rate;
+        this.rateIntroduction = rateIntroduction;
+    }
 }

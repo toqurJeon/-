@@ -165,7 +165,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     /**
-     * accessToken을 이용해 로그인 사용자 정보 추출
+     * HttpServletRequest를 이용해 로그인 사용자 정보 추출
      * @param request
      * @return 로그인 사용자 정보
      */
