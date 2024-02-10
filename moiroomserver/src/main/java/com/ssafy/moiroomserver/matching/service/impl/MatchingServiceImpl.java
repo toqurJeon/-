@@ -19,6 +19,7 @@ import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
+import com.ssafy.moiroomserver.member.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -33,22 +34,18 @@ import org.springframework.stereotype.Service;
 public class MatchingServiceImpl implements MatchingService {
 
 	private final MemberRepository memberRepository;
-	private final KakaoService kakaoService;
-	private final CharacteristicService characteristicService;
 	private final MatchingResultRepository matchingResultRepository;
+	private final CharacteristicService characteristicService;
+	private final MemberService memberService;
 
 	/**
-	 * 매칭을 위한 정보 조회
+	 * 매칭 계산을 위한 정보 조회
 	 * @param request
 	 * @return 로그인 사용자와 상대방의 특성 및 관심사 정보
 	 */
 	@Override
 	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
-	   // Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
+		Member member = memberService.getMemberByHttpServletRequest(request);
 		//로그인 사용자의 특성 및 관심사 데이터 조회
 		CharacteristicInfo.RequestResponse memberOne = characteristicService.getCharacteristicAndInterestOfMember(member);
 		//매칭 상대방의 특성 및 관심사 데이터 조회
