@@ -1,5 +1,6 @@
 package com.ssafy.moiroomserver.global.kakao;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.ssafy.moiroomserver.global.constants.ErrorCode;
@@ -36,24 +37,18 @@ public class KakaoService {
         headers.set("Authorization", "Bearer " + accessToken);
         HttpEntity<?> entity = new HttpEntity<>(headers);
         ObjectMapper mapper = new ObjectMapper();
-        Long id = null;
 
-        try {
-            ResponseEntity<String> response
-                    = template.exchange(INFO_URL, HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> response
+                = template.exchange(INFO_URL, HttpMethod.GET, entity, String.class);
 
-            if (!response.getStatusCode().is2xxSuccessful()) {
-                throw new NoExistException(ErrorCode.NOT_EXISTS_ACCESS_TOKEN);
-            }
-            id = mapper.readTree(response.getBody()).path("id").asLong();
-            if (id == null) {
-                throw new NoExistException(ErrorCode.NOT_EXISTS_ID);
-            }
-
-        } catch (Exception e) {
-
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            throw new NoExistException(ErrorCode.NOT_EXISTS_ACCESS_TOKEN);
         }
 
-        return id;
+        try {
+            return mapper.readTree(response.getBody()).path("id").asLong();
+        } catch (JsonProcessingException e) {
+            throw new NoExistException(ErrorCode.NOT_GET_SOCIAL_ID);
+        }
     }
 }
