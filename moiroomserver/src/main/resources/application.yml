@@ -1,5 +1,3 @@
-server:
-  max-http-request-header-size: 400000
 spring:
   config:
     import:
