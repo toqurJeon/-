@@ -6,7 +6,9 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.entity.Interest;
 import com.ssafy.moiroomserver.member.entity.Member;
+import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
 import com.ssafy.moiroomserver.s3.service.S3Service;
@@ -17,12 +19,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
 @Service
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService {
+    private final MemberInterestRepository memberInterestRepository;
 
     private static final int LOGIN = 1;
     private static final int LOGOUT = 0;
@@ -132,5 +137,41 @@ public class MemberServiceImpl implements MemberService {
         memberRepository.findMemberBySocialIdAndProvider(socialId, provider)
                 .setLoginStatus(LOGOUT);
 
+    }
+
+    @Override
+    public MemberInfoDetail getMemberInfoDetail(HttpServletRequest request) {
+        System.out.println("MemberServiceImpl.getMemberInfoDetail");
+
+        // access token 미 입력시
+        if (!validateAuthorization(request)) {
+            throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
+        }
+
+        String accessToken = request.getHeader("Authorization").substring(7);
+
+        Long socialPk = kakaoService.getInformation(accessToken);
+        Member member = memberRepository.findMemberBySocialIdAndProvider(socialPk, "kakao");
+
+        if (member == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
+
+        Long memberId = member.getMemberId();
+        System.out.println("memberId = " + memberId);
+        MemberInfoDetail memberInfoDetail = memberRepository.findMemberDetailByMemberId(memberId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+
+        List<InterestRes> interests = memberInterestRepository.findByMemberId(memberId);
+        memberInfoDetail.setInterests(interests);
+
+        return memberInfoDetail;
+    }
+
+    private boolean validateAuthorization(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            return false;
+        }
+        return true;
     }
 }
