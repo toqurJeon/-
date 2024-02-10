@@ -4,10 +4,7 @@ import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
 
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
-import com.ssafy.moiroomserver.member.dto.AddMemberDto;
-import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
-import com.ssafy.moiroomserver.member.dto.MemberInfo;
-import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
+import com.ssafy.moiroomserver.member.dto.*;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -26,6 +23,7 @@ public class MemberController {
 
     /**
      * 회원 정보 수정
+     *
      * @param infoModifyRequest 수정 시 입력할 데이터
      */
     @PatchMapping
@@ -37,6 +35,7 @@ public class MemberController {
 
     /**
      * 카카오 회원 로그인
+     *
      * @param accountDto
      * @return
      */
@@ -49,6 +48,7 @@ public class MemberController {
     /**
      * 카카오 회원 토큰 업데이트
      * 재로그인 시 카카오 토큰 정보 업데이트
+     *
      * @return
      */
     @PatchMapping("/{memberId}")
@@ -60,6 +60,7 @@ public class MemberController {
 
     /**
      * 회원 정보 조회 -> 단순히 pk를 가져와서 조회하는 api
+     *
      * @param memberId
      * @return
      */
@@ -71,6 +72,7 @@ public class MemberController {
 
     /**
      * 로그아웃 api
+     *
      * @param socialId
      * @param provider
      * @return
@@ -83,6 +85,7 @@ public class MemberController {
 
     /**
      * 특성 및 관심사 추가 및 수정
+     *
      * @param request
      * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
      */
@@ -91,5 +94,16 @@ public class MemberController {
         characteristicService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
         return ApiResponse.success(ADD_ALL_CHARACTER_INFO);
+    }
+
+    /**
+     * 회원 상세 정보 조회
+     * @param request
+     * @return
+     */
+    @GetMapping
+    public ApiResponse<?> getMemberInfoDetail(HttpServletRequest request) {
+        MemberInfoDetail dto = memberService.getMemberInfoDetail(request);
+        return ApiResponse.success(SuccessCode.GET_MEMBER_BY_ID, dto);
     }
 }
