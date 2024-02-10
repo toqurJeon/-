@@ -48,5 +48,14 @@ data class MemberInfoUpdateRequest(
     val cityId: Long,
     val memberGender: String,
     val memberNickname: String,
-    val memberIntroduction: String
+    val memberIntroduction: String,
+)
+@Serializable
+data class MemberInfoWithoutGender(
+    val memberProfileImage: String,
+    val metropolitanId: Int,
+    val cityId: Int,
+    val memberNickname: String,
+    val memberIntroduction: String,
+    val roommateSearchStatus: Int
 )

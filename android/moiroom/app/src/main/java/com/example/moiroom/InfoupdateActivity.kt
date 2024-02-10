@@ -12,6 +12,26 @@ import android.view.View
 import android.widget.EditText
 import com.bumptech.glide.Glide
 import com.example.moiroom.databinding.ActivityInfoupdateBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import ApiService
+import android.app.Dialog
+import android.widget.AdapterView
+import android.widget.Toast
+import com.example.moiroom.adapter.DialogAdapter
+import com.example.moiroom.data.City
+import com.example.moiroom.data.MemberInfoUpdateRequest
+import com.example.moiroom.data.MemberInfoWithoutGender
+import com.example.moiroom.data.Metropolitan
+import com.example.moiroom.databinding.DialogFindCityBinding
+import com.example.moiroom.databinding.DialogFindMetropolitanBinding
+import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
+import kotlinx.coroutines.async
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class InfoupdateActivity : AppCompatActivity() {
 
@@ -28,8 +48,18 @@ class InfoupdateActivity : AppCompatActivity() {
     private var introductionChanged: Boolean = false
     private var locationChanged: Boolean = false
 
+    // ApiService 인스턴스를 저장할 변수
+    private lateinit var apiService: ApiService
+
+    private var metropolitans: List<Metropolitan> = listOf()
+    private var cities: List<City> = listOf()
+
+    private var memberProfileImageUrl: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        apiService = NetworkModule.provideRetrofit(this)
 
         binding = ActivityInfoupdateBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -82,7 +112,47 @@ class InfoupdateActivity : AppCompatActivity() {
 
         // 찾는 지역 수정
         binding.editLocation.setOnClickListener {
-            // 지역 찾기
+            CoroutineScope(Dispatchers.IO).launch {
+
+                val response = apiService.getMetropolitan()
+                Log.d("결과", "광역시 데이터 요청 결과: $response")
+
+                if (response.isSuccessful) {
+
+                    metropolitans = response.body()?.data ?: emptyList()  // 수정된 부분
+                    Log.d("결과", "광역시 데이터: $metropolitans")
+                    withContext(Dispatchers.Main) {
+
+                        showMetropolitanSelectDialog(
+                            "광역시 선택",
+                            metropolitans.map { it.metropolitanName }) { selectedMetropolitanName ->
+                            val selectedMetropolitan =
+                                metropolitans.find { it.metropolitanName == selectedMetropolitanName }
+                            if (selectedMetropolitan != null) {
+                                CoroutineScope(Dispatchers.IO).launch {
+
+                                    val cityResponse =
+                                        apiService.getCities(selectedMetropolitan.metropolitanId)
+                                    Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
+                                    if (cityResponse.isSuccessful) {
+                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName } ?: emptyList()  // 수정된 부분
+                                        Log.d("결과", "군/구 데이터: $cities")
+                                        withContext(Dispatchers.Main) {
+
+                                            showCitySelectDialog(
+                                                "군/구 선택",
+                                                cities.map { it.cityName }) { selectedCityName ->
+                                                binding.memberLocation.text =
+                                                    "$selectedMetropolitanName, $selectedCityName"
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         // 룸메이트 찾는 중 상태 수정
@@ -103,7 +173,7 @@ class InfoupdateActivity : AppCompatActivity() {
 
         // PATCH request
         binding.patchAllButton.setOnClickListener {
-            // PATCH request 보내기
+            sendUpdatedInfo()
         }
 
         // 뒤로가기
@@ -204,10 +274,89 @@ class InfoupdateActivity : AppCompatActivity() {
                 Glide.with(this).load(selectedImageUri).into(binding.memberProfileImage)
             }
             // 선택한 이미지의 URI를 memberProfileImageUrl에 저장
-            val memberProfileImageUrl = selectedImageUri.toString()
+            memberProfileImageUrl = selectedImageUri.toString()
 
             imageChanged = true
             isChanged()
+        }
+    }
+
+
+    private fun showMetropolitanSelectDialog(
+        title: String,
+        items: List<String>,
+        onItemSelected: (String) -> Unit
+    ) {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogFindMetropolitanBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        val adapter = DialogAdapter(this, items)
+        dialogBinding.dataGrid.adapter = adapter
+
+        dialogBinding.dataGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val selectedItem = items[position]
+            onItemSelected(selectedItem)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun showCitySelectDialog(
+        title: String,
+        items: List<String>,
+        onItemSelected: (String) -> Unit
+    ) {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogFindCityBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        val adapter = DialogAdapter(this, items)
+        dialogBinding.dataGrid.adapter = adapter
+
+        dialogBinding.dataGrid.onItemClickListener = AdapterView.OnItemClickListener { _, _, position, _ ->
+            val selectedItem = items[position]
+            onItemSelected(selectedItem)
+            dialog.dismiss()
+        }
+
+        dialog.show()
+    }
+
+    private fun sendUpdatedInfo() {
+        val updatedInfo = MemberInfoWithoutGender(
+            memberProfileImage = memberProfileImageUrl ?: "",
+            metropolitanId = metropolitans.find { it.metropolitanName == binding.memberLocation.text.split(", ")[0] }?.metropolitanId ?: -1,
+            cityId = cities.find { it.cityName == binding.memberLocation.text.split(", ")[1] }?.cityId ?: -1,
+            memberNickname = binding.memberNickname.text.toString(),
+            memberIntroduction = binding.memberIntroduction.text.toString(),
+            roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
+        )
+
+        CoroutineScope(Dispatchers.IO).launch {
+            val response = apiService.updateMemberInfo(updatedInfo)
+
+            withContext(Dispatchers.Main) {
+                if (response.isSuccessful) {
+                    // 회원 정보 수정 성공
+                    Toast.makeText(this@InfoupdateActivity, "회원 정보 수정 성공", Toast.LENGTH_SHORT).show()
+
+                    val intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
+                    getUserInfo()
+                    getMatchedMember()
+                    startActivity(intent)
+                    finish()
+
+                } else {
+                    // 회원 정보 수정 실패
+                    val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                    Toast.makeText(this@InfoupdateActivity, "회원 정보 수정 실패: $errorMsg", Toast.LENGTH_SHORT).show()
+
+                    // 로그에 에러 메시지 출력
+                    Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
+                }
+            }
         }
     }
 

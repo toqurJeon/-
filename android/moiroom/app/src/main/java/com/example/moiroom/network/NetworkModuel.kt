@@ -1,6 +1,7 @@
 import android.content.Context
 import com.example.moiroom.data.CityResponse
 import com.example.moiroom.data.MemberInfoUpdateRequest
+import com.example.moiroom.data.MemberInfoWithoutGender
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MetropolitanResponse
 import com.example.moiroom.data.MyResponse
@@ -35,6 +36,10 @@ interface ApiService {
 
     @PATCH("/member")
     suspend fun updateMemberInfo(@Body request: MemberInfoUpdateRequest): Response<MyResponse>
+
+    @PATCH("/member")
+    suspend fun updateMemberInfo(@Body info: MemberInfoWithoutGender): Response<ResponseBody>
+
 }
 
 object NetworkModule {
