@@ -1,17 +1,21 @@
 package com.ssafy.moiroomserver.matching.service.impl;
 
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
+import static com.ssafy.moiroomserver.global.constants.PageSize.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
+import com.ssafy.moiroomserver.matching.entity.MatchingResult;
 import com.ssafy.moiroomserver.matching.repository.MatchingResultRepository;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
+import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
@@ -19,6 +23,9 @@ import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -75,5 +82,26 @@ public class MatchingServiceImpl implements MatchingService {
 		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResultList()) {
 			matchingResultRepository.save(matchingResultInfoAddReq.toEntity(member.getMemberId()));
 		}
+	}
+
+	@Override
+	public PageResponse getMatchingRoommateList(HttpServletRequest request, int pgno) {
+		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
+		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
+		if (member == null) {
+			throw new NoExistException(NOT_EXISTS_MEMBER);
+		}
+		PageRequest pageRequest = PageRequest.of(pgno - 1, MATCHING_ROOMMATE_LIST_SIZE);
+		// Page<MatchingResult> matchingResultPage = matchingResultRepository.findByMemberOneIdOrMemberTwoIdOrderByRateDesc(member.getMemberId());
+		// if (matchingResultPage.getTotalElements() < 1) {
+		// 	return null;
+		// }
+		// for (MatchingResult matchingResult : matchingResultPage.getContent()) {
+		// 	Long memberTwoId = (matchingResult.getMemberOneId().equals(member.getMemberId())) ? matchingResult.getMemberTwoId() : matchingResult.getMemberOneId();
+		// 	Member memberTwo = memberRepository.findById(memberTwoId)
+		// 		.orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+		// 	List<MemberInfo.GetDetailResponse> memberInfoGetDetailResList = new ArrayList<>();
+		// }
+		return null;
 	}
 }

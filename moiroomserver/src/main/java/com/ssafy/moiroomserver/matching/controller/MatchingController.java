@@ -1,7 +1,10 @@
 package com.ssafy.moiroomserver.matching.controller;
 
+import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
+
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
+import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 
@@ -31,7 +34,7 @@ public class MatchingController {
     public ApiResponse<?> getInfoForMatching(HttpServletRequest request) {
         MatchingInfo.GetResponse matchingInfoRes = matchingService.getInfoForMatching(request);
 
-        return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING, matchingInfoRes);
+        return ApiResponse.success(GET_INFO_FOR_MATCHING, matchingInfoRes);
     }
 
     /**
@@ -43,13 +46,18 @@ public class MatchingController {
     public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
-        return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);
+        return ApiResponse.success(ADD_MATCHING_RESULT);
     }
 
     @GetMapping("/result")
     public ApiResponse<?> getMatchingRoommateList(HttpServletRequest request,
                                                 @RequestParam(required = false, defaultValue = "1") int pgno) {
+        PageResponse matchingRoommateListRes = matchingService.getMatchingRoommateList(request, pgno);
+        if (matchingRoommateListRes == null) {
 
-        return ApiResponse.success(SuccessCode.GET_MATCHING_ROOMMATE_LIST);
+            return ApiResponse.success(NO_MATCHING_ROOMMATE_LIST);
+        }
+
+        return ApiResponse.success(GET_MATCHING_ROOMMATE_LIST, matchingRoommateListRes);
     }
 }

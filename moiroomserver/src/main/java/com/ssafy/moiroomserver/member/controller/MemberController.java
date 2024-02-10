@@ -1,5 +1,7 @@
 package com.ssafy.moiroomserver.member.controller;
 
+import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
+
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
@@ -30,7 +32,7 @@ public class MemberController {
     public ApiResponse<?> modifyMemberInfo(HttpServletRequest request, @ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
         memberService.modifyMemberInfo(request, infoModifyRequest);
 
-        return ApiResponse.success(SuccessCode.MODIFY_MEMBER_INFO);
+        return ApiResponse.success(MODIFY_MEMBER_INFO);
     }
 
     /**
@@ -88,6 +90,6 @@ public class MemberController {
     public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicInfo.RequestResponse characteristicInfoAddModifyReq) {
         characteristicService.addCharacteristic(request, characteristicInfoAddModifyReq);
 
-        return ApiResponse.success(SuccessCode.ADD_ALL_CHARACTER_INFO);
+        return ApiResponse.success(ADD_ALL_CHARACTER_INFO);
     }
 }
