@@ -6,7 +6,6 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
-import com.ssafy.moiroomserver.member.entity.Interest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
@@ -43,11 +42,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest memberInfoModifyReq) {
-//        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-        Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER);
-        }
+        Member member = getMemberByHttpServletRequest(request);
         if (memberInfoModifyReq.getMemberProfileImage() != null) {
             memberInfoModifyReq.setProfileImageUrl(s3Service.uploadProfileImage(memberInfoModifyReq.getMemberProfileImage(), member));
         }
@@ -167,6 +162,26 @@ public class MemberServiceImpl implements MemberService {
         memberInfoDetail.setInterests(interests);
 
         return memberInfoDetail;
+    }
+
+    /**
+     * HttpServletRequest를 이용해 로그인 사용자 정보 추출
+     * @param request
+     * @return 로그인 사용자 정보
+     */
+    @Override
+    public Member getMemberByHttpServletRequest(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
+        }
+        String authorization = request.getHeader("Authorization");
+        String accessToken = authorization.substring(7, authorization.length());
+        Long socialId = kakaoService.getInformation(accessToken);
+        Member member = memberRepository.findMemberBySocialIdAndProvider(socialId, "kakao");
+        if (member == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
+        return member;
     }
 
     private boolean validateAuthorization(HttpServletRequest request) {

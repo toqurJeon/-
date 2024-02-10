@@ -8,23 +8,21 @@ import java.util.List;
 
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
-import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
 import com.ssafy.moiroomserver.matching.entity.MatchingResult;
 import com.ssafy.moiroomserver.matching.repository.MatchingResultRepository;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
-import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
+import com.ssafy.moiroomserver.member.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -33,22 +31,18 @@ import org.springframework.stereotype.Service;
 public class MatchingServiceImpl implements MatchingService {
 
 	private final MemberRepository memberRepository;
-	private final KakaoService kakaoService;
-	private final CharacteristicService characteristicService;
 	private final MatchingResultRepository matchingResultRepository;
+	private final CharacteristicService characteristicService;
+	private final MemberService memberService;
 
 	/**
-	 * 매칭을 위한 정보 조회
+	 * 매칭 계산을 위한 정보 조회
 	 * @param request
 	 * @return 로그인 사용자와 상대방의 특성 및 관심사 정보
 	 */
 	@Override
 	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
-	   // Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
+		Member member = memberService.getMemberByHttpServletRequest(request);
 		//로그인 사용자의 특성 및 관심사 데이터 조회
 		CharacteristicInfo.RequestResponse memberOne = characteristicService.getCharacteristicAndInterestOfMember(member);
 		//매칭 상대방의 특성 및 관심사 데이터 조회
@@ -74,13 +68,19 @@ public class MatchingServiceImpl implements MatchingService {
 	@Transactional
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
-		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
+		Member member = memberService.getMemberByHttpServletRequest(request);
 		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResultList()) {
-			matchingResultRepository.save(matchingResultInfoAddReq.toEntity(member.getMemberId()));
+			MatchingResult firstMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(member.getMemberId(), matchingResultInfoAddReq.getMemberTwoId());
+			MatchingResult secondMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(matchingResultInfoAddReq.getMemberTwoId(), member.getMemberId());
+			//이미 서로의 매칭 결과가 저장되어 있는 경우 -> 수정
+			if (firstMatchingResult != null || secondMatchingResult != null) {
+				MatchingResult matchingResult = (firstMatchingResult != null) ? firstMatchingResult : secondMatchingResult;
+				matchingResult.modifyRating(matchingResultInfoAddReq.getRate(), matchingResultInfoAddReq.getRateIntroduction());
+			}
+			//아직 서로의 매칭 결과가 저장되어 있지 않는 경우 -> 추가
+			if (firstMatchingResult == null && secondMatchingResult == null) {
+				matchingResultRepository.save(matchingResultInfoAddReq.toEntity(member.getMemberId()));
+			}
 		}
 	}
 
