@@ -21,5 +21,5 @@ public interface MemberService {
 
     MemberInfoDetail getMemberInfoDetail(HttpServletRequest request);
 
-    Member getMemberByAccessToken(HttpServletRequest request);
+    Member getMemberByHttpServletRequest(HttpServletRequest request);
 }
