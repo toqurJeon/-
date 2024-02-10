@@ -148,7 +148,8 @@ public class MemberServiceImpl implements MemberService {
             throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
         }
 
-        String accessToken = request.getHeader("Authorization").substring(7);
+        String authorization = request.getHeader("Authorization");
+        String accessToken = authorization.substring(7, authorization.length());
 
         Long socialPk = kakaoService.getInformation(accessToken);
         Member member = memberRepository.findMemberBySocialIdAndProvider(socialPk, "kakao");
@@ -169,9 +170,6 @@ public class MemberServiceImpl implements MemberService {
     }
 
     private boolean validateAuthorization(HttpServletRequest request) {
-        if (request.getHeader("Authorization") == null) {
-            return false;
-        }
-        return true;
+        return request.getHeader("Authorization") != null;
     }
 }
