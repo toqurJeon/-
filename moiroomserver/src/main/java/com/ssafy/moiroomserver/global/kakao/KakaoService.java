@@ -16,6 +16,7 @@ public class KakaoService {
 
     private static final String INFO_URL = "https://kapi.kakao.com/v2/user/me";
     public boolean validateToken(String accessToken) {
+        System.out.println("TEST 7 - 에러");
         RestTemplate template = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -24,6 +25,8 @@ public class KakaoService {
         try {
             ResponseEntity<String> response
                     = template.exchange(INFO_URL, HttpMethod.GET, entity, String.class);
+            System.out.println("TEST 8 - 에러");
+            System.out.println("response.getStatusCode().is2xxSuccessful() : " + response.getStatusCode().is2xxSuccessful());
             return response.getStatusCode().is2xxSuccessful();
         } catch (Exception e) {
             return false;
