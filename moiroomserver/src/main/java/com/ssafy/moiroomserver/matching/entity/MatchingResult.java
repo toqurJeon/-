@@ -1,6 +1,7 @@
 package com.ssafy.moiroomserver.matching.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -28,4 +29,12 @@ public class MatchingResult {
 
     @Column(name = "rate_introduction", nullable = false)
     private String rateIntroduction;
+
+    @Builder
+    public MatchingResult(Long memberOneId, Long memberTwoId, int rate, String rateIntroduction) {
+        this.memberOneId = memberOneId;
+        this.memberTwoId = memberTwoId;
+        this.rate = rate;
+        this.rateIntroduction = rateIntroduction;
+    }
 }

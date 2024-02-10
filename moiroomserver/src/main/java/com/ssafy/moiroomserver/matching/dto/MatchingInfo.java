@@ -24,4 +24,10 @@ public class MatchingInfo {
 			this.memberTwoList = memberTwoList;
 		}
 	}
+
+	@Getter
+	@Setter
+	public static class AddRequest {
+		private List<MatchingResultInfo.AddRequest> matchingResultList;
+	}
 }

@@ -9,6 +9,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,5 +31,12 @@ public class MatchingController {
         MatchingInfo.GetResponse matchingInfoRes = matchingService.getInfoForMatching(request);
 
         return ApiResponse.success(SuccessCode.GET_INFO_FOR_MATCHING, matchingInfoRes);
+    }
+
+    @PostMapping("/result")
+    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
+        matchingService.addMatchingResult(request, matchingInfoAddReq);
+
+        return ApiResponse.success(SuccessCode.ADD_MATCHING_RESULT);
     }
 }
