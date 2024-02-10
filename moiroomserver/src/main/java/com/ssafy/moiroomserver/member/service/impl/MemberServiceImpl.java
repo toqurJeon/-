@@ -169,6 +169,26 @@ public class MemberServiceImpl implements MemberService {
         return memberInfoDetail;
     }
 
+    /**
+     * accessToken을 이용해 로그인 사용자 정보 추출
+     * @param request
+     * @return 로그인 사용자 정보
+     */
+    @Override
+    public Member getMemberByAccessToken(HttpServletRequest request) {
+        if (request.getHeader("Authorization") == null) {
+            throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
+        }
+        String authorization = request.getHeader("Authorization");
+        String accessToken = authorization.substring(7, authorization.length());
+        Long socialId = kakaoService.getInformation(accessToken);
+        Member member = memberRepository.findMemberBySocialIdAndProvider(socialId, "kakao");
+        if (member == null) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
+        return member;
+    }
+
     private boolean validateAuthorization(HttpServletRequest request) {
         return request.getHeader("Authorization") != null;
     }
