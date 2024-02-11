@@ -86,13 +86,9 @@ public class MatchingServiceImpl implements MatchingService {
 
 	@Override
 	public PageResponse getMatchingRoommateList(HttpServletRequest request, int pgno) {
-		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
-		PageRequest pageRequest = PageRequest.of(pgno - 1, MATCHING_ROOMMATE_LIST_SIZE);
-		// Page<MatchingResult> matchingResultPage = matchingResultRepository.findByMemberOneIdOrMemberTwoIdOrderByRateDesc(member.getMemberId());
+		Member member = memberService.getMemberByHttpServletRequest(request);
+		// PageRequest pageRequest = PageRequest.of(pgno - 1, MATCHING_ROOMMATE_LIST_SIZE);
+		// Page<MatchingResult> matchingResultPage = matchingResultRepository.findByMemberOneIdOrMemberTwoIdOrderByRateDesc(member.getMemberId(), pageRequest);
 		// if (matchingResultPage.getTotalElements() < 1) {
 		// 	return null;
 		// }
