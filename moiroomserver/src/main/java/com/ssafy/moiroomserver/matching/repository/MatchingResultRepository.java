@@ -14,13 +14,13 @@ public interface MatchingResultRepository extends JpaRepository<MatchingResult, 
 
 	MatchingResult findByMemberOneIdAndMemberTwoId(Long memberOneId, Long MemberTwoId);
 	@Query(
-		value = "SELECT MatchingResult FROM (SELECT MatchingResult FROM MatchingResult WHERE memberOneId = :id OR memberTwoId = :id) mr "
+			"SELECT mr FROM MatchingResult mr "
 			+ "JOIN Member m1 ON mr.memberOneId = m1.memberId "
 			+ "JOIN Member m2 ON mr.memberTwoId = m2.memberId "
-			+ "WHERE m1.roommateSearchStatus = 1 AND m2.roommateSearchStatus = 1 "
+			+ "WHERE (m1.memberId = :id OR m2.memberId = :id) "
+			+ "AND m1.roommateSearchStatus = 1 AND m2.roommateSearchStatus = 1 "
 			+ "AND m1.metropolitanId = m2.metropolitanId AND m1.cityId = m2.cityId "
-			+ "ORDER BY mr.rate DESC",
-		nativeQuery = true
+			+ "ORDER BY mr.rate DESC"
 	)
 	Page<MatchingResult> findMatchingResultByMemberId(@Param("id") Long memberId, Pageable pageable);
 }
