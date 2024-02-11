@@ -53,7 +53,7 @@ public class MatchingServiceImpl implements MatchingService {
 		CharacteristicAndInterestInfo.RequestResponse memberOne = CharacteristicAndInterestInfo.RequestResponse.builder()
 			.memberId(member.getMemberId())
 			.characteristic(characteristicService.getCharacteristicOf(member))
-			.interestList(characteristicService.getInterestListOf(member))
+			.interests(characteristicService.getInterestListOf(member))
 			.build();
 		//매칭 상대방의 특성 및 관심사 데이터 조회
 		List<Member> matchingMemberList = memberRepository.findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
@@ -63,14 +63,14 @@ public class MatchingServiceImpl implements MatchingService {
 			CharacteristicAndInterestInfo.RequestResponse memberTwo = CharacteristicAndInterestInfo.RequestResponse.builder()
 				.memberId(matchingMember.getMemberId())
 				.characteristic(characteristicService.getCharacteristicOf(matchingMember))
-				.interestList(characteristicService.getInterestListOf(matchingMember))
+				.interests(characteristicService.getInterestListOf(matchingMember))
 				.build();
 			memberTwoList.add(memberTwo);
 		}
 
 		return MatchingInfo.GetResponse.builder()
 			.memberOne(memberOne)
-			.memberTwoList(memberTwoList)
+			.memberTwos(memberTwoList)
 			.build();
 	}
 
@@ -123,13 +123,14 @@ public class MatchingServiceImpl implements MatchingService {
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_METROPOLITAN_ID));
 			String cityName = cityRepository.findNameByCityId(memberTwo.getCityId())
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_CITY_ID));
+			//추천 룸메이트 리스트에 추천 룸메이트 한 명 정보 담기
 			matchingResultResList.add(MatchingResultInfo.GetResponse.builder()
 				.member(MemberInfo.GetResponse.builder()
 					.member(memberTwo)
 					.metropolitanName(metropolitanName)
 					.cityName(cityName)
 					.characteristic(characteristicService.getCharacteristicOf(memberTwo))
-					.interestList(characteristicService.getInterestListOf(memberTwo))
+					.interests(characteristicService.getInterestListOf(memberTwo))
 					.build())
 				.matchRate(matchingResult.getRate())
 				.matchIntroduction(matchingResult.getRateIntroduction())

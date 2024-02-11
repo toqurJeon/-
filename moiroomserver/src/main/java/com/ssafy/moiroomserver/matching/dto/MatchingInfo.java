@@ -16,13 +16,13 @@ public class MatchingInfo {
 	@NoArgsConstructor
 	public static class GetResponse {
 		private CharacteristicAndInterestInfo.RequestResponse memberOne;
-		private List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList;
+		private List<CharacteristicAndInterestInfo.RequestResponse> memberTwos;
 
 		@Builder
 		public GetResponse(CharacteristicAndInterestInfo.RequestResponse memberOne,
-				List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList) {
+				List<CharacteristicAndInterestInfo.RequestResponse> memberTwos) {
 			this.memberOne = memberOne;
-			this.memberTwoList = memberTwoList;
+			this.memberTwos = memberTwos;
 		}
 	}
 
