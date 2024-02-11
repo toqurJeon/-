@@ -24,7 +24,7 @@ class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, at
 
     // 5개의 특성을 갖도록 한다
     private var chartTypes = arrayListOf(
-        CharacteristicType.socialbility,
+        CharacteristicType.sociability,
         CharacteristicType.positivity,
         CharacteristicType.activity,
         CharacteristicType.communion,

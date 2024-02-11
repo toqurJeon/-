@@ -9,17 +9,6 @@ data class MatchedMember(
     val metropolitanName: String,
     val cityName: String,
     val memberIntroduction: String,
-    val matchRate: Int,
-    var matchIntroduction: String,
-    val socialbility: Int,
-    val positivity: Int,
-    val activity: Int,
-    val communion: Int,
-    val altruism: Int,
-    val empathy: Int,
-    val humor: Int,
-    val generous: Int,
-    val sleepAt: String,
-    val wakeUpAt: String,
-    val interest: List<Interest>
+    val characteristic: Characteristic,
+    val interests: List<Interest>
 )

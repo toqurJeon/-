@@ -1,9 +1,9 @@
 package com.example.moiroom.data
 
 data class MatchedMemberList(
-    val content: List<MatchedMember>,
+    val content: List<MatchedMemberData>,
     val totalPages: Int,
-    val totalElememts: Int,
+    val totalElements: Int,
     val currentPage: Int,
     val pageSize: Int
 )

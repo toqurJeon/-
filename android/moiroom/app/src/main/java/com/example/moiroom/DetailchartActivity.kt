@@ -33,18 +33,21 @@ class DetailchartActivity : AppCompatActivity() {
         // 멤버 데이터 MyPageFragment로부터 받아오기
         val memberData: Member? = intent.getParcelableExtra<Member>("memberData")
 
+        Log.d("TAG", "onCreate: $memberData")
+
         if (memberData != null) {
             // 성향 레이더 차트
             val chartView = RadarChartView(this, null)
+
             val chartData = arrayListOf(
-                RadarChartData(CharacteristicType.socialbility, memberData.socialbility.toFloat() / 100),
-                RadarChartData(CharacteristicType.positivity, memberData.positivity.toFloat() / 100),
-                RadarChartData(CharacteristicType.activity, memberData.activity.toFloat() / 100),
-                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
-                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
-                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
-                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
-                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100)
+                RadarChartData(CharacteristicType.sociability, memberData.characteristic.sociability.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity, memberData.characteristic.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity, memberData.characteristic.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.characteristic.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.characteristic.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.characteristic.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.characteristic.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.characteristic.generous.toFloat() / 100)
             )
             chartView.setDataList(chartData, null)
             binding.radarChartContainer.addView(chartView)
@@ -59,18 +62,18 @@ class DetailchartActivity : AppCompatActivity() {
 
             // 관심사 차트
             val squareChart = binding.squareChartView
-            squareChart.setData(memberData.interest)
+            squareChart.setData(memberData.interests)
 
             // 관심사 목록
             binding.interestRecyclerView.layoutManager = LinearLayoutManager(this)
-            val interestAdapter = InterestAdapter(this, memberData.interest)
+            val interestAdapter = InterestAdapter(this, memberData.interests)
             binding.interestRecyclerView.adapter = interestAdapter
 
             // 수면 차트
             val sleepChart = binding.sleepChartView
-            sleepChart.setSleepTime(memberData.sleepAt, memberData.wakeUpAt)
-            binding.sleepTimeText.text = memberData.sleepAt
-            binding.wakeTimeText.text = memberData.wakeUpAt
+            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
+            binding.sleepTimeText.text = memberData.characteristic.sleepAt
+            binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
         }
 
         binding.backwardButton.setOnClickListener {
