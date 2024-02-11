@@ -136,25 +136,8 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberInfoDetail getMemberInfoDetail(HttpServletRequest request) {
-        System.out.println("MemberServiceImpl.getMemberInfoDetail");
-
-        // access token 미 입력시
-        if (!validateAuthorization(request)) {
-            throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
-        }
-
-        String authorization = request.getHeader("Authorization");
-        String accessToken = authorization.substring(7, authorization.length());
-
-        Long socialPk = kakaoService.getInformation(accessToken);
-        Member member = memberRepository.findMemberBySocialIdAndProvider(socialPk, "kakao");
-
-        if (member == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER);
-        }
-
-        Long memberId = member.getMemberId();
-        System.out.println("memberId = " + memberId);
+        Long memberId = getMemberByHttpServletRequest(request).getMemberId();
+        
         MemberInfoDetail memberInfoDetail = memberRepository.findMemberDetailByMemberId(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
