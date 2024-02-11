@@ -6,6 +6,8 @@ import static com.ssafy.moiroomserver.global.constants.PageSize.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.moiroomserver.area.repository.CityRepository;
+import com.ssafy.moiroomserver.area.repository.MetropolitanRepository;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
@@ -13,7 +15,8 @@ import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
 import com.ssafy.moiroomserver.matching.entity.MatchingResult;
 import com.ssafy.moiroomserver.matching.repository.MatchingResultRepository;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
-import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
+import com.ssafy.moiroomserver.member.dto.CharacteristicAndInterestInfo;
+import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
@@ -23,6 +26,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -32,6 +36,8 @@ public class MatchingServiceImpl implements MatchingService {
 
 	private final MemberRepository memberRepository;
 	private final MatchingResultRepository matchingResultRepository;
+	private final MetropolitanRepository metropolitanRepository;
+	private final CityRepository cityRepository;
 	private final CharacteristicService characteristicService;
 	private final MemberService memberService;
 
@@ -44,13 +50,21 @@ public class MatchingServiceImpl implements MatchingService {
 	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
 		Member member = memberService.getMemberByHttpServletRequest(request);
 		//로그인 사용자의 특성 및 관심사 데이터 조회
-		CharacteristicInfo.RequestResponse memberOne = characteristicService.getCharacteristicAndInterestOfMember(member);
+		CharacteristicAndInterestInfo.RequestResponse memberOne = CharacteristicAndInterestInfo.RequestResponse.builder()
+			.memberId(member.getMemberId())
+			.characteristic(characteristicService.getCharacteristicOf(member))
+			.interestList(characteristicService.getInterestListOf(member))
+			.build();
 		//매칭 상대방의 특성 및 관심사 데이터 조회
 		List<Member> matchingMemberList = memberRepository.findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
 			member.getMemberId(), member.getGender(), member.getMetropolitanId(), member.getCityId(), 1);
-		List<CharacteristicInfo.RequestResponse> memberTwoList = new ArrayList<>();
+		List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList = new ArrayList<>();
 		for (Member matchingMember : matchingMemberList) {
-			CharacteristicInfo.RequestResponse memberTwo = characteristicService.getCharacteristicAndInterestOfMember(matchingMember);
+			CharacteristicAndInterestInfo.RequestResponse memberTwo = CharacteristicAndInterestInfo.RequestResponse.builder()
+				.memberId(matchingMember.getMemberId())
+				.characteristic(characteristicService.getCharacteristicOf(matchingMember))
+				.interestList(characteristicService.getInterestListOf(matchingMember))
+				.build();
 			memberTwoList.add(memberTwo);
 		}
 
@@ -84,24 +98,49 @@ public class MatchingServiceImpl implements MatchingService {
 		}
 	}
 
+	/**
+	 * 추천 룸메이트 리스트 조회
+	 * @param request
+	 * @param pgno 현재 페이지 수
+	 * @return 현재 페이지의 추천 룸메이트 리스트
+	 */
 	@Override
 	public PageResponse getMatchingRoommateList(HttpServletRequest request, int pgno) {
-		// Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-		Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-		if (member == null) {
-			throw new NoExistException(NOT_EXISTS_MEMBER);
-		}
+		Member member = memberService.getMemberByHttpServletRequest(request);
+		//현재 페이지의 추천 룸메이트 리스트를 매칭 결과 테이블에서 추출
 		PageRequest pageRequest = PageRequest.of(pgno - 1, MATCHING_ROOMMATE_LIST_SIZE);
-		// Page<MatchingResult> matchingResultPage = matchingResultRepository.findByMemberOneIdOrMemberTwoIdOrderByRateDesc(member.getMemberId());
-		// if (matchingResultPage.getTotalElements() < 1) {
-		// 	return null;
-		// }
-		// for (MatchingResult matchingResult : matchingResultPage.getContent()) {
-		// 	Long memberTwoId = (matchingResult.getMemberOneId().equals(member.getMemberId())) ? matchingResult.getMemberTwoId() : matchingResult.getMemberOneId();
-		// 	Member memberTwo = memberRepository.findById(memberTwoId)
-		// 		.orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
-		// 	List<MemberInfo.GetDetailResponse> memberInfoGetDetailResList = new ArrayList<>();
-		// }
-		return null;
+		Page<MatchingResult> matchingResultPage = matchingResultRepository.findMatchingResultByMemberId(member.getMemberId(), pageRequest);
+		if (matchingResultPage.getTotalElements() < 1) {
+			return null;
+		}
+		//매칭 결과 Entity에서 얻은 정보로 추천 룸메이트 응답 DTO 생성
+		List<MatchingResultInfo.GetResponse> matchingResultResList = new ArrayList<>();
+		for (MatchingResult matchingResult : matchingResultPage.getContent()) {
+			Long memberTwoId = (matchingResult.getMemberOneId().equals(member.getMemberId())) ? matchingResult.getMemberTwoId() : matchingResult.getMemberOneId();
+			Member memberTwo = memberRepository.findById(memberTwoId)
+				.orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_ID));
+			String metropolitanName = metropolitanRepository.findNameByMetropolitanId(memberTwo.getMetropolitanId())
+				.orElseThrow(() -> new NoExistException(NOT_EXISTS_METROPOLITAN_ID));
+			String cityName = cityRepository.findNameByCityId(memberTwo.getCityId())
+				.orElseThrow(() -> new NoExistException(NOT_EXISTS_CITY_ID));
+			matchingResultResList.add(MatchingResultInfo.GetResponse.builder()
+				.member(MemberInfo.GetResponse.builder()
+					.member(memberTwo)
+					.metropolitanName(metropolitanName)
+					.cityName(cityName)
+					.characteristic(characteristicService.getCharacteristicOf(memberTwo))
+					.interestList(characteristicService.getInterestListOf(memberTwo))
+					.build())
+				.matchRate(matchingResult.getRate())
+				.matchIntroduction(matchingResult.getRateIntroduction())
+				.build());
+		}
+		return PageResponse.builder()
+			.content(matchingResultResList)
+			.totalPages(matchingResultPage.getTotalPages())
+			.totalElements(matchingResultPage.getTotalElements())
+			.currentPage(matchingResultPage.getNumber())
+			.pageSize(matchingResultPage.getSize())
+			.build();
 	}
 }
