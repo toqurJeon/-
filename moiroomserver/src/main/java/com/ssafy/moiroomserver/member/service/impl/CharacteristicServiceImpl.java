@@ -5,6 +5,7 @@ import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.moiroomserver.global.exception.NoExistException;
@@ -19,7 +20,6 @@ import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.InterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
-import com.ssafy.moiroomserver.member.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -32,7 +32,7 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	private final CharacteristicRepository characteristicRepository;
 	private final MemberInterestRepository memberInterestRepository;
 	private final InterestRepository interestRepository;
-	private final MemberService memberService;
+	private final KakaoService kakaoService;
 
 	/**
 	 * 특성 및 관심사 데이터 추가 및 수정
@@ -42,7 +42,7 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	@Transactional
 	@Override
 	public void addCharacteristic(HttpServletRequest request, CharacteristicAndInterestInfo.RequestResponse infoAddModifyReq) {
-		Member member = memberService.getMemberByHttpServletRequest(request);
+		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		if (member.getCharacteristicId() == null) { //특성 및 관심사 첫 데이터 입력 (회원가입 후 첫 매칭 시작)
 			Characteristic characteristic = characteristicRepository.save(infoAddModifyReq.getCharacteristic().toEntity()); //특성 데이터 추가
 			member.modifyCharacteristicId(characteristic.getCharacteristicsId()); //추가한 특성 아이디 회원 테이블의 특성 아이디 컬럼에 추가
