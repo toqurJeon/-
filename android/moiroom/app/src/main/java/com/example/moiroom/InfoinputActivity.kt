@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import ApiService
+import java.net.URL
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -25,7 +26,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
-import com.example.moiroom.data.MemberInfoUpdateRequest
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.RequestBody
@@ -38,8 +38,14 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Call
 import retrofit2.create
+import java.io.File
+import java.io.FileOutputStream
 import java.util.logging.Logger.global
 
 class InfoinputActivity : AppCompatActivity() {
@@ -111,9 +117,20 @@ class InfoinputActivity : AppCompatActivity() {
             binding.maleImage.setColorFilter(ContextCompat.getColor(this, R.color.sub_yellow))
             binding.maleText.setTextColor(ContextCompat.getColor(this, R.color.sub_yellow))
 
-            binding.femaleCard.strokeColor = ContextCompat.getColor(this, R.color.gray_high_brightness)
-            binding.femaleImage.setColorFilter(ContextCompat.getColor(this, R.color.gray_high_brightness))
-            binding.femaleText.setTextColor(ContextCompat.getColor(this, R.color.gray_high_brightness))
+            binding.femaleCard.strokeColor =
+                ContextCompat.getColor(this, R.color.gray_high_brightness)
+            binding.femaleImage.setColorFilter(
+                ContextCompat.getColor(
+                    this,
+                    R.color.gray_high_brightness
+                )
+            )
+            binding.femaleText.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.gray_high_brightness
+                )
+            )
         }
         binding.femaleCard.setOnClickListener {
             memberGender = "female"
@@ -122,9 +139,20 @@ class InfoinputActivity : AppCompatActivity() {
             binding.femaleImage.setColorFilter(ContextCompat.getColor(this, R.color.sub_yellow))
             binding.femaleText.setTextColor(ContextCompat.getColor(this, R.color.sub_yellow))
 
-            binding.maleCard.strokeColor = ContextCompat.getColor(this, R.color.gray_high_brightness)
-            binding.maleImage.setColorFilter(ContextCompat.getColor(this, R.color.gray_high_brightness))
-            binding.maleText.setTextColor(ContextCompat.getColor(this, R.color.gray_high_brightness))
+            binding.maleCard.strokeColor =
+                ContextCompat.getColor(this, R.color.gray_high_brightness)
+            binding.maleImage.setColorFilter(
+                ContextCompat.getColor(
+                    this,
+                    R.color.gray_high_brightness
+                )
+            )
+            binding.maleText.setTextColor(
+                ContextCompat.getColor(
+                    this,
+                    R.color.gray_high_brightness
+                )
+            )
         }
 
         lifecycleScope.launch {
@@ -159,7 +187,8 @@ class InfoinputActivity : AppCompatActivity() {
                                         apiService.getCities(selectedMetropolitan.metropolitanId)
                                     Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
                                     if (cityResponse.isSuccessful) {
-                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName } ?: emptyList()  // 수정된 부분
+                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName }
+                                            ?: emptyList()  // 수정된 부분
                                         Log.d("결과", "군/구 데이터: $cities")
                                         withContext(Dispatchers.Main) {
 
@@ -223,19 +252,56 @@ class InfoinputActivity : AppCompatActivity() {
                         val memberNickname: String = userInfo.nickname
                         val memberIntroduction: String = binding.editText.text.toString()
 
-                        // 요청 객체를 생성합니다.
-                        val request = MemberInfoUpdateRequest(
-                            metropolitanId,
-                            cityId,
-                            memberGender,
-                            memberNickname,
-                            memberIntroduction
-                        )
+                        val metropolitanIdPart = metropolitanId.toString().toRequestBody(MultipartBody.FORM)
+                        val cityIdPart = cityId.toString().toRequestBody(MultipartBody.FORM)
+                        val memberGenderPart = memberGender.toRequestBody(MultipartBody.FORM)
+                        val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
+                        val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
 
-                        // 코루틴을 사용하여 네트워크 요청을 비동기적으로 실행합니다.
-                        val response = withContext(Dispatchers.IO) {
-                            apiService.updateMemberInfo(request)
+                        // 이미지 URL을 가져옵니다.
+                        val imageUrl: String = userInfo.imageUrl
+
+                        val memberProfileImagePart: MultipartBody.Part = withContext(Dispatchers.IO) {
+                            // 이미지 파일을 다운로드합니다.
+                            val inputStream = URL(imageUrl).openStream()
+                            val downloadedFile = File.createTempFile("downloaded_image", ".png")
+                            FileOutputStream(downloadedFile).use { outputStream ->
+                                inputStream.copyTo(outputStream)
+                            }
+
+                            Log.d("Request Info", "Downloaded image file: ${downloadedFile.absolutePath}")
+
+                            // 다운로드한 파일을 MultipartBody.Part로 만듭니다.
+                            val requestFile = downloadedFile
+                                .asRequestBody("image/*".toMediaTypeOrNull())
+                            val multipartBodyPart = MultipartBody.Part.createFormData("memberProfileImage", downloadedFile.name, requestFile)
+
+                            Log.d("Request Info", "Converted to MultipartBody.Part: $multipartBodyPart")
+
+                            return@withContext multipartBodyPart
                         }
+
+
+                        Log.d("Request Info", "metropolitanId: $metropolitanId")
+                        Log.d("Request Info", "cityId: $cityId")
+                        Log.d("Request Info", "memberGender: $memberGender")
+                        Log.d("Request Info", "memberNickname: $memberNickname")
+                        Log.d("Request Info", "memberIntroduction: $memberIntroduction")
+                        Log.d("Request Info", "imageUrl: $imageUrl")
+
+                        val response = withContext(Dispatchers.IO) {
+                            apiService.updateMemberInfo(
+                                metropolitanIdPart,
+                                cityIdPart,
+                                memberGenderPart,
+                                memberNicknamePart,
+                                memberIntroductionPart,
+                                memberProfileImagePart
+                            )
+                        }
+
+                        Log.d("Response Info", "Response: $response")
+
 
                         if (response.isSuccessful) {
                             // 요청이 성공했을 때의 처리
@@ -246,16 +312,21 @@ class InfoinputActivity : AppCompatActivity() {
                             ).show()
 
                             // 요청이 성공했으므로 NowMatchingActivity로 화면을 전환합니다.
-                            val intent = Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
+                            val intent =
+                                Intent(this@InfoinputActivity, NowMatchingActivity::class.java)
                             startActivity(intent)
 
-                        } else {
+                        }else {
                             // 요청이 실패했을 때의 처리
+                            val errorMsg = response.errorBody()?.string() ?: "Unknown error"
                             Toast.makeText(
                                 this@InfoinputActivity,
-                                "회원 정보 수정 실패",
+                                "회원 정보 수정 실패: $errorMsg",
                                 Toast.LENGTH_SHORT
                             ).show()
+
+                            // 로그에 에러 메시지 출력
+                            Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
                         }
                     } else {
                         // 사용자 정보를 가져오지 못한 경우 처리
@@ -272,10 +343,10 @@ class InfoinputActivity : AppCompatActivity() {
                 }
             }
         }
+
+
     }
-
-
-    private fun showItemSelectionDialog(
+        private fun showItemSelectionDialog(
         title: String,
         items: List<String>,
         onItemSelected: (String) -> Unit

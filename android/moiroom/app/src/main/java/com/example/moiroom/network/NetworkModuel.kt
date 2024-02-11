@@ -1,11 +1,13 @@
 import android.content.Context
+import android.util.Log
 import com.example.moiroom.data.CityResponse
-import com.example.moiroom.data.MemberInfoUpdateRequest
-import com.example.moiroom.data.MemberInfoWithoutGender
+import com.example.moiroom.data.MemberInfo
+import com.example.moiroom.data.MemberResponse
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MetropolitanResponse
 import com.example.moiroom.data.MyResponse
 import okhttp3.Interceptor
+import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
@@ -14,9 +16,13 @@ import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.Response
+import retrofit2.http.Multipart
 import retrofit2.http.PATCH
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
+import okhttp3.RequestBody
+
 
 interface ApiService {
     @POST("/member/login")
@@ -34,11 +40,20 @@ interface ApiService {
     @GET("/area/{metropolitanId}/city")
     suspend fun getCities(@Path("metropolitanId") metropolitanId: Int): Response<CityResponse>
 
+    @Multipart
     @PATCH("/member")
-    suspend fun updateMemberInfo(@Body request: MemberInfoUpdateRequest): Response<MyResponse>
+    suspend fun updateMemberInfo(
+        @Part("metropolitanId") metropolitanId: RequestBody,
+        @Part("cityId") cityId: RequestBody,
+        @Part("memberGender") memberGender: RequestBody,
+        @Part("memberNickname") memberNickname: RequestBody,
+        @Part("memberIntroduction") memberIntroduction: RequestBody,
+//        @Part("memberProfileImage") memberProfileImage: RequestBody,
+        @Part memberProfileImage: MultipartBody.Part // 이미지 파일을 업로드하는 파라미터를 추가합니다.
+    ): Response<MyResponse>
 
-    @PATCH("/member")
-    suspend fun updateMemberInfo(@Body info: MemberInfoWithoutGender): Response<ResponseBody>
+    @GET("member/{memberId}")
+    suspend fun getMemberInfo(@Path("memberId") memberId: String): Response<MemberResponse>
 
 }
 
@@ -51,6 +66,7 @@ object NetworkModule {
                 val requestBuilder = original.newBuilder()
                     .header("Authorization", "Bearer $accessToken")
                 val request = requestBuilder.build()
+                Log.d("Request Info", "Authorization Header: ${request.header("Authorization")}")
                 chain.proceed(request)
             } else {
                 chain.proceed(original)
@@ -65,7 +81,7 @@ object NetworkModule {
             .addInterceptor(provideInterceptor(accessToken!!))
             .build()
         val retrofit = Retrofit.Builder()
-            .baseUrl("http://i10a308.p.ssafy.io:8080")
+            .baseUrl("https://moiroom.n-e.kr")
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
             .build()

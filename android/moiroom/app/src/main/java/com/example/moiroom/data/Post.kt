@@ -43,19 +43,42 @@ data class CityResponse(
 )
 
 @Serializable
-data class MemberInfoUpdateRequest(
+data class MemberInfoRequest(
+    val memberProfileImage: String,
     val metropolitanId: Long,
     val cityId: Long,
     val memberGender: String,
     val memberNickname: String,
     val memberIntroduction: String,
+    val roommateSearchStatus: Int
 )
 @Serializable
-data class MemberInfoWithoutGender(
-    val memberProfileImage: String,
+data class MemberInfo(
+    val memberId: Int,
+    val socialId: Long,
+    val provider: String,
     val metropolitanId: Int,
     val cityId: Int,
-    val memberNickname: String,
-    val memberIntroduction: String,
-    val roommateSearchStatus: Int
+    val characteristicId: Int,
+    val name: String,
+    val imageUrl: String,
+    val birthyear: String,
+    val birthday: String,
+    val gender: String,
+    val roommateSearchStatus: Int,
+    val introduction: String,
+    val nickname: String,
+    val accessToken: String,
+    val refreshToken: String,
+    val loginStatus: Int,
+    val accountStatus: Int
+)
+
+// 서버 응답을 담는 데이터 클래스
+@Serializable
+data class MemberResponse(
+    val code: Int,
+    val status: String,
+    val message: String,
+    val data: MemberInfo
 )

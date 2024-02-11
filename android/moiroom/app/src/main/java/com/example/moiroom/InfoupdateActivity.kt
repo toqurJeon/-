@@ -18,20 +18,28 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import ApiService
 import android.app.Dialog
+import android.content.Context
 import android.widget.AdapterView
 import android.widget.Toast
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
-import com.example.moiroom.data.MemberInfoUpdateRequest
-import com.example.moiroom.data.MemberInfoWithoutGender
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
+import fetchUserInfo
 import kotlinx.coroutines.async
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.File
+import java.io.FileOutputStream
+import java.net.URL
+
 
 class InfoupdateActivity : AppCompatActivity() {
 
@@ -325,40 +333,93 @@ class InfoupdateActivity : AppCompatActivity() {
     }
 
     private fun sendUpdatedInfo() {
-        val updatedInfo = MemberInfoWithoutGender(
-            memberProfileImage = memberProfileImageUrl ?: "",
-            metropolitanId = metropolitans.find { it.metropolitanName == binding.memberLocation.text.split(", ")[0] }?.metropolitanId ?: -1,
-            cityId = cities.find { it.cityName == binding.memberLocation.text.split(", ")[1] }?.cityId ?: -1,
-            memberNickname = binding.memberNickname.text.toString(),
-            memberIntroduction = binding.memberIntroduction.text.toString(),
-            roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
-        )
+        val selectedLocation = binding.memberLocation.text.toString().split(", ")
+        val selectedMetropolitanId = metropolitans.find { it.metropolitanName == selectedLocation[0] }?.metropolitanId ?: -1
+        val selectedCityId = cities.find { it.cityName == selectedLocation[1] }?.cityId ?: -1
+        val memberNickname = binding.memberNickname.text.toString()
+        val memberIntroduction = binding.memberIntroduction.text.toString()
+        val roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
+
+        val metropolitanIdPart = selectedMetropolitanId.toString().toRequestBody(MultipartBody.FORM)
+        val cityIdPart = selectedCityId.toString().toRequestBody(MultipartBody.FORM)
+        val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
+        val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
+        val roommateSearchStatusPart = roommateSearchStatus.toString().toRequestBody(MultipartBody.FORM)
 
         CoroutineScope(Dispatchers.IO).launch {
-            val response = apiService.updateMemberInfo(updatedInfo)
+            val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+            val accessToken = sharedPreferences.getString("accessToken", null)
+            val refreshToken = sharedPreferences.getString("refreshToken", null)
 
-            withContext(Dispatchers.Main) {
-                if (response.isSuccessful) {
-                    // 회원 정보 수정 성공
-                    Toast.makeText(this@InfoupdateActivity, "회원 정보 수정 성공", Toast.LENGTH_SHORT).show()
+            // accessToken과 refreshToken이 null인지 검사합니다.
+            if (accessToken != null && refreshToken != null) {
+                // 사용자 정보를 가져옵니다.
+                val userInfo = fetchUserInfo(this@InfoupdateActivity, accessToken, refreshToken)
 
-                    val intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
-                    getUserInfo()
-                    getMatchedMember()
-                    startActivity(intent)
-                    finish()
+                // 사용자 정보가 null이 아니라면
+                if (userInfo != null) {
 
-                } else {
-                    // 회원 정보 수정 실패
-                    val errorMsg = response.errorBody()?.string() ?: "Unknown error"
-                    Toast.makeText(this@InfoupdateActivity, "회원 정보 수정 실패: $errorMsg", Toast.LENGTH_SHORT).show()
+                    val imageUrl: String = userInfo?.imageUrl ?: run {
+                        Log.e("UpdateMemberInfo", "Image URL is null")
+                        return@launch
+                    }
+                    // 변경된 이미지 파일이 있다면 그 파일을 MultipartBody.Part로 만듭니다.
+                    val memberProfileImagePart: MultipartBody.Part = withContext(Dispatchers.IO) {
+                        // 이미지 파일을 다운로드합니다.
+                        val inputStream = URL(imageUrl).openStream()
+                        val downloadedFile = File.createTempFile("downloaded_image", ".png")
+                        FileOutputStream(downloadedFile).use { outputStream ->
+                            inputStream.copyTo(outputStream)
+                        }
 
-                    // 로그에 에러 메시지 출력
-                    Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
+                        // 다운로드한 파일을 MultipartBody.Part로 만듭니다.
+                        val requestFile = downloadedFile
+                            .asRequestBody("image/*".toMediaTypeOrNull())
+                        MultipartBody.Part.createFormData(
+                            "memberProfileImage",
+                            downloadedFile.name,
+                            requestFile
+                        )
+                    }
+
+                    val response = apiService.updateMemberInfo(
+                        metropolitanIdPart,
+                        cityIdPart,
+                        memberNicknamePart,
+                        memberIntroductionPart,
+                        roommateSearchStatusPart,
+                        memberProfileImagePart
+                    )
+
+                    withContext(Dispatchers.Main) {
+                        if (response.isSuccessful) {
+                            // 회원 정보 수정 성공
+                            Toast.makeText(
+                                this@InfoupdateActivity,
+                                "회원 정보 수정 성공",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
+                            getUserInfo()
+                            getMatchedMember()
+                            finish()
+                        } else {
+                            // 회원 정보 수정 실패
+                            val errorMsg = response.errorBody()?.string() ?: "Unknown error"
+                            Toast.makeText(
+                                this@InfoupdateActivity,
+                                "회원 정보 수정 실패: $errorMsg",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            // 로그에 에러 메시지 출력
+                            Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
+                        }
+                    }
                 }
             }
         }
     }
+
 
     override fun onBackPressed() {
         super.onBackPressed()
