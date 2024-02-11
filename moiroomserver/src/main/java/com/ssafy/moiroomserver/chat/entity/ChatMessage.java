@@ -12,6 +12,13 @@ public class ChatMessage extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long chatMessageId;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+            @JoinColumn(name = "member_id", referencedColumnName = "member_id"),
+            @JoinColumn(name = "chat_room_id", referencedColumnName = "chat_room_id")
+    })
+    private MemberChatRoom memberChatRoom;
+
     private String content;
 
 }
