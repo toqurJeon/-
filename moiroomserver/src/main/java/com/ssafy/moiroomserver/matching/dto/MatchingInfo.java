@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.matching.dto;
 
 import java.util.List;
 
-import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
+import com.ssafy.moiroomserver.member.dto.CharacteristicAndInterestInfo;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -15,11 +15,12 @@ public class MatchingInfo {
 	@Setter
 	@NoArgsConstructor
 	public static class GetResponse {
-		private CharacteristicInfo.RequestResponse memberOne;
-		private List<CharacteristicInfo.RequestResponse> memberTwoList;
+		private CharacteristicAndInterestInfo.RequestResponse memberOne;
+		private List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList;
 
 		@Builder
-		public GetResponse(CharacteristicInfo.RequestResponse memberOne, List<CharacteristicInfo.RequestResponse> memberTwoList) {
+		public GetResponse(CharacteristicAndInterestInfo.RequestResponse memberOne,
+				List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList) {
 			this.memberOne = memberOne;
 			this.memberTwoList = memberTwoList;
 		}

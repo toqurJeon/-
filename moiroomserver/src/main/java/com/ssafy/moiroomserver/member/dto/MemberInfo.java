@@ -29,7 +29,7 @@ public class MemberInfo {
 
     @Getter
     @Setter
-    public static class GetDetailResponse {
+    public static class GetResponse {
         private Long memberId;
         private String memberProfileImageUrl;
         private String memberNickname;
@@ -39,23 +39,12 @@ public class MemberInfo {
         private String metropolitanName;
         private String cityName;
         private String memberIntroduction;
-        private int matchRate;
-        private String matchIntroduction;
-        private Integer sociability;
-        private Integer positivity;
-        private Integer activity;
-        private Integer communion;
-        private Integer altruism;
-        private Integer empathy;
-        private Integer humor;
-        private Integer generous;
-        private String sleepAt;
-        private String wakeUpAt;
+        private CharacteristicInfo.RequestResponse characteristic;
         private List<InterestInfo.RequestResponse> interestList;
 
         @Builder
-        public GetDetailResponse(Member member, String metropolitanName, String cityName, MatchingResult matchingResult,
-                Characteristic characteristic, List<InterestInfo.RequestResponse> interestList) {
+        public GetResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.RequestResponse characteristic,
+                List<InterestInfo.RequestResponse> interestList) {
             this.memberId = member.getMemberId();
             this.memberProfileImageUrl = member.getImageUrl();
             this.memberNickname = member.getNickname();
@@ -65,18 +54,7 @@ public class MemberInfo {
             this.metropolitanName = metropolitanName;
             this.cityName = cityName;
             this.memberIntroduction = member.getIntroduction();
-            this.matchRate = matchingResult.getRate();
-            this.matchIntroduction = matchingResult.getRateIntroduction();
-            this.sociability = characteristic.getSociability();
-            this.positivity = characteristic.getPositivity();
-            this.activity = characteristic.getActivity();
-            this.communion = characteristic.getCommunion();
-            this.altruism = characteristic.getAltruism();
-            this.empathy = characteristic.getEmpathy();
-            this.humor = characteristic.getHumor();
-            this.generous = characteristic.getGenerous();
-            this.sleepAt = characteristic.getSleepAt();
-            this.wakeUpAt = characteristic.getWakeUpAt();
+            this.characteristic = characteristic;
             this.interestList = interestList;
         }
     }

@@ -2,7 +2,6 @@ package com.ssafy.moiroomserver.matching.controller;
 
 import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
 
-import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
@@ -49,6 +48,11 @@ public class MatchingController {
         return ApiResponse.success(ADD_MATCHING_RESULT);
     }
 
+    /**
+     * 추천 룸메이트 조회 리스트
+     * @param request
+     * @param pgno 현재 페이지 수
+     */
     @GetMapping("/result")
     public ApiResponse<?> getMatchingRoommateList(HttpServletRequest request,
                                                 @RequestParam(required = false, defaultValue = "1") int pgno) {
