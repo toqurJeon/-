@@ -1,12 +1,15 @@
 package com.ssafy.moiroomserver.member.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 public class MemberInfoDetail {
     private Long memberId;
     private String memberProfileImageUrl;
@@ -20,21 +23,4 @@ public class MemberInfoDetail {
     private Integer memberRoommateSearchStatus;
     private CharacteristicInfo.RequestResponse characteristic;
     private List<InterestRes> interests;
-
-    public MemberInfoDetail(Long memberId, String memberProfileImageUrl,
-                            String memberNickname, String memberGender, String memberName,
-                            String memberBirthYear, String metropolitanName, String cityName,
-                            String memberIntroduction, Integer memberRoommateSearchStatus) {
-        this.memberId = memberId;
-        this.memberProfileImageUrl = memberProfileImageUrl;
-        this.memberNickname = memberNickname;
-        this.memberGender = memberGender;
-        this.memberName = memberName;
-        this.memberBirthYear = memberBirthYear;
-        this.metropolitanName = metropolitanName;
-        this.cityName = cityName;
-        this.memberIntroduction = memberIntroduction;
-        this.memberRoommateSearchStatus = memberRoommateSearchStatus;
-    }
-
 }

@@ -103,7 +103,7 @@ public class MemberController {
      */
     @GetMapping
     public ApiResponse<?> getMemberInfoDetail(HttpServletRequest request) {
-        MemberInfoDetail dto = memberService.getMemberInfoDetail(request);
+        MemberInfoRes dto = memberService.getMemberInfoDetail(request);
         return ApiResponse.success(SuccessCode.GET_MEMBER_BY_ID, dto);
     }
 }

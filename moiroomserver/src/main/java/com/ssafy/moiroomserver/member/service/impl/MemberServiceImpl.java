@@ -6,7 +6,6 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
-import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
@@ -19,8 +18,6 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
@@ -139,30 +136,21 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberInfoDetail getMemberInfoDetail(HttpServletRequest request) {
+    public MemberInfoRes getMemberInfoDetail(HttpServletRequest request) {
 
         Member member = getMemberByHttpServletRequest(request);
         Long memberId = member.getMemberId();
         Long characteristicId = member.getCharacteristicId();
 
-        // 멤버 찾기
-        MemberInfoDetail memberInfoDetail = memberRepository.findMemberDetailByMemberId(memberId)
+        MemberInfoDetail memberInfo = memberRepository.findMemberDetailByMemberId(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+        memberInfo.setCharacteristic(CharacteristicInfo.RequestResponse.builder()
+                .characteristic(characteristicRepository.findById(characteristicId)
+                        .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)))
+                .build());
+        memberInfo.setInterests(memberInterestRepository.findByMemberId(memberId));
 
-        // Interest 넣어주기
-        List<InterestRes> interests = memberInterestRepository.findByMemberId(memberId);
-        memberInfoDetail.setInterests(interests);
-
-        // CharacteristicInfo 넣어주기
-        Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
-                .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
-        memberInfoDetail.setCharacteristic(
-                CharacteristicInfo.RequestResponse.builder()
-                        .characteristic(characteristic)
-                        .build()
-        );
-
-        return memberInfoDetail;
+        return new MemberInfoRes(memberInfo);
     }
 
     /**
