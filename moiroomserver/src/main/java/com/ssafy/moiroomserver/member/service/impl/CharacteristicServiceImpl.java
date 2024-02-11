@@ -18,7 +18,6 @@ import com.ssafy.moiroomserver.member.entity.MemberInterest;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.InterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
-import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
 
@@ -55,8 +54,8 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 			memberInterestRepository.deleteByMember(member); //기존의 관심사 데이터 전부 삭제
 		}
 		//관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
-		if (infoAddModifyReq.getInterestList() == null) return;
-		for (InterestInfo.RequestResponse interestAddReq : infoAddModifyReq.getInterestList()) {
+		if (infoAddModifyReq.getInterests() == null) return;
+		for (InterestInfo.RequestResponse interestAddReq : infoAddModifyReq.getInterests()) {
 			Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)") //나중에 (sample) 없애기
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_INTEREST_NAME));
 			memberInterestRepository.save(interestAddReq.toEntity(member, interest));
