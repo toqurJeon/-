@@ -49,7 +49,7 @@ public class MatchingController {
     }
 
     /**
-     * 추천 룸메이트 조회 리스트
+     * 추천 룸메이트 리스트 조회
      * @param request
      * @param pgno 현재 페이지 수
      */

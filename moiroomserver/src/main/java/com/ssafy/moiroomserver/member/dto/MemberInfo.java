@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
-import com.ssafy.moiroomserver.matching.entity.MatchingResult;
-import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
 
 import lombok.Builder;

@@ -8,7 +8,6 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.ssafy.moiroomserver.global.exception.NoExistException;
-import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicAndInterestInfo;
 import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.InterestInfo;
@@ -31,7 +30,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class CharacteristicServiceImpl implements CharacteristicService {
 
-	private final MemberRepository memberRepository;
 	private final CharacteristicRepository characteristicRepository;
 	private final MemberInterestRepository memberInterestRepository;
 	private final InterestRepository interestRepository;

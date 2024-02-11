@@ -16,13 +16,8 @@ import com.ssafy.moiroomserver.matching.entity.MatchingResult;
 import com.ssafy.moiroomserver.matching.repository.MatchingResultRepository;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 import com.ssafy.moiroomserver.member.dto.CharacteristicAndInterestInfo;
-import com.ssafy.moiroomserver.member.dto.InterestInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
-import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
-import com.ssafy.moiroomserver.member.entity.MemberInterest;
-import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
-import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -104,7 +99,7 @@ public class MatchingServiceImpl implements MatchingService {
 	}
 
 	/**
-	 * 추천 룸메이트 조회 리스트
+	 * 추천 룸메이트 리스트 조회
 	 * @param request
 	 * @param pgno 현재 페이지 수
 	 * @return 현재 페이지의 추천 룸메이트 리스트
