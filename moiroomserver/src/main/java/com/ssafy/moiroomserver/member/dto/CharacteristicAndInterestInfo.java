@@ -13,14 +13,14 @@ public class CharacteristicAndInterestInfo {
 	public static class RequestResponse {
 		private Long memberId;
 		private CharacteristicInfo.RequestResponse characteristic;
-		private List<InterestInfo.RequestResponse> interestList;
+		private List<InterestInfo.RequestResponse> interests;
 
 		@Builder
 		public RequestResponse(Long memberId, CharacteristicInfo.RequestResponse characteristic,
-				List<InterestInfo.RequestResponse> interestList) {
+				List<InterestInfo.RequestResponse> interests) {
 			this.memberId = memberId;
 			this.characteristic = characteristic;
-			this.interestList = interestList;
+			this.interests = interests;
 		}
 	}
 }

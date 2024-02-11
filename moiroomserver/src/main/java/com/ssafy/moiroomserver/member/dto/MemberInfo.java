@@ -38,11 +38,11 @@ public class MemberInfo {
         private String cityName;
         private String memberIntroduction;
         private CharacteristicInfo.RequestResponse characteristic;
-        private List<InterestInfo.RequestResponse> interestList;
+        private List<InterestInfo.RequestResponse> interests;
 
         @Builder
         public GetResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.RequestResponse characteristic,
-                List<InterestInfo.RequestResponse> interestList) {
+                List<InterestInfo.RequestResponse> interests) {
             this.memberId = member.getMemberId();
             this.memberProfileImageUrl = member.getImageUrl();
             this.memberNickname = member.getNickname();
@@ -53,7 +53,7 @@ public class MemberInfo {
             this.cityName = cityName;
             this.memberIntroduction = member.getIntroduction();
             this.characteristic = characteristic;
-            this.interestList = interestList;
+            this.interests = interests;
         }
     }
 }
