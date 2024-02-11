@@ -6,7 +6,9 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
+import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -26,7 +28,9 @@ import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 @RequiredArgsConstructor
 @Slf4j
 public class MemberServiceImpl implements MemberService {
+
     private final MemberInterestRepository memberInterestRepository;
+    private final CharacteristicRepository characteristicRepository;
 
     private static final int LOGIN = 1;
     private static final int LOGOUT = 0;
@@ -136,30 +140,27 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberInfoDetail getMemberInfoDetail(HttpServletRequest request) {
-        System.out.println("MemberServiceImpl.getMemberInfoDetail");
 
-        // access token 미 입력시
-        if (!validateAuthorization(request)) {
-            throw new NoExistException(NOT_EXISTS_ACCESS_TOKEN);
-        }
-
-        String authorization = request.getHeader("Authorization");
-        String accessToken = authorization.substring(7, authorization.length());
-
-        Long socialPk = kakaoService.getInformation(accessToken);
-        Member member = memberRepository.findMemberBySocialIdAndProvider(socialPk, "kakao");
-
-        if (member == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER);
-        }
-
+        Member member = getMemberByHttpServletRequest(request);
         Long memberId = member.getMemberId();
-        System.out.println("memberId = " + memberId);
+        Long characteristicId = member.getCharacteristicId();
+
+        // 멤버 찾기
         MemberInfoDetail memberInfoDetail = memberRepository.findMemberDetailByMemberId(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
 
+        // Interest 넣어주기
         List<InterestRes> interests = memberInterestRepository.findByMemberId(memberId);
         memberInfoDetail.setInterests(interests);
+
+        // CharacteristicInfo 넣어주기
+        Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
+        memberInfoDetail.setCharacteristic(
+                CharacteristicInfo.RequestResponse.builder()
+                        .characteristic(characteristic)
+                        .build()
+        );
 
         return memberInfoDetail;
     }
