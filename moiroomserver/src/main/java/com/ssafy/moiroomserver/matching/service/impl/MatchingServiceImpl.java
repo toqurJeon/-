@@ -10,6 +10,7 @@ import com.ssafy.moiroomserver.area.repository.CityRepository;
 import com.ssafy.moiroomserver.area.repository.MetropolitanRepository;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
+import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
 import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
 import com.ssafy.moiroomserver.matching.entity.MatchingResult;
@@ -20,7 +21,6 @@ import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
-import com.ssafy.moiroomserver.member.service.MemberService;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
@@ -39,7 +39,7 @@ public class MatchingServiceImpl implements MatchingService {
 	private final MetropolitanRepository metropolitanRepository;
 	private final CityRepository cityRepository;
 	private final CharacteristicService characteristicService;
-	private final MemberService memberService;
+	private final KakaoService kakaoService;
 
 	/**
 	 * 매칭 계산을 위한 정보 조회
@@ -48,7 +48,7 @@ public class MatchingServiceImpl implements MatchingService {
 	 */
 	@Override
 	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
-		Member member = memberService.getMemberByHttpServletRequest(request);
+		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		//로그인 사용자의 특성 및 관심사 데이터 조회
 		CharacteristicAndInterestInfo.RequestResponse memberOne = CharacteristicAndInterestInfo.RequestResponse.builder()
 			.memberId(member.getMemberId())
@@ -82,7 +82,7 @@ public class MatchingServiceImpl implements MatchingService {
 	@Transactional
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
-		Member member = memberService.getMemberByHttpServletRequest(request);
+		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResults()) {
 			MatchingResult firstMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(member.getMemberId(), matchingResultInfoAddReq.getMemberTwoId());
 			MatchingResult secondMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(matchingResultInfoAddReq.getMemberTwoId(), member.getMemberId());
@@ -106,7 +106,7 @@ public class MatchingServiceImpl implements MatchingService {
 	 */
 	@Override
 	public PageResponse getMatchingRoommateList(HttpServletRequest request, int pgno) {
-		Member member = memberService.getMemberByHttpServletRequest(request);
+		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		//현재 페이지의 추천 룸메이트 리스트를 매칭 결과 테이블에서 추출
 		PageRequest pageRequest = PageRequest.of(pgno - 1, MATCHING_ROOMMATE_LIST_SIZE);
 		Page<MatchingResult> matchingResultPage = matchingResultRepository.findMatchingResultByMemberId(member.getMemberId(), pageRequest);
