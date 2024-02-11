@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.service;
 
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
-import com.ssafy.moiroomserver.member.dto.MemberInfoDetail;
+import com.ssafy.moiroomserver.member.dto.MemberInfoRes;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,7 +19,7 @@ public interface MemberService {
 
     void logout(Long socialId, String provider);
 
-    MemberInfoDetail getMemberInfoDetail(HttpServletRequest request);
+    MemberInfoRes getMemberInfoDetail(HttpServletRequest request);
 
     Member getMemberByHttpServletRequest(HttpServletRequest request);
 }
