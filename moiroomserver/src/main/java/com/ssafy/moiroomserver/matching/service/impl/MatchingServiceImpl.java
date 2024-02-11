@@ -83,7 +83,7 @@ public class MatchingServiceImpl implements MatchingService {
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
 		Member member = memberService.getMemberByHttpServletRequest(request);
-		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResultList()) {
+		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResults()) {
 			MatchingResult firstMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(member.getMemberId(), matchingResultInfoAddReq.getMemberTwoId());
 			MatchingResult secondMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(matchingResultInfoAddReq.getMemberTwoId(), member.getMemberId());
 			//이미 서로의 매칭 결과가 저장되어 있는 경우 -> 수정
