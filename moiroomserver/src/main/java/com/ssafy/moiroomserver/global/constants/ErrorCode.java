@@ -27,7 +27,10 @@ public enum ErrorCode {
     //특성
     NOT_EXISTS_CHARACTERISTIC_ID(BAD_REQUEST, "존재하지 않는 특성 id 입니다."),
     //관심사
-    NOT_EXISTS_INTEREST_NAME(BAD_REQUEST, "존재하지 않는 관심사 이름입니다.");
+    NOT_EXISTS_INTEREST_NAME(BAD_REQUEST, "존재하지 않는 관심사 이름입니다."),
+    //지역
+    NOT_EXISTS_METROPOLITAN_ID(BAD_REQUEST, "존재하지 않는 광역시/도 id 입니다."),
+    NOT_EXISTS_CITY_ID(BAD_REQUEST, "존재하지 않는 시/군/구 id 입니다.");
     private final HttpStatus status;
     private final String message;
 }

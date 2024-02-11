@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.ssafy.moiroomserver.matching.entity.MatchingResult;
 import com.ssafy.moiroomserver.member.entity.Characteristic;
 import com.ssafy.moiroomserver.member.entity.Member;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -25,6 +27,8 @@ public class MemberInfo {
         private String memberGender;
     }
 
+    @Getter
+    @Setter
     public static class GetDetailResponse {
         private Long memberId;
         private String memberProfileImageUrl;
@@ -35,7 +39,8 @@ public class MemberInfo {
         private String metropolitanName;
         private String cityName;
         private String memberIntroduction;
-        private Integer memberRoommateSearchStatus;
+        private int matchRate;
+        private String matchIntroduction;
         private Integer sociability;
         private Integer positivity;
         private Integer activity;
@@ -48,27 +53,30 @@ public class MemberInfo {
         private String wakeUpAt;
         private List<InterestInfo.RequestResponse> interestList;
 
-        public GetDetailResponse(Member member, Characteristic characteristic) {
+        @Builder
+        public GetDetailResponse(Member member, String metropolitanName, String cityName, MatchingResult matchingResult,
+                Characteristic characteristic, List<InterestInfo.RequestResponse> interestList) {
             this.memberId = member.getMemberId();
             this.memberProfileImageUrl = member.getImageUrl();
             this.memberNickname = member.getNickname();
             this.memberGender = member.getGender();
             this.memberName = member.getName();
             this.memberBirthYear = member.getBirthyear();
-            this.metropolitanName = null;
-            this.cityName = null;
+            this.metropolitanName = metropolitanName;
+            this.cityName = cityName;
             this.memberIntroduction = member.getIntroduction();
-            this.memberRoommateSearchStatus = memberRoommateSearchStatus;
-            this.sociability = sociability;
-            this.positivity = positivity;
-            this.activity = activity;
-            this.communion = communion;
-            this.altruism = altruism;
-            this.empathy = empathy;
-            this.humor = humor;
-            this.generous = generous;
-            this.sleepAt = sleepAt;
-            this.wakeUpAt = wakeUpAt;
+            this.matchRate = matchingResult.getRate();
+            this.matchIntroduction = matchingResult.getRateIntroduction();
+            this.sociability = characteristic.getSociability();
+            this.positivity = characteristic.getPositivity();
+            this.activity = characteristic.getActivity();
+            this.communion = characteristic.getCommunion();
+            this.altruism = characteristic.getAltruism();
+            this.empathy = characteristic.getEmpathy();
+            this.humor = characteristic.getHumor();
+            this.generous = characteristic.getGenerous();
+            this.sleepAt = characteristic.getSleepAt();
+            this.wakeUpAt = characteristic.getWakeUpAt();
             this.interestList = interestList;
         }
     }

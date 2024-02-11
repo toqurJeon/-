@@ -72,7 +72,25 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	 * @return 회원의 특성 및 관심사 정보
 	 */
 	@Override
-	public CharacteristicInfo.RequestResponse getCharacteristicAndInterestOfMember(Member member) {
+	public CharacteristicInfo.RequestResponse getCharacteristicAndInterestOf(Member member) {
+		//회원의 특성 데이터 조회
+		Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
+			.orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
+
+		return CharacteristicInfo.RequestResponse.builder()
+			.characteristic(characteristic)
+			.memberId(member.getMemberId())
+			.interestList(getInterestListOf(member))
+			.build();
+	}
+
+	/**
+	 * 회원의 관심사 정보 조회
+	 * @param member 조회 대상이 되는 회원
+	 * @return 회원의 관심사 정보 조회
+	 */
+	@Override
+	public List<InterestInfo.RequestResponse> getInterestListOf(Member member) {
 		//회원의 관심사 리스트 조회
 		List<MemberInterest> memberInterestList = memberInterestRepository.findByMemberOrderByPercentDesc(member);
 		List<InterestInfo.RequestResponse> interestInfoResList = new ArrayList<>();
@@ -81,14 +99,6 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 				.memberInterest(memberInterest)
 				.build());
 		}
-		//회원의 특성 데이터 조회
-		Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
-			.orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID));
-
-		return CharacteristicInfo.RequestResponse.builder()
-			.characteristic(characteristic)
-			.memberId(member.getMemberId())
-			.interestList(interestInfoResList)
-			.build();
+		return  interestInfoResList;
 	}
 }
