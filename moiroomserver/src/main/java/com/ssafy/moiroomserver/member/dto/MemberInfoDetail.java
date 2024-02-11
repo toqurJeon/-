@@ -18,24 +18,13 @@ public class MemberInfoDetail {
     private String cityName;
     private String memberIntroduction;
     private Integer memberRoommateSearchStatus;
-    private Integer sociability;
-    private Integer positivity;
-    private Integer activity;
-    private Integer communion;
-    private Integer altruism;
-    private Integer empathy;
-    private Integer humor;
-    private Integer generous;
-    private String sleepAt;
-    private String wakeUpAt;
+    private CharacteristicInfo.RequestResponse characteristic;
     private List<InterestRes> interests;
 
     public MemberInfoDetail(Long memberId, String memberProfileImageUrl,
                             String memberNickname, String memberGender, String memberName,
                             String memberBirthYear, String metropolitanName, String cityName,
-                            String memberIntroduction, Integer memberRoommateSearchStatus, Integer sociability,
-                            Integer positivity, Integer activity, Integer communion, Integer altruism, Integer empathy,
-                            Integer humor, Integer generous, String sleepAt, String wakeUpAt) {
+                            String memberIntroduction, Integer memberRoommateSearchStatus) {
         this.memberId = memberId;
         this.memberProfileImageUrl = memberProfileImageUrl;
         this.memberNickname = memberNickname;
@@ -46,16 +35,6 @@ public class MemberInfoDetail {
         this.cityName = cityName;
         this.memberIntroduction = memberIntroduction;
         this.memberRoommateSearchStatus = memberRoommateSearchStatus;
-        this.sociability = sociability;
-        this.positivity = positivity;
-        this.activity = activity;
-        this.communion = communion;
-        this.altruism = altruism;
-        this.empathy = empathy;
-        this.humor = humor;
-        this.generous = generous;
-        this.sleepAt = sleepAt;
-        this.wakeUpAt = wakeUpAt;
     }
 
 }

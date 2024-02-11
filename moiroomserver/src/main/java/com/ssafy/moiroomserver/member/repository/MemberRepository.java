@@ -22,10 +22,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                     "m.memberId as memberId, m.imageUrl as memberProfileImageUrl, m.nickname as memberNickname, " +
                     "m.gender as memberGender, m.name as memberName, m.birthyear as memberBirthYear," +
                     "met.name as metropolitanName, c.name as cityName, m.introduction as memberIntroduction, " +
-                    "m.roommateSearchStatus as memberRoommateSearchStatus, " +
-                    "ch.sociability as sociability, ch.positivity as positivity, ch.activity as activity, " +
-                    "ch.communion as communion, ch.altruism as altruism, ch.empathy as empathy," +
-                    "ch.humor as humor, ch.generous as generous, ch.sleepAt as sleepAt, ch.wakeUpAt as wakeUpAt)" +
+                    "m.roommateSearchStatus as memberRoommateSearchStatus) " +
                     "from Member m " +
                     "join Metropolitan met on m.metropolitanId = met.metropolitanId " +
                     "join City c on m.cityId = c.cityId " +
