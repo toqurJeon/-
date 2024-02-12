@@ -2,11 +2,12 @@ import android.content.Context
 import android.util.Log
 import com.example.moiroom.data.CityResponse
 import com.example.moiroom.data.MemberInfo
-import com.example.moiroom.data.MemberResponse
+//import com.example.moiroom.data.MemberResponse
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MetropolitanResponse
 import com.example.moiroom.data.MyResponse
 import com.example.moiroom.data.ResponseData
+import com.example.moiroom.data.UserResponse
 import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -23,6 +24,7 @@ import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import okhttp3.RequestBody
+import com.example.moiroom.data.Member
 
 
 interface ApiService {
@@ -46,15 +48,16 @@ interface ApiService {
     suspend fun updateMemberInfo(
         @Part("metropolitanId") metropolitanId: RequestBody,
         @Part("cityId") cityId: RequestBody,
-        @Part("memberGender") memberGender: RequestBody,
         @Part("memberNickname") memberNickname: RequestBody,
+        @Part("memberGender") memberGender: RequestBody,
         @Part("memberIntroduction") memberIntroduction: RequestBody,
+        @Part("memberRoommateSearchStatus") memberRoommateSearchStatus: RequestBody,
 //        @Part("memberProfileImage") memberProfileImage: RequestBody,
         @Part memberProfileImage: MultipartBody.Part // 이미지 파일을 업로드하는 파라미터를 추가합니다.
     ): Response<MyResponse>
 
-    @GET("member/{memberId}")
-    suspend fun getMemberInfo(@Path("memberId") memberId: String): Response<MemberResponse>
+    @GET("/member")
+    suspend fun getUserInfo(): Response<UserResponse>
 
     // 매칭 정보 리스트 조회
     @GET("matching/result")

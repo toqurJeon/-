@@ -24,8 +24,10 @@ import android.widget.Toast
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
 import com.example.moiroom.data.Metropolitan
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
+import com.example.moiroom.utils.cacheUserInfo
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
 import fetchUserInfo
@@ -333,18 +335,6 @@ class InfoupdateActivity : AppCompatActivity() {
     }
 
     private fun sendUpdatedInfo() {
-        val selectedLocation = binding.memberLocation.text.toString().split(", ")
-        val selectedMetropolitanId = metropolitans.find { it.metropolitanName == selectedLocation[0] }?.metropolitanId ?: -1
-        val selectedCityId = cities.find { it.cityName == selectedLocation[1] }?.cityId ?: -1
-        val memberNickname = binding.memberNickname.text.toString()
-        val memberIntroduction = binding.memberIntroduction.text.toString()
-        val roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
-
-        val metropolitanIdPart = selectedMetropolitanId.toString().toRequestBody(MultipartBody.FORM)
-        val cityIdPart = selectedCityId.toString().toRequestBody(MultipartBody.FORM)
-        val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
-        val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
-        val roommateSearchStatusPart = roommateSearchStatus.toString().toRequestBody(MultipartBody.FORM)
 
         CoroutineScope(Dispatchers.IO).launch {
             val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
@@ -354,12 +344,56 @@ class InfoupdateActivity : AppCompatActivity() {
             // accessToken과 refreshToken이 null인지 검사합니다.
             if (accessToken != null && refreshToken != null) {
                 // 사용자 정보를 가져옵니다.
-                val userInfo = fetchUserInfo(this@InfoupdateActivity, accessToken, refreshToken)
+                val userInfo = cacheUserInfo.get("userInfo") as? UserResponse.Data.Member
 
                 // 사용자 정보가 null이 아니라면
                 if (userInfo != null) {
 
-                    val imageUrl: String = userInfo?.imageUrl ?: run {
+                    val selectedLocation = binding.memberLocation.text.toString().split(", ")
+                    val selectedMetropolitanId: Long
+                    val selectedCityId: Long
+
+                    if (selectedLocation.size == 2 &&
+                        metropolitans.any { it.metropolitanName == selectedLocation[0] } &&
+                        cities.any { it.cityName == selectedLocation[1] }) {
+                        selectedMetropolitanId = metropolitans.find { it.metropolitanName == selectedLocation[0] }?.metropolitanId?.toLong() ?: 0L
+                        selectedCityId = cities.find { it.cityName == selectedLocation[1] }?.cityId?.toLong() ?: 0L
+
+                        // 지역 변경이 있을 경우, 공유 프레퍼런스에 변경된 ID를 저장합니다.
+                        sharedPreferences.edit().apply {
+                            putLong("metropolitanId", selectedMetropolitanId)
+                            putLong("cityId", selectedCityId)
+                            apply()
+                        }
+                    } else {
+                        // 지역 변경이 없을 경우, 공유 프레퍼런스에서 기존 ID를 가져옵니다.
+                        selectedMetropolitanId = sharedPreferences.getLong("metropolitanId", 1L)
+                        selectedCityId = sharedPreferences.getLong("cityId", 1L)
+                    }
+
+                    val memberNickname = if (binding.memberNickname.text.toString().isNotEmpty()) {
+                        binding.memberNickname.text.toString()
+                    } else {
+                        userInfo.memberNickname // 변경사항이 없을 경우 이전 정보를 사용
+                    }
+                    val memberIntroduction =
+                        if (binding.memberIntroduction.text.toString().isNotEmpty()) {
+                            binding.memberIntroduction.text.toString()
+                        } else {
+                            userInfo.memberIntroduction // 변경사항이 없을 경우 이전 정보를 사용
+                        }
+                    val roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
+
+                    val metropolitanIdPart =
+                        selectedMetropolitanId.toString().toRequestBody(MultipartBody.FORM)
+                    val cityIdPart = selectedCityId.toString().toRequestBody(MultipartBody.FORM)
+                    val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
+                    val memberIntroductionPart =
+                        memberIntroduction.toRequestBody(MultipartBody.FORM)
+                    val roommateSearchStatusPart =
+                        roommateSearchStatus.toString().toRequestBody(MultipartBody.FORM)
+
+                    val imageUrl: String = userInfo?.memberProfileImageUrl ?: run {
                         Log.e("UpdateMemberInfo", "Image URL is null")
                         return@launch
                     }
@@ -382,10 +416,31 @@ class InfoupdateActivity : AppCompatActivity() {
                         )
                     }
 
+                    Log.d("UpdateMemberInfo", "Metropolitan ID: $selectedMetropolitanId")
+                    Log.d("UpdateMemberInfo", "City ID: $selectedCityId")
+                    Log.d("UpdateMemberInfo", "Member nickname: $memberNickname")
+                    Log.d("UpdateMemberInfo", "Member introduction: $memberIntroduction")
+                    Log.d("UpdateMemberInfo", "Roommate search status: $roommateSearchStatus")
+                    Log.d("UpdateMemberInfo", "Selected location: ${binding.memberLocation.text}")
+                    Log.d(
+                        "UpdateMemberInfo",
+                        "Metropolitans: ${metropolitans.map { it.metropolitanName }}"
+                    )
+                    Log.d("UpdateMemberInfo", "Cities: ${cities.map { it.cityName }}")
+
+                    val sharedPref = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+                    val memberGender = sharedPref.getString("memberGender", null) ?: run {
+                        Log.e("UpdateMemberInfo", "No stored memberGender in SharedPreferences.")
+                        return@launch
+                    }
+
+                    val memberGenderPart = memberGender.toRequestBody(MultipartBody.FORM)
+
                     val response = apiService.updateMemberInfo(
                         metropolitanIdPart,
                         cityIdPart,
                         memberNicknamePart,
+                        memberGenderPart,
                         memberIntroductionPart,
                         roommateSearchStatusPart,
                         memberProfileImagePart
@@ -400,7 +455,7 @@ class InfoupdateActivity : AppCompatActivity() {
                                 Toast.LENGTH_SHORT
                             ).show()
                             intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
-                            getUserInfo()
+                            getUserInfo(this@InfoupdateActivity)
                             getMatchedMember(this@InfoupdateActivity, 1)
                             finish()
                         } else {

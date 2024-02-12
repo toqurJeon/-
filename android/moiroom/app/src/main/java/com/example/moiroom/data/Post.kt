@@ -1,5 +1,8 @@
 package com.example.moiroom.data
 
+
+import kotlinx.parcelize.Parcelize
+import android.os.Parcelable
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -74,11 +77,51 @@ data class MemberInfo(
     val accountStatus: Int
 )
 
-// 서버 응답을 담는 데이터 클래스
-@Serializable
-data class MemberResponse(
+@Parcelize
+data class UserResponse(
     val code: Int,
     val status: String,
     val message: String,
-    val data: MemberInfo
-)
+    val data: Data
+) : Parcelable {
+    @Parcelize
+    data class Data(
+        val member: Member
+    ) : Parcelable {
+        @Parcelize
+        data class Member(
+            val memberId: Int,
+            val memberProfileImageUrl: String,
+            val memberNickname: String,
+            val memberGender: String,
+            val memberName: String,
+            val memberBirthYear: String,
+            val metropolitanName: String,
+            val cityName: String,
+            val memberIntroduction: String,
+            val memberRoommateSearchStatus: Int,
+            val characteristic: Characteristic,
+            val interests: List<Interest>
+        ) : Parcelable {
+            @Parcelize
+            data class Characteristic(
+                val sociability: Int,
+                val positivity: Int,
+                val activity: Int,
+                val communion: Int,
+                val altruism: Int,
+                val empathy: Int,
+                val humor: Int,
+                val generous: Int,
+                val sleepAt: String?,
+                val wakeUpAt: String?
+            ) : Parcelable
+
+            @Parcelize
+            data class Interest(
+                val interest: String,
+                val score: Int
+            ) : Parcelable
+        }
+    }
+}

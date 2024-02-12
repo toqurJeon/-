@@ -19,6 +19,7 @@ import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogAuthorityBinding
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.databinding.DialogFindCityBinding
@@ -30,7 +31,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private var toggled: Boolean = true
 
-    val cachedUserInfo: Member? by lazy { cacheUserInfo.get("userInfo") }
+    val cachedUserInfo: UserResponse.Data.Member? by lazy { cacheUserInfo.get("userInfo") }
     val cachedMatchedMemberList: ResponseData? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
 
     // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
@@ -118,6 +119,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
         if (cachedMatchedMemberList != null && cachedUserInfo != null) {
+            // CardAdapter 생성자에 UserResponse.Data.Member 타입의 cachedUserInfo를 전달
             val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.data.content, cachedUserInfo!!, isButton1Checked)
 
             cardAdapter.setOnCharacterClickListener(this)

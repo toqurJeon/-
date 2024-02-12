@@ -37,7 +37,7 @@ import com.example.moiroom.utils.getRequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import com.google.firebase.auth.GoogleAuthProvider
+//import com.google.firebase.auth.GoogleAuthProvider
 import java.io.BufferedReader
 import java.io.InputStreamReader
 import java.net.HttpURLConnection
@@ -230,7 +230,7 @@ class YoutubeExtract : AppCompatActivity() {
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
-        getRequestResult(true)
+        getRequestResult(true, this)
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = MyWebViewClient()

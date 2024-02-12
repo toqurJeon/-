@@ -18,6 +18,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     // 구글 액세스 토큰
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션

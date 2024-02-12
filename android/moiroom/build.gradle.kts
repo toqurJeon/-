@@ -18,6 +18,7 @@ plugins {
     id("org.jetbrains.kotlin.android") version "1.9.0" apply false
     // 구글 액세스 토큰
     id("com.google.gms.google-services") version "4.4.0" apply false
+    kotlin("plugin.parcelize") version "1.6.10"  apply false
 }
 
 tasks.register("clean", Delete::class) {
