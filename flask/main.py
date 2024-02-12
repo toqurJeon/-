@@ -152,9 +152,11 @@ def match_users():
         users_request = requests.get('https://moiroom.n-e.kr/matching/info', headers={'Authorization': access_token})
         if users_request.status_code != 200:
             return jsonify({'status': 'error', 'message': 'not 200 in users info'})
+        print(users_request.json())
         users_info = users_request.json()['data']
         # users_info = request.get_json()['data']
 
+        results = []
         for users in users_info['memberTwos']:
             percentage = 10000
             min_gap = [10000, '']
@@ -166,9 +168,11 @@ def match_users():
                     min_gap[0] = gap
                     min_gap[1] = match_introduction[func.__name__]
             # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
+            results.append({'memberTwoId': users['memberId'], 'rate': percentage, 'rateIntroduction': min_gap[1]})
 
-        send_response = requests.post('https://moiroom.n-e.kr/matching/result/' + users['memberId'],
-                                          json={'rate': percentage, 'rateIntroduction': min_gap[1]})
+        send_response = requests.post('https://moiroom.n-e.kr/matching/result',
+                                      headers={'Authorization': access_token},
+                                      json={'matchingResults': results})
 
         return send_response.json()
 
