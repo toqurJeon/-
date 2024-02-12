@@ -7,4 +7,4 @@ requests==2.22.0
 Werkzeug==2.2.2
 beautifulsoup4==4.12.3
 selenium==4.17.2
-chromedriver-autoinstaller 0.6.4
+chromedriver-autoinstaller==0.6.4
