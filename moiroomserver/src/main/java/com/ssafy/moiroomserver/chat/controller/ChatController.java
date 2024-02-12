@@ -40,6 +40,12 @@ public class ChatController {
         return ApiResponse.success(SuccessCode.ADD_CHAT_ROOM);
     }
 
+    /**
+     * 대화방 리스트 조회 api
+     * @param request
+     * @param pgno
+     * @return
+     */
     @GetMapping
     public ApiResponse<?> getChatRooms(HttpServletRequest request,
                                        @RequestParam(required = false, defaultValue = "1") int pgno) {
