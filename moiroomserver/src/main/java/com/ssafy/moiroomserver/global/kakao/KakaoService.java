@@ -26,7 +26,7 @@ public class KakaoService {
 
     private final MemberRepository memberRepository;
 
-    public boolean validateToken(String accessToken) {
+    protected boolean validateToken(String accessToken) {
         RestTemplate template = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);
@@ -41,7 +41,7 @@ public class KakaoService {
         }
     }
 
-    public Long getInformation(String accessToken) {
+    private Long getInformation(String accessToken) {
         RestTemplate template = new RestTemplate();
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + accessToken);

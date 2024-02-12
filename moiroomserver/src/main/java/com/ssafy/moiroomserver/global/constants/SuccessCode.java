@@ -28,7 +28,9 @@ public enum SuccessCode {
     ADD_MATCHING_RESULT(CREATED, "매칭 결과 추가 성공"),
     //매칭
     GET_MATCHING_ROOMMATE_LIST(OK, "추천 룸메이트 리스트 조회 성공"),
-    NO_MATCHING_ROOMMATE_LIST(NO_CONTENT, "조회에 성공했지만 보여줄 추천 룸메이트 리스트는 없습니다.");
+    NO_MATCHING_ROOMMATE_LIST(NO_CONTENT, "조회에 성공했지만 보여줄 추천 룸메이트 리스트는 없습니다."),
+    //채팅
+    ADD_CHAT_ROOM(CREATED, "채팅방 생성에 성공하였습니다.");
 
     private final HttpStatus status;
     private final String message;
