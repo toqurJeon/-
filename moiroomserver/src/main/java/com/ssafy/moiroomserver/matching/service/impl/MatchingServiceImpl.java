@@ -56,8 +56,8 @@ public class MatchingServiceImpl implements MatchingService {
 			.interests(characteristicService.getInterestListOf(member))
 			.build();
 		//매칭 상대방의 특성 및 관심사 데이터 조회
-		List<Member> matchingMemberList = memberRepository.findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(
-			member.getMemberId(), member.getGender(), member.getMetropolitanId(), member.getCityId(), 1);
+		List<Member> matchingMemberList = memberRepository.findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatusAndAccountStatus(
+			member.getMemberId(), member.getGender(), member.getMetropolitanId(), member.getCityId(), 1, 1);
 		List<CharacteristicAndInterestInfo.RequestResponse> memberTwoList = new ArrayList<>();
 		for (Member matchingMember : matchingMemberList) {
 			CharacteristicAndInterestInfo.RequestResponse memberTwo = CharacteristicAndInterestInfo.RequestResponse.builder()
