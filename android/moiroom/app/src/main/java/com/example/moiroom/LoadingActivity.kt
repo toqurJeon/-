@@ -2,6 +2,7 @@ package com.example.moiroom
 
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -25,10 +26,18 @@ class LoadingActivity : AppCompatActivity() {
     var finalCall = ""
     var finalPhoto = "1"
     var finalGoogle = "1"
+
+    var accessToken: String? = null
+    var refreshToken: String? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("오스", "${NowMatchingActivity.callAuth}")
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
+
+        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        accessToken = sharedPreferences.getString("accessToken", null)
+        refreshToken = sharedPreferences.getString("refreshToken", null)
 
         val dot1 = findViewById<View>(R.id.dot_1)
         val dot2 = findViewById<View>(R.id.dot_2)
@@ -110,9 +119,11 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append("{ ")
         stringBuilder.append(finalCall)
         stringBuilder.append(", ")
+        stringBuilder.append("\"accessToken\":\"")
+        stringBuilder.append(accessToken)  // 여기서 accessToken은 SharedPreferences에서 불러온 값입니다.
+        stringBuilder.append("\", ")
 //        stringBuilder.append(finalInsta)
-        stringBuilder.append("\"images\": []")
-        stringBuilder.append(" }")
+        stringBuilder.append("\"images\": [] }")
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://moiroom.r-e.kr"
         Log.d("최종 전송 데이터", stringBuilder.toString())

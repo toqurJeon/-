@@ -85,7 +85,7 @@
        -->
         <activity
             android:name=".LoadingActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".NaviActivity"
