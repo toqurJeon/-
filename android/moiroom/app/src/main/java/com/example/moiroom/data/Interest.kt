@@ -2,7 +2,9 @@ package com.example.moiroom.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Interest(
     val interestName: String,
     val interestPercent: Int

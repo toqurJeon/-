@@ -12,6 +12,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
@@ -35,6 +36,7 @@ import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.view.RadarChartView
+import com.example.moiroom.view.RectangleChartView
 import com.google.android.material.appbar.AppBarLayout
 import java.text.DecimalFormat
 import kotlin.math.abs
@@ -183,13 +185,66 @@ class CardAdapter(
                     characterClickListener?.onCharacterDescriptionClicked(description)
                 }
 
-                val squareChart = binding.squareChartView
-                squareChart.setData(cardInfo.member.interests)
+//                // 상대방 관심사 사각형 차트
+//                val squareChart = binding.squareChartView
+//                squareChart.setData(cardInfo.member.interests)
+//
+//                // 내 관심사 사각형 차트
+//                val squareChart2 = binding.squareChartView2
+//                squareChart2.setData(myInfo.interests)
 
-                // 관심사 목록
+                // 상대방 관심사 목록
                 binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
                 val interestAdapter = InterestAdapter(context, cardInfo.member.interests)
                 binding.interestRecyclerView.adapter = interestAdapter
+
+                // 내 관심사 목록
+                binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
+                Log.d("MYTAG", "bind: ${myInfo.interests}")
+                val interestAdapter2 = InterestAdapter(context, myInfo.interests)
+                binding.interestRecyclerView2.adapter = interestAdapter2
+
+//                // 직사각형 차트
+//                val rectangleChartView: RectangleChartView = binding.rectangleChartView
+//                rectangleChartView.setInterests(myInfo.interests, cardInfo.member.interests)
+
+                // 리싸이클러
+                binding.recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                val interestChartAdapter = InterestChartAdapter(context, cardInfo.member.interests)
+//                interestChartAdapter.setTotalWidth(binding.recycler.layoutParams.width)
+//                binding.recycler.adapter = interestChartAdapter
+
+                binding.recycler.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        val width = binding.recycler.width
+                        interestChartAdapter.setTotalWidth(width)
+
+                        // 레이아웃 리스너를 제거합니다.
+                        binding.recycler.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                        binding.recycler.adapter = interestChartAdapter
+                    }
+                })
+
+                // 리싸이클러2
+                binding.recycler2.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+                val interestChartAdapter2 = InterestChartAdapter(context, myInfo.interests)
+
+                binding.recycler2.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+                    override fun onGlobalLayout() {
+                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        val width = binding.recycler2.width
+                        interestChartAdapter2.setTotalWidth(width)
+
+                        // 레이아웃 리스너를 제거합니다.
+                        binding.recycler2.viewTreeObserver.removeOnGlobalLayoutListener(this)
+
+                        binding.recycler2.adapter = interestChartAdapter2
+                    }
+                })
+
+                Log.d("MYTAG", "interest chart . width : ${binding.recycler.layoutParams.width}")
 
                 // 수면 차트
                 val sleepChart = binding.sleepChartView

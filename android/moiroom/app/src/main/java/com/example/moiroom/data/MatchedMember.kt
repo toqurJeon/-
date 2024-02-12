@@ -1,5 +1,8 @@
 package com.example.moiroom.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class MatchedMember(
     val memberId: Long,
     val memberProfileImageUrl: String,

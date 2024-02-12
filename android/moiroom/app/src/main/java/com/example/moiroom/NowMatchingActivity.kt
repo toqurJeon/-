@@ -20,6 +20,7 @@ import android.Manifest
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.moiroom.databinding.DialogBasicBinding
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
@@ -87,19 +88,38 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun goSettingActivityAlertDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("권한 승인이 필요합니다.")
-            .setMessage("권한이 필요합니다.\n권한 -> 통화 및 저장공간 -> 허용")
-            .setPositiveButton("허용하러 가기") { _, _ ->
-                val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                goSettingPermission.data = Uri.parse("package:$packageName")
-                startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
-            }
-            .setNegativeButton("취소") { _, _ ->
-                instagramPermissionDialog()
-            }
-            .create()
-            .show()
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.dialogTitle.text = "권한 승인을 해주세요."
+        dialogBinding.dialogContent.text = "권한 -> 통화 및 저장공간 -> 허용"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            goSettingPermission.data = Uri.parse("package:$packageName")
+            startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            instagramPermissionDialog()
+            dialog.dismiss()
+        }
+        dialog.show()
+
+//        AlertDialog.Builder(this)
+//            .setTitle("권한 승인이 필요합니다.")
+//            .setMessage("권한이 필요합니다.\n권한 -> 통화 및 저장공간 -> 허용")
+//            .setPositiveButton("허용하러 가기") { _, _ ->
+//                val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//                goSettingPermission.data = Uri.parse("package:$packageName")
+//                startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
+//            }
+//            .setNegativeButton("취소") { _, _ ->
+//                instagramPermissionDialog()
+//            }
+//            .create()
+//            .show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -120,24 +140,48 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun instagramPermissionDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("인스타그램 권한 승인이 필요합니다.")
-            .setMessage("인스타그램으로 이동하시겠습니까?")
-            .setPositiveButton("이동하기") { _, _ ->
-                goInsta()
-            }
-            .setNegativeButton("취소") { _, _ ->
-                Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 매칭 중 액티비티로 이동")
-                // 인스타그램 이동을 거절했을때의 요청 보내기
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
 
-                // 더미 응답
-                getRequestResult(true, this)
-                // 매칭중 액티비티로 이동
-                val intent = Intent(this, LoadingActivity::class.java)
-                startActivity(intent)
-            }
-            .create()
-            .show()
+        dialogBinding.dialogTitle.text = "인스타그램 권한 승인이 필요해요."
+        dialogBinding.dialogContent.text = "인스타그램으로 이동할까요?"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            goInsta()
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 매칭 중 액티비티로 이동")
+            // 인스타그램 이동을 거절했을때의 요청 보내기
+
+            // 더미 응답
+            getRequestResult(true, this)
+            // 매칭중 액티비티로 이동
+            val intent = Intent(this, LoadingActivity::class.java)
+            startActivity(intent)
+            dialog.dismiss()
+        }
+        dialog.show()
+
+//        AlertDialog.Builder(this)
+//            .setTitle("인스타그램 권한 승인이 필요합니다.")
+//            .setMessage("인스타그램으로 이동하시겠습니까?")
+//            .setPositiveButton("이동하기") { _, _ ->
+//                goInsta()
+//            }
+//            .setNegativeButton("취소") { _, _ ->
+//                Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 매칭 중 액티비티로 이동")
+//                // 인스타그램 이동을 거절했을때의 요청 보내기
+//
+//                // 더미 응답
+//                getRequestResult(true, this)
+//                // 매칭중 액티비티로 이동
+//                val intent = Intent(this, LoadingActivity::class.java)
+//                startActivity(intent)
+//            }
+//            .create()
+//            .show()
     }
 
     private fun permissionRequest() {

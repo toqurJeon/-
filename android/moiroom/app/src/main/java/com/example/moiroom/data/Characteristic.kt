@@ -2,7 +2,9 @@ package com.example.moiroom.data
 
 import android.os.Parcel
 import android.os.Parcelable
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class Characteristic(
     val sociability: Int,
     val positivity: Int,

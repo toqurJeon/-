@@ -362,38 +362,39 @@
 
             </LinearLayout>
 
-            <LinearLayout
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                android:layout_marginBottom="8dp"
+                tools:listitem="@layout/interest_chart_item_layout"/>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recycler2"
+                android:layout_width="match_parent"
+                android:layout_height="24dp"
+                tools:listitem="@layout/interest_chart_item_layout"/>
+
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="4dp"
                 android:paddingVertical="20dp">
 
-                <com.example.moiroom.view.SquareChartView
-                    android:id="@+id/squareChartView"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:gravity="start"
-                    android:background="@android:color/white" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interestRecyclerView"
+                    android:layout_width="140dp"
                     android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
+                    android:layout_alignParentStart="true"
+                    tools:listitem="@layout/interest_item_layout" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/interestRecyclerView"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="16dp"
-                        tools:listitem="@layout/interest_item_layout" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interestRecyclerView2"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    tools:listitem="@layout/interest_item_layout" />
 
-                </LinearLayout>
-
-            </LinearLayout>
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/myInterestDescription"
