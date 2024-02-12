@@ -1,7 +1,7 @@
 package com.example.moiroom.data
 
 enum class CharacteristicType(val value: String) {
-    socialbility("사교"),
+    sociability("사교"),
     positivity("긍정"),
     activity("활동"),
     communion("공유"),

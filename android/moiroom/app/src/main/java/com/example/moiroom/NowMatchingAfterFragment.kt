@@ -1,5 +1,6 @@
 package com.example.moiroom
 
+import android.app.Dialog
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -7,25 +8,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
+import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
+import com.example.moiroom.data.ResponseData
+import com.example.moiroom.databinding.DialogAuthorityBinding
+import com.example.moiroom.databinding.DialogCharacterInformationBinding
+import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.utils.cacheMatchedMemberList
 import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.utils.getCharacterDetailDescription
 
-class NowMatchingAfterFragment : Fragment() {
+class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private var toggled: Boolean = true
 
     val cachedUserInfo: Member? by lazy { cacheUserInfo.get("userInfo") }
-    val cachedMatchedMemberList: MatchedMemberList? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
-
-//    private val cardInfoList = TestData.cardInfoList
+    val cachedMatchedMemberList: ResponseData? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
 
     // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
     override fun onCreateView(
@@ -59,7 +65,7 @@ class NowMatchingAfterFragment : Fragment() {
 
                 if (position == 0) {
                     binding.pagerLeft.visibility = View.GONE
-                } else if (position + 1 == cachedMatchedMemberList?.totalElememts) {
+                } else if (position + 1 == cachedMatchedMemberList?.data?.totalElements) {
                     binding.pagerRight.visibility = View.GONE
                 } else {
                     binding.pagerLeft.visibility = View.VISIBLE
@@ -68,7 +74,7 @@ class NowMatchingAfterFragment : Fragment() {
             }
         })
         if (cachedMatchedMemberList != null) {
-            binding.totalCard.text = "${cachedMatchedMemberList?.totalElememts}"
+            binding.totalCard.text = "${cachedMatchedMemberList?.data?.totalElements}"
         }
 
         binding.layoutChanger.setOnClickListener {
@@ -112,7 +118,9 @@ class NowMatchingAfterFragment : Fragment() {
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
         if (cachedMatchedMemberList != null && cachedUserInfo != null) {
-            val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.content, cachedUserInfo!!, isButton1Checked)
+            val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.data.content, cachedUserInfo!!, isButton1Checked)
+
+            cardAdapter.setOnCharacterClickListener(this)
 
             if (isButton1Checked) {
                 binding.viewPager2.adapter = cardAdapter
@@ -123,7 +131,7 @@ class NowMatchingAfterFragment : Fragment() {
 
                 cardAdapter.setOnItemClickListener { position ->
                     Log.d("MYTAG", "setCardAdapter: $position")
-                    val cardAdapter2 = CardAdapter(requireContext(), cachedMatchedMemberList!!.content, cachedUserInfo!!, !isButton1Checked)
+                    val cardAdapter2 = CardAdapter(requireContext(), cachedMatchedMemberList!!.data.content, cachedUserInfo!!, !isButton1Checked)
                     setToViewPager()
 
                     binding.viewPager2.adapter = cardAdapter2
@@ -136,14 +144,20 @@ class NowMatchingAfterFragment : Fragment() {
         }
     }
 
-//    private fun showDetailFragment(cardInfo: CardInfo) {
-//        val detailFragment = NewCardDetailDialogFragment.newInstance(cardInfo)
-//        val oldFragment = parentFragmentManager.findFragmentByTag("cardDetail")
-//        oldFragment?.let {
-//            parentFragmentManager.beginTransaction().remove(it).commit()
-//        }
-//        detailFragment.show(parentFragmentManager, "cardDetail")
-//        binding.recyclerView.visibility = View.GONE
-//        binding.viewPager2.visibility = View.GONE
-//    }
+    override fun onCharacterDescriptionClicked(description: String) {
+        Log.d("TAG", "onCharacterDescriptionClicked: in Fragment $description")
+
+        val dialog = Dialog(requireContext(), R.style.DialogTheme)
+        val dialogBinding = DialogCharacterInformationBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.characterTitle.text = "$description"
+        val detailDescription = getCharacterDetailDescription(description)
+        dialogBinding.characterDescription.text = detailDescription
+
+        dialogBinding.confirmButton.setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
 }

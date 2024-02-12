@@ -54,14 +54,14 @@ class MyPageFragment : Fragment() {
 
         chartView.setDataList(
             arrayListOf(
-                RadarChartData(CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
-                RadarChartData(CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
-                RadarChartData(CharacteristicType.activity,memberData.activity.toFloat() / 100),
-                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
-                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
-                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
-                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
-                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100),
+                RadarChartData(CharacteristicType.sociability,memberData.characteristic.sociability.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity,memberData.characteristic.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity,memberData.characteristic.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.characteristic.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.characteristic.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.characteristic.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.characteristic.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.characteristic.generous.toFloat() / 100),
             ),
             null
         )

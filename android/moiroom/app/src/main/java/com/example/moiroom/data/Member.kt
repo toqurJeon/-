@@ -14,17 +14,8 @@ data class Member(
     val cityName: String,
     val memberIntroduction: String,
     var memberRoomateSearchStatus: Int,
-    val socialbility: Int,
-    val positivity: Int,
-    val activity: Int,
-    val communion: Int,
-    val altruism: Int,
-    val empathy: Int,
-    val humor: Int,
-    val generous: Int,
-    val sleepAt: String,
-    val wakeUpAt: String,
-    val interest: List<Interest>
+    val characteristic: Characteristic,
+    val interests: List<Interest>
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -37,16 +28,7 @@ data class Member(
         parcel.readString()!!,
         parcel.readString()!!,
         parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!,
+        parcel.readParcelable(Characteristic::class.java.classLoader)!!,
         parcel.createTypedArrayList(Interest.CREATOR)!!
     )
 
@@ -61,17 +43,8 @@ data class Member(
         parcel.writeString(cityName)
         parcel.writeString(memberIntroduction)
         parcel.writeInt(memberRoomateSearchStatus)
-        parcel.writeInt(socialbility)
-        parcel.writeInt(positivity)
-        parcel.writeInt(activity)
-        parcel.writeInt(communion)
-        parcel.writeInt(altruism)
-        parcel.writeInt(empathy)
-        parcel.writeInt(humor)
-        parcel.writeInt(generous)
-        parcel.writeString(sleepAt)
-        parcel.writeString(wakeUpAt)
-        parcel.writeTypedList(interest)
+        parcel.writeParcelable(characteristic, flags)
+        parcel.writeTypedList(interests)
     }
 
     override fun describeContents(): Int {
