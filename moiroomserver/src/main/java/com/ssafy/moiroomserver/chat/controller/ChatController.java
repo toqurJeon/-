@@ -39,4 +39,10 @@ public class ChatController {
         chatService.addChatRoom(request, memberId);
         return ApiResponse.success(SuccessCode.ADD_CHAT_ROOM);
     }
+
+    @GetMapping
+    public ApiResponse<?> getChatRooms(HttpServletRequest request,
+                                       @RequestParam(required = false, defaultValue = "1") int pgno) {
+        return ApiResponse.success(SuccessCode.GET_CHAT_ROOM, chatService.getChatRooms(request, pgno));
+    }
 }
