@@ -9,7 +9,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 import jakarta.annotation.PostConstruct;
 
-@EnableScheduling
+// @EnableScheduling
 @SpringBootApplication
 @EnableJpaAuditing
 public class MoiroomserverApplication {
