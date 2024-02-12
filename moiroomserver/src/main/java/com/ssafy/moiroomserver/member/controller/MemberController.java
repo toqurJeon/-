@@ -82,7 +82,7 @@ public class MemberController {
         memberService.logout(socialId, provider);
         return ApiResponse.success(SuccessCode.LOGOUT_MEMBER);
     }
-
+    
     /**
      * 특성 및 관심사 추가 및 수정
      *
