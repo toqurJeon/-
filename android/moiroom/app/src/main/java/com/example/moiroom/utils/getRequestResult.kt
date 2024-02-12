@@ -1,5 +1,8 @@
 package com.example.moiroom.utils
 
+import ApiService
+import NetworkModule
+import android.content.Context
 import android.util.Log
 import android.util.LruCache
 import com.example.moiroom.data.Characteristic
@@ -9,14 +12,19 @@ import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 val cacheSize = 4 * 1024 * 1024 // 4MB
 val cacheUserInfo = LruCache<String, Member>(cacheSize)
 val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
 
+private lateinit var apiService: ApiService
+
 var okCount: Int = 0
 
-fun getRequestResult(result: Boolean) {
+fun getRequestResult(result: Boolean, context: Context) {
     // ok response를 받아야 하는 갯수
     val targetCount: Int = 1
     Log.d("TAG", "getRequestResult: $result 응답 받음! okCount: $okCount")
@@ -28,13 +36,25 @@ fun getRequestResult(result: Boolean) {
             Log.d("TAG", "getRequestResult: 매칭리스트 요청 보내기!")
 
             getUserInfo()
-            getMatchedMember()
+            getMatchedMember(context, 1)
         }
     }
 }
 
-fun getMatchedMember() {
+fun getMatchedMember(context: Context, pgno: Int) {
+    apiService = NetworkModule.provideRetrofit(context)
     // 응답 데이터 저장 (현재: 더미 데이터)
+    CoroutineScope(Dispatchers.IO).launch {
+
+        val response = apiService.getMatchedMemberList(1)
+        if (response.isSuccessful) {
+            val data = response.body()
+            Log.d("MYTAG", "getMatchedMember: $data")
+        } else {
+            Log.d("MYTAG", "getMatchedMember: $response")
+        }
+    }
+
     val responseMatchedMemberList: ResponseData = ResponseData(
         200,
         "OK",

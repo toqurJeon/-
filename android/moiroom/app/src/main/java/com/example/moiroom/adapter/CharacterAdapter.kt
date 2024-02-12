@@ -41,6 +41,7 @@ class CharacterAdapter(
                 ),
                 0
             )
+            selectedPosition = 0
         }
     }
 

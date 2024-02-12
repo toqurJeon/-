@@ -67,7 +67,7 @@ class MainActivity : AppCompatActivity() {
                     intent = Intent(this, NaviActivity::class.java)
                     // 통신 구현 후 삭제 필요
                     getUserInfo()
-                    getMatchedMember()
+                    getMatchedMember(this, 1)
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)
@@ -175,7 +175,7 @@ class MainActivity : AppCompatActivity() {
                     intent = Intent(this, NaviActivity::class.java)
                     // 통신 구현 후 삭제 필요
                     getUserInfo()
-                    getMatchedMember()
+                    getMatchedMember(this, 1)
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)
