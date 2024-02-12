@@ -15,7 +15,8 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     boolean existsMemberByProviderAndSocialId(String provider, Long socialId);
     Member findMemberBySocialIdAndProvider(Long socialId, String provider);
-    List<Member> findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatus(Long memberId, String gender, Long metropolitanId, Long cityId, int roommateSearchStatus);
+    List<Member> findByMemberIdNotAndGenderAndMetropolitanIdAndCityIdAndRoommateSearchStatusAndAccountStatus
+        (Long memberId, String gender, Long metropolitanId, Long cityId, int roommateSearchStatus, int accountStatus);
 
     @Query(
             "select new com.ssafy.moiroomserver.member.dto.MemberInfoDetail(" +
