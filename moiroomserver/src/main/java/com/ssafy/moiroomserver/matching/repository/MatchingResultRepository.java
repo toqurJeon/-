@@ -24,4 +24,17 @@ public interface MatchingResultRepository extends JpaRepository<MatchingResult, 
 			+ "ORDER BY mr.rate DESC"
 	)
 	Page<MatchingResult> findMatchingResultByMemberId(@Param("id") Long memberId, Pageable pageable);
+
+	@Query(
+		"DELETE FROM MatchingResult mr "
+		+ "WHERE mr IN ( "
+			+ "SELECT MatchingResult FROM MatchingResult mr "
+			+ "JOIN Member m1 ON mr.memberOneId = m1.memberId "
+			+ "JOIN Member m2 ON mr.memberTwoId = m2.memberId "
+			+ "WHERE m1.roommateSearchStatus = 0 OR m2.roommateSearchStatus = 0 "
+			+ "OR m1.accountStatus != 1 OR m2.accountStatus != 1 "
+			+ "OR m1.metropolitanId != m2.metropolitanId OR m1.cityId != m2.cityId"
+		+ ")"
+	)
+	void deleteMatchingResultAfterPeriod();
 }
