@@ -27,20 +27,22 @@ def crawl_playstore(package_name):
     # 브라우저를 닫습니다.
     driver.quit()
 
+
 def crawl_translator(caption):
     # ChromeDriver를 자동으로 설치합니다.
     chromedriver_autoinstaller.install()
 
     # Selenium을 이용하여 웹 페이지를 엽니다.
-    url = "https://translate.google.co.kr/?sl=auto&tl=en&text=" + caption + "?&op=translate"
+    url = "https://papago.naver.com/"
     driver = webdriver.Chrome()
     driver.get(url)
 
     # 페이지가 로딩될 때까지 기다립니다.
     driver.implicitly_wait(5)
 
-    # 페이지 소스를 가져와 BeautifulSoup으로 파싱합니다.
-    soup = BeautifulSoup(driver.page_source, 'lxml')
+    source_textbox = driver.find_element_by_id("txtSource")
+    source_textbox.clear()
+    source_textbox.send_keys(caption)
 
     # 카테고리 정보를 찾습니다.
     translated = soup.select('span.ryNqvb')
