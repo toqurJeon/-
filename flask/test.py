@@ -1,59 +1,59 @@
-import numpy as np
-from sklearn.cluster import DBSCAN
+from bs4 import BeautifulSoup
+from selenium import webdriver
+import chromedriver_autoinstaller
+
+
+def crawl_playstore(package_name):
+    # ChromeDriver를 자동으로 설치합니다.
+    chromedriver_autoinstaller.install()
+
+    # Selenium을 이용하여 웹 페이지를 엽니다.
+    url = "https://play.google.com/store/apps/details?id=" + package_name
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    # 페이지가 로딩될 때까지 기다립니다.
+    driver.implicitly_wait(5)
+
+    # 페이지 소스를 가져와 BeautifulSoup으로 파싱합니다.
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+
+    # 카테고리 정보를 찾습니다.
+    category_element = soup.select('span.VfPpkd-vQzf8d')
+    category = category_element[3].text if category_element else 'Not Found'
+
+    print(f"어플 카테고리: {category}")
+
+    # 브라우저를 닫습니다.
+    driver.quit()
+
+def crawl_translator(caption):
+    # ChromeDriver를 자동으로 설치합니다.
+    chromedriver_autoinstaller.install()
+
+    # Selenium을 이용하여 웹 페이지를 엽니다.
+    url = "https://translate.google.co.kr/?sl=auto&tl=en&text=" + caption + "?&op=translate"
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    # 페이지가 로딩될 때까지 기다립니다.
+    driver.implicitly_wait(5)
+
+    # 페이지 소스를 가져와 BeautifulSoup으로 파싱합니다.
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+
+    # 카테고리 정보를 찾습니다.
+    translated = soup.select('span.ryNqvb')
+    print(translated)
+    # category = category_element[3].text if category_element else 'Not Found'
+    for i in translated:
+        print(i.text)
+    # print(f"번역 결과: {category}")
+
+    # 브라우저를 닫습니다.
+    driver.quit()
+
 
 if __name__ == '__main__':
-    # 샘플 데이터
-    sample_json = {
-        1: {
-            'lon': 12.12345,
-            'len': 84.12345
-        },
-        2: {
-            'lon': 21.12445,
-            'len': 40.12345
-        },
-        3: {
-            'lon': 64.12345,
-            'len': 10.12345
-        }
-    }
-
-
-    # 학습 데이터 배열 초기화
-    X = np.array([[0, 0]])
-    # 전체 데이터 개수 카운팅
-    count = 0
-    # for문 돌면서 위도 경도 입력 받음
-    for i in sample_json:
-        X = np.append(X, [[sample_json[i]["lon"], sample_json[i]["len"]]], axis=0)
-        count += 1
-
-    #초기 데이터 삭제
-    X = np.delete(X, 0, 0)
-    print(X)
-
-
-    # DBSCAN 모델 초기화 및 훈련
-    dbscan = DBSCAN(eps=50, min_samples=2)
-
-    dbscan.fit(X)
-
-    # 각 데이터 포인트가 속한 클러스터 확인
-    labels = dbscan.labels_
-    print('Cluster Labels:', labels)
-
-    res = np.array([[0, 0]])
-    # 각 클러스터에 속한 데이터 포인트의 수 계산
-    unique_labels = set(labels)
-    for label in unique_labels:
-        if label != -1:    # 노이즈가 아니라면
-            res = np.append(res, [[label, np.sum(labels == label)]], axis=0)
-
-    res = np.delete(res, 0, 0)
-
-    # 클러스터링 결과를 소속 데이터 수에 따라 내림차순 정렬
-    sorted_array = np.flipud(res[res[:, 1].argsort()])
-    print(sorted_array)
-
-    # 가장 많은 데이터 보유 장소 (집으로 추정되는 곳) / 전체 데이터 수 결과 출력
-    print(sorted_array[0][1] / count)
+    # crawl_playstore('com.wooribank.smart.npib')
+    crawl_translator('오우오우')

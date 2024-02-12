@@ -126,15 +126,18 @@ def user_init():
     try:
         # JSON 데이터 받아오기
         json_data = request.get_json()
-        params = {}
+        access_token = 'Bearer ' + json_data['accessToken']
+        params = {'characteristic': {}}
         for function in func_list:
-            params[function.__name__] = function(json_data)
-        params['sleepAt'] = None
-        params['wakeUpAt'] = None
+            params['characteristic'][function.__name__] = function(json_data)
+        params['characteristic']['sleepAt'] = None
+        params['characteristic']['wakeUpAt'] = None
         params['interest'] = None
 
-        # print(params)
-        send_response = requests.post('https://moiroom.n-e.kr/member/characteristic', json=params)
+        print(params)
+        send_response = requests.post('https://moiroom.n-e.kr/member/characteristic',
+                                      headers={'Authorization': access_token},
+                                      json=params)
         return send_response.json()
 
     except Exception as e:
@@ -145,27 +148,29 @@ def user_init():
 @app.route('/match', methods=['POST'])
 def match_users():
     try:
-        users_request = requests.get('https://moiroom.n-e.kr/matching/info')
+        access_token = 'Bearer ' + request.get_json()['accessToken']
+        users_request = requests.get('https://moiroom.n-e.kr/matching/info', headers={'Authorization': access_token})
         if users_request.status_code != 200:
             return jsonify({'status': 'error', 'message': 'not 200 in users info'})
         users_info = users_request.json()['data']
         # users_info = request.get_json()['data']
 
-        for users in users_info['memberTwoList']:
+        for users in users_info['memberTwos']:
             percentage = 10000
             min_gap = [10000, '']
             for func in func_list:
-                gap = abs(users_info['memberOne'][func.__name__] - users[func.__name__])
+                gap = abs(users_info['memberOne']['characteristic'][func.__name__]
+                          - users['characteristic'][func.__name__])
                 percentage -= gap
                 if gap < min_gap[0]:
                     min_gap[0] = gap
                     min_gap[1] = match_introduction[func.__name__]
             # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
-            send_response = requests.post('https://moiroom.n-e.kr/matching/result/' + users['memberId'],
-                                          json={'rate': percentage, 'rateIntroduction': min_gap[1]})
-            # if error occurs, return error
 
-        return jsonify({'status': 'success', 'message': 'JSON processed and sent successfully'})
+        send_response = requests.post('https://moiroom.n-e.kr/matching/result/' + users['memberId'],
+                                          json={'rate': percentage, 'rateIntroduction': min_gap[1]})
+
+        return send_response.json()
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
