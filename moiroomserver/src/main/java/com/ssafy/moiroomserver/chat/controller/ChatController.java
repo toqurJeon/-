@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.chat.dto.ChatRequest;
 import com.ssafy.moiroomserver.chat.service.ChatService;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -33,8 +34,9 @@ public class ChatController {
      * @param memberId
      */
     @PostMapping("/{memberId}") // 대화 상대 member pk
-    public ApiResponse<?> addChatRoom(@PathVariable Long memberId) {
-        chatService.addChatRoom(memberId);
+    public ApiResponse<?> addChatRoom(HttpServletRequest request,
+                                      @PathVariable Long memberId) {
+        chatService.addChatRoom(request, memberId);
         return ApiResponse.success(SuccessCode.ADD_CHAT_ROOM);
     }
 }
