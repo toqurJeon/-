@@ -15,4 +15,5 @@ public class ChatRoomDTO {
     private String memberNickname;
     private String profileImageUrl;
     private String lastMessage;
+    private String updatedAt;
 }

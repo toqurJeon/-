@@ -19,7 +19,8 @@ public interface MemberChatRoomRepository extends JpaRepository<MemberChatRoom, 
                     "    mcr.member.memberId,\n" +
                     "    mcr.member.nickname as memberNickname,\n" +
                     "    mcr.member.imageUrl as profileImageUrl,\n" +
-                    "    mcr.chatRoom.lastMessage\n" +
+                    "    mcr.chatRoom.lastMessage, " +
+                    "    mcr.chatRoom.updatedAt\n" +
                     ")\n" +
                     "FROM MemberChatRoom mcr\n" +
                     "WHERE mcr.chatRoom.chatRoomId IN (\n" +
