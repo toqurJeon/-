@@ -87,7 +87,7 @@ class CardAdapter(
 
             if (position == cardInfoList.size - 1) {
                 val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
-                val marginBottomInPx = convertDpToPixel(96)
+                val marginBottomInPx = convertDpToPixel(184)
                 layoutParams.bottomMargin = marginBottomInPx
                 holder.itemView.layoutParams = layoutParams
             }
@@ -108,7 +108,10 @@ class CardAdapter(
                 introduction.text = cardInfo.member.memberIntroduction
 
                 // 상대방 프로필 이미지 불러오기
-                Glide.with(binding.root.context).load(cardInfo.member.memberProfileImageUrl).into(binding.profileImage)
+                Glide.with(binding.root.context)
+                    .load(cardInfo.member.memberProfileImageUrl)
+                    .placeholder(R.drawable.sample_profile1)
+                    .into(binding.profileImage)
 
                 // 매칭률에 따라서 색상 설정
                 val matchRateResult = cardInfo.matchRate
@@ -242,7 +245,10 @@ class CardAdapter(
                 nickname.text = cardInfo.member.memberNickname
                 location.text = "${cardInfo.member.metropolitanName}, ${cardInfo.member.cityName}"
                 // 상대방 프로필 이미지 불러오기
-                Glide.with(binding.root.context).load(cardInfo.member.memberProfileImageUrl).into(binding.profileImage)
+                Glide.with(binding.root.context)
+                    .load(cardInfo.member.memberProfileImageUrl)
+                    .placeholder(R.drawable.sample_profile1)
+                    .into(binding.profileImage)
 
                 // 매칭률에 따라서 색상 변경
                 val matchRateResult = cardInfo.matchRate
@@ -267,7 +273,7 @@ class CardAdapter(
                 chatbuttonContainer.setOnClickListener {
                     val intent = Intent(context, ChatActivity::class.java)
                     intent.putExtra("memberId", cardInfo.member.memberId)
-                    Log.d("MY TAG", "bind: ${cardInfo.member.memberId}")
+
                     context.startActivity(intent)
                 }
             }

@@ -6,6 +6,7 @@ import com.example.moiroom.data.MemberResponse
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.MetropolitanResponse
 import com.example.moiroom.data.MyResponse
+import com.example.moiroom.data.ResponseData
 import okhttp3.Interceptor
 import okhttp3.MultipartBody
 import okhttp3.OkHttpClient
@@ -55,6 +56,11 @@ interface ApiService {
     @GET("member/{memberId}")
     suspend fun getMemberInfo(@Path("memberId") memberId: String): Response<MemberResponse>
 
+    // 매칭 정보 리스트 조회
+    @GET("matching/result")
+    suspend fun getMatchedMemberList(
+        @Query("pgno") pgno: Int
+    ) : Response<ResponseData>
 }
 
 object NetworkModule {

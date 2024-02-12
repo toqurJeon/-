@@ -44,7 +44,7 @@ class NowMatchingActivity : AppCompatActivity() {
 
             val intent = Intent(this, NaviActivity::class.java)
             getUserInfo()
-            getMatchedMember()
+            getMatchedMember(this, 1)
             startActivity(intent)
             finish()
 
@@ -131,7 +131,7 @@ class NowMatchingActivity : AppCompatActivity() {
                 // 인스타그램 이동을 거절했을때의 요청 보내기
 
                 // 더미 응답
-                getRequestResult(true)
+                getRequestResult(true, this)
                 // 매칭중 액티비티로 이동
                 val intent = Intent(this, LoadingActivity::class.java)
                 startActivity(intent)
@@ -190,8 +190,8 @@ class NowMatchingActivity : AppCompatActivity() {
 
         } else {
             Log.d("권한 설정", "permissionRequest: 모든 권한이 허용되지 않음")
-            getRequestResult(true)
-            getRequestResult(true)
+            getRequestResult(true, this)
+            getRequestResult(true, this)
 
             ActivityCompat.requestPermissions(
                 this,

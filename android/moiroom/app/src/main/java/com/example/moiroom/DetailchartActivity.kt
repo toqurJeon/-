@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.animation.ValueAnimator
+import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -14,8 +15,10 @@ import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.databinding.ActivityDetailchartBinding
+import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
+import com.example.moiroom.utils.getCharacterDetailDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.view.RadarChartView
@@ -74,6 +77,23 @@ class DetailchartActivity : AppCompatActivity() {
             sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
             binding.sleepTimeText.text = memberData.characteristic.sleepAt
             binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
+
+            binding.characterDescriptionButton.setOnClickListener {
+                Log.d("MYTAG", "onCreate: ${binding.characterDetailName.text}")
+
+                val dialog = Dialog(this, R.style.DialogTheme)
+                val dialogBinding = DialogCharacterInformationBinding.inflate(layoutInflater)
+                dialog.setContentView(dialogBinding.root)
+
+                dialogBinding.characterTitle.text = "${binding.characterDetailName.text}"
+                val detailDescription = getCharacterDetailDescription(binding.characterDetailName.text.toString())
+                dialogBinding.characterDescription.text = detailDescription
+
+                dialogBinding.confirmButton.setOnClickListener {
+                    dialog.dismiss()
+                }
+                dialog.show()
+            }
         }
 
         binding.backwardButton.setOnClickListener {

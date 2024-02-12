@@ -401,7 +401,7 @@ class InfoupdateActivity : AppCompatActivity() {
                             ).show()
                             intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
                             getUserInfo()
-                            getMatchedMember()
+                            getMatchedMember(this@InfoupdateActivity, 1)
                             finish()
                         } else {
                             // 회원 정보 수정 실패
