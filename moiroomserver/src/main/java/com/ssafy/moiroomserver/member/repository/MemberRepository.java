@@ -27,7 +27,6 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
                     "from Member m " +
                     "join Metropolitan met on m.metropolitanId = met.metropolitanId " +
                     "join City c on m.cityId = c.cityId " +
-                    "join Characteristic ch on m.characteristicId = ch.characteristicsId " +
                     "where m.memberId = :memberId"
     )
     Optional<MemberInfoDetail> findMemberDetailByMemberId(@Param("memberId") Long memberId);
