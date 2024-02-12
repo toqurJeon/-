@@ -25,7 +25,7 @@ public enum ErrorCode {
     //파일
     NOT_EXISTS_FILE(BAD_REQUEST, "존재하지 않는 파일입니다."),
     //특성
-    NOT_EXISTS_CHARACTERISTIC_ID(BAD_REQUEST, "존재하지 않는 특성 id 입니다."),
+    NOT_EXISTS_CHARACTERISTIC_ID(BAD_REQUEST, "회원 정보 중 특징 정보를 가져오지 못했습니다."),
     //관심사
     NOT_EXISTS_INTEREST_NAME(BAD_REQUEST, "존재하지 않는 관심사 이름입니다."),
     //지역
