@@ -1,6 +1,7 @@
 package com.ssafy.moiroomserver.chat.service.impl;
 
 import com.ssafy.moiroomserver.chat.dto.ChatRequest;
+import com.ssafy.moiroomserver.chat.entity.ChatRoom;
 import com.ssafy.moiroomserver.chat.repository.ChatMessageRepository;
 import com.ssafy.moiroomserver.chat.repository.ChatRoomRepository;
 import com.ssafy.moiroomserver.chat.service.ChatService;
@@ -17,5 +18,11 @@ public class ChatServiceImpl implements ChatService {
     @Override
     public void save(ChatRequest request) {
 
+    }
+
+    @Override
+    public void addChatRoom(Long memberId) {
+        ChatRoom chatRoom = ChatRoom.builder().build();
+        chatRoomRepository.save(chatRoom);
     }
 }

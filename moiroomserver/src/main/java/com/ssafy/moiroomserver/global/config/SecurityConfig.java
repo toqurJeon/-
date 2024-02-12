@@ -38,7 +38,6 @@ public class SecurityConfig {
                                 .anyRequest().permitAll()
                 )
                 .addFilterBefore(tokenAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
-
         return http.build();
     }
 

@@ -32,7 +32,6 @@ public class TokenAuthenticationFilter extends OncePerRequestFilter {
                                 null,
                                 Collections.singletonList(new SimpleGrantedAuthority("USER"))
                         );
-
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             } else {
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Invalid Access Token");

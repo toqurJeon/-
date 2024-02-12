@@ -67,16 +67,16 @@ public class Characteristic extends BaseEntity {
         this.wakeUpAt = wakeUpAt;
     }
 
-    public void modifyCharacteristicInfo(CharacteristicInfo.AddModifyRequest characteristicAddModifyReq) {
-        this.sociability = (characteristicAddModifyReq.getSociability() == null) ? sociability : characteristicAddModifyReq.getSociability();
-        this.positivity = (characteristicAddModifyReq.getPositivity() == null) ? positivity : characteristicAddModifyReq.getPositivity();
-        this.activity = (characteristicAddModifyReq.getActivity() == null) ? activity : characteristicAddModifyReq.getActivity();
-        this.communion = (characteristicAddModifyReq.getCommunion() == null) ? communion : characteristicAddModifyReq.getCommunion();
-        this.altruism = (characteristicAddModifyReq.getAltruism() == null) ? altruism : characteristicAddModifyReq.getAltruism();
-        this.empathy = (characteristicAddModifyReq.getEmpathy() == null) ? empathy : characteristicAddModifyReq.getEmpathy();
-        this.humor = (characteristicAddModifyReq.getHumor() == null) ? humor : characteristicAddModifyReq.getHumor();
-        this.generous = (characteristicAddModifyReq.getGenerous() == null) ? generous : characteristicAddModifyReq.getGenerous();
-        this.sleepAt = (characteristicAddModifyReq.getSleepAt() == null) ? sleepAt : characteristicAddModifyReq.getSleepAt();
-        this.wakeUpAt = (characteristicAddModifyReq.getWakeUpAt() == null) ? wakeUpAt : characteristicAddModifyReq.getWakeUpAt();
+    public void modifyCharacteristicInfo(CharacteristicInfo.RequestResponse characteristicInfoReqRes) {
+        this.sociability = (characteristicInfoReqRes.getSociability() == null) ? sociability : characteristicInfoReqRes.getSociability();
+        this.positivity = (characteristicInfoReqRes.getPositivity() == null) ? positivity : characteristicInfoReqRes.getPositivity();
+        this.activity = (characteristicInfoReqRes.getActivity() == null) ? activity : characteristicInfoReqRes.getActivity();
+        this.communion = (characteristicInfoReqRes.getCommunion() == null) ? communion : characteristicInfoReqRes.getCommunion();
+        this.altruism = (characteristicInfoReqRes.getAltruism() == null) ? altruism : characteristicInfoReqRes.getAltruism();
+        this.empathy = (characteristicInfoReqRes.getEmpathy() == null) ? empathy : characteristicInfoReqRes.getEmpathy();
+        this.humor = (characteristicInfoReqRes.getHumor() == null) ? humor : characteristicInfoReqRes.getHumor();
+        this.generous = (characteristicInfoReqRes.getGenerous() == null) ? generous : characteristicInfoReqRes.getGenerous();
+        this.sleepAt = (characteristicInfoReqRes.getSleepAt() == null) ? sleepAt : characteristicInfoReqRes.getSleepAt();
+        this.wakeUpAt = (characteristicInfoReqRes.getWakeUpAt() == null) ? wakeUpAt : characteristicInfoReqRes.getWakeUpAt();
     }
 }

@@ -6,11 +6,8 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
-import com.ssafy.moiroomserver.member.entity.Characteristic;
-import com.ssafy.moiroomserver.member.entity.Interest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
-import com.ssafy.moiroomserver.member.repository.InterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -22,8 +19,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 
 @Service
@@ -31,13 +26,13 @@ import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 @Slf4j
 public class MemberServiceImpl implements MemberService {
 
+    private final MemberInterestRepository memberInterestRepository;
+    private final CharacteristicRepository characteristicRepository;
+
     private static final int LOGIN = 1;
     private static final int LOGOUT = 0;
 
     private final MemberRepository memberRepository;
-    private final CharacteristicRepository characteristicRepository;
-    private final MemberInterestRepository memberInterestRepository;
-    private final InterestRepository interestRepository;
     private final S3Service s3Service;
     private final KakaoService kakaoService;
 
@@ -48,11 +43,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     @Override
     public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest memberInfoModifyReq) {
-//        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-        Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER);
-        }
+        Member member = kakaoService.getMemberByHttpServletRequest(request);
         if (memberInfoModifyReq.getMemberProfileImage() != null) {
             memberInfoModifyReq.setProfileImageUrl(s3Service.uploadProfileImage(memberInfoModifyReq.getMemberProfileImage(), member));
         }
@@ -144,37 +135,21 @@ public class MemberServiceImpl implements MemberService {
 
     }
 
-    /**
-     * 특성 및 관심사 데이터 추가 및 수정
-     * @param request
-     * @param characteristicInfoAddModifyReq 추가 및 수정 시 입력할 데이터
-     */
-    @Transactional
     @Override
-    public void addCharacteristic(HttpServletRequest request, CharacteristicInfo.AddModifyRequest characteristicInfoAddModifyReq) {
-        //        Long socialId = kakaoService.getInformation(request.getHeader("Authorization").substring(7));
-        Member member = memberRepository.findMemberBySocialIdAndProvider(3296727084L, "kakao");
-        if (member == null) {
-            throw new NoExistException(NOT_EXISTS_MEMBER);
-        }
-        if (member.getCharacteristicId() == null) { //특성 및 관심사 첫 데이터 입력 (회원가입 후 첫 매칭 시작)
-            Characteristic characteristic = characteristicRepository.save(characteristicInfoAddModifyReq.toEntity()); //특성 데이터 추가
-            member.modifyCharacteristicId(characteristic.getCharacteristicsId()); //추가한 특성 아이디 회원 테이블의 특성 아이디 컬럼에 추가
-        }
-        if (member.getCharacteristicId() != null) { //특성 및 관심사 데이터 수정 (기존 특성 데이터 존재)
-            Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
-                    .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)); //기존의 특성 데이터 찾기
-            characteristic.modifyCharacteristicInfo(characteristicInfoAddModifyReq); //특성 데이터 수정
-            memberInterestRepository.deleteByMember(member); //기존의 관심사 데이터 전부 삭제
-        }
-        //관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
-        if (characteristicInfoAddModifyReq.getInterestList() == null) return;
-        for (InterestInfo.AddRequest interestAddReq : characteristicInfoAddModifyReq.getInterestList()) {
-            Interest interest = interestRepository.findByName(interestAddReq.getInterestName() + "(sample)");
-            if (interest == null) {
-                throw new NoExistException(NOT_EXISTS_INTEREST_NAME);
-            }
-            memberInterestRepository.save(interestAddReq.toEntity(member, interest));
-        }
+    public MemberInfoRes getMemberInfoDetail(HttpServletRequest request) {
+
+        Member member = kakaoService.getMemberByHttpServletRequest(request);
+        Long memberId = member.getMemberId();
+        Long characteristicId = member.getCharacteristicId();
+
+        MemberInfoDetail memberInfo = memberRepository.findMemberDetailByMemberId(memberId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+        memberInfo.setCharacteristic(CharacteristicInfo.RequestResponse.builder()
+                .characteristic(characteristicRepository.findById(characteristicId)
+                        .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)))
+                .build());
+        memberInfo.setInterests(memberInterestRepository.findByMemberId(memberId));
+
+        return new MemberInfoRes(memberInfo);
     }
 }

@@ -14,6 +14,7 @@ public enum ErrorCode {
     NOT_EXISTS_ID(BAD_REQUEST, "존재하지 않는 id 입니다."),
     NOT_EXISTS_ACCESS_TOKEN(BAD_REQUEST, "유효하지 않는 access token 입니다."),
     WRONG_VALUE(BAD_REQUEST, "잘못된 값이 전송되었습니다."),
+    NOT_GET_SOCIAL_ID(INTERNAL_SERVER_ERROR, "social id를 성공적으로 가져오지 못했습니다."),
 
     //회원
     NOT_EXISTS_MEMBER_ID(BAD_REQUEST, "존재하지 않는 회원 id 입니다."),
@@ -26,7 +27,10 @@ public enum ErrorCode {
     //특성
     NOT_EXISTS_CHARACTERISTIC_ID(BAD_REQUEST, "존재하지 않는 특성 id 입니다."),
     //관심사
-    NOT_EXISTS_INTEREST_NAME(BAD_REQUEST, "존재하지 않는 관심사 이름입니다.");
+    NOT_EXISTS_INTEREST_NAME(BAD_REQUEST, "존재하지 않는 관심사 이름입니다."),
+    //지역
+    NOT_EXISTS_METROPOLITAN_ID(BAD_REQUEST, "존재하지 않는 광역시/도 id 입니다."),
+    NOT_EXISTS_CITY_ID(BAD_REQUEST, "존재하지 않는 시/군/구 id 입니다.");
     private final HttpStatus status;
     private final String message;
 }
