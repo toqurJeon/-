@@ -114,7 +114,7 @@ dependencies {
     implementation("androidx.health:health-connect-client:1.0.0-alpha01")
     // 구글(안드로이드) 헬스
     implementation("com.google.android.gms:play-services-fitness:20.0.0")
-    implementation("com.google.android.gms:play-services-auth:20.0.0")
+//    implementation("com.google.android.gms:play-services-auth:20.0.0")
 //    implementation("com.samsung.android.sdk.healthdata:health-data:2.1.0")
     //
     implementation("com.google.android.libraries.healthdata:health-data-api:1.0.0-alpha01")
@@ -151,7 +151,7 @@ dependencies {
     // Firebase Storage SDK 추가
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-
+    implementation("com.google.android.gms:play-services-auth:20.0.0")
 
 }
 
