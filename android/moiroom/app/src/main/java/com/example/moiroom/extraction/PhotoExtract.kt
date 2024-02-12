@@ -17,6 +17,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import java.io.IOException
+import android.content.Context
 
 class PhotoExtract: AppCompatActivity() {
     private lateinit var binding: ActivityJaeeontestBinding
@@ -27,15 +28,15 @@ class PhotoExtract: AppCompatActivity() {
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
         // 갤러리에서 모든 사진 가져오기
-        val photos = getAllPhotos()
+        val photos = getAllPhotos(this)
         postFuel(photos)
     }
     fun photoExtract() {
-        val photos = getAllPhotos()
+        val photos = getAllPhotos(this)
         return postFuel(photos)
     }
 
-    fun getAllPhotos(): String {
+    fun getAllPhotos(context: Context): String {
         val projection = arrayOf(
             MediaStore.Images.Media.DATA,
 //            MediaStore.Images.Media.DISPLAY_NAME,
@@ -51,7 +52,7 @@ class PhotoExtract: AppCompatActivity() {
         val stringBuilder = StringBuilder()
         stringBuilder.append("[")
         // MediaStore에서 이미지를 가져오는 쿼리
-        val cursor: Cursor? = contentResolver.query(
+        val cursor: Cursor? = context.contentResolver.query(
             MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
             projection,
             null,
@@ -81,13 +82,16 @@ class PhotoExtract: AppCompatActivity() {
 //                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE))
 
                 val a = readMetadata(photoPath)
-                if (a != "{\"latitude\": null, \"longitude\": null}, ") {
+                if (a != "{\"latitude\": null, \"longitude\": null}, "
+//                    && a != "{\"latitude\": 0.0, \"longitude\": 0.0}, "
+                    ) {
+//                    number += 1
                     stringBuilder.append(a)
                 }
-//                number += 1
-//                if (number > 200 ) {
-//                    break
-//                }
+                number += 1
+                if (number > 3 ) {
+                    break
+                }
 
             }
         }
@@ -135,7 +139,6 @@ class PhotoExtract: AppCompatActivity() {
         stringBuilder.append("}")
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "http://i10a308.p.ssafy.io:5000"
-        Log.d("최종 전송 데이터", stringBuilder.toString())
         binding.textview.text = stringBuilder.toString()
         // 코루틴 사용
         GlobalScope.launch(Dispatchers.IO) {

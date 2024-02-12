@@ -1,17 +1,22 @@
 package com.example.moiroom
 
+import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.moiroom.extraction.CallExtract
 import com.example.moiroom.extraction.InstagramExtract
+import com.example.moiroom.extraction.PhotoExtract
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -22,10 +27,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 class LoadingActivity : AppCompatActivity() {
-    var finalInsta = ""
+    var finalInsta = "\"instagram\": { \"accessToken\": \"\" }"
     var finalCall = ""
-    var finalPhoto = "1"
-    var finalGoogle = "1"
+    var finalPhoto = ""
+    var finalGoogle = ""
 
     var accessToken: String? = null
     var refreshToken: String? = null
@@ -58,10 +63,11 @@ class LoadingActivity : AppCompatActivity() {
         animator3.start()
         animator4.start()
         animator5.start()
+        Log.d("인스타데이터", "${InstagramExtract.instadata}")
 
-        instagramData(InstagramExtract().instadata)
+        instagramData(InstagramExtract.instadata)
         callData()
-        postFuel()
+        postFlask1()
 //        finalCall =
 //        finalPhoto =
 //        finalGoogle =
@@ -87,34 +93,54 @@ class LoadingActivity : AppCompatActivity() {
         FuelManager.instance.basePath = "http://i10a308.p.ssafy.io:5000"
         var accessToken: String? = ""
         var userId: String? = ""
+        var code: String? = ""
         val gson = Gson()
         val type = object : TypeToken<Map<String, String>>() {}.type
         if ( res != "") {
             val instaMap: Map<String, String> = gson.fromJson(res, type)
             accessToken = instaMap.get("access_token")
             userId = instaMap.get("user_id")
+//            val uri = Uri.parse(res)
+//            code = uri.getQueryParameter("code")
         }
 
-        Log.d("전달 정보", "{ \"accessToken\": \"$accessToken\", \"userId\": \"$userId\" }")
-        finalInsta = "\"instagram\": { \"accessToken\": \"$accessToken\", \"userId\": \"$userId\" }"
+        Log.d("전달 정보", "{ \"accessToken\": \"$accessToken\" }")
+        finalInsta = "\"instagram\": { \"accessToken\": \"$accessToken\" }"
 //        if ( finalInsta != "" && finalCall != "" && finalPhoto != "" && finalGoogle != "") {
 //            postFuel()
 //        }
     }
 
     fun callData() {
-        if ( NowMatchingActivity.callAuth ) {
+        val isReadCallGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_CALL_LOG
+        ) == PackageManager.PERMISSION_GRANTED
+
+        // 저장소 접근 허용 여부
+        val isExternalStorageGranted = ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+        ) == PackageManager.PERMISSION_GRANTED
+
+        if ( isExternalStorageGranted ) {
             Log.d("전화", "전화 권한 허용")
             finalCall = CallExtract().getCallLog(this)
         } else {
             finalCall = "\"calls\": []"
+        }
+
+        if ( isReadCallGranted ) {
+            finalPhoto = PhotoExtract().getAllPhotos(this)
+        } else {
+            finalPhoto = "[]"
         }
 //        if ( finalInsta != "" && finalCall != "" && finalPhoto != "" && finalGoogle != "") {
 //            postFuel()
 //        }
     }
 
-    private fun postFuel() {
+    private fun postFlask1() {
         val stringBuilder = StringBuilder()
         stringBuilder.append("{ ")
         stringBuilder.append(finalCall)
@@ -122,8 +148,9 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append("\"accessToken\":\"")
         stringBuilder.append(accessToken)  // 여기서 accessToken은 SharedPreferences에서 불러온 값입니다.
         stringBuilder.append("\", ")
-//        stringBuilder.append(finalInsta)
-        stringBuilder.append("\"images\": [] }")
+        stringBuilder.append(finalInsta)
+        stringBuilder.append(", ")
+        stringBuilder.append("\"images\": $finalPhoto }")
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://moiroom.r-e.kr"
         Log.d("최종 전송 데이터", stringBuilder.toString())
@@ -141,6 +168,39 @@ class LoadingActivity : AppCompatActivity() {
                 response.third.fold(
                     success = { data ->
                         Log.d("서버 응답", "$data")
+                        postFlask2(accessToken)
+//                        val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
+//                        startActivity(intent)
+                        finish()
+                    },
+                    failure = { error -> Log.d("서버 에러", "에러: $error") }
+                )
+            } catch (e: Exception) {
+                println("에러: $e")
+            }
+        }
+    }
+
+    private fun postFlask2(token: String?) {
+        // FuelManager 설정 (선택사항)
+        FuelManager.instance.basePath = "https://moiroom.r-e.kr"
+        Log.d("플라스트2", "{ \"accessToken\": \"$token\" }")
+        // 코루틴 사용
+        GlobalScope.launch(Dispatchers.IO) {
+            try {
+                val response = Fuel.post("/match")
+                    .header("Content-Type" to "application/json")
+                    .jsonBody(
+                        """
+                            { "accessToken": "$token" } 
+                        """.trimIndent()
+                    )
+                    .responseString()
+
+                // 응답 확인
+                response.third.fold(
+                    success = { data ->
+                        Log.d("서버 응답2", "$data")
                         val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
                         startActivity(intent)
                         finish()
@@ -152,5 +212,4 @@ class LoadingActivity : AppCompatActivity() {
             }
         }
     }
-
 }

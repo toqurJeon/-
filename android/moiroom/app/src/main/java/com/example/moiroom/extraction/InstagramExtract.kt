@@ -1,6 +1,7 @@
 package com.example.moiroom.extraction
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebResourceRequest
@@ -23,7 +24,9 @@ import kotlinx.coroutines.GlobalScope
 
 class InstagramExtract: AppCompatActivity() {
     private lateinit var binding: ActivityWebviewtestBinding
-    var instadata = ""
+    companion object {
+        var instadata = ""
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
@@ -54,12 +57,13 @@ class InstagramExtract: AppCompatActivity() {
             if (redirectUrl.startsWith("https://example.com/instagramredirection?code=")) {
                 // 여기에서 Redirect URI 처리 및 인증 코드 추출
                 // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
-                val code = redirectUrl.substring(46)
+                Log.d("인스타코드", "${redirectUrl}")
+                val uri = Uri.parse(redirectUrl)
+                val code = uri.getQueryParameter("code") ?: ""
                 postFuel(code)
-                val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
-                startActivity(intent)
+
                 return true
-            } else {Log.d("엘스", "엘스")}
+            } else {Log.d("인스타엘스", "인스타엘스")}
             // else 부분은 추가로 구현해야할 듯
             return super.shouldOverrideUrlLoading(view, request)
         }
@@ -93,7 +97,10 @@ class InstagramExtract: AppCompatActivity() {
                 response.third.fold(
                     success = { data ->
                         NowMatchingActivity.instaAuth = true
+                        Log.d("인스타액세스토큰", "$data")
                         instadata = data
+                        val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
+                        startActivity(intent)
 //                        sendInstagramAccessToken(data)
                     },
                     failure = { error ->
@@ -104,8 +111,8 @@ class InstagramExtract: AppCompatActivity() {
                 println("에러3: $e")
             }
         }
-        val intent = Intent(this, LoadingActivity::class.java)
-        startActivity(intent)
+//        val intent = Intent(this, LoadingActivity::class.java)
+//        startActivity(intent)
     }
 
     fun sendInstagramAccessToken(res: String) {

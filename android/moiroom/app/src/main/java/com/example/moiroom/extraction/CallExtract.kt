@@ -26,11 +26,9 @@ class CallExtract: AppCompatActivity() {
         binding = ActivityJaeeontestBinding.inflate(layoutInflater)
         // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
-        Log.d("함수 실행", "함수 실행")
         // 갤러리에서 모든 사진 가져오기
 //        val calls = getCallLog(this).reversed().subList(1, 4)
         val calls = getCallLog(this)
-        Log.d("사진들", "$calls")
         postFuel(calls)
 //        binding.textview.text = "$calls"
     }
@@ -78,7 +76,7 @@ class CallExtract: AppCompatActivity() {
                     stringBuilder.append("{ \"number\": \"$number\", \"name\": \"$name\", \"date\": $date, \"duration\": $duration, \"type\": $type, \"location\": \"$location\"}, ")
                 }
                 a += 1
-                if ( a > 30 ) {
+                if ( a > 3 ) {
                     break
                 }
             }
@@ -99,7 +97,6 @@ class CallExtract: AppCompatActivity() {
         stringBuilder.append("}")
         // FuelManager 설정 (선택사항)http://www.moiroom.r-e.kr/call
         FuelManager.instance.basePath = "http://www.moiroom.r-e.kr"
-        Log.d("최종 전송 데이터", stringBuilder.toString())
         binding.textview.text = stringBuilder.toString()
         // 코루틴 사용
         GlobalScope.launch(Dispatchers.IO) {
