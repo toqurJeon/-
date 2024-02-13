@@ -8,7 +8,7 @@ data class ChatRoom(
     val memberNickname: String,
     val profileImageUrl: String,
     val lastMessage: String,
-    val updatedAt: Instant
+    val updatedAt: String
 )
 
 //data class ChatRoom(

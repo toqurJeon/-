@@ -39,6 +39,8 @@ import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.view.RadarChartView
 import com.example.moiroom.view.RectangleChartView
 import com.google.android.material.appbar.AppBarLayout
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -276,10 +278,24 @@ class CardAdapter(
                 })
 
                 chatbuttonContainer.setOnClickListener {
-                    val intent = Intent(context, ChatActivity::class.java)
-                    intent.putExtra("memberId", cardInfo.member.memberId)
-                    Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.member.memberId}")
-                    context.startActivity(intent)
+                    val apiService = NetworkModule.provideRetrofit(context)
+                    GlobalScope.launch {
+                        try {
+                            val response = apiService.createChatRoom(cardInfo.member.memberId)
+                            if (response.isSuccessful) {
+                                val intent = Intent(context, ChatActivity::class.java)
+                                intent.putExtra("memberId", cardInfo.member.memberId)
+                                Log.d("TAG", "bind: ${cardInfo.member.memberId}")
+                                context.startActivity(intent)
+                            } else {
+                                // API 호출이 실패하면 여기에 코드를 추가합니다.
+                                Log.e("API Error", "Failed to create chat room")
+                            }
+                        } catch (e: Exception) {
+                            // 네트워크 요청 중 오류가 발생하면 여기에 코드를 추가합니다.
+                            Log.e("Network Error", "Failed to create chat room: ${e.message}")
+                        }
+                    }
                 }
             }
         }
@@ -327,12 +343,25 @@ class CardAdapter(
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
                 }
 
-                // 채팅방 생성 및 이동
                 chatbuttonContainer.setOnClickListener {
-                    val intent = Intent(context, ChatActivity::class.java)
-                    intent.putExtra("memberId", cardInfo.member.memberId)
-
-                    context.startActivity(intent)
+                    val apiService = NetworkModule.provideRetrofit(context)
+                    GlobalScope.launch {
+                        try {
+                            val response = apiService.createChatRoom(cardInfo.member.memberId)
+                            if (response.isSuccessful) {
+                                val intent = Intent(context, ChatActivity::class.java)
+                                intent.putExtra("memberId", cardInfo.member.memberId)
+                                Log.d("TAG", "bind: ${cardInfo.member.memberId}")
+                                context.startActivity(intent)
+                            } else {
+                                // API 호출이 실패하면 여기에 코드를 추가합니다.
+                                Log.e("API Error", "Failed to create chat room")
+                            }
+                        } catch (e: Exception) {
+                            // 네트워크 요청 중 오류가 발생하면 여기에 코드를 추가합니다.
+                            Log.e("Network Error", "Failed to create chat room: ${e.message}")
+                        }
+                    }
                 }
             }
         }

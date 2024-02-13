@@ -68,6 +68,9 @@ interface ApiService {
 
     @GET("/chat")
     suspend fun getChatRooms(@Query("pgno") pgno: Int): Response<ChatRoomResponse>
+
+    @POST("/chat/{memberId}")
+    suspend fun createChatRoom(@Path("memberId") memberId: Long): Response<ResponseBody>
 }
 
 object NetworkModule {

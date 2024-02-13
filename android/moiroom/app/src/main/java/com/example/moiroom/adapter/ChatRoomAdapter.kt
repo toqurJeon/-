@@ -3,6 +3,7 @@ package com.example.moiroom.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.ChatRoom
 import com.example.moiroom.databinding.ChatroomItemLayoutBinding
@@ -40,15 +41,16 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
         val data = dataList[position]
-        val time: String = formatting(data.updatedAt)
+        val time: String = data.updatedAt
 
         holder.binding.apply {
             chatRoomName.text = data.memberNickname
             chatRoomLastMsg.text = data.lastMessage
             chatRoomCreatedAt.text = time
-            // 프로필 이미지 URL로부터 이미지를 로드하는 코드를 추가해야 합니다.
-            // Glide 라이브러리를 사용할 경우 아래와 같이 코드를 작성할 수 있습니다.
-            // Glide.with(parent.context).load(data.profileImageUrl).into(chatMemberImage)
+            // 프로필 이미지 URL로부터 이미지를 로드하는 코드
+            Glide.with(chatMemberImage.context)
+                .load(data.profileImageUrl)
+                .into(chatMemberImage)
         }
     }
 

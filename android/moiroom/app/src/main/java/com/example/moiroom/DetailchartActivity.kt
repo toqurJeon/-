@@ -14,6 +14,7 @@ import com.example.moiroom.adapter.InterestAdapter
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityDetailchartBinding
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.utils.getBGColorCharacter
@@ -33,8 +34,8 @@ class DetailchartActivity : AppCompatActivity() {
         binding = ActivityDetailchartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 멤버 데이터 MyPageFragment로부터 받아오기
-        val memberData: Member? = intent.getParcelableExtra<Member>("memberData")
+        val userResponse: UserResponse? = intent.getParcelableExtra<UserResponse>("memberData")
+        val memberData: Member? = userResponse?.data?.member as Member?
 
         Log.d("TAG", "onCreate: $memberData")
 
