@@ -39,28 +39,40 @@ class NowMatchingActivity : AppCompatActivity() {
         // SharedPreferences에서 'isButtonClicked' 값을 가져옴
         val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+        val isRematching = sharedPreferences.getBoolean("isRematching", false)
         Log.d("MYTAG", "isButtonClicked(이전에 매칭을 진행했는지 확인): $isButtonClicked")
+        Log.d("MYTAG", "isButtonClicked(매칭을 새롭게 하는지 확인): $isRematching")
 
-        if (isButtonClicked) {
+        if (!isRematching) {
+            Log.d("MYTAG", "다시 매칭하기가 아님")
+            if (isButtonClicked) {
+                val intent = Intent(this, NaviActivity::class.java)
+                getUserInfo(this)
+                getMatchedMember(this, 1)
+                startActivity(intent)
+                finish()
 
-            val intent = Intent(this, NaviActivity::class.java)
-            getUserInfo(this)
-            getMatchedMember(this, 1)
-            startActivity(intent)
-            finish()
+            } else {
+                Log.d("MYTAG", "처음 매칭")
+                setContentView(binding.root)
 
-        } else {
-            setContentView(binding.root)
+                binding.mainLayout.setOnClickListener {
 
-            binding.mainLayout.setOnClickListener {
+                    showAuthorityDialog()
 
-                showAuthorityDialog()
-
-                 // 클릭 여부를 SharedPreferences에 저장
-                 val editor = sharedPreferences.edit()
-                 editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
-                 editor.apply()
+                    // 클릭 여부를 SharedPreferences에 저장
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
+                    editor.apply()
+                }
             }
+        } else {
+            Log.d("MYTAG", "새롭게 매칭을 진행합니다.")
+            showAuthorityDialog()
+
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isRematching", false)
+            editor.apply()
         }
     }
 

@@ -1,6 +1,5 @@
 package com.example.moiroom
 
-import ApiService
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -8,12 +7,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.example.moiroom.data.CharacteristicType
-import com.example.moiroom.data.Interest
-import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.FragmentMyPageBinding
@@ -21,16 +16,6 @@ import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getUserInfo
 import com.example.moiroom.view.RadarChartView
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import kotlin.math.log
-import kotlin.math.sign
-import kotlin.properties.Delegates
-
 
 class MyPageFragment : Fragment() {
 

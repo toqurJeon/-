@@ -1,6 +1,7 @@
 package com.example.moiroom
 
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
@@ -8,31 +9,27 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
-import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
-import com.example.moiroom.data.MatchedMemberList
-import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
-import com.example.moiroom.databinding.DialogAuthorityBinding
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
-import com.example.moiroom.databinding.DialogFindCityBinding
+import com.example.moiroom.utils.CachedMatchedMemberListLiveData
+import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMemberList
+import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
-import com.example.moiroom.utils.cacheMatchedMemberList
 import com.example.moiroom.utils.getCharacterDetailDescription
 
 class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private var toggled: Boolean = true
 
-    val cachedUserInfo: UserResponse.Data.Member? by lazy { cacheUserInfo.get("userInfo") }
-    val cachedMatchedMemberList: ResponseData? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
+    var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
+    var cachedMatchedMemberList: ResponseData? = cacheMatchedMemberList.get("matchedMemberList")
 
     // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
     override fun onCreateView(
@@ -49,6 +46,21 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
         Log.d("MYTAG", "Now Matching After Fragment View Created.")
         Log.d("MYTAG", "Member: ${cachedMatchedMemberList?.data}")
+
+        CachedUserInfoLiveData.observe(viewLifecycleOwner) { userInfo ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 사용자 데이터")
+            cachedUserInfo = cacheUserInfo.get("userInfo")
+            if (cachedUserInfo != null) {
+            }
+        }
+
+        CachedMatchedMemberListLiveData.observe(viewLifecycleOwner) {matchedMemberList ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 매칭 멤버 리스트")
+            cachedMatchedMemberList = cacheMatchedMemberList.get("matchedMemberList")
+            if (cachedMatchedMemberList != null) {
+            }
+        }
+
 
         // RecyclerView의 레이아웃 매니저를 설정
         val gridLayoutManager = GridLayoutManager(context, 1)
@@ -92,9 +104,18 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         }
 
         binding.reMatchButton.setOnClickListener {
-            val intent = Intent(context, LoadingActivity::class.java)
+            val sharedPreferences = requireContext().getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isRematching", true)
+            editor.apply()
+
+            val intent = Intent(context, NowMatchingActivity::class.java)
             startActivity(intent)
         }
+    }
+
+    private fun setUI() {
+
     }
 
     private fun setToViewPager() {
