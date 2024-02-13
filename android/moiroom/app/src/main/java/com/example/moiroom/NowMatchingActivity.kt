@@ -68,6 +68,8 @@ class NowMatchingActivity : AppCompatActivity() {
             }
         } else {
             Log.d("MYTAG", "새롭게 매칭을 진행합니다.")
+            setContentView(binding.root)
+
             showAuthorityDialog()
 
             val editor = sharedPreferences.edit()
