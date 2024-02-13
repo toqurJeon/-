@@ -26,7 +26,7 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val chatRoomId = dataList[position].id
+                    val chatRoomId = dataList[position].chatRoomId
                     onItemClickListener?.onItemClick(chatRoomId)
                 }
             }
@@ -40,19 +40,15 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
         val data = dataList[position]
-        val time: String = formatting(data.created_at)
-        val sample_name1 = "김민수"
-        val sample_name2 = "김민지"
+        val time: String = formatting(data.updatedAt)
 
         holder.binding.apply {
-            chatRoomName.text = sample_name1
-            chatRoomLastMsg.text = data.last_message
+            chatRoomName.text = data.memberNickname
+            chatRoomLastMsg.text = data.lastMessage
             chatRoomCreatedAt.text = time
-
-            if (data.id == 2) {
-                chatRoomName.text = sample_name2
-                chatMemberImage.setImageResource(R.drawable.sample_profile2)
-            }
+            // 프로필 이미지 URL로부터 이미지를 로드하는 코드를 추가해야 합니다.
+            // Glide 라이브러리를 사용할 경우 아래와 같이 코드를 작성할 수 있습니다.
+            // Glide.with(parent.context).load(data.profileImageUrl).into(chatMemberImage)
         }
     }
 
@@ -62,11 +58,8 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
 
     private fun formatting(timeInstant: Instant): String {
         val localDateTime = LocalDateTime.ofInstant(timeInstant, ZoneId.of("Asia/Seoul"))
-
-        val formatter = DateTimeFormatter.ofPattern("MM월 DD일 HH:mm")
-
+        val formatter = DateTimeFormatter.ofPattern("MM월 dd일 HH:mm")
         val formattedDateTime = localDateTime.format(formatter)
-
         return formattedDateTime
     }
 }

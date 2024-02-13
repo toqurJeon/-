@@ -2,20 +2,20 @@ package com.example.moiroom.data
 
 import java.time.Instant
 
-//data class ChatRoom(
-//    val chatRoomId: Int,
-//    val memberId: Int,
-//    val memberNickname: String,
-//    val profileImageUrl: String,
-//    val lastMessage: String,
-//    val updatedAt: String
-//)
-
 data class ChatRoom(
-    val id: Int,
-    val last_message: String,
-    val created_at: Instant
+    val chatRoomId: Int,
+    val memberId: Int,
+    val memberNickname: String,
+    val profileImageUrl: String,
+    val lastMessage: String,
+    val updatedAt: Instant
 )
+
+//data class ChatRoom(
+//    val id: Int,
+//    val last_message: String,
+//    val created_at: Instant
+//)
 
 data class ChatRoomResponse(
     val code: Int,
