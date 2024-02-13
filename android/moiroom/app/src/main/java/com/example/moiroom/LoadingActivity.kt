@@ -204,6 +204,8 @@ class LoadingActivity : AppCompatActivity() {
                 response.third.fold(
                     success = { data ->
                         Log.d("서버 응답2", "$data")
+
+
                         val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
                         startActivity(intent)
                         finish()

@@ -477,7 +477,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="나의 관심사에 대한 설명 등"/>
 
-            <LinearLayout
+            <!--LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -507,11 +507,11 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp">
 
-                <!-- com.example.moiroom.view.SleepChartView
+                < com.example.moiroom.view.SleepChartView
                     android:id="@+id/sleepChartView"
                     android:layout_width="360dp"
                     android:layout_height="360dp"
-                    android:layout_gravity="center"/-->
+                    android:layout_gravity="center"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -577,11 +577,11 @@
                     android:textAlignment="textEnd"
                     android:text="24:00"/>
 
-            </FrameLayout>
+            </FrameLayout -->
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="160dp"
                 android:background="@color/white"/>
 
         </LinearLayout>

@@ -14,6 +14,8 @@ import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
+import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMemberList
+import com.example.moiroom.utils.CachedMatchedMemberListLiveData.updateMatchedMemberList
 import com.example.moiroom.utils.CachedUserInfoLiveData.updateUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,7 +26,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val cacheSize = 4 * 1024 * 1024 // 4MB
-val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
 
 object CachedUserInfoLiveData : LiveData<UserResponse.Data.Member>() {
     val cacheUserInfo = LruCache<String, UserResponse.Data.Member>(cacheSize)
@@ -32,6 +33,15 @@ object CachedUserInfoLiveData : LiveData<UserResponse.Data.Member>() {
     fun updateUserInfo(userInfo: UserResponse.Data.Member) {
         cacheUserInfo.put("userInfo", userInfo)
         postValue(userInfo)
+    }
+}
+
+object CachedMatchedMemberListLiveData : LiveData<ResponseData>() {
+    val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+
+    fun updateMatchedMemberList(matchedMemberList: ResponseData) {
+        cacheMatchedMemberList.put("matchedMemberList", matchedMemberList)
+        postValue(matchedMemberList)
     }
 }
 
@@ -66,9 +76,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: $data")
 
-            cacheMatchedMemberList.put("matchedMemberList", data)
-            val cachedMatchedMemberList: ResponseData? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
-            Log.d("MYTAG", "Member: ${cachedMatchedMemberList!!.data}")
+            updateMatchedMemberList(data!!)
         } else {
             Log.d("MYTAG", "getMatchedMember: fail, $response")
 
@@ -489,7 +497,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                     10
                 ),
             )
-            cacheMatchedMemberList.put("matchedMemberList", responseMatchedMemberList)
+            updateMatchedMemberList(responseMatchedMemberList)
         }
     }
 
