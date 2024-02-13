@@ -12,6 +12,7 @@ public class ChatMessageDTO {
     private Long chatMessageId;
     private Long memberId;
     private Long chatRoomId;
+    private String memberNickname;
     private String memberProfileImage;
     private String content;
     private String createdAt;

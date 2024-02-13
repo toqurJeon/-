@@ -17,6 +17,7 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
             "cm.chatMessageId, " +
             "mcr.member.memberId, " +
             "mcr.chatRoom.chatRoomId, " +
+            "mcr.member.nickname, " +
             "mcr.member.imageUrl, " +
             "cm.content, " +
             "cm.createdAt) from ChatMessage cm " +
