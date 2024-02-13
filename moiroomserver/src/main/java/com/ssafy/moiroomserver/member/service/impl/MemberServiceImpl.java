@@ -61,15 +61,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public void login(AddMemberDto dto) {
 
-        // 이미 존재하고 있는 회원인데 로그인 상태인 경우
-        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
-        memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getLoginStatus() == LOGIN) {
-            throw new ExistException(ErrorCode.MEMBER_ALREADY_LOGIN_ERROR);
-        }
-
-        // 이미 존재하고 로그아웃 상태인 경우 -> accessToken 및 refreshToken 갱신해주기
-        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId()) &&
-                memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()).getLoginStatus() == LOGOUT) {
+        if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId())) {
             Member member = memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider());
             member.setLoginStatus(LOGIN);
             member.setAccessToken(dto.getAccessToken());
