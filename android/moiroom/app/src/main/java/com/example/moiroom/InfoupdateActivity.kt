@@ -439,8 +439,8 @@ class InfoupdateActivity : AppCompatActivity() {
                     val response = apiService.updateMemberInfo(
                         metropolitanIdPart,
                         cityIdPart,
-                        memberNicknamePart,
                         memberGenderPart,
+                        memberNicknamePart,
                         memberIntroductionPart,
                         roommateSearchStatusPart,
                         memberProfileImagePart
@@ -453,9 +453,10 @@ class InfoupdateActivity : AppCompatActivity() {
                                 "회원 정보 수정 성공",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            NaviActivity.isUpdateCalled = true
-                            intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
-                            startActivity(intent)
+                            // NaviActivity.isUpdateCalled = true
+                            Log.d("MYTAG", "onCreateView: 수정 성공")
+                            // intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
+                            // startActivity(intent)
                             finish()
                         } else {
                             // 회원 정보 수정 실패

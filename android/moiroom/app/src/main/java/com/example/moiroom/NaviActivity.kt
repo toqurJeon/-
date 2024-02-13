@@ -28,12 +28,12 @@ class NaviActivity : AppCompatActivity() {
         binding = ActivityNaviBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        if (isUpdateCalled) {
-            setFragment(TAG_MY_PAGE, MyPageFragment())
-            isUpdateCalled = false
-        } else {
-            setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
-        }
+//        if (isUpdateCalled) {
+//            setFragment(TAG_MY_PAGE, MyPageFragment())
+//            isUpdateCalled = false
+//        } else {
+//            setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
+//        }
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {

@@ -26,6 +26,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import kotlin.math.log
+import kotlin.math.sign
+import kotlin.properties.Delegates
 
 
 class MyPageFragment : Fragment() {
@@ -37,10 +40,16 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("MYTAG", "onCreateView: 마이페이지 실행")
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
 
-        val cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
+        var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
         if (cachedUserInfo != null) {
+            val memberData: UserResponse.Data.Member = cachedUserInfo
+            setUI(memberData)
+        } else {
+            getUserInfo(requireContext())
+            cachedUserInfo = cacheUserInfo.get("userInfo")
             val memberData: UserResponse.Data.Member = cachedUserInfo
             setUI(memberData)
         }
@@ -89,7 +98,7 @@ class MyPageFragment : Fragment() {
             intent.putExtra("cityName", memberData.cityName)
             intent.putExtra("memberRoommateSearchStatus", memberData.memberRoommateSearchStatus)  // 수정된 코드
 
-            startActivity(intent)
+            startActivityForResult(intent, REQUEST_CODE_UPDATE)
         }
 
         // 사용자 상세 정보 페이지 이동
@@ -113,6 +122,33 @@ class MyPageFragment : Fragment() {
         // 서버로부터 최신 정보를 가져오는 코드
         context?.let {
             getUserInfo(it)
+        }
+    }
+
+    companion object {
+        const val REQUEST_CODE_UPDATE = 1008
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("MYTAG", "onCreateView: 돌아왔다")
+        // 수정 화면에서 돌아왔을 때 처리
+        if (requestCode == REQUEST_CODE_UPDATE) {
+            Log.d("MYTAG", "onCreateView: 잘 돌아왔다")
+            var sign = getUserInfo(requireContext())
+            if (sign == "yes") {
+                Log.d("MYTAG", "onCreateView: 사인 오키")
+                var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
+                if (cachedUserInfo != null) {
+                    val memberData: UserResponse.Data.Member = cachedUserInfo
+                    setUI(memberData)
+                    Log.d("MYTAG", "onCreateView: 데이터 있음, ${memberData.memberNickname}")
+                } else {
+                    Log.d("MYTAG", "onCreateView: 데이터 없음")
+                }
+            }
+        } else {
+            Log.d("MYTAG", "onCreateView: 못 돌아왔다")
         }
     }
 }

@@ -48,8 +48,8 @@ interface ApiService {
     suspend fun updateMemberInfo(
         @Part("metropolitanId") metropolitanId: RequestBody,
         @Part("cityId") cityId: RequestBody,
-        @Part("memberNickname") memberNickname: RequestBody,
         @Part("memberGender") memberGender: RequestBody,
+        @Part("memberNickname") memberNickname: RequestBody,
         @Part("memberIntroduction") memberIntroduction: RequestBody,
         @Part("memberRoommateSearchStatus") memberRoommateSearchStatus: RequestBody,
 //        @Part("memberProfileImage") memberProfileImage: RequestBody,

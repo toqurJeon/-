@@ -252,17 +252,17 @@ class InfoinputActivity : AppCompatActivity() {
                         val memberNickname: String = userInfo.nickname
                         val memberIntroduction: String = binding.editText.text.toString()
 
-                        val metropolitanIdPart = metropolitanId.toString().toRequestBody(MultipartBody.FORM)
-                        val cityIdPart = cityId.toString().toRequestBody(MultipartBody.FORM)
-                        val memberGenderPart = memberGender.toRequestBody(MultipartBody.FORM)
-                        val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
-                        val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
-
                         val sharedPref = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
                         with(sharedPref.edit()) {
                             putString("memberGender", memberGender)
                             apply()
                         }
+
+                        val metropolitanIdPart = metropolitanId.toString().toRequestBody(MultipartBody.FORM)
+                        val cityIdPart = cityId.toString().toRequestBody(MultipartBody.FORM)
+                        val memberGenderPart = memberGender.toRequestBody(MultipartBody.FORM)
+                        val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
+                        val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
 
                         // 이미지 URL을 가져옵니다.
                         val imageUrl: String = userInfo.imageUrl
