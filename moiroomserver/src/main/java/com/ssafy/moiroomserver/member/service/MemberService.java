@@ -20,5 +20,4 @@ public interface MemberService {
     void logout(Long socialId, String provider);
 
     MemberInfoRes getMemberInfoDetail(HttpServletRequest request);
-
 }
