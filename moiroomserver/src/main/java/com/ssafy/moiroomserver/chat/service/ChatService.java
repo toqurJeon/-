@@ -10,4 +10,6 @@ public interface ChatService {
     void addChatRoom(HttpServletRequest request, Long memberId);
 
     PageResponse getChatRooms(HttpServletRequest request, int pgno);
+
+    PageResponse getChatMessages(HttpServletRequest request, Long chatRoomId, int pgno);
 }

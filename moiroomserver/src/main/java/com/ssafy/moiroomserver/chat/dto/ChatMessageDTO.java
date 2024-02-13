@@ -9,7 +9,9 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessageDTO {
 
+    private Long chatMessageId;
     private Long memberId;
+    private Long chatRoomId;
     private String memberProfileImage;
     private String content;
     private String createdAt;

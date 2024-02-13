@@ -4,6 +4,7 @@ import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
 import com.ssafy.moiroomserver.chat.service.ChatService;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
+import com.ssafy.moiroomserver.global.dto.PageResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -11,6 +12,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import static com.ssafy.moiroomserver.global.constants.SuccessCode.GET_CHAT_MESSAGE;
 
 @RestController
 @CrossOrigin("*")
@@ -21,12 +24,31 @@ public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    /**
+     * 챗 메시지 추가 기능 -> websocket, stomp 기능 구현 테스트 필요
+     * @param chatMessageReq
+     * @param chatRoomId
+     */
     @MessageMapping("/room/{chatRoomId}")
     public void addChatMessage(@Payload ChatMessageReq chatMessageReq,
                                @DestinationVariable("chatRoomId") Long chatRoomId) {
         chatService.addChatMessage(chatMessageReq, chatRoomId);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + chatRoomId,
                 chatMessageReq.getMessage());
+    }
+
+    /**
+     * 채팅 메시지 내역 조회 api
+     * @param chatRoomId
+     * @param pgno
+     * @return
+     */
+    @GetMapping("/room/{chatRoomId}")
+    public ApiResponse<?> getChatMessages(HttpServletRequest request,
+                                          @PathVariable Long chatRoomId,
+                                          @RequestParam(required = false, defaultValue = "1") int pgno) {
+        PageResponse pageResponse = chatService.getChatMessages(request, chatRoomId, pgno);
+        return ApiResponse.success(GET_CHAT_MESSAGE, pageResponse);
     }
 
     /**

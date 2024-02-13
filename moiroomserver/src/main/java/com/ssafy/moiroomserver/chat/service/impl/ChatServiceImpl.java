@@ -1,5 +1,6 @@
 package com.ssafy.moiroomserver.chat.service.impl;
 
+import com.ssafy.moiroomserver.chat.dto.ChatMessageDTO;
 import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
 import com.ssafy.moiroomserver.chat.dto.ChatRoomDTO;
 import com.ssafy.moiroomserver.chat.entity.ChatMessage;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Objects;
 
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
+import static com.ssafy.moiroomserver.global.constants.PageSize.GET_CHAT_MESSAGE_LIST_SIZE;
 import static com.ssafy.moiroomserver.global.constants.PageSize.GET_CHAT_ROOM_LIST_SIZE;
 
 @Service
@@ -129,6 +131,32 @@ public class ChatServiceImpl implements ChatService {
                 .totalElements(chatRoomsDTOPage.getTotalElements())
                 .currentPage(chatRoomsDTOPage.getNumber())
                 .pageSize(chatRoomsDTOPage.getSize())
+                .build();
+    }
+
+    @Override
+    public PageResponse getChatMessages(HttpServletRequest request, Long chatRoomId, int pgno) {
+        Member member = kakaoService.getMemberByHttpServletRequest(request);
+
+        if (!memberRepository.existsById(member.getMemberId())) {
+            throw new NoExistException(NOT_EXISTS_MEMBER);
+        }
+
+        PageRequest pageRequest = PageRequest.of(pgno - 1, GET_CHAT_MESSAGE_LIST_SIZE);
+
+        // 내가 속한 채팅방에 있는 채팅 메시지 정보들을 가져올 수 있도록 하기
+        Page<ChatMessageDTO> chatMessageDTOPage = chatMessageRepository.findAllChatRoomMessage(chatRoomId, pageRequest);
+
+        if (chatMessageDTOPage.getTotalElements() < 1) {
+            return null;
+        }
+
+        return PageResponse.builder()
+                .content(chatMessageDTOPage.getContent())
+                .totalPages(chatMessageDTOPage.getTotalPages())
+                .totalElements(chatMessageDTOPage.getTotalElements())
+                .currentPage(chatMessageDTOPage.getNumber())
+                .pageSize(chatMessageDTOPage.getSize())
                 .build();
     }
 }
