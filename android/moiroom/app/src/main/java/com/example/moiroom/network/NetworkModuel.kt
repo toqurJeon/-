@@ -1,5 +1,6 @@
 import android.content.Context
 import android.util.Log
+import com.example.moiroom.data.ChatRoomResponse
 import com.example.moiroom.data.CityResponse
 import com.example.moiroom.data.MemberInfo
 //import com.example.moiroom.data.MemberResponse
@@ -64,6 +65,9 @@ interface ApiService {
     suspend fun getMatchedMemberList(
         @Query("pgno") pgno: Int
     ) : Response<ResponseData>
+
+    @GET("/chat")
+    suspend fun getChatRooms(@Query("pgno") pgno: Int): Response<ChatRoomResponse>
 }
 
 object NetworkModule {
