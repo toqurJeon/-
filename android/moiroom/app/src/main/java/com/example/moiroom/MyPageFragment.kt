@@ -106,4 +106,13 @@ class MyPageFragment : Fragment() {
             startActivity(intent)
         }
     }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 서버로부터 최신 정보를 가져오는 코드
+        context?.let {
+            getUserInfo(it)
+        }
+    }
 }

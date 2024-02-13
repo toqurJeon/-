@@ -448,15 +448,14 @@ class InfoupdateActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            // 회원 정보 수정 성공
                             Toast.makeText(
                                 this@InfoupdateActivity,
                                 "회원 정보 수정 성공",
                                 Toast.LENGTH_SHORT
                             ).show()
+                            NaviActivity.isUpdateCalled = true
                             intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
-                            getUserInfo(this@InfoupdateActivity)
-                            getMatchedMember(this@InfoupdateActivity, 1)
+                            startActivity(intent)
                             finish()
                         } else {
                             // 회원 정보 수정 실패
