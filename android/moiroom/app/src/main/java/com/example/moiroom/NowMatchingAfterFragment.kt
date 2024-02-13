@@ -51,6 +51,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
             Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 사용자 데이터")
             cachedUserInfo = cacheUserInfo.get("userInfo")
             if (cachedUserInfo != null) {
+                setCardAdapter(toggled)
             }
         }
 
@@ -58,6 +59,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
             Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 매칭 멤버 리스트")
             cachedMatchedMemberList = cacheMatchedMemberList.get("matchedMemberList")
             if (cachedMatchedMemberList != null) {
+                setCardAdapter(toggled)
             }
         }
 
@@ -70,7 +72,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         // 체크된 상태에 따른 초기 화면 설정
         binding.viewPager2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
-        setCardAdapter(true)
+        setCardAdapter(toggled)
 
         // 현재 몇번째 뷰페이저를 보고 있는지 확인
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -142,6 +144,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     }
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
+        Log.d("MYTAG", "Now Matching After Fragment , 새롭게 데이터 어댑터 세팅")
         if (cachedMatchedMemberList != null && cachedUserInfo != null) {
             // CardAdapter 생성자에 UserResponse.Data.Member 타입의 cachedUserInfo를 전달
             val cardAdapter = CardAdapter(requireContext(), cachedMatchedMemberList!!.data.content, cachedUserInfo!!, isButton1Checked)

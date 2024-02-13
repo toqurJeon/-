@@ -14,6 +14,7 @@ import com.example.moiroom.adapter.InterestAdapter
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityDetailchartBinding
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.utils.getBGColorCharacter
@@ -34,7 +35,7 @@ class DetailchartActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 멤버 데이터 MyPageFragment로부터 받아오기
-        val memberData: Member? = intent.getParcelableExtra<Member>("memberData")
+        val memberData: UserResponse.Data.Member? = intent.getParcelableExtra<UserResponse.Data.Member>("memberData")
 
         Log.d("TAG", "onCreate: $memberData")
 
@@ -73,10 +74,10 @@ class DetailchartActivity : AppCompatActivity() {
             binding.interestRecyclerView.adapter = interestAdapter
 
             // 수면 차트
-            val sleepChart = binding.sleepChartView
-            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
-            binding.sleepTimeText.text = memberData.characteristic.sleepAt
-            binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
+//            val sleepChart = binding.sleepChartView
+//            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
+//            binding.sleepTimeText.text = memberData.characteristic.sleepAt
+//            binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
 
             binding.characterDescriptionButton.setOnClickListener {
                 Log.d("MYTAG", "onCreate: ${binding.characterDetailName.text}")

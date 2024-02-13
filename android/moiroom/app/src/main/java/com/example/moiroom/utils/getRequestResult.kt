@@ -572,7 +572,7 @@ fun getUserInfo(context: Context) {
                 Log.d("MYTAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}, memberNickname: ${member.memberNickname}")
                 Log.d("MYTAG", "유저 데이터 가져옴 ${member.memberRoommateSearchStatus}")
             } else {
-                Log.d("TAG", "getUserInfo: Failed to get user info")
+                Log.d("MYTAG", "getUserInfo: Failed to get user info")
                 Log.d("TAG", "Response Code: ${response.code()}, Response Message: ${response.message()}")
                 response.errorBody()?.let {
                     Log.d("TAG", "Error Body: ${it.string()}")
@@ -633,7 +633,7 @@ fun getUserInfo(context: Context) {
                 updateUserInfo(responseUserInfo.data.member)
             }
         } catch (e: Exception) {
-            Log.e("TAG", "getUserInfo: Error", e)
+            Log.e("MYTAG", "getUserInfo: Error", e)
             e.printStackTrace()
 
             val responseUserInfo: UserResponse =

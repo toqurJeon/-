@@ -203,7 +203,6 @@ class CardAdapter(
 
                 // 내 관심사 목록
                 binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
-                Log.d("MYTAG", "bind: ${myInfo.interests}")
                 val interestAdapter2 = InterestAdapter(context, myInfo.interests)
                 binding.interestRecyclerView2.adapter = interestAdapter2
 
@@ -247,8 +246,6 @@ class CardAdapter(
                     }
                 })
 
-                Log.d("MYTAG", "interest chart . width : ${binding.recycler.layoutParams.width}")
-
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView
 //                sleepChart.setSleepTime(cardInfo.member.characteristic.sleepAt, cardInfo.member.characteristic.wakeUpAt)
@@ -278,7 +275,6 @@ class CardAdapter(
                 chatbuttonContainer.setOnClickListener {
                     val intent = Intent(context, ChatActivity::class.java)
                     intent.putExtra("memberId", cardInfo.member.memberId)
-                    Log.d("TAG!!!!!!!!!!!!!!!!!!!!!!", "bind: ${cardInfo.member.memberId}")
                     context.startActivity(intent)
                 }
             }
@@ -353,8 +349,6 @@ class CardAdapter(
         val currentMargin = (binding.characterLocation.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
         val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
 
-        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
-
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
             duration = 800
             interpolator = AccelerateDecelerateInterpolator()
@@ -379,8 +373,6 @@ class CardAdapter(
 
         val currentMargin = (binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
         val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
-
-        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
             duration = 600
