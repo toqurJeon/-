@@ -13,8 +13,6 @@ public class ChatMessageReq {
 
     private Long senderId;
 
-    private Long receiverId;
-
     private Long roomId;
 
     private String message;
