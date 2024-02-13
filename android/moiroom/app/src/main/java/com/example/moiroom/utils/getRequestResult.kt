@@ -57,6 +57,8 @@ fun getMatchedMember(context: Context, pgno: Int) {
             Log.d("MYTAG", "getMatchedMember: $data")
 
             cacheMatchedMemberList.put("matchedMemberList", data)
+            val cachedMatchedMemberList: ResponseData? by lazy { cacheMatchedMemberList.get("matchedMemberList") }
+            Log.d("MYTAG", "Member: ${cachedMatchedMemberList!!.data}")
         } else {
             Log.d("MYTAG", "getMatchedMember: fail, $response")
         }
