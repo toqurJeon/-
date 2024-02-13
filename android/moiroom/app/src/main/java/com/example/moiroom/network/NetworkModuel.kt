@@ -52,7 +52,7 @@ interface ApiService {
         @Part("memberGender") memberGender: RequestBody,
         @Part("memberNickname") memberNickname: RequestBody,
         @Part("memberIntroduction") memberIntroduction: RequestBody,
-        @Part("memberRoommateSearchStatus") memberRoommateSearchStatus: RequestBody,
+        @Part("roommateSearchStatus") roommateSearchStatus: RequestBody,
 //        @Part("memberProfileImage") memberProfileImage: RequestBody,
         @Part memberProfileImage: MultipartBody.Part // 이미지 파일을 업로드하는 파라미터를 추가합니다.
     ): Response<MyResponse>

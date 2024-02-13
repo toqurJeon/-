@@ -81,7 +81,7 @@ class InfoupdateActivity : AppCompatActivity() {
         val metropolitanName = intent.getStringExtra("metropolitanName")
         val cityName = intent.getStringExtra("cityName")
         var memberRoommateSearchStatus = intent.getIntExtra("memberRoommateSearchStatus", 1)
-        Log.d("MYTAG", "onCreate: $memberRoommateSearchStatus")
+        Log.d("MYTAG", "onCreate: 첫번째 $memberRoommateSearchStatus")
 
         // 사용자 정보 불러오기
         binding.memberNickname.text = memberNickname
