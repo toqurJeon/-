@@ -1,9 +1,11 @@
 package com.ssafy.moiroomserver.chat.service.impl;
 
-import com.ssafy.moiroomserver.chat.dto.ChatRequest;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
 import com.ssafy.moiroomserver.chat.dto.ChatRoomDTO;
+import com.ssafy.moiroomserver.chat.entity.ChatMessage;
 import com.ssafy.moiroomserver.chat.entity.ChatRoom;
 import com.ssafy.moiroomserver.chat.entity.MemberChatRoom;
+import com.ssafy.moiroomserver.chat.entity.MemberChatRoomId;
 import com.ssafy.moiroomserver.chat.repository.ChatMessageRepository;
 import com.ssafy.moiroomserver.chat.repository.ChatRoomRepository;
 import com.ssafy.moiroomserver.chat.repository.MemberChatRoomRepository;
@@ -19,9 +21,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Optional;
 
-import static com.ssafy.moiroomserver.global.constants.ErrorCode.NOT_EXISTS_MEMBER;
+import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 import static com.ssafy.moiroomserver.global.constants.PageSize.GET_CHAT_ROOM_LIST_SIZE;
 
 @Service
@@ -34,9 +36,31 @@ public class ChatServiceImpl implements ChatService {
     private final MemberRepository memberRepository;
     private final ChatMessageRepository chatMessageRepository;
 
-    @Override
-    public void save(ChatRequest request) {
 
+    @Override
+    public void addChatMessage(ChatMessageReq request) {
+        String message = request.getMessage();
+        Long chatRoomId = request.getRoomId();
+        Long senderId = request.getSenderId();
+
+        if (message == null) {
+            throw new NoExistException(NOT_EXISTS_CHAT_MESSAGE_CONTENT);
+        }
+
+        Member member = memberRepository.findById(senderId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
+        ChatRoom chatRoom = chatRoomRepository.findById(chatRoomId)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHAT_ROOM_ID));
+
+        MemberChatRoom memberChatRoom = memberChatRoomRepository.findMemberChatRoomByMemberAndChatRoom(member, chatRoom)
+                .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER_CHAT_ROOM));
+
+        ChatMessage chatMessage = ChatMessage.builder()
+                .memberChatRoom(memberChatRoom)
+                .content(message)
+                .build();
+
+        chatMessageRepository.save(chatMessage);
     }
 
     @Override

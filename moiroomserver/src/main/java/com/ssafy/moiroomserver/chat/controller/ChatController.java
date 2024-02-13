@@ -21,10 +21,12 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/messages")
-    public void addChatMessage(@Payload ChatMessageReq request) {
-        chatService.save(request);
+    public ApiResponse<?> addChatMessage(@Payload ChatMessageReq request) {
+        chatService.addChatMessage(request);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + request.getRoomId(),
                 request.getMessage());
+
+        return ApiResponse.success(SuccessCode.ADD_CHAT_MESSAGE);
     }
 
     /**

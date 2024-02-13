@@ -2,9 +2,16 @@ package com.ssafy.moiroomserver.chat.entity;
 
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "chat_message")
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Builder
 public class ChatMessage extends BaseEntity {
 
     @Id
