@@ -5,6 +5,7 @@ import NetworkModule
 import android.content.Context
 import android.util.Log
 import android.util.LruCache
+import androidx.lifecycle.LiveData
 import com.example.moiroom.data.Characteristic
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.MatchedMember
@@ -13,6 +14,7 @@ import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
+import com.example.moiroom.utils.CachedUserInfoLiveData.updateUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -22,8 +24,16 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 val cacheSize = 4 * 1024 * 1024 // 4MB
-val cacheUserInfo = LruCache<String, UserResponse.Data.Member>(cacheSize)
 val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+
+object CachedUserInfoLiveData : LiveData<UserResponse.Data.Member>() {
+    val cacheUserInfo = LruCache<String, UserResponse.Data.Member>(cacheSize)
+
+    fun updateUserInfo(userInfo: UserResponse.Data.Member) {
+        cacheUserInfo.put("userInfo", userInfo)
+        postValue(userInfo)
+    }
+}
 
 private lateinit var apiService: ApiService
 
@@ -538,9 +548,9 @@ fun getMatchedMember(context: Context, pgno: Int) {
 
 
 }
-fun getUserInfo(context: Context): String {
+fun getUserInfo(context: Context) {
     apiService = NetworkModule.provideRetrofit(context)
-    var sign2 = "no"
+
     GlobalScope.launch(Dispatchers.IO) {
         try {
             val response = apiService.getUserInfo()
@@ -548,10 +558,11 @@ fun getUserInfo(context: Context): String {
                 val userResponse = response.body()!!
                 val member = userResponse.data.member
                 Log.d("TAG","${response.body()}")
-                cacheUserInfo.put("userInfo", member)
-                Log.d("MYTAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}, memberName: ${member.memberNickname}")
-                Log.d("MYTAG", "유저 데이터 가져옴")
-                sign2 = "yes"
+
+                updateUserInfo(member)
+
+                Log.d("MYTAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}, memberNickname: ${member.memberNickname}")
+                Log.d("MYTAG", "유저 데이터 가져옴 ${member.memberRoommateSearchStatus}")
             } else {
                 Log.d("TAG", "getUserInfo: Failed to get user info")
                 Log.d("TAG", "Response Code: ${response.code()}, Response Message: ${response.message()}")
@@ -611,7 +622,7 @@ fun getUserInfo(context: Context): String {
                     )
 
                 // 메모리 캐시에 저장
-                cacheUserInfo.put("userInfo", responseUserInfo.data.member)
+                updateUserInfo(responseUserInfo.data.member)
             }
         } catch (e: Exception) {
             Log.e("TAG", "getUserInfo: Error", e)
@@ -669,8 +680,7 @@ fun getUserInfo(context: Context): String {
                 )
 
             // 메모리 캐시에 저장
-            cacheUserInfo.put("userInfo", responseUserInfo.data.member)
+            updateUserInfo(responseUserInfo.data.member)
         }
     }
-    return sign2
 }

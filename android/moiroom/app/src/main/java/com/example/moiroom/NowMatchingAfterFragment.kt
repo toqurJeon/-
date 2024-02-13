@@ -23,8 +23,8 @@ import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogAuthorityBinding
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.databinding.DialogFindCityBinding
+import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.cacheMatchedMemberList
-import com.example.moiroom.utils.cacheUserInfo
 import com.example.moiroom.utils.getCharacterDetailDescription
 
 class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {

@@ -17,7 +17,8 @@ import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.FragmentMyPageBinding
-import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getUserInfo
 import com.example.moiroom.view.RadarChartView
 import kotlinx.coroutines.Dispatchers
@@ -45,14 +46,21 @@ class MyPageFragment : Fragment() {
 
         var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
         if (cachedUserInfo != null) {
-            val memberData: UserResponse.Data.Member = cachedUserInfo
+            val memberData: UserResponse.Data.Member = cachedUserInfo!!
             setUI(memberData)
         } else {
             getUserInfo(requireContext())
-            cachedUserInfo = cacheUserInfo.get("userInfo")
-            val memberData: UserResponse.Data.Member = cachedUserInfo
-            setUI(memberData)
         }
+
+        CachedUserInfoLiveData.observe(viewLifecycleOwner) {userInfo ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 마이페이지")
+            cachedUserInfo = cacheUserInfo.get("userInfo")
+            if (cachedUserInfo != null) {
+                val memberData: UserResponse.Data.Member = cachedUserInfo!!
+                setUI(memberData)
+            }
+        }
+
         return binding.root
     }
 
@@ -97,8 +105,9 @@ class MyPageFragment : Fragment() {
             intent.putExtra("metropolitanName", memberData.metropolitanName)
             intent.putExtra("cityName", memberData.cityName)
             intent.putExtra("memberRoommateSearchStatus", memberData.memberRoommateSearchStatus)  // 수정된 코드
+            Log.d("MYTAG", "onCreateView: 사용자 데이터 수정 페이지로 이동, ${memberData.memberRoommateSearchStatus}")
 
-            startActivityForResult(intent, REQUEST_CODE_UPDATE)
+            startActivity(intent)
         }
 
         // 사용자 상세 정보 페이지 이동
@@ -122,33 +131,6 @@ class MyPageFragment : Fragment() {
         // 서버로부터 최신 정보를 가져오는 코드
         context?.let {
             getUserInfo(it)
-        }
-    }
-
-    companion object {
-        const val REQUEST_CODE_UPDATE = 1008
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        Log.d("MYTAG", "onCreateView: 돌아왔다")
-        // 수정 화면에서 돌아왔을 때 처리
-        if (requestCode == REQUEST_CODE_UPDATE) {
-            Log.d("MYTAG", "onCreateView: 잘 돌아왔다")
-            var sign = getUserInfo(requireContext())
-            if (sign == "yes") {
-                Log.d("MYTAG", "onCreateView: 사인 오키")
-                var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
-                if (cachedUserInfo != null) {
-                    val memberData: UserResponse.Data.Member = cachedUserInfo
-                    setUI(memberData)
-                    Log.d("MYTAG", "onCreateView: 데이터 있음, ${memberData.memberNickname}")
-                } else {
-                    Log.d("MYTAG", "onCreateView: 데이터 없음")
-                }
-            }
-        } else {
-            Log.d("MYTAG", "onCreateView: 못 돌아왔다")
         }
     }
 }

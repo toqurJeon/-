@@ -27,7 +27,7 @@ import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
-import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
 import fetchUserInfo
@@ -80,14 +80,15 @@ class InfoupdateActivity : AppCompatActivity() {
         val memberIntroduction = intent.getStringExtra("memberIntroduction")
         val metropolitanName = intent.getStringExtra("metropolitanName")
         val cityName = intent.getStringExtra("cityName")
-        var memberRoomateSearchStatus = intent.getIntExtra("memberRoomateSearchStatus", 1)
+        var memberRoommateSearchStatus = intent.getIntExtra("memberRoommateSearchStatus", 1)
+        Log.d("MYTAG", "onCreate: $memberRoommateSearchStatus")
 
         // 사용자 정보 불러오기
         binding.memberNickname.text = memberNickname
         binding.memberIntroduction.text = memberIntroduction
         binding.memberLocation.text = "$metropolitanName, $cityName"
 
-        if (memberRoomateSearchStatus == 1) {
+        if (memberRoommateSearchStatus == 1) {
             binding.statusSwitch.isChecked = true
             binding.statusText.text = "룸메이트를 찾고 있어요"
         } else {
@@ -173,10 +174,10 @@ class InfoupdateActivity : AppCompatActivity() {
         binding.statusSwitch.setOnCheckedChangeListener { buttonView, isChecked ->
             if (isChecked) {
                 binding.statusText.text = "룸메이트 찾고 있어요"
-                memberRoomateSearchStatus = 1
+                memberRoommateSearchStatus = 1
             } else {
                 binding.statusText.text = "룸메이트 안 찾아요"
-                memberRoomateSearchStatus = 0
+                memberRoommateSearchStatus = 0
             }
             // PATCH request
         }
@@ -383,6 +384,7 @@ class InfoupdateActivity : AppCompatActivity() {
                             userInfo.memberIntroduction // 변경사항이 없을 경우 이전 정보를 사용
                         }
                     val roommateSearchStatus = if (binding.statusSwitch.isChecked) 1 else 0
+                    Log.d("MYTAG", "onCreateView: status ${binding.statusSwitch.isChecked}")
 
                     val metropolitanIdPart =
                         selectedMetropolitanId.toString().toRequestBody(MultipartBody.FORM)
@@ -392,6 +394,7 @@ class InfoupdateActivity : AppCompatActivity() {
                         memberIntroduction.toRequestBody(MultipartBody.FORM)
                     val roommateSearchStatusPart =
                         roommateSearchStatus.toString().toRequestBody(MultipartBody.FORM)
+                    Log.d("MYTAG", "onCreateView: status ${roommateSearchStatus}")
 
                     val imageUrl: String = userInfo?.memberProfileImageUrl ?: run {
                         Log.e("UpdateMemberInfo", "Image URL is null")
@@ -455,6 +458,7 @@ class InfoupdateActivity : AppCompatActivity() {
                             ).show()
                             // NaviActivity.isUpdateCalled = true
                             Log.d("MYTAG", "onCreateView: 수정 성공")
+                            getUserInfo(this@InfoupdateActivity)
                             // intent = Intent(this@InfoupdateActivity, NaviActivity::class.java)
                             // startActivity(intent)
                             finish()

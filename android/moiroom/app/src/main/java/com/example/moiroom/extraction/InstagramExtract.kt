@@ -101,7 +101,7 @@ class InstagramExtract: AppCompatActivity() {
                         instadata = data
 //                        val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
 //                        startActivity(intent)
-//                        sendInstagramAccessToken(data)
+                        finish()
                     },
                     failure = { error ->
                         Log.d("에러4", "에러: $error")
@@ -111,8 +111,6 @@ class InstagramExtract: AppCompatActivity() {
                 println("에러3: $e")
             }
         }
-//        val intent = Intent(this, LoadingActivity::class.java)
-//        startActivity(intent)
     }
 
     fun sendInstagramAccessToken(res: String) {
