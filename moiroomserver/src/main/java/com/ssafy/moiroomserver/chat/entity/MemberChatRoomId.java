@@ -1,5 +1,6 @@
 package com.ssafy.moiroomserver.chat.entity;
 
+import com.ssafy.moiroomserver.member.entity.Member;
 import lombok.*;
 
 import java.io.Serializable;
@@ -11,7 +12,7 @@ import java.io.Serializable;
 @Setter
 public class MemberChatRoomId implements Serializable {
 
-    private Long member;
+    private Member member;
 
-    private Long chatRoom;
+    private ChatRoom chatRoom;
 }

@@ -1,13 +1,13 @@
 package com.ssafy.moiroomserver.chat.controller;
 
-import com.ssafy.moiroomserver.chat.dto.ChatRequest;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
 import com.ssafy.moiroomserver.chat.service.ChatService;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,10 +21,12 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/messages")
-    public void chat(@Valid ChatRequest request) {
-        chatService.save(request);
+    public ApiResponse<?> addChatMessage(@Payload ChatMessageReq request) {
+        chatService.addChatMessage(request);
         simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + request.getRoomId(),
                 request.getMessage());
+
+        return ApiResponse.success(SuccessCode.ADD_CHAT_MESSAGE);
     }
 
     /**
