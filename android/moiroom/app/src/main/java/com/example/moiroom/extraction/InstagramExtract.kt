@@ -99,8 +99,8 @@ class InstagramExtract: AppCompatActivity() {
                         NowMatchingActivity.instaAuth = true
                         Log.d("인스타액세스토큰", "$data")
                         instadata = data
-                        val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
-                        startActivity(intent)
+//                        val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
+//                        startActivity(intent)
 //                        sendInstagramAccessToken(data)
                     },
                     failure = { error ->

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import com.example.moiroom.extraction.CallExtract
 import com.example.moiroom.extraction.InstagramExtract
 import com.example.moiroom.extraction.PhotoExtract
+import com.example.moiroom.extraction.YoutubeExtract
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -149,6 +150,8 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append(accessToken)  // 여기서 accessToken은 SharedPreferences에서 불러온 값입니다.
         stringBuilder.append("\", ")
         stringBuilder.append(finalInsta)
+        stringBuilder.append(", ")
+        stringBuilder.append(" \"youtube\": { \"accessToken\": \"${YoutubeExtract.youtubeToken}\"} ")
         stringBuilder.append(", ")
         stringBuilder.append("\"images\": $finalPhoto }")
         // FuelManager 설정 (선택사항)
