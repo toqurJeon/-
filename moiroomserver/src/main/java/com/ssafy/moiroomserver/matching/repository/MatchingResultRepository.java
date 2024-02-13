@@ -23,6 +23,7 @@ public interface MatchingResultRepository extends JpaRepository<MatchingResult, 
 			+ "WHERE (m1.memberId = :id OR m2.memberId = :id) "
 			+ "AND m1.roommateSearchStatus = 1 AND m2.roommateSearchStatus = 1 "
 			+ "AND m1.accountStatus = 1 AND m2.accountStatus = 1 "
+			+ "AND m1.gender = m2.gender "
 			+ "AND m1.metropolitanId = m2.metropolitanId AND m1.cityId = m2.cityId "
 			+ "ORDER BY mr.rate DESC"
 	)
@@ -39,6 +40,7 @@ public interface MatchingResultRepository extends JpaRepository<MatchingResult, 
 				+ "JOIN Member m2 ON mr.memberTwoId = m2.memberId "
 				+ "WHERE m1.roommateSearchStatus = 0 OR m2.roommateSearchStatus = 0 "
 				+ "OR m1.accountStatus != 1 OR m2.accountStatus != 1 "
+				+ "OR m1.gender != m2.gender "
 				+ "OR m1.metropolitanId != m2.metropolitanId OR m1.cityId != m2.cityId "
 			+ ") tmp "
 		+ ")"
