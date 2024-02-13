@@ -28,6 +28,7 @@ import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
 import com.example.moiroom.databinding.MatchedListLayoutBinding
 import com.example.moiroom.databinding.MatchedLayoutBinding
@@ -45,7 +46,7 @@ import kotlin.math.roundToInt
 class CardAdapter(
     private val context: Context,
     private val cardInfoList: List<MatchedMemberData>,
-    private val myInfo: Member,
+    private val myInfo: UserResponse.Data.Member,
     private val isToggleButtonChecked: Boolean,
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 

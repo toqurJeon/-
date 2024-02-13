@@ -1,19 +1,31 @@
 package com.example.moiroom
 
+import ApiService
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
+import androidx.core.content.ContextCompat.startActivity
 import com.bumptech.glide.Glide
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.FragmentMyPageBinding
 import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.utils.getUserInfo
 import com.example.moiroom.view.RadarChartView
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 
 class MyPageFragment : Fragment() {
@@ -27,16 +39,15 @@ class MyPageFragment : Fragment() {
     ): View? {
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
 
-        val cachedUserInfo: Member? = cacheUserInfo.get("userInfo")
+        val cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
         if (cachedUserInfo != null) {
-            val memberData: Member = cachedUserInfo
+            val memberData: UserResponse.Data.Member = cachedUserInfo
             setUI(memberData)
         }
-
         return binding.root
     }
 
-    private fun setUI(memberData: Member) {
+    private fun setUI(memberData: UserResponse.Data.Member) {
         val profileImageUrl = memberData.memberProfileImageUrl
         if (profileImageUrl != null) {
             val profileImageView = binding.memberProfileImage
@@ -76,7 +87,7 @@ class MyPageFragment : Fragment() {
             intent.putExtra("memberIntroduction", memberData.memberIntroduction)
             intent.putExtra("metropolitanName", memberData.metropolitanName)
             intent.putExtra("cityName", memberData.cityName)
-            intent.putExtra("memberRoomateSearchStatus", memberData.memberRoomateSearchStatus)
+            intent.putExtra("memberRoommateSearchStatus", memberData.memberRoommateSearchStatus)  // 수정된 코드
 
             startActivity(intent)
         }
@@ -93,6 +104,15 @@ class MyPageFragment : Fragment() {
         binding.advancedSettingButton.setOnClickListener {
             val intent = Intent(requireContext(), AdsettingActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 서버로부터 최신 정보를 가져오는 코드
+        context?.let {
+            getUserInfo(it)
         }
     }
 }

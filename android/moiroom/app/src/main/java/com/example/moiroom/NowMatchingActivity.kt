@@ -44,7 +44,7 @@ class NowMatchingActivity : AppCompatActivity() {
         if (isButtonClicked == false) {
 
             val intent = Intent(this, NaviActivity::class.java)
-            getUserInfo()
+            getUserInfo(this)
             getMatchedMember(this, 1)
             startActivity(intent)
             finish()

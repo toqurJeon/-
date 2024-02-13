@@ -12,12 +12,17 @@ import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
 import com.example.moiroom.data.ResponseData
+import com.example.moiroom.data.UserResponse
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 val cacheSize = 4 * 1024 * 1024 // 4MB
-val cacheUserInfo = LruCache<String, Member>(cacheSize)
+val cacheUserInfo = LruCache<String, UserResponse.Data.Member>(cacheSize)
 val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
 
 private lateinit var apiService: ApiService
@@ -35,7 +40,7 @@ fun getRequestResult(result: Boolean, context: Context) {
             // 매칭 리스트 GET 요청
             Log.d("TAG", "getRequestResult: 매칭리스트 요청 보내기!")
 
-            getUserInfo()
+            getUserInfo(context)
             getMatchedMember(context, 1)
         }
     }
@@ -473,56 +478,134 @@ fun getMatchedMember(context: Context, pgno: Int) {
 //            ),
 //        )
 
+    }
+
+
+//fun getUserInfo() {
+//    // 본인 정보 GET 요청
+//
+//    // 응답 데이터 저장 (현재: 더미 데이터)
+//    val responseUserInfo: Member = Member(
+//        1,
+//        "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
+//        "안드리아",
+//        "여자",
+//        "김민식",
+//        1999,
+//        "서울특별시",
+//        "강남구",
+//        "멍멍이를 엄청 좋아해요. 댕댕.",
+//        1,
+//        Characteristic(
+//            6520,
+//            7552,
+//            6993,
+//            7653,
+//            5683,
+//            4210,
+//            6020,
+//            8758,
+//            "23:47",
+//            "06:32",
+//        ),
+//        listOf(
+//            Interest(
+//                "운동",
+//                48
+//            ),
+//            Interest(
+//                "음악",
+//                36
+//            ),
+//            Interest(
+//                "요리",
+//                11
+//            ),
+//            Interest(
+//                "게임",
+//                5
+//            )
+//        )
+//    )
+////    // 메모리 캐시에 저장
+//    cacheUserInfo.put("userInfo", responseUserInfo)
+//}
+
+//    // 응답 데이터 저장 (현재: 더미 데이터)
+//    val responseUserInfo: Member = Member(
+//        1,
+//        "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
+//        "안드리아",
+//        "여자",
+//        "김민식",
+//        1999,
+//        "서울특별시",
+//        "강남구",
+//        "멍멍이를 엄청 좋아해요. 댕댕.",
+//        1,
+//        Characteristic(
+//            6520,
+//            7552,
+//            6993,
+//            7653,
+//            5683,
+//            4210,
+//            6020,
+//            8758,
+//            "23:47",
+//            "06:32",
+//        ),
+//        listOf(
+//            Interest(
+//                "운동",
+//                42
+//            ),
+//            Interest(
+//                "음악",
+//                28
+//            ),
+//            Interest(
+//                "게임",
+//                19
+//            ),
+//            Interest(
+//                "요리",
+//                11
+//            )
+//        )
+//    )
+//    // 메모리 캐시에 저장
+//    cacheUserInfo.put("userInfo", responseUserInfo)
+
+}
+fun getUserInfo(context: Context) {
+    apiService = NetworkModule.provideRetrofit(context)
+    GlobalScope.launch(Dispatchers.IO) {
+        try {
+            val response = apiService.getUserInfo()
+            if (response.isSuccessful && response.body() != null) {
+                val userResponse = response.body()!!
+                val member = userResponse.data.member
+                Log.d("TAG","${response.body()}")
+                cacheUserInfo.put("userInfo", member)
+                Log.d("TAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}")
+            } else {
+                Log.d("TAG", "getUserInfo: Failed to get user info")
+                Log.d("TAG", "Response Code: ${response.code()}, Response Message: ${response.message()}")
+                response.errorBody()?.let {
+                    Log.d("TAG", "Error Body: ${it.string()}")
+                }
+            }
+        } catch (e: Exception) {
+            Log.e("TAG", "getUserInfo: Error", e)
+            e.printStackTrace()
+        }
+    }
 }
 
 
-fun getUserInfo() {
-    // 본인 정보 GET 요청
 
-    // 응답 데이터 저장 (현재: 더미 데이터)
-    val responseUserInfo: Member = Member(
-        1,
-        "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
-        "안드리아",
-        "여자",
-        "김민식",
-        1999,
-        "서울특별시",
-        "강남구",
-        "멍멍이를 엄청 좋아해요. 댕댕.",
-        1,
-        Characteristic(
-            6520,
-            7552,
-            6993,
-            7653,
-            5683,
-            4210,
-            6020,
-            8758,
-            "23:47",
-            "06:32",
-        ),
-        listOf(
-            Interest(
-                "운동",
-                42
-            ),
-            Interest(
-                "음악",
-                28
-            ),
-            Interest(
-                "게임",
-                19
-            ),
-            Interest(
-                "요리",
-                11
-            )
-        )
-    )
-    // 메모리 캐시에 저장
-    cacheUserInfo.put("userInfo", responseUserInfo)
-}
+
+
+
 }

@@ -258,6 +258,12 @@ class InfoinputActivity : AppCompatActivity() {
                         val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
                         val memberIntroductionPart = memberIntroduction.toRequestBody(MultipartBody.FORM)
 
+                        val sharedPref = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+                        with(sharedPref.edit()) {
+                            putString("memberGender", memberGender)
+                            apply()
+                        }
+
                         // 이미지 URL을 가져옵니다.
                         val imageUrl: String = userInfo.imageUrl
 
@@ -289,6 +295,20 @@ class InfoinputActivity : AppCompatActivity() {
                         Log.d("Request Info", "memberIntroduction: $memberIntroduction")
                         Log.d("Request Info", "imageUrl: $imageUrl")
 
+                        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                        val editor = sharedPreferences.edit()
+                        editor.putLong("metropolitanId", metropolitanId) // 원본 Long 값 저장
+                        editor.putLong("cityId", cityId) // 원본 Long 값 저장
+                        editor.apply()
+
+                        // 저장된 값 확인
+                        val savedMetropolitanId = sharedPreferences.getLong("metropolitanId", -1L)
+                        val savedCityId = sharedPreferences.getLong("cityId", -1L)
+                        Log.d("Saved Info", "Saved metropolitanId: $savedMetropolitanId")
+                        Log.d("Saved Info", "Saved cityId: $savedCityId")
+
+                        val roommateSearchStatusPart = "1".toRequestBody(MultipartBody.FORM)
+
                         val response = withContext(Dispatchers.IO) {
                             apiService.updateMemberInfo(
                                 metropolitanIdPart,
@@ -296,6 +316,7 @@ class InfoinputActivity : AppCompatActivity() {
                                 memberGenderPart,
                                 memberNicknamePart,
                                 memberIntroductionPart,
+                                roommateSearchStatusPart,
                                 memberProfileImagePart
                             )
                         }
