@@ -41,7 +41,7 @@ class NowMatchingActivity : AppCompatActivity() {
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
         Log.d("MYTAG", "isButtonClicked(이전에 매칭을 진행했는지 확인): $isButtonClicked")
 
-        if (isButtonClicked) {
+        if (isButtonClicked == false) {
 
             val intent = Intent(this, NaviActivity::class.java)
             getUserInfo()

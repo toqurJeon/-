@@ -161,6 +161,8 @@ class CardAdapter(
                 // 성향 레이더 차트 생성
                 radarChartContainer.removeAllViews()
                 radarChartContainer.addView(chartView)
+                radarChartRoommateLegendColor.setCardBackgroundColor(context.getColor(R.color.rate_over80))
+                radarChartRoommateLegend.text = cardInfo.member.memberNickname
 
                 // 성향 비교 카드
                 recyclerView.layoutManager = GridLayoutManager(context, 4)
@@ -174,7 +176,7 @@ class CardAdapter(
 
                     val decimalFormat = DecimalFormat("#.##")
                     val abs = abs(clickedData[0].value - clickedData[1].value)
-                    myCharacterDescription.text = "나와 ${cardInfo.member.memberNickname}님은 ${clickedData[0].type.value} 성향이 ${decimalFormat.format(abs)}% 차이가 나요"
+                    myCharacterDescription.text = "${cardInfo.member.memberNickname}님과 ${clickedData[0].type.value} 성향이 ${decimalFormat.format(abs)}% 차이 나요."
                     performAnimation(clickedData[0], clickedData[1], binding)
                 }
                 recyclerView.adapter = characterAdapter

@@ -48,7 +48,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginHorizontal="10dp"
             android:text="\u00b1 00.0%"
-            android:textSize="14sp"/>
+            android:textSize="12sp"/>
 
     </androidx.cardview.widget.CardView>
 
