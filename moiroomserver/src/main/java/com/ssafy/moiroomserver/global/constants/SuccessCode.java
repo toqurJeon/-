@@ -32,7 +32,8 @@ public enum SuccessCode {
     //채팅
     ADD_CHAT_ROOM(CREATED, "채팅방 생성에 성공하였습니다."),
     GET_CHAT_ROOM(OK, "채팅방 목록을 성공적으로 가져왔습니다."),
-    ADD_CHAT_MESSAGE(OK, "채팅 메시지를 성공적으로 저장하였습니다.");
+    ADD_CHAT_MESSAGE(OK, "채팅 메시지를 성공적으로 저장하였습니다."),
+    GET_CHAT_MESSAGE(OK, "채팅 메시지를 성공적으로 조회하였습니다.");
 
     private final HttpStatus status;
     private final String message;

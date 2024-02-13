@@ -11,9 +11,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class ChatMessageReq {
 
-    private Long senderId;
-
-    private Long roomId;
+    private Long senderId; // 보낸 사람의 pk
 
     private String message;
 }

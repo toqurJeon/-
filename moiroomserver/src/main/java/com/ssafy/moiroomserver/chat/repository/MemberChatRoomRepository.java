@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -33,4 +34,6 @@ public interface MemberChatRoomRepository extends JpaRepository<MemberChatRoom, 
     Page<ChatRoomDTO> findAllMemberChatRoom(Long memberId, PageRequest pageRequest);
 
     Optional<MemberChatRoom> findMemberChatRoomByMemberAndChatRoom(Member member, ChatRoom chatRoom);
+
+    List<MemberChatRoom> findAllByMember(Member member);
 }

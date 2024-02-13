@@ -35,7 +35,8 @@ public enum ErrorCode {
     //채팅
     NOT_EXISTS_CHAT_ROOM_ID(BAD_REQUEST, "채팅방이 존재하지 않습니다."),
     NOT_EXISTS_CHAT_MESSAGE_CONTENT(BAD_REQUEST, "채팅 메시지 내용이 없습니다."),
-    NOT_EXISTS_MEMBER_CHAT_ROOM(BAD_REQUEST, "해당 유저는 채팅방에 참여하고 있지 않습니다.");
+    NOT_EXISTS_MEMBER_CHAT_ROOM(BAD_REQUEST, "해당 유저는 채팅방에 참여하고 있지 않습니다."),
+    EXISTS_CHAT_ROOM(BAD_REQUEST, "이미 존재하고 있는 채팅방입니다.");
 
     private final HttpStatus status;
     private final String message;

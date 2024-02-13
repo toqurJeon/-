@@ -22,11 +22,11 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     @MessageMapping("/room/{chatRoomId}")
-    public void addChatMessage(@Payload ChatMessageReq request,
-                                         @DestinationVariable("chatRoomId") Long chatRoomId) {
-        chatService.addChatMessage(request);
-        simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + request.getRoomId(),
-                request.getMessage());
+    public void addChatMessage(@Payload ChatMessageReq chatMessageReq,
+                               @DestinationVariable("chatRoomId") Long chatRoomId) {
+        chatService.addChatMessage(chatMessageReq, chatRoomId);
+        simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + chatRoomId,
+                chatMessageReq.getMessage());
     }
 
     /**
@@ -38,6 +38,7 @@ public class ChatController {
     @PostMapping("/{memberId}") // 대화 상대 member pk
     public ApiResponse<?> addChatRoom(HttpServletRequest request,
                                       @PathVariable Long memberId) {
+
         chatService.addChatRoom(request, memberId);
         return ApiResponse.success(SuccessCode.ADD_CHAT_ROOM);
     }

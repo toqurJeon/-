@@ -5,7 +5,7 @@ import com.ssafy.moiroomserver.global.dto.PageResponse;
 import jakarta.servlet.http.HttpServletRequest;
 
 public interface ChatService {
-    void addChatMessage(ChatMessageReq request);
+    void addChatMessage(ChatMessageReq request, Long chatRoomId);
 
     void addChatRoom(HttpServletRequest request, Long memberId);
 
