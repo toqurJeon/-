@@ -602,10 +602,3 @@ fun getUserInfo(context: Context) {
         }
     }
 }
-
-
-
-
-
-
-}

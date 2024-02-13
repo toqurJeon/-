@@ -102,26 +102,27 @@ data class UserResponse(
             val memberRoommateSearchStatus: Int,
             val characteristic: Characteristic,
             val interests: List<Interest>
-        ) : Parcelable {
-            @Parcelize
-            data class Characteristic(
-                val sociability: Int,
-                val positivity: Int,
-                val activity: Int,
-                val communion: Int,
-                val altruism: Int,
-                val empathy: Int,
-                val humor: Int,
-                val generous: Int,
-                val sleepAt: String?,
-                val wakeUpAt: String?
-            ) : Parcelable
+        ) : Parcelable
+//            {
+//            @Parcelize
+//            data class Characteristic(
+//                val sociability: Int,
+//                val positivity: Int,
+//                val activity: Int,
+//                val communion: Int,
+//                val altruism: Int,
+//                val empathy: Int,
+//                val humor: Int,
+//                val generous: Int,
+//                val sleepAt: String?,
+//                val wakeUpAt: String?
+//            ) : Parcelable
 
-            @Parcelize
-            data class Interest(
-                val interest: String,
-                val score: Int
-            ) : Parcelable
+
+//            @Parcelize
+//            data class Interest(
+//                val interestName: String,
+//                val interestPercent: Int
+//            ) : Parcelable
         }
     }
-}
