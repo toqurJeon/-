@@ -47,6 +47,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("MYTAG", "Now Matching After Fragment View Created.")
+        Log.d("MYTAG", "Member: ${cachedMatchedMemberList?.data}")
 
         // RecyclerView의 레이아웃 매니저를 설정
         val gridLayoutManager = GridLayoutManager(context, 1)

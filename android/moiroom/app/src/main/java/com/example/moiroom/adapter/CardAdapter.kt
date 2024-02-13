@@ -249,10 +249,10 @@ class CardAdapter(
                 Log.d("MYTAG", "interest chart . width : ${binding.recycler.layoutParams.width}")
 
                 // 수면 차트
-                val sleepChart = binding.sleepChartView
-                sleepChart.setSleepTime(cardInfo.member.characteristic.sleepAt, cardInfo.member.characteristic.wakeUpAt)
-                binding.sleepTimeText.text = cardInfo.member.characteristic.sleepAt
-                binding.wakeTimeText.text = cardInfo.member.characteristic.wakeUpAt
+//                val sleepChart = binding.sleepChartView
+//                sleepChart.setSleepTime(cardInfo.member.characteristic.sleepAt, cardInfo.member.characteristic.wakeUpAt)
+//                binding.sleepTimeText.text = cardInfo.member.characteristic.sleepAt
+//                binding.wakeTimeText.text = cardInfo.member.characteristic.wakeUpAt
 
                 // 밑줄 뷰의 너비 조정
                 matchIntroduction.post {
