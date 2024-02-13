@@ -18,7 +18,7 @@
             android:text="어느 지역의 룸메이트를 찾나요?"
             android:layout_marginBottom="24dp"
             android:fontFamily="@font/pretendard_bold"
-            android:textSize="22sp"/>
+            android:textSize="20sp"/>
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/findInput"
@@ -133,7 +133,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="52dp"
-            android:layout_marginBottom="20dp"
             android:gravity="center_horizontal">
 
             <TextView
@@ -145,14 +144,15 @@
                 android:textSize="20sp"
                 android:text="간단하게 본인을 소개해주세요." />
 
-            <TextView
-                android:id="@+id/textLength"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end|bottom"
-                android:text="0/30"/>
-
         </FrameLayout>
+
+        <TextView
+            android:id="@+id/textLength"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="0/30"/>
 
         <FrameLayout
             android:layout_width="match_parent"

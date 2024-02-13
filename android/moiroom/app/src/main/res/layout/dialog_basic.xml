@@ -13,6 +13,7 @@
         android:padding="24dp">
 
         <TextView
+            android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
@@ -22,7 +23,7 @@
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/authorityMessage"
+            android:id="@+id/dialog_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -30,16 +31,32 @@
             android:text="sample text"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/confirmButton"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="진행하기"
-            android:backgroundTint="@color/darkorange"
-            android:layout_marginHorizontal="8dp" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_deny_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="거절하기"
+                android:backgroundTint="@color/darkorange"
+                android:layout_marginHorizontal="4dp" />
+
+            <Button
+                android:id="@+id/dialog_accept_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="진행하기"
+                android:backgroundTint="@color/darkorange"
+                android:layout_marginHorizontal="4dp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 

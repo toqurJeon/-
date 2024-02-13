@@ -51,13 +51,10 @@ fun getMatchedMember(context: Context, pgno: Int) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: $data")
 
-            // 메모리 캐시에 저장
             cacheMatchedMemberList.put("matchedMemberList", data)
         } else {
-            Log.d("MYTAG", "getMatchedMember: $response")
+            Log.d("MYTAG", "getMatchedMember: fail, $response")
         }
-    }
-
 //    val responseMatchedMemberList: ResponseData = ResponseData(
 //        200,
 //        "OK",
@@ -478,6 +475,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
 
 }
 
+
 fun getUserInfo() {
     // 본인 정보 GET 요청
 
@@ -508,22 +506,23 @@ fun getUserInfo() {
         listOf(
             Interest(
                 "운동",
-                48
+                42
             ),
             Interest(
                 "음악",
-                36
+                28
+            ),
+            Interest(
+                "게임",
+                19
             ),
             Interest(
                 "요리",
                 11
-            ),
-            Interest(
-                "게임",
-                5
             )
         )
     )
     // 메모리 캐시에 저장
     cacheUserInfo.put("userInfo", responseUserInfo)
+}
 }
