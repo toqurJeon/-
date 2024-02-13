@@ -5,7 +5,6 @@ import com.ssafy.moiroomserver.chat.dto.ChatRoomDTO;
 import com.ssafy.moiroomserver.chat.entity.ChatMessage;
 import com.ssafy.moiroomserver.chat.entity.ChatRoom;
 import com.ssafy.moiroomserver.chat.entity.MemberChatRoom;
-import com.ssafy.moiroomserver.chat.entity.MemberChatRoomId;
 import com.ssafy.moiroomserver.chat.repository.ChatMessageRepository;
 import com.ssafy.moiroomserver.chat.repository.ChatRoomRepository;
 import com.ssafy.moiroomserver.chat.repository.MemberChatRoomRepository;
@@ -21,7 +20,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.util.Optional;
 
 import static com.ssafy.moiroomserver.global.constants.ErrorCode.*;
 import static com.ssafy.moiroomserver.global.constants.PageSize.GET_CHAT_ROOM_LIST_SIZE;
