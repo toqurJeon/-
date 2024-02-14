@@ -49,7 +49,7 @@ class InterestChartAdapter(
             if (data.interestName == selectedInterestName) {
                 interestItem.setCardBackgroundColor(color)
             } else {
-                interestItem.setCardBackgroundColor(context.getColor(R.color.BGgray))
+                interestItem.setCardBackgroundColor(context.getColor(R.color.gray_more_high_brightness))
             }
             val layoutParams = interestItem.layoutParams
             layoutParams.width = calculateItemWidth(data.interestPercent)

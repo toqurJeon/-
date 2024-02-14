@@ -21,14 +21,14 @@ fun getCharacterIcon(type: CharacteristicType): Int {
 
 fun getCharacterDescription(type: CharacteristicType): String {
     return when (type) {
-        CharacteristicType.sociability -> "사교에 대한 한 줄 정도의 설명."
-        CharacteristicType.positivity -> "긍정에 대한 한 줄 정도의 설명."
-        CharacteristicType.activity -> "활동에 대한 한 줄 정도의 설명."
-        CharacteristicType.communion -> "공유에 대한 한 줄 정도의 설명."
-        CharacteristicType.altruism -> "이타에 대한 한 줄 정도의 설명."
-        CharacteristicType.empathy -> "공감에 대한 한 줄 정도의 설명."
-        CharacteristicType.humor -> "감각에 대한 한 줄 정도의 설명."
-        CharacteristicType.generous -> "관대에 대한 한 줄 정도의 설명."
+        CharacteristicType.sociability -> "타인과 함께하는 활동을 좋아하는 정도"
+        CharacteristicType.positivity -> "낙관적으로 사고 및 행동하는 정도"
+        CharacteristicType.activity -> "몸을 움직여 활발히 행동하는 정도"
+        CharacteristicType.communion -> "타인과 터 놓고 이야기하는 정도"
+        CharacteristicType.altruism -> "타인을 이롭게 하는 행동 및 성향의 정도"
+        CharacteristicType.empathy -> "타인의 입장에서 생각해보는 능력의 정도"
+        CharacteristicType.humor -> "유머를 받아 들일 수 있는 정도"
+        CharacteristicType.generous -> "타인과의 관계에서 손익을 따지는 정도"
 
         else -> "성향이 로드되지 않았습니다."
     }

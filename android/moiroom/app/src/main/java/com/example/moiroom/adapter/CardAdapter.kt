@@ -29,6 +29,7 @@ import com.example.moiroom.ChatActivity
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.CombinedInterest
+import com.example.moiroom.data.Interest
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.Member
@@ -335,7 +336,13 @@ class CardAdapter(
                         interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
 
                         if (interestDescription.text.toString() == combinedList[0].interestName) {
-                            matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)} !"
+                            matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(interestDescription.text.toString())}! ${getRandomHappyEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "both") {
+                            matchInterestDescription.text = "둘 다 ${getInterestName(interestDescription.text.toString())} 좋아해요! ${getRandomHappyEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "me only") {
+                            matchInterestDescription.text = "나만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
+                            matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
                         }
                     }
 
@@ -344,7 +351,7 @@ class CardAdapter(
                     }
                 })
 
-                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)} !"
+                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)}! ${getRandomHappyEmoji()}"
 
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView
@@ -536,5 +543,51 @@ class CardAdapter(
     private fun convertDpToPixel(dp: Int): Int {
         val density = Resources.getSystem().displayMetrics.density
         return (dp * density).toInt()
+    }
+
+    fun interestFinder(combinedList: List<CombinedInterest>, searchName: String): String {
+        val interest = combinedList.find { it.interestName == searchName }
+        return when {
+            interest != null -> {
+                when {
+                    interest.roommateInterestPercent != null && interest.myInterestPercent != null -> "both"
+                    interest.roommateInterestPercent == null && interest.myInterestPercent != null -> "me only"
+                    interest.roommateInterestPercent != null && interest.myInterestPercent == null -> "roommate only"
+                    else -> "none"
+                }
+            }
+            else -> "none"
+        }
+    }
+
+    fun getRandomSadEmoji(): String {
+        val unicodeEmojis = listOf(
+            "\uD83E\uDD72", // U+1F972
+            "\uD83D\uDE35", // U+1F635
+            "\uD83D\uDE30", // U+1F630
+            "\uD83D\uDE2D", // U+1F62D
+            "\uD83D\uDE25", // U+1F625
+            "\uD83D\uDE1E", // U+1F61E
+            "\uD83E\uDD7A"
+        )
+
+        return unicodeEmojis.random()
+    }
+
+    fun getRandomHappyEmoji(): String {
+        val unicodeEmojis = listOf(
+            "\uD83D\uDE01", // U+1F601
+            "\uD83D\uDE04", // U+1F604
+            "\uD83D\uDE07", // U+1F607
+            "\uD83D\uDE06", // U+1F606
+            "\uD83D\uDE09", // U+1F609
+            "\uD83D\uDE0A", // U+1F60A
+            "\uD83D\uDE0B", // U+1F60B
+            "\uD83D\uDE0C", // U+1F60C
+            "\uD83D\uDE0D", // U+1F60D
+            "\uD83D\uDE1D"  // U+1F61D
+        )
+
+        return unicodeEmojis.random()
     }
 }
