@@ -18,6 +18,7 @@ import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -32,6 +33,7 @@ import static com.ssafy.moiroomserver.global.constants.PageSize.GET_CHAT_ROOM_LI
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class ChatServiceImpl implements ChatService {
 
     private final KakaoService kakaoService;
@@ -43,6 +45,7 @@ public class ChatServiceImpl implements ChatService {
 
     @Override
     public void addChatMessage(ChatMessageReqDTO request, Long chatRoomId) {
+        log.info("addChatMessage 진입");
         String message = request.getMessage();
         Long senderId = request.getSenderId();
 

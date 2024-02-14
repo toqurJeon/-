@@ -7,6 +7,7 @@ import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -20,6 +21,7 @@ import static com.ssafy.moiroomserver.global.constants.SuccessCode.GET_CHAT_MESS
 @CrossOrigin("*")
 @RequiredArgsConstructor
 @RequestMapping("/chat")
+@Slf4j
 public class ChatController {
 
     private final ChatService chatService;
@@ -33,6 +35,7 @@ public class ChatController {
     @MessageMapping("/room/{chatRoomId}/send")
     public void addChatMessage(@Payload ChatMessageReqDTO chatMessageReq,
                                @DestinationVariable("chatRoomId") Long chatRoomId) {
+        log.info("addChatMessage 진입");
         chatService.addChatMessage(chatMessageReq, chatRoomId);
         String destination = "/queue/chat/messages/" + chatMessageReq.getSenderId();
         simpMessagingTemplate.convertAndSend(destination, chatMessageReq.getMessage());
