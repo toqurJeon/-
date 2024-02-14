@@ -27,6 +27,7 @@ import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMem
 import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getCharacterDetailDescription
+import com.example.moiroom.utils.getMatchedMember
 
 class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
@@ -41,6 +42,13 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     var currentPageItems: Int = 0
     var totalPage: Int = 0
     var totalItems: Int = 0
+
+    var currentScrollPosition: Int = 0
+    var currentViewPagerPosition: Int = 0
+
+    companion object {
+        var isLoading: Boolean = false
+    }
 
     // 프래그먼트 뷰 생성 : XML 레이아웃을 이용하여 프래그먼트 뷰 생성
     override fun onCreateView(
@@ -62,7 +70,6 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
             Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 사용자 데이터")
             cachedUserInfo = cacheUserInfo.get("userInfo")
 
-
             if (cachedUserInfo != null) {
                 setCardAdapter(toggled)
             }
@@ -74,7 +81,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
             if (cachedMatchedMemberList != null) {
                 Log.d("MYTAG", "nowMatchingAfterFragment: 매칭 멤버 리스트가 null이 아님.")
-                Log.d("MYTAG", "nowMatchingAfterFragment: 현재 페이지 $currentPageNumber, 받아온 페이지 ${cachedMatchedMemberList!!.data.currentPage}")
+                Log.d("MYTAG", "nowMatchingAfterFragment: 현재 페이지 $currentPageNumber, 받아온 페이지 ${cachedMatchedMemberList!!.data.currentPage}, 총페이지 ${cachedMatchedMemberList!!.data.totalPages}")
                 totalPage = cachedMatchedMemberList!!.data.totalPages
                 totalItems = cachedMatchedMemberList!!.data.totalElements
                 currentPageItems = cachedMatchedMemberList!!.data.pageSize
@@ -88,14 +95,19 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
                     }
                     Log.d("MYTAG", "nowMatchingAfterFragment: 새로운 페이지를 받아서 새롭게 어댑터 세팅합니다.")
                     setCardAdapter(toggled)
+                    (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(currentScrollPosition)
+                    binding.viewPager2.currentItem = currentViewPagerPosition
                 }
             }
         }
 
         // RecyclerView의 레이아웃 매니저를 설정
-        val gridLayoutManager = GridLayoutManager(context, 1)
-        binding.recyclerView.layoutManager = gridLayoutManager
+//        val gridLayoutManager = GridLayoutManager(context, 1)
+//        binding.recyclerView.layoutManager = gridLayoutManager
         binding.viewPager2.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+
+        val layoutManager = LinearLayoutManager(requireContext())
+        binding.recyclerView.layoutManager = layoutManager
 
         // 체크된 상태에 따른 초기 화면 설정
         binding.viewPager2.visibility = View.VISIBLE
@@ -106,20 +118,23 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         binding.recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
-                Log.d("MYTAG", "nowMatchingAfterFragment: 스크롤 감지")
+                // Log.d("MYTAG", "nowMatchingAfterFragment: 스크롤 감지")
 
                 val layoutManager = recyclerView.layoutManager as LinearLayoutManager
                 val visibleItemCount = layoutManager.childCount
                 val totalItemCount = layoutManager.itemCount
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
-                if (currentPageNumber != totalPage) {
+                if (!isLoading && currentPageNumber != totalPage) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                         && firstVisibleItemPosition >= 0
                     ) {
                         // 다음 페이지 데이터 요청
                         // 여기에서는 예를 들어 API 호출을 통해 새로운 데이터를 가져올 수 있습니다.
                         Log.d("MYTAG", "nowMatchingAfterFragment: 무한 스크롤, 데이터 추가받기")
+                        currentScrollPosition = (binding.recyclerView.layoutManager as LinearLayoutManager).findFirstCompletelyVisibleItemPosition()
+                        isLoading = true
+                        getMatchedMember(requireContext(), currentPageNumber + 1)
                     }
                 }
             }
@@ -144,10 +159,14 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
                 }
 
                 Log.d("MYTAG", "nowMatchingAfterFragment: viewPager, ${position + 1}, ${currentPageItems * currentPageNumber}")
-                if (position + 1 == currentPageItems * currentPageNumber) {
-                    Log.d("MYTAG", "nowMatchingAfterFragment: viewPager, 추가 데이터 요청 예정")
-
-                    // 로직 구현할 위치
+                if (!isLoading && position + 1 == currentPageItems * currentPageNumber) {
+                    if (currentPageNumber != totalPage) {
+                        Log.d("MYTAG", "nowMatchingAfterFragment: viewPager, 추가 데이터 요청 예정")
+                        isLoading = true
+                        getMatchedMember(requireContext(), currentPageNumber + 1)
+                        currentViewPagerPosition = position
+                        // 로직 구현할 위치
+                    }
                 }
             }
         })

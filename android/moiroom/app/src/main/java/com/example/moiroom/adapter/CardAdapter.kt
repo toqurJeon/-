@@ -93,6 +93,11 @@ class CardAdapter(
                 val marginBottomInPx = convertDpToPixel(184)
                 layoutParams.bottomMargin = marginBottomInPx
                 holder.itemView.layoutParams = layoutParams
+            } else {
+                val layoutParams = holder.itemView.layoutParams as ViewGroup.MarginLayoutParams
+                val marginBottomInPx = convertDpToPixel(0)
+                layoutParams.bottomMargin = marginBottomInPx
+                holder.itemView.layoutParams = layoutParams
             }
         }
     }
