@@ -1,5 +1,6 @@
 import android.content.Context
 import android.util.Log
+import com.example.moiroom.data.ChatResponse
 import com.example.moiroom.data.ChatRoomResponse
 import com.example.moiroom.data.CityResponse
 import com.example.moiroom.data.MemberInfo
@@ -71,6 +72,9 @@ interface ApiService {
 
     @POST("/chat/{memberId}")
     suspend fun createChatRoom(@Path("memberId") memberId: Long): Response<ResponseBody>
+
+    @GET("chat/room/{chatRoomId}")
+    suspend fun getChatMessages(@Path("chatRoomId") chatRoomId: Int): Response<ChatResponse>
 }
 
 object NetworkModule {
