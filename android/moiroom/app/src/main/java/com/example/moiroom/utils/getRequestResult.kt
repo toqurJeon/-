@@ -127,7 +127,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            98,
+                            9800,
                             "비슷한 생활루틴을 가졌어요!",
                         ),
                         MatchedMemberData(
@@ -167,7 +167,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            90,
+                            9000,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -207,7 +207,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            88,
+                            8800,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -247,7 +247,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            84,
+                            8400,
                             "잘 맞을 것 같은데요???!",
                         ),
                         MatchedMemberData(
@@ -287,7 +287,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            81,
+                            8100,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -327,7 +327,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            79,
+                            7900,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -367,7 +367,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            77,
+                            7700,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -407,7 +407,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            75,
+                            7500,
                             "취미가 비슷해요!",
                         ),
                         MatchedMemberData(
@@ -447,7 +447,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            71,
+                            7100,
                             "취미가 잘 맞아요!"
                         ),
                         MatchedMemberData(
@@ -487,7 +487,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                     )
                                 )
                             ),
-                            65,
+                            6500,
                             "취미가 잘 맞아요!"
                         )
                     ),
@@ -500,62 +500,8 @@ fun getMatchedMember(context: Context, pgno: Int) {
             updateMatchedMemberList(responseMatchedMemberList)
         }
     }
-
-
-//fun getUserInfo() {
-//    // 본인 정보 GET 요청
-//
-//    // 응답 데이터 저장 (현재: 더미 데이터)
-//    val responseUserInfo: Member = Member(
-//        1,
-//        "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
-//        "안드리아",
-//        "여자",
-//        "김민식",
-//        1999,
-//        "서울특별시",
-//        "강남구",
-//        "멍멍이를 엄청 좋아해요. 댕댕.",
-//        1,
-//        Characteristic(
-//            6520,
-//            7552,
-//            6993,
-//            7653,
-//            5683,
-//            4210,
-//            6020,
-//            8758,
-//            "23:47",
-//            "06:32",
-//        ),
-//        listOf(
-//            Interest(
-//                "운동",
-//                48
-//            ),
-//            Interest(
-//                "음악",
-//                36
-//            ),
-//            Interest(
-//                "요리",
-//                11
-//            ),
-//            Interest(
-//                "게임",
-//                5
-//            )
-//        )
-//    )
-////    // 메모리 캐시에 저장
-//    cacheUserInfo.put("userInfo", responseUserInfo)
-//}
-
-//    // 응답 데이터 저장 (현재: 더미 데이터)
-
-
 }
+
 fun getUserInfo(context: Context) {
     apiService = NetworkModule.provideRetrofit(context)
 
