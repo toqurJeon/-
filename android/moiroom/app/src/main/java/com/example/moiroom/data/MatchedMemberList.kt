@@ -1,9 +1,12 @@
 package com.example.moiroom.data
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class MatchedMemberList(
-    val content: List<MatchedMember>,
+    val content: List<MatchedMemberData>,
     val totalPages: Int,
-    val totalElememts: Int,
+    val totalElements: Int,
     val currentPage: Int,
     val pageSize: Int
 )

@@ -19,11 +19,21 @@ class NaviActivity : AppCompatActivity() {
     //뒤로가기 버튼 누른 시간
     var backPressedTime: Long = 0
 
+    companion object {
+        var isUpdateCalled = false
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityNaviBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+//        if (isUpdateCalled) {
+//            setFragment(TAG_MY_PAGE, MyPageFragment())
+//            isUpdateCalled = false
+//        } else {
+//            setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
+//        }
 
         setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
 

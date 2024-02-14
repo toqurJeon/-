@@ -6,7 +6,7 @@ import com.example.moiroom.data.CharacteristicType
 
 fun getCharacterIcon(type: CharacteristicType): Int {
     return when (type) {
-        CharacteristicType.socialbility -> R.drawable.character_socialability
+        CharacteristicType.sociability -> R.drawable.character_socialability
         CharacteristicType.positivity -> R.drawable.character_positivity
         CharacteristicType.activity -> R.drawable.character_activity
         CharacteristicType.communion -> R.drawable.character_communion
@@ -21,7 +21,7 @@ fun getCharacterIcon(type: CharacteristicType): Int {
 
 fun getCharacterDescription(type: CharacteristicType): String {
     return when (type) {
-        CharacteristicType.socialbility -> "사교에 대한 한 줄 정도의 설명."
+        CharacteristicType.sociability -> "사교에 대한 한 줄 정도의 설명."
         CharacteristicType.positivity -> "긍정에 대한 한 줄 정도의 설명."
         CharacteristicType.activity -> "활동에 대한 한 줄 정도의 설명."
         CharacteristicType.communion -> "공유에 대한 한 줄 정도의 설명."
@@ -29,6 +29,21 @@ fun getCharacterDescription(type: CharacteristicType): String {
         CharacteristicType.empathy -> "공감에 대한 한 줄 정도의 설명."
         CharacteristicType.humor -> "감각에 대한 한 줄 정도의 설명."
         CharacteristicType.generous -> "관대에 대한 한 줄 정도의 설명."
+
+        else -> "성향이 로드되지 않았습니다."
+    }
+}
+
+fun getCharacterDetailDescription(type: String): String {
+    return when (type) {
+        "사교" -> "사교 데이터에 대한 설명."
+        "긍정" -> "긍정 데이터에 대한 설명."
+        "활동" -> "활동 데이터에 대한 설명."
+        "공유" -> "공유 데이터에 대한 설명."
+        "이타" -> "이타 데이터에 대한 설명."
+        "공감" -> "공감 데이터에 대한 설명."
+        "감각" -> "감각 데이터에 대한 설명."
+        "관대" -> "관대 데이터에 대한 설명."
 
         else -> "성향이 로드되지 않았습니다."
     }

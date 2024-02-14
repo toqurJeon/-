@@ -5,18 +5,28 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.Chat
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ChatItemLayoutBinding
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.getUserInfo
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(
+    private var dataList: MutableList<Chat>,
+    private final var context: Context
+) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+
+    var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
 
     inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         var nextViewHolder: ChatItemLayoutBinding? = null
@@ -24,31 +34,42 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val binding = ChatItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        if (cachedUserInfo == null) {
+            getUserInfo(context)
+            cachedUserInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+        }
+
         return ChatViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ChatViewHolder, position: Int) {
         val data = dataList[position]
 
-        val time: String = formatting(data.created_at)
+        val time: String = formatting(data.createdAt)
         val sample_name = "김민수"
 
-        val currentMemberId = data.member_id
+        val currentMemberId = data.memberId
+        val myMemberId = cachedUserInfo?.memberId ?: -1
 
         holder.binding.apply {
-            chatMemberName.text = "${data.member_id}"
+            chatMemberName.text = "${data.memberId}"
             chatContent.text = data.content
             chatCreatedAt.text = time
 
-            // 이전 메세지와 비교
+            // Glide를 사용하여 이미지 로드
+            Glide.with(root.context)
+                .load(data.memberProfileImage)
+                .into(chatMemberImage)
 
+            // 이전 메세지와 비교
 
             val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape)
             val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape_flipped)
 
             Log.d("current_position", "current_position: $position, ${chatContent.text}")
 
-            if (currentMemberId == 1) {
+            if (currentMemberId == myMemberId) {
                 chatBallonDrawableFlipped?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.lightorange), PorterDuff.Mode.SRC_ATOP)
                 chatContent.background = chatBallonDrawableFlipped
 
@@ -63,16 +84,16 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
 
                 } else if (position == 0) {
                     val downData = dataList[position + 1]
-                    val downMemberId = downData.member_id
-                    val downTime = formatting(downData.created_at)
+                    val downMemberId = downData.memberId
+                    val downTime = formatting(downData.createdAt)
 
                     if (currentMemberId != downMemberId || time != downTime) {
                         chatCreatedAt.visibility = View.VISIBLE
                     }
                 } else {
                     val downData = dataList[position + 1]
-                    val downMemberId = downData.member_id
-                    val downTime = formatting(downData.created_at)
+                    val downMemberId = downData.memberId
+                    val downTime = formatting(downData.createdAt)
 
                     if (currentMemberId != downMemberId || time != downTime) {
                         chatCreatedAt.visibility = View.VISIBLE
@@ -89,25 +110,41 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
                 imageCard.visibility = View.INVISIBLE
                 chatCreatedAt.visibility = View.GONE
 
-                chatMemberName.text = sample_name
+                chatMemberName.text = data.memberNickname
 
                 // dataList.size 는 data의 갯수
                 // position은 0부터 dataList.size - 1 까지 (size == 15, position -> 14,13,...,1,0)
                 if (position == (dataList.size - 1)) {
-                    val upData = dataList[position - 1]
-                    val upMemberId = upData.member_id
-                    val upTime = formatting(upData.created_at)
+                    if (position != 0) {
+                        val upData = dataList[position - 1]
+                        val upMemberId = upData.memberId
+                        val upTime = formatting(upData.createdAt)
 
-                    chatCreatedAt.visibility = View.VISIBLE
+                        chatCreatedAt.visibility = View.VISIBLE
 
-                    if (currentMemberId != upMemberId || time != upTime) {
+                        if (currentMemberId != upMemberId || time != upTime) {
+                            imageCard.visibility = View.VISIBLE
+                            chatMemberName.visibility = View.VISIBLE
+                        }
+                    } else {
+                        chatCreatedAt.visibility = View.VISIBLE
                         imageCard.visibility = View.VISIBLE
                         chatMemberName.visibility = View.VISIBLE
                     }
+//                    val upData = dataList[position - 1]
+//                    val upMemberId = upData.memberId
+//                    val upTime = formatting(upData.createdAt)
+//
+//                    chatCreatedAt.visibility = View.VISIBLE
+//
+//                    if (currentMemberId != upMemberId || time != upTime) {
+//                        imageCard.visibility = View.VISIBLE
+//                        chatMemberName.visibility = View.VISIBLE
+//                    }
                 } else if (position == 0) {
                     val downData = dataList[position + 1]
-                    val downMemberId = downData.member_id
-                    val downTime = formatting(downData.created_at)
+                    val downMemberId = downData.memberId
+                    val downTime = formatting(downData.createdAt)
 
                     imageCard.visibility = View.VISIBLE
                     chatMemberName.visibility = View.VISIBLE
@@ -119,11 +156,11 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
                     val upData = dataList[position - 1]
                     val downData = dataList[position + 1]
 
-                    val upMemberId = upData.member_id
-                    val downMemberId = downData.member_id
+                    val upMemberId = upData.memberId
+                    val downMemberId = downData.memberId
 
-                    val upTime = formatting(upData.created_at)
-                    val downTime = formatting(downData.created_at)
+                    val upTime = formatting(upData.createdAt)
+                    val downTime = formatting(downData.createdAt)
 
                     if (currentMemberId != upMemberId || time != upTime) {
                         imageCard.visibility = View.VISIBLE
@@ -162,10 +199,10 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
     }
 
     // Instant를 포맷된 String으로 바꾸기
-    private fun formatting(timeInstant: Instant): String {
-        val localDateTime = LocalDateTime.ofInstant(timeInstant, ZoneId.of("Asia/Seoul"))
-        val formatter = DateTimeFormatter.ofPattern("HH:mm")
-        return localDateTime.format(formatter)
+    private fun formatting(timeString: String): String {
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+        val localDateTime = LocalDateTime.parse(timeString, formatter)
+        return localDateTime.format(DateTimeFormatter.ofPattern("HH:mm"))
     }
 
     //margin 설정을 위해 dp를 px로 변환

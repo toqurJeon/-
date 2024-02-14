@@ -18,6 +18,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
     // 구글 액세스 토큰
     id("com.google.gms.google-services")
+    id("kotlin-parcelize")
 }
 
 // 안드로이드 애플리케이션의 빌드 및 설정 옵션
@@ -35,9 +36,9 @@ android {
         // 명시적으로 대상이 되는 안드로이드 SDK 버전
         targetSdk = 34
         // 어플의 빌드 버전, 업데이트를 관리하고 구분할 때 사용
-        versionCode = 1
+        versionCode = 2
         // 사용자에게 표시되는 버전 이름
-        versionName = "1.0"
+        versionName = "0.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // 멀티덱스 활성화
@@ -114,7 +115,7 @@ dependencies {
     implementation("androidx.health:health-connect-client:1.0.0-alpha01")
     // 구글(안드로이드) 헬스
     implementation("com.google.android.gms:play-services-fitness:20.0.0")
-    implementation("com.google.android.gms:play-services-auth:20.0.0")
+//    implementation("com.google.android.gms:play-services-auth:20.0.0")
 //    implementation("com.samsung.android.sdk.healthdata:health-data:2.1.0")
     //
     implementation("com.google.android.libraries.healthdata:health-data-api:1.0.0-alpha01")
@@ -151,7 +152,8 @@ dependencies {
     // Firebase Storage SDK 추가
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
-
-
+    implementation("com.google.android.gms:play-services-auth:20.0.0")
+    //okhttp 라이브러리 추가
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }
 

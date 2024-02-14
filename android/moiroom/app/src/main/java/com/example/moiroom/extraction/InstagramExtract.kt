@@ -1,6 +1,7 @@
 package com.example.moiroom.extraction
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.webkit.WebResourceRequest
@@ -8,6 +9,7 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import com.example.moiroom.LoadingActivity
+import com.example.moiroom.NaviActivity
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
@@ -22,13 +24,15 @@ import kotlinx.coroutines.GlobalScope
 
 class InstagramExtract: AppCompatActivity() {
     private lateinit var binding: ActivityWebviewtestBinding
-
+    companion object {
+        var instadata = ""
+    }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
-        getRequestResult(true)
+        getRequestResult(true, this)
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = InstagramAuthWebViewClient()
@@ -53,12 +57,13 @@ class InstagramExtract: AppCompatActivity() {
             if (redirectUrl.startsWith("https://example.com/instagramredirection?code=")) {
                 // 여기에서 Redirect URI 처리 및 인증 코드 추출
                 // 추출한 인증 코드를 사용하여 엑세스 토큰 요청 등을 수행
-                val code = redirectUrl.substring(46)
+                Log.d("인스타코드", "${redirectUrl}")
+                val uri = Uri.parse(redirectUrl)
+                val code = uri.getQueryParameter("code") ?: ""
                 postFuel(code)
-                val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
-                startActivity(intent)
+
                 return true
-            } else {Log.d("엘스", "엘스")}
+            } else {Log.d("인스타엘스", "인스타엘스")}
             // else 부분은 추가로 구현해야할 듯
             return super.shouldOverrideUrlLoading(view, request)
         }
@@ -91,9 +96,16 @@ class InstagramExtract: AppCompatActivity() {
                 // 응답 확인
                 response.third.fold(
                     success = { data ->
-                        sendInstagramAccessToken(data)
+                        NowMatchingActivity.instaAuth = true
+                        Log.d("인스타액세스토큰", "$data")
+                        instadata = data
+//                        val intent = Intent(this@InstagramExtract, LoadingActivity::class.java)
+//                        startActivity(intent)
+                        finish()
                     },
-                    failure = { error -> Log.d("에러4", "에러: $error") }
+                    failure = { error ->
+                        Log.d("에러4", "에러: $error")
+                    }
                 )
             } catch (e: Exception) {
                 println("에러3: $e")

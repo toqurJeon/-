@@ -15,24 +15,41 @@
     <color name="fontGray">#999999</color>
     <color name="mediumGray">#E0E0E0</color>
 
-    <!--성향 별 색상 설정-->
-    <color name="bg_socialable">#D4FFCF</color>
-    <color name="bg_positivity">#F6F1BF</color>
-    <color name="bg_activity">#FFD3D3</color>
-    <color name="bg_communion">#FFD0F4</color>
-    <color name="bg_altruism">#FFE3D1</color>
-    <color name="bg_empathy">#FFD6E7</color>
-    <color name="bg_humor">#BCF4E2</color>
-    <color name="bg_generous">#E2D5FF</color>
+    <!-- 메인 컬러 -->
+    <color name="main_orange">#FF8A00</color>
+    <color name="transparent_orange">#80FF8A00</color>
 
-    <color name="socialable">#28E016</color>
+    <!-- 서브 컬러 -->
+    <color name="sub_yellow">#FFC639</color>
+
+    <!-- 회색 색상 -->
+    <color name="gray_low_brightness">#888888</color>
+    <color name="gray_medium_brightness">#C8C8C8</color>
+    <color name="gray_high_brightness">#E1E1E1</color>
+    <color name="gray_high_brightness_60">#99E1E1E1</color>
+
+    <!-- 폰트 색상 -->
+    <color name="font_Gray_2">#6E6E6E</color>
+    <color name="font_Gray_3">#C8C8C8</color>
+
+    <!--성향 별 색상 설정-->
+    <color name="bg_socialable">#E4F8E2</color>
+    <color name="bg_positivity">#F6F1BF</color>
+    <color name="bg_activity">#FADCDC</color>
+    <color name="bg_communion">#F3D5EC</color>
+    <color name="bg_altruism">#FFE3D1</color>
+    <color name="bg_empathy">#FDE6EB</color>
+    <color name="bg_humor">#D1F6EA</color>
+    <color name="bg_generous">#E8E0FB</color>
+
+    <color name="socialable">#73DA60</color>
     <color name="positivity">#DCC500</color>
     <color name="activity">#EC1414</color>
-    <color name="communion">#ED27EA</color>
+    <color name="communion">#EC35E9</color>
     <color name="altruism">#E65E14</color>
-    <color name="empathy">#FF229C</color>
-    <color name="humor">#00E196</color>
-    <color name="generous">#662CF3</color>
+    <color name="empathy">#E32772</color>
+    <color name="humor">#18E4A0</color>
+    <color name="generous">#6D37F1</color>
 
     <!--채도가 낮은 색상들-->
     <color name="pastelOrange">#FFE8CF</color>
@@ -47,6 +64,12 @@
     <color name="wakeOrange">#FFE2BF</color>
 
     <!-- 반투명 인디케이터 -->
-    <color name="transparentWhite">#E6FFFFFF</color>
+    <color name="transparentWhite">#CCFFFFFF</color>
     <color name="iconGray">#8A8A8A</color>
+
+    <!-- 매칭 결과 색상 -->
+    <color name="rate_over80">#12C319</color>
+    <color name="rate_over70">#BBCA06</color>
+    <color name="rate_over60">#E3C147</color>
+    <color name="rate_else">#AEA7A1</color>
 </resources>

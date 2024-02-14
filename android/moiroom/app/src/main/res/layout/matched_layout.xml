@@ -31,15 +31,31 @@
                 android:layout_marginTop="12dp"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/matchRate"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:textColor="@color/darkorange"
-                    android:textSize="52sp"
-                    android:text="@string/sampleMatchRate"/>
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_horizontal">
+
+                    <TextView
+                        android:id="@+id/matchRate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:textColor="@color/darkorange"
+                        android:textSize="52sp"
+                        android:text="@string/sampleMatchRate"/>
+
+                    <TextView
+                        android:id="@+id/matchRateSymbol"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/pretendard_bold"
+                        android:textColor="@color/darkorange"
+                        android:textSize="36sp"
+                        android:text="%"/>
+
+                </LinearLayout>
 
                 <FrameLayout
                     android:id="@+id/matchIntroductionContainer"
@@ -125,6 +141,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/pretendard_regular"
                     android:gravity="center"
+                    android:textColor="@color/font_Gray_2"
                     android:textSize="18sp"
                     android:text="@string/sampleString"/>
 
@@ -178,7 +195,7 @@
                 android:layout_height="wrap_content"
 
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:layout_marginHorizontal="16dp"
 
                 app:cardCornerRadius="48dp"
@@ -194,18 +211,82 @@
                     android:layout_marginVertical="8dp"
                     android:fontFamily="@font/pretendard_regular"
                     android:gravity="center"
-                    android:lineSpacingExtra="10sp"
+                    android:lineSpacingExtra="4sp"
                     android:textSize="16sp"
                     android:text="@string/sampleString"/>
 
             </androidx.cardview.widget.CardView>
 
             <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_marginEnd="6dp"
+                    android:layout_gravity="center_vertical"
+                    app:tint="@color/darkorange"
+                    android:src="@drawable/character_information"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:layout_gravity="center_vertical"
+                    android:text="성향"
+                    android:textSize="20sp"/>
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:id="@+id/radarChartContainer"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginTop="24dp"
+                android:layout_marginTop="16dp"
                 android:orientation="vertical">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="20dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="4dp"
+                    app:cardBackgroundColor="@color/main_orange"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="4dp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:text="나"/>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/radar_chart_roommate_legend_color"
+                    android:layout_width="20dp"
+                    android:layout_height="12dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="4dp"
+                    app:cardBackgroundColor="@color/main_orange"
+                    app:cardElevation="0dp"
+                    app:cardCornerRadius="4dp"/>
+
+                <TextView
+                    android:id="@+id/radar_chart_roommate_legend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="룸메이트 닉네임"/>
 
             </LinearLayout>
 
@@ -217,41 +298,63 @@
                 android:layout_marginBottom="16dp"
                 tools:listitem="@layout/characteristic_item_layout" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginBottom="4dp"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="12dp"
                 android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/characterIcon"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
-                    android:layout_gravity="center_vertical"
-                    app:tint="@color/socialable"
-                    android:src="@drawable/character_socialability"/>
-
-                <TextView
-                    android:id="@+id/characterDetailName"
+                <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:textSize="16dp"
-                    android:text="성향 이름"/>
+                    android:orientation="vertical">
 
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="4dp"
+                        android:layout_marginBottom="4dp"
+                        android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/characterDetailDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/fontGray"
-                android:layout_marginLeft="8dp"
-                android:layout_marginBottom="12dp"
-                android:text="성향에 대한 1줄 정도의 간략한 설명"/>
+                        <ImageView
+                            android:id="@+id/characterIcon"
+                            android:layout_width="24dp"
+                            android:layout_height="24dp"
+                            android:layout_gravity="center_vertical"
+                            app:tint="@color/socialable"
+                            android:src="@drawable/character_socialability"/>
+
+                        <TextView
+                            android:id="@+id/characterDetailName"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="4dp"
+                            android:fontFamily="@font/pretendard_bold"
+                            android:textSize="16dp"
+                            android:text="성향 이름"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/characterDetailDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/fontGray"
+                        android:text="성향에 대한 1줄 정도의 간략한 설명"/>
+
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/characterDescriptionButton"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_help"
+                    app:tint="@color/gray_low_brightness"/>
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -326,35 +429,44 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginHorizontal="4dp"
-                android:paddingVertical="20dp">
+                android:layout_marginTop="20dp"
+                android:orientation="vertical">
 
-                <com.example.moiroom.view.SquareChartView
-                    android:id="@+id/squareChartView"
-                    android:layout_width="200dp"
-                    android:layout_height="200dp"
-                    android:gravity="start"
-                    android:background="@android:color/white" />
-
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="end"
-                    android:orientation="horizontal">
+                    android:layout_height="24dp"
+                    android:layout_marginBottom="8dp"
+                    tools:listitem="@layout/interest_chart_item_layout"/>
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/interestRecyclerView"
-                        android:layout_width="140dp"
-                        android:layout_height="wrap_content"
-                        android:gravity="end"
-                        android:layout_marginTop="2dp"
-                        android:layout_marginBottom="16dp"
-                        tools:listitem="@layout/interest_item_layout" />
-
-                </LinearLayout>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler2"
+                    android:layout_width="match_parent"
+                    android:layout_height="24dp"
+                    tools:listitem="@layout/interest_chart_item_layout"/>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingVertical="20dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interestRecyclerView"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    tools:listitem="@layout/interest_item_layout" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/interestRecyclerView2"
+                    android:layout_width="140dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    tools:listitem="@layout/interest_item_layout" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/myInterestDescription"
@@ -365,7 +477,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="나의 관심사에 대한 설명 등"/>
 
-            <LinearLayout
+            <!--LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="12dp"
@@ -395,7 +507,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="20dp">
 
-                <com.example.moiroom.view.SleepChartView
+                < com.example.moiroom.view.SleepChartView
                     android:id="@+id/sleepChartView"
                     android:layout_width="360dp"
                     android:layout_height="360dp"
@@ -450,7 +562,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="start|center_vertical"
                     android:layout_marginTop="12dp"
-                    android:layout_marginStart="28dp"
+                    android:layout_marginStart="16dp"
                     android:textSize="16dp"
                     android:textAlignment="textStart"
                     android:text="00:00"/>
@@ -460,16 +572,16 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="end|center_vertical"
                     android:layout_marginTop="12dp"
-                    android:layout_marginEnd="28dp"
+                    android:layout_marginEnd="16dp"
                     android:textSize="16dp"
                     android:textAlignment="textEnd"
                     android:text="24:00"/>
 
-            </FrameLayout>
+            </FrameLayout -->
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
+                android:layout_height="160dp"
                 android:background="@color/white"/>
 
         </LinearLayout>

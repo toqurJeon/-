@@ -17,14 +17,19 @@ import android.app.AlertDialog
 import android.util.Log
 import com.example.moiroom.databinding.ActivityNowMatchingBinding
 import android.Manifest
+import android.app.AppOpsManager
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
+import com.example.moiroom.databinding.DialogBasicBinding
+import com.example.moiroom.extraction.YoutubeExtract
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
+import android.os.Process
 
 class NowMatchingActivity : AppCompatActivity() {
+
 
     private val PERMISSION_REQUEST_CODE = 103
 
@@ -37,37 +42,57 @@ class NowMatchingActivity : AppCompatActivity() {
         // SharedPreferences에서 'isButtonClicked' 값을 가져옴
         val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
+        val isRematching = sharedPreferences.getBoolean("isRematching", false)
+        Log.d("MYTAG", "isButtonClicked(이전에 매칭을 진행했는지 확인): $isButtonClicked")
+        Log.d("MYTAG", "isButtonClicked(매칭을 새롭게 하는지 확인): $isRematching")
 
-        if (isButtonClicked) {
+        if (!isRematching) {
+            Log.d("MYTAG", "다시 매칭하기가 아님")
+            if (isButtonClicked) {
+                val intent = Intent(this, NaviActivity::class.java)
+                getUserInfo(this)
+                getMatchedMember(this, 1)
+                startActivity(intent)
+                finish()
 
-            val intent = Intent(this, NaviActivity::class.java)
-            getUserInfo()
-            getMatchedMember()
-            startActivity(intent)
-            finish()
+            } else {
+                Log.d("MYTAG", "처음 매칭")
+                setContentView(binding.root)
 
+                binding.mainLayout.setOnClickListener {
+
+                    showAuthorityDialog()
+
+                    // 클릭 여부를 SharedPreferences에 저장
+                    val editor = sharedPreferences.edit()
+                    editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
+                    editor.apply()
+                }
+            }
         } else {
+            Log.d("MYTAG", "새롭게 매칭을 진행합니다.")
             setContentView(binding.root)
 
-            binding.mainLayout.setOnClickListener {
+            showAuthorityDialog()
 
-                showAuthorityDialog()
-
-                 // 클릭 여부를 SharedPreferences에 저장
-                 val editor = sharedPreferences.edit()
-                 editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
-                 editor.apply()
-            }
+            val editor = sharedPreferences.edit()
+            editor.putBoolean("isRematching", false)
+            editor.apply()
         }
     }
 
     companion object {
         const val REQUEST_CODE_SETTINGS = 1001
+        const val REQUEST_INSTAGRAM_PERMISSION = 1002
+        var callAuth = false
+        var mediaAuth = false
+        var instaAuth = false
+        var googleAuth = false
     }
 
     private fun showAuthorityDialog() {
 
-        val dialog = Dialog(this)
+        val dialog = Dialog(this, R.style.DialogTheme)
         val dialogBinding = DialogAuthorityBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
@@ -81,19 +106,24 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun goSettingActivityAlertDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("권한 승인이 필요합니다.")
-            .setMessage("권한이 필요합니다.\n권한 -> 통화 및 저장공간 -> 허용")
-            .setPositiveButton("허용하러 가기") { _, _ ->
-                val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-                goSettingPermission.data = Uri.parse("package:$packageName")
-                startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
-            }
-            .setNegativeButton("취소") { _, _ ->
-                instagramPermissionDialog()
-            }
-            .create()
-            .show()
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.dialogTitle.text = "권한 승인을 해주세요."
+        dialogBinding.dialogContent.text = "권한 -> 통화 및 저장공간 -> 허용"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+            goSettingPermission.data = Uri.parse("package:$packageName")
+            startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            instagramPermissionDialog()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,100 +131,139 @@ class NowMatchingActivity : AppCompatActivity() {
 
         // 설정 화면에서 돌아왔을 때 처리
         if (requestCode == REQUEST_CODE_SETTINGS) {
-            Log.d("TAG", "Settings Activity Returned")
+            Log.d("MYTAG", "Settings Activity Returned")
 
             instagramPermissionDialog()
+        } else if (requestCode == REQUEST_INSTAGRAM_PERMISSION) {
+            Log.d("TAG", "인스타그램 권한 설정에서 돌아옴.")
+            youtubePermissionDialog()
         }
     }
 
     private fun goInsta() {
         Log.d("TAG", "goInsta: 인스타그램 추출 액티비티로 이동")
         val intent = Intent(this, InstagramExtract::class.java)
-        startActivity(intent)
+        startActivityForResult(intent, REQUEST_INSTAGRAM_PERMISSION)
     }
 
     private fun instagramPermissionDialog() {
-        AlertDialog.Builder(this)
-            .setTitle("인스타그램 권한 승인이 필요합니다.")
-            .setMessage("인스타그램으로 이동하시겠습니까?")
-            .setPositiveButton("이동하기") { _, _ ->
-                goInsta()
-            }
-            .setNegativeButton("취소") { _, _ ->
-                Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 매칭 중 액티비티로 이동")
-                // 인스타그램 이동을 거절했을때의 요청 보내기
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
 
-                // 더미 응답
-                getRequestResult(true)
-                // 매칭중 액티비티로 이동
-                val intent = Intent(this, LoadingActivity::class.java)
-                startActivity(intent)
-            }
-            .create()
-            .show()
+        dialogBinding.dialogTitle.text = "인스타그램 권한 승인이 필요해요."
+        dialogBinding.dialogContent.text = "인스타그램으로 이동할까요?"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            goInsta()
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            Log.d("TAG", "instagramPermissionDialog: 인스타그램 거절, 유튜브 다이얼로그 띄움")
+            // 인스타그램 이동을 거절했을때의 요청 보내기
+
+            youtubePermissionDialog()
+            dialog.dismiss()
+        }
+        dialog.show()
+    }
+
+    private fun youtubePermissionDialog() {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.dialogTitle.text = "유튜브 권한 승인이 필요해요."
+        dialogBinding.dialogContent.text = "유튜브로 이동할까요?"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            val intent = Intent(this, YoutubeExtract::class.java)
+            startActivity(intent)
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            Log.d("TAG", "instagramPermissionDialog: 유튜브 거절, 매칭 중 액티비티로 이동")
+            // 유튜브 이동을 거절했을때의 요청 보내기
+
+            // 더미 응답
+            getRequestResult(true, this)
+            // 매칭중 액티비티로 이동
+            val intent = Intent(this, LoadingActivity::class.java)
+            startActivity(intent)
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun permissionRequest() {
 
-        // 통화 기록 읽기 허용 여부
-        val isReadCallGranted = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_CALL_LOG
-        ) == PackageManager.PERMISSION_GRANTED
 
-        // 저장소 접근 허용 여부
-        val isExternalStorageGranted = ContextCompat.checkSelfPermission(
-            this,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-        ) == PackageManager.PERMISSION_GRANTED
+        // 권한을 받아야 할 권한들의 리스트
+        val permissionsToRequest = mutableListOf<String>()
 
-        if (isReadCallGranted && isExternalStorageGranted) {
-            Log.d("권한 설정", "permissionRequest: 이미 모든 권한이 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
+        // 통화 기록 권한 허용 여부
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_CALL_LOG
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_CALL_LOG)
+        }
 
-            instagramPermissionDialog()
+        // 미디어 접근 권한 허용 여부
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
 
-        } else if (isReadCallGranted) {
-            Log.d("권한 설정", "permissionRequest: Call Permission만 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
+        // 위치 권한 허용 여부
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
+        }
 
+
+//        if (ContextCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_MEDIA_LOCATION
+//        ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
+//        }
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+        val granted = mode == AppOpsManager.MODE_ALLOWED
+
+        if (!granted) {
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("권한이 필요합니다")
+                .setMessage("사용정보접근허용 권한이 필요합니다. 설정으로 이동하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                    startActivity(intent)
+                }
+                .setNegativeButton("아니요") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+            dialog.show()
+        }
+
+        // 권한을 받아야하는 경우
+        if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
-                arrayOf(
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ),
+                permissionsToRequest.toTypedArray(),
                 PERMISSION_REQUEST_CODE
             )
-
-        } else if (isExternalStorageGranted) {
-            Log.d("권한 설정", "permissionRequest: External Storage Permission만 허용됨")
-            getRequestResult(true)
-            getRequestResult(true)
-
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.READ_CALL_LOG
-                ),
-                PERMISSION_REQUEST_CODE
-            )
-
         } else {
-            Log.d("권한 설정", "permissionRequest: 모든 권한이 허용되지 않음")
-            getRequestResult(true)
-            getRequestResult(true)
-
-            ActivityCompat.requestPermissions(
-                this,
-                arrayOf(
-                    Manifest.permission.READ_CALL_LOG,
-                    Manifest.permission.READ_EXTERNAL_STORAGE
-                ),
-                PERMISSION_REQUEST_CODE
-            )
-
+            instagramPermissionDialog()
         }
     }
 
@@ -211,6 +280,14 @@ class NowMatchingActivity : AppCompatActivity() {
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("TAG", "${permissions[i]} 권한이 허용되었습니다.")
+//                    if (permissions[i] == "android.permission.READ_CALL_LOG") {
+//                        Log.d("오스 바꾸기", "전화")
+//
+//                    }
+//                    if (permissions[i] == "android.permission.READ_EXTERNAL_STORAGE") {
+//                        Log.d("오스 바꾸기", "사진")
+//                        mediaAuth = true
+//                    }
                     // 권한이 허용된 경우
                 } else {
                     Log.d("TAG", "${permissions[i]} 권한이 거부되었습니다.")

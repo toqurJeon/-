@@ -85,7 +85,7 @@
        -->
         <activity
             android:name=".LoadingActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".NaviActivity"
@@ -131,7 +131,12 @@
         <activity
             android:name=".extraction.YoutubeExtract"
             android:exported="true">
-
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="moiroom.firebaseapp.com" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -178,7 +183,7 @@
                 -->
                 <data
                     android:host="oauth"
-                    android:scheme="kakao1cbfb61d83c4ab599a7d1b1771485417" />
+                    android:scheme="kakaodafe1201ec34d9c314a0564155c291ba" />
             </intent-filter>
         </activity>
 

@@ -32,12 +32,12 @@ class AppExtract: AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityJaeeontestBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        appExtract()
+//        appExtract()
     }
 
-    fun appExtract() {
+    fun appExtract(context: Context): String {
         // UsageStatsManager를 사용하여 앱 사용 통계 데이터를 가져올 수 있음
-        val usageStatsList = getUsageStatsForPeriod()
+        val usageStatsList = getUsageStatsForPeriod(context)
         val stringBuilder = StringBuilder()
         stringBuilder.append("[")
         for (usageStats in usageStatsList) {
@@ -46,21 +46,24 @@ class AppExtract: AppCompatActivity() {
             stringBuilder.append("{ \"packageName\": \"$packageName\", \"totalUsageTime\": ${totalUsageTime} }, ")
             // 사용량 관련 작업 수행
         }
-        stringBuilder.deleteCharAt(stringBuilder.length - 1)
-        stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        if (stringBuilder.length > 1 ) {
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        }
         stringBuilder.append("]")
-        postFuel(stringBuilder.toString())
+//        postFuel(stringBuilder.toString())
+        return stringBuilder.toString()
     }
 
 
-    private fun getUsageStatsForPeriod(): List<UsageStats> {
+    private fun getUsageStatsForPeriod(context: Context): List<UsageStats> {
         val calendar = Calendar.getInstance()
         // 현재 날짜로부터 일주일 전의 날짜로 설정
         calendar.add(Calendar.WEEK_OF_YEAR, -1)
         val startMillis = calendar.timeInMillis
         val endMillis = System.currentTimeMillis()
 
-        val usageStatsManager = this.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
+        val usageStatsManager = context.getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
         return usageStatsManager.queryUsageStats(
             UsageStatsManager.INTERVAL_WEEKLY,
             startMillis,

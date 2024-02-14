@@ -41,6 +41,7 @@ class CharacterAdapter(
                 ),
                 0
             )
+            selectedPosition = 0
         }
     }
 
@@ -92,16 +93,30 @@ class CharacterAdapter(
             characterPercentage.text = "${decimalFormat.format(data.value)}%"
 
             // 아이템 클릭 시
-            root.setOnClickListener {
-                onItemClick(listOf(data, compareList!![position]), holder.adapterPosition)
-                // 선택한 RecyclerView의 배경색 변경
-                characterCard.setCardBackgroundColor(color)
-                // 이전에 선택한 RecyclerView의 배경색을 기본 값으로 변경
-                if (selectedPosition != RecyclerView.NO_POSITION) {
-                    notifyItemChanged(selectedPosition)
+            if (compareList != null) {
+                root.setOnClickListener {
+                    onItemClick(listOf(data, compareList!![position]), holder.adapterPosition)
+                    // 선택한 RecyclerView의 배경색 변경
+                    characterCard.setCardBackgroundColor(color)
+                    // 이전에 선택한 RecyclerView의 배경색을 기본 값으로 변경
+                    if (selectedPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedPosition)
+                    }
+                    // 선택한 위치를 저장하여 추적
+                    selectedPosition = holder.adapterPosition
                 }
-                // 선택한 위치를 저장하여 추적
-                selectedPosition = holder.adapterPosition
+            } else {
+                holder.binding.root.setOnClickListener {
+                    onItemClick(listOf(data), holder.adapterPosition)
+                    // 선택한 RecyclerView의 배경색 변경
+                    holder.binding.characterCard.setCardBackgroundColor(color)
+                    // 이전에 선택한 RecyclerView의 배경색을 기본 값으로 변경
+                    if (selectedPosition != RecyclerView.NO_POSITION) {
+                        notifyItemChanged(selectedPosition)
+                    }
+                    // 선택한 위치를 저장하여 추적
+                    selectedPosition = holder.adapterPosition
+                }
             }
         }
 

@@ -2,19 +2,20 @@ package com.example.moiroom
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.example.moiroom.data.CharacteristicType
-import com.example.moiroom.data.Interest
-import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.FragmentMyPageBinding
-import com.example.moiroom.utils.cacheUserInfo
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
+import com.example.moiroom.utils.getUserInfo
 import com.example.moiroom.view.RadarChartView
-
 
 class MyPageFragment : Fragment() {
 
@@ -25,18 +26,30 @@ class MyPageFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        Log.d("MYTAG", "onCreateView: 마이페이지 실행")
         binding = FragmentMyPageBinding.inflate(inflater, container, false)
 
-        val cachedUserInfo: Member? = cacheUserInfo.get("userInfo")
+        var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
         if (cachedUserInfo != null) {
-            val memberData: Member = cachedUserInfo
+            val memberData: UserResponse.Data.Member = cachedUserInfo!!
             setUI(memberData)
+        } else {
+            getUserInfo(requireContext())
+        }
+
+        CachedUserInfoLiveData.observe(viewLifecycleOwner) {userInfo ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 마이페이지")
+            cachedUserInfo = cacheUserInfo.get("userInfo")
+            if (cachedUserInfo != null) {
+                val memberData: UserResponse.Data.Member = cachedUserInfo!!
+                setUI(memberData)
+            }
         }
 
         return binding.root
     }
 
-    private fun setUI(memberData: Member) {
+    private fun setUI(memberData: UserResponse.Data.Member) {
         val profileImageUrl = memberData.memberProfileImageUrl
         if (profileImageUrl != null) {
             val profileImageView = binding.memberProfileImage
@@ -54,14 +67,14 @@ class MyPageFragment : Fragment() {
 
         chartView.setDataList(
             arrayListOf(
-                RadarChartData(CharacteristicType.socialbility,memberData.socialbility.toFloat() / 100),
-                RadarChartData(CharacteristicType.positivity,memberData.positivity.toFloat() / 100),
-                RadarChartData(CharacteristicType.activity,memberData.activity.toFloat() / 100),
-                RadarChartData(CharacteristicType.communion, memberData.communion.toFloat() / 100),
-                RadarChartData(CharacteristicType.altruism, memberData.altruism.toFloat() / 100),
-                RadarChartData(CharacteristicType.empathy, memberData.empathy.toFloat() / 100),
-                RadarChartData(CharacteristicType.humor, memberData.humor.toFloat() / 100),
-                RadarChartData(CharacteristicType.generous, memberData.generous.toFloat() / 100),
+                RadarChartData(CharacteristicType.sociability,memberData.characteristic.sociability.toFloat() / 100),
+                RadarChartData(CharacteristicType.positivity,memberData.characteristic.positivity.toFloat() / 100),
+                RadarChartData(CharacteristicType.activity,memberData.characteristic.activity.toFloat() / 100),
+                RadarChartData(CharacteristicType.communion, memberData.characteristic.communion.toFloat() / 100),
+                RadarChartData(CharacteristicType.altruism, memberData.characteristic.altruism.toFloat() / 100),
+                RadarChartData(CharacteristicType.empathy, memberData.characteristic.empathy.toFloat() / 100),
+                RadarChartData(CharacteristicType.humor, memberData.characteristic.humor.toFloat() / 100),
+                RadarChartData(CharacteristicType.generous, memberData.characteristic.generous.toFloat() / 100),
             ),
             null
         )
@@ -76,7 +89,8 @@ class MyPageFragment : Fragment() {
             intent.putExtra("memberIntroduction", memberData.memberIntroduction)
             intent.putExtra("metropolitanName", memberData.metropolitanName)
             intent.putExtra("cityName", memberData.cityName)
-            intent.putExtra("memberRoomateSearchStatus", memberData.memberRoomateSearchStatus)
+            intent.putExtra("memberRoommateSearchStatus", memberData.memberRoommateSearchStatus)  // 수정된 코드
+            Log.d("MYTAG", "onCreateView: 사용자 데이터 수정 페이지로 이동, ${memberData.memberRoommateSearchStatus}")
 
             startActivity(intent)
         }
@@ -93,6 +107,15 @@ class MyPageFragment : Fragment() {
         binding.advancedSettingButton.setOnClickListener {
             val intent = Intent(requireContext(), AdsettingActivity::class.java)
             startActivity(intent)
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        // 서버로부터 최신 정보를 가져오는 코드
+        context?.let {
+            getUserInfo(it)
         }
     }
 }
