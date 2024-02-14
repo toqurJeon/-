@@ -14,6 +14,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.moiroom.extraction.AppExtract
 import com.example.moiroom.extraction.CallExtract
 import com.example.moiroom.extraction.InstagramExtract
 import com.example.moiroom.extraction.PhotoExtract
@@ -32,9 +33,9 @@ class LoadingActivity : AppCompatActivity() {
     var finalCall = ""
     var finalPhoto = ""
     var finalGoogle = ""
-
     var accessToken: String? = null
     var refreshToken: String? = null
+    var apps = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d("오스", "${NowMatchingActivity.callAuth}")
@@ -67,8 +68,10 @@ class LoadingActivity : AppCompatActivity() {
         Log.d("인스타데이터", "${InstagramExtract.instadata}")
 
         instagramData(InstagramExtract.instadata)
+//        apps = AppExtract().appExtract()
         callData()
         postFlask1()
+
 //        finalCall =
 //        finalPhoto =
 //        finalGoogle =
@@ -130,6 +133,8 @@ class LoadingActivity : AppCompatActivity() {
         } else {
             finalPhoto = "[]"
         }
+        apps = AppExtract().appExtract(this)
+
 //        if ( finalInsta != "" && finalCall != "" && finalPhoto != "" && finalGoogle != "") {
 //            postFuel()
 //        }
@@ -147,7 +152,10 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append(", ")
         stringBuilder.append(" \"youtube\": { \"accessToken\": \"${YoutubeExtract.youtubeToken}\"} ")
         stringBuilder.append(", ")
+        stringBuilder.append("\"apps\": \"$apps\"")
+        stringBuilder.append(", ")
         stringBuilder.append("\"images\": $finalPhoto }")
+
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://moiroom.r-e.kr"
         Log.d("최종 전송 데이터", stringBuilder.toString())

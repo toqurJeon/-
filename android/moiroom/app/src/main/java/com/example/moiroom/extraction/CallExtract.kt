@@ -81,8 +81,10 @@ class CallExtract: AppCompatActivity() {
                 }
             }
         }
-        stringBuilder.deleteCharAt(stringBuilder.length - 1)
-        stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        if (stringBuilder.toString().last() != "["[0]) {
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+            stringBuilder.deleteCharAt(stringBuilder.length - 1)
+        }
         stringBuilder.append("]")
 
         // 리스트 반환

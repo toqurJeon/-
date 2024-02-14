@@ -17,6 +17,7 @@ import android.app.AlertDialog
 import android.util.Log
 import com.example.moiroom.databinding.ActivityNowMatchingBinding
 import android.Manifest
+import android.app.AppOpsManager
 import android.net.Uri
 import android.provider.Settings
 import android.widget.Toast
@@ -25,6 +26,7 @@ import com.example.moiroom.extraction.YoutubeExtract
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
+import android.os.Process
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -194,6 +196,8 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun permissionRequest() {
+
+
         // 권한을 받아야 할 권한들의 리스트
         val permissionsToRequest = mutableListOf<String>()
 
@@ -224,6 +228,33 @@ class NowMatchingActivity : AppCompatActivity() {
             permissionsToRequest.add(Manifest.permission.ACCESS_FINE_LOCATION)
         }
 
+
+//        if (ContextCompat.checkSelfPermission(
+//                this,
+//                Manifest.permission.ACCESS_MEDIA_LOCATION
+//        ) != PackageManager.PERMISSION_GRANTED
+//        ) {
+//            permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
+//        }
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+        val granted = mode == AppOpsManager.MODE_ALLOWED
+
+        if (!granted) {
+            val dialog = AlertDialog.Builder(this)
+                .setTitle("권한이 필요합니다")
+                .setMessage("사용정보접근허용 권한이 필요합니다. 설정으로 이동하시겠습니까?")
+                .setPositiveButton("예") { _, _ ->
+                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                    startActivity(intent)
+                }
+                .setNegativeButton("아니요") { dialog, _ ->
+                    dialog.dismiss()
+                }
+                .create()
+            dialog.show()
+        }
+
         // 권한을 받아야하는 경우
         if (permissionsToRequest.isNotEmpty()) {
             ActivityCompat.requestPermissions(
@@ -249,14 +280,14 @@ class NowMatchingActivity : AppCompatActivity() {
             for (i in permissions.indices) {
                 if (grantResults[i] == PackageManager.PERMISSION_GRANTED) {
                     Log.d("TAG", "${permissions[i]} 권한이 허용되었습니다.")
-                    if (permissions[i] == "android.permission.READ_CALL_LOG") {
-                        Log.d("오스 바꾸기", "전화")
-
-                    }
-                    if (permissions[i] == "android.permission.READ_EXTERNAL_STORAGE") {
-                        Log.d("오스 바꾸기", "사진")
-                        mediaAuth = true
-                    }
+//                    if (permissions[i] == "android.permission.READ_CALL_LOG") {
+//                        Log.d("오스 바꾸기", "전화")
+//
+//                    }
+//                    if (permissions[i] == "android.permission.READ_EXTERNAL_STORAGE") {
+//                        Log.d("오스 바꾸기", "사진")
+//                        mediaAuth = true
+//                    }
                     // 권한이 허용된 경우
                 } else {
                     Log.d("TAG", "${permissions[i]} 권한이 거부되었습니다.")
