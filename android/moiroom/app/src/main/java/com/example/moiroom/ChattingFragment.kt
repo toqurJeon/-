@@ -2,18 +2,24 @@ package com.example.moiroom
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.adapter.ChatRoomAdapter
 import com.example.moiroom.data.ChatRoom
 import com.example.moiroom.databinding.FragmentChattingBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.Instant
+import kotlin.math.log
 
 class ChattingFragment : Fragment() {
 
@@ -41,10 +47,29 @@ class ChattingFragment : Fragment() {
             recyclerView.adapter = adapter
 
             adapter.onItemClickListener = object : ChatRoomAdapter.OnItemClickListener {
-                override fun onItemClick(chatRoomId: Int) {
-                    val intent = Intent(requireContext(), ChatActivity::class.java)
-                    intent.putExtra("chatRoomId", chatRoomId)
-                    startActivity(intent)
+                override fun onItemClick(memberId: Long, chatRoomId: Long) {
+                    // 채팅방 생성 요청
+                    CoroutineScope(Dispatchers.IO).launch {
+                        val response = apiService.createChatRoom(memberId)
+
+                        if (response.isSuccessful) {
+                            // 채팅방 생성 성공
+                            withContext(Dispatchers.Main) {
+                                val intent = Intent(requireContext(), ChatActivity::class.java)
+                                intent.putExtra("memberId", memberId)
+                                intent.putExtra("chatRoomId", chatRoomId)
+                                startActivity(intent)
+                            }
+                            Log.d("Chatting", "$memberId")
+                        } else {
+                            // 채팅방 생성 실패
+                            // 에러 처리를 여기서 하세요.
+                            // 예: Toast 메시지를 출력하거나, 로그를 기록하는 등
+                            withContext(Dispatchers.Main) {
+                                Toast.makeText(requireContext(), "채팅방 생성 실패: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -61,12 +86,3 @@ class ChattingFragment : Fragment() {
         }
     }
 }
-
-
-//    private fun getListOfChatRoomData(): List<ChatRoom> {
-//        return listOf(
-//            ChatRoom(1, "안녕하세요. 룸메이트 구하고 있습니다.", Instant.parse("2024-01-23T12:34:56Z")),
-//            ChatRoom(2, "안녕하세요. 제가요 룸메이트를 구하고 있걸랑요? 그런데 이게 참 어렵습니다. 그 어려운 것이 그냥 어려운 것이 아니고 참 어렵다니까요?", Instant.parse("2024-01-24T12:34:56Z")) ,
-//            ChatRoom(3, "안녕하세요. 제가요 룸메이트를 구하고 있걸랑요? 그런데 이게 참 어렵습니다. 그 어려운 것이 그냥 어려운 것이 아니고 참 어렵다니까요?", Instant.parse("2024-01-24T12:34:56Z"))
-//        )
-//    }

@@ -15,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(chatRoomId: Int)
+        fun onItemClick(memberId: Long, chatRoomId: Long)  // 파라미터 타입을 Int로 변경했습니다.
     }
 
     // 클릭 리스너
@@ -27,8 +27,9 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
+                    val memberId = dataList[position].memberId
                     val chatRoomId = dataList[position].chatRoomId
-                    onItemClickListener?.onItemClick(chatRoomId)
+                    onItemClickListener?.onItemClick(memberId, chatRoomId)
                 }
             }
         }

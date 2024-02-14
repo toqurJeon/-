@@ -5,7 +5,8 @@ import java.time.Instant
 data class Chat(
     val chatMessageId: Int,
     val memberId: Int,
-    val chatRoomId: Int,
+    val chatRoomId: Long,
+    val memberNickname: String,
     val memberProfileImage: String,
     val content: String,
     val createdAt: String
@@ -23,4 +24,10 @@ data class ChatData(
     val totalElements: Int,
     val currentPage: Int,
     val pageSize: Int
+)
+
+data class  ChatCreate(
+    val code: Int,
+    val status: String,
+    val message: String,
 )
