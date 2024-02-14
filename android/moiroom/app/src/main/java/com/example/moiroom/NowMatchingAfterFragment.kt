@@ -187,6 +187,14 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
             editor.putBoolean("isRematching", true)
             editor.apply()
 
+            currentPageNumber = 0
+            currentPageItems = 0
+            totalPage = 0
+            totalItems = 0
+
+            currentScrollPosition = 0
+            currentViewPagerPosition = 0
+
             val intent = Intent(context, NowMatchingActivity::class.java)
             startActivity(intent)
         }
