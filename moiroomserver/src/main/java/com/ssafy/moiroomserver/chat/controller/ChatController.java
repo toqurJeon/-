@@ -11,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +27,7 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     /**
-     * 채팅방 구독 요청
+     * 채팅방 입장 관련
      * @param chatMessageReq
      * @param chatRoomId
      */
