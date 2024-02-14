@@ -50,6 +50,7 @@ class ChatAdapter(
         val sample_name = "김민수"
 
         val currentMemberId = data.memberId
+        val myMemberId = cachedUserInfo?.memberId ?: -1
 
         holder.binding.apply {
             chatMemberName.text = "${data.memberId}"
@@ -68,7 +69,7 @@ class ChatAdapter(
 
             Log.d("current_position", "current_position: $position, ${chatContent.text}")
 
-            if (currentMemberId == cachedUserInfo?.memberId) {
+            if (currentMemberId == myMemberId) {
                 chatBallonDrawableFlipped?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.lightorange), PorterDuff.Mode.SRC_ATOP)
                 chatContent.background = chatBallonDrawableFlipped
 
@@ -109,22 +110,37 @@ class ChatAdapter(
                 imageCard.visibility = View.INVISIBLE
                 chatCreatedAt.visibility = View.GONE
 
-                chatMemberName.text = sample_name
-
+                chatMemberName.text = data.memberNickname
 
                 // dataList.size 는 data의 갯수
                 // position은 0부터 dataList.size - 1 까지 (size == 15, position -> 14,13,...,1,0)
                 if (position == (dataList.size - 1)) {
-                    val upData = dataList[position - 1]
-                    val upMemberId = upData.memberId
-                    val upTime = formatting(upData.createdAt)
+                    if (position != 0) {
+                        val upData = dataList[position - 1]
+                        val upMemberId = upData.memberId
+                        val upTime = formatting(upData.createdAt)
 
-                    chatCreatedAt.visibility = View.VISIBLE
+                        chatCreatedAt.visibility = View.VISIBLE
 
-                    if (currentMemberId != upMemberId || time != upTime) {
+                        if (currentMemberId != upMemberId || time != upTime) {
+                            imageCard.visibility = View.VISIBLE
+                            chatMemberName.visibility = View.VISIBLE
+                        }
+                    } else {
+                        chatCreatedAt.visibility = View.VISIBLE
                         imageCard.visibility = View.VISIBLE
                         chatMemberName.visibility = View.VISIBLE
                     }
+//                    val upData = dataList[position - 1]
+//                    val upMemberId = upData.memberId
+//                    val upTime = formatting(upData.createdAt)
+//
+//                    chatCreatedAt.visibility = View.VISIBLE
+//
+//                    if (currentMemberId != upMemberId || time != upTime) {
+//                        imageCard.visibility = View.VISIBLE
+//                        chatMemberName.visibility = View.VISIBLE
+//                    }
                 } else if (position == 0) {
                     val downData = dataList[position + 1]
                     val downMemberId = downData.memberId

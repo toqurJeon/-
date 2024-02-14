@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.data.Chat
 import com.example.moiroom.databinding.ActivityChatBinding
 import kotlinx.coroutines.launch
+import okhttp3.WebSocket
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -28,8 +29,9 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var binding: ActivityChatBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatAdapter
-    private var chatRoomId: Int = -1
+    private var chatRoomId: Long = -1
     private var memberId: Long = -1
+    private lateinit var chatSocketManager: ChatSocketManager
 
     private val apiService: ApiService by lazy {
         NetworkModule.provideRetrofit(this)
@@ -37,21 +39,23 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        chatSocketManager = ChatSocketManager(this)
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 채팅방 리스트 (ChattingFragment)로부터 전달된 chatRoomId 받기
-        chatRoomId = intent.getIntExtra("chatRoomId", -1)
+        chatRoomId = intent.getLongExtra("chatRoomId", -1)
         memberId = intent.getLongExtra("memberId", -1)
-        Log.d("TAG", "receivedData: $memberId")
+        Log.d("MYTAG", "receivedData: $memberId")
+        Log.d("MYTAG", "채팅Data: $chatRoomId")
 
-        // chatRoomId 적용
-        if (chatRoomId == -1) {
-            binding.chatRoomName.text = "chatRoomName : $memberId"
-        } else {
-            binding.chatRoomName.text = "chatRoomName : $chatRoomId"
-        }
+//        // chatRoomId 적용
+//        if (chatRoomId == -1) {
+//            binding.chatRoomName.text = "chatRoomName : $memberId"
+//        } else {
+//            binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+//        }
 
         // 뒤로 가기 버튼
         binding.backwardButton.setOnClickListener {
@@ -94,6 +98,9 @@ class ChatActivity : AppCompatActivity() {
 //            }
 //        }
 
+        // 웹소켓 연결 시작
+        chatSocketManager.connect()
+
         val btnShowModal = binding.exitBtn
         btnShowModal.setOnClickListener {
             showExitDialog()
@@ -108,6 +115,7 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private suspend fun getListOfChatData(): List<Chat> {
+        Log.d("채팅기록","$chatRoomId")
         val response = apiService.getChatMessages(chatRoomId)
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!.data.content
@@ -140,4 +148,5 @@ class ChatActivity : AppCompatActivity() {
         super.onBackPressed()
         finish()
     }
+
 }

@@ -153,6 +153,7 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-storage-ktx:20.3.0")
     implementation("com.google.android.gms:play-services-auth:20.0.0")
-
+    //okhttp 라이브러리 추가
+    implementation("com.squareup.okhttp3:okhttp:4.9.0")
 }
 
