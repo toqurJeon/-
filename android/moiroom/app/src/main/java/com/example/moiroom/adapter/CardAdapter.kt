@@ -9,6 +9,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +28,7 @@ import com.bumptech.glide.Glide
 import com.example.moiroom.ChatActivity
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
+import com.example.moiroom.data.CombinedInterest
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.Member
@@ -38,6 +41,7 @@ import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
+import com.example.moiroom.utils.getInterestName
 import com.example.moiroom.view.RadarChartView
 import com.example.moiroom.view.RectangleChartView
 import com.github.mikephil.charting.utils.Utils.convertDpToPixel
@@ -210,14 +214,14 @@ class CardAdapter(
 //                squareChart2.setData(myInfo.interests)
 
                 // 상대방 관심사 목록
-                binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
-                val interestAdapter = InterestAdapter(context, cardInfo.member.interests)
-                binding.interestRecyclerView.adapter = interestAdapter
+//                binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
+//                val interestAdapter = InterestAdapter(context, cardInfo.member.interests)
+//                binding.interestRecyclerView.adapter = interestAdapter
 
                 // 내 관심사 목록
-                binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
-                val interestAdapter2 = InterestAdapter(context, myInfo.interests)
-                binding.interestRecyclerView2.adapter = interestAdapter2
+//                binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
+//                val interestAdapter2 = InterestAdapter(context, myInfo.interests)
+//                binding.interestRecyclerView2.adapter = interestAdapter2
 
 //                // 직사각형 차트
 //                val rectangleChartView: RectangleChartView = binding.rectangleChartView
@@ -225,17 +229,20 @@ class CardAdapter(
 
                 // 리싸이클러
                 binding.recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                val interestChartAdapter = InterestChartAdapter(context, cardInfo.member.interests)
+
+                val interestChartAdapter = InterestChartAdapter(context, cardInfo.member.interests) { interest ->
+                    interestDescription.text = interest.interestName
+                }
 //                interestChartAdapter.setTotalWidth(binding.recycler.layoutParams.width)
 //                binding.recycler.adapter = interestChartAdapter
 
                 binding.recycler.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        // RecyclerView의 너비가 측정되었을 때 호출
                         val width = binding.recycler.width
                         interestChartAdapter.setTotalWidth(width)
 
-                        // 레이아웃 리스너를 제거합니다.
+                        // 레이아웃 리스너 제거
                         binding.recycler.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                         binding.recycler.adapter = interestChartAdapter
@@ -244,20 +251,100 @@ class CardAdapter(
 
                 // 리싸이클러2
                 binding.recycler2.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                val interestChartAdapter2 = InterestChartAdapter(context, myInfo.interests)
+                val interestChartAdapter2 = InterestChartAdapter(context, myInfo.interests) { interest ->
+                    interestDescription.text = interest.interestName
+                }
 
                 binding.recycler2.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        // RecyclerView의 너비가 측정되었을 때 호출
                         val width = binding.recycler2.width
                         interestChartAdapter2.setTotalWidth(width)
 
-                        // 레이아웃 리스너를 제거합니다.
+                        // 레이아웃 리스너 제거
                         binding.recycler2.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                         binding.recycler2.adapter = interestChartAdapter2
                     }
                 })
+
+                // Interest 데이터 합치기
+                val combinedList = mutableListOf<CombinedInterest>()
+
+                cardInfo.member.interests.forEach { roommateInterest ->
+                    val myInterest = myInfo.interests.find { it.interestName == roommateInterest.interestName }
+                    combinedList.add(
+                        CombinedInterest(
+                            roommateInterest.interestName,
+                            roommateInterest.interestPercent,
+                            myInterest?.interestPercent
+                        )
+                    )
+                }
+
+                myInfo.interests.filter { myInterest ->
+                    cardInfo.member.interests.none { it.interestName == myInterest.interestName }
+                }.forEach { combinedInterest ->
+                    combinedList.add(
+                        CombinedInterest(
+                            combinedInterest.interestName,
+                            null,
+                            combinedInterest.interestPercent
+                        )
+                    )
+                }
+
+                val interestTableAdapter = InterestTableItemAdapter(context, combinedList) { combinedInterest ->
+                    interestDescription.text = combinedInterest.interestName
+                }
+                interestTableRecyclerItem.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                interestTableRecyclerItem.adapter = interestTableAdapter
+
+                interestTableAdapter.selectFirstItem()
+
+                var selectedCombinedInterest = interestTableAdapter.getSelectedItem()?.interestName
+                if (selectedCombinedInterest != null) {
+                    interestDescription.text = selectedCombinedInterest
+                    interestChartAdapter.selectInterestByName(selectedCombinedInterest)
+                    interestChartAdapter2.selectInterestByName(selectedCombinedInterest)
+                }
+                var selectedRoommateInterest = interestChartAdapter.getSelectedItem()?.interestName
+                if (selectedRoommateInterest != null) {
+                    interestDescription.text = selectedRoommateInterest
+                    interestChartAdapter.selectInterestByName(selectedRoommateInterest)
+                    interestChartAdapter2.selectInterestByName(selectedRoommateInterest)
+                }
+                var selectedMyInterest = interestChartAdapter2.getSelectedItem()?.interestName
+                if (selectedMyInterest != null) {
+                    interestDescription.text = selectedMyInterest
+                    interestChartAdapter.selectInterestByName(selectedMyInterest)
+                    interestChartAdapter2.selectInterestByName(selectedMyInterest)
+                }
+
+
+                interestDescription.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                        Log.d("MYTAG", "bind: 텍스트 변경 전 ${interestDescription.text}")
+                        // 텍스트 변경 전에 호출됩니다.
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        Log.d("MYTAG", "bind: 텍스트 변경 중 ${interestDescription.text}")
+                        interestTableAdapter.selectInterestByName(interestDescription.text.toString())
+                        interestChartAdapter.selectInterestByName(interestDescription.text.toString())
+                        interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
+
+                        if (interestDescription.text.toString() == combinedList[0].interestName) {
+                            matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)} !"
+                        }
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                        Log.d("MYTAG", "bind: 텍스트 변경 ${interestDescription.text}")
+                    }
+                })
+
+                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)} !"
 
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView

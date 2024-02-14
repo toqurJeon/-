@@ -434,19 +434,71 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler"
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="40dp"
                     android:layout_marginBottom="8dp"
                     tools:listitem="@layout/interest_chart_item_layout"/>
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler2"
                     android:layout_width="match_parent"
-                    android:layout_height="24dp"
+                    android:layout_height="40dp"
                     tools:listitem="@layout/interest_chart_item_layout"/>
 
             </LinearLayout>
 
             <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="8dp">
+
+                <TextView
+                    android:id="@+id/interest_table_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:textSize="16sp"
+                    android:text="관심사 이름"/>
+
+                <TextView
+                    android:id="@+id/interest_table_roommate_percent"
+                    android:layout_width="72dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="112dp"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp"
+                    android:text="룸메이트"/>
+
+                <TextView
+                    android:id="@+id/interest_table_my_percent"
+                    android:layout_width="56dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="24dp"
+                    android:textAlignment="textStart"
+                    android:textSize="16sp"
+                    android:text="나"/>
+
+            </RelativeLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/mediumGray" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/interest_table_recycler_item"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                tools:listitem="@layout/interest_table_item_layout" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/mediumGray" />
+
+            <!-- RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:paddingVertical="20dp">
@@ -465,13 +517,25 @@
                     android:layout_alignParentEnd="true"
                     tools:listitem="@layout/interest_item_layout" />
 
-            </RelativeLayout>
+            </RelativeLayout -->
 
             <TextView
-                android:id="@+id/myInterestDescription"
+                android:id="@+id/interestDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:visibility="gone"
+                android:text="관심사이름"/>
+
+            <TextView
+                android:id="@+id/matchInterestDescription"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="20dp"
                 android:layout_marginBottom="16dp"
                 android:fontFamily="@font/pretendard_semibold"
                 android:text="나의 관심사에 대한 설명 등"/>
