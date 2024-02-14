@@ -39,8 +39,6 @@ import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.view.RadarChartView
 import com.example.moiroom.view.RectangleChartView
 import com.google.android.material.appbar.AppBarLayout
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
 import java.text.DecimalFormat
 import kotlin.math.abs
 import kotlin.math.roundToInt
@@ -205,7 +203,6 @@ class CardAdapter(
 
                 // 내 관심사 목록
                 binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
-                Log.d("MYTAG", "bind: ${myInfo.interests}")
                 val interestAdapter2 = InterestAdapter(context, myInfo.interests)
                 binding.interestRecyclerView2.adapter = interestAdapter2
 
@@ -249,8 +246,6 @@ class CardAdapter(
                     }
                 })
 
-                Log.d("MYTAG", "interest chart . width : ${binding.recycler.layoutParams.width}")
-
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView
 //                sleepChart.setSleepTime(cardInfo.member.characteristic.sleepAt, cardInfo.member.characteristic.wakeUpAt)
@@ -278,24 +273,9 @@ class CardAdapter(
                 })
 
                 chatbuttonContainer.setOnClickListener {
-                    val apiService = NetworkModule.provideRetrofit(context)
-                    GlobalScope.launch {
-                        try {
-                            val response = apiService.createChatRoom(cardInfo.member.memberId)
-                            if (response.isSuccessful) {
-                                val intent = Intent(context, ChatActivity::class.java)
-                                intent.putExtra("memberId", cardInfo.member.memberId)
-                                Log.d("TAG", "bind: ${cardInfo.member.memberId}")
-                                context.startActivity(intent)
-                            } else {
-                                // API 호출이 실패하면 여기에 코드를 추가합니다.
-                                Log.e("API Error", "Failed to create chat room")
-                            }
-                        } catch (e: Exception) {
-                            // 네트워크 요청 중 오류가 발생하면 여기에 코드를 추가합니다.
-                            Log.e("Network Error", "Failed to create chat room: ${e.message}")
-                        }
-                    }
+                    val intent = Intent(context, ChatActivity::class.java)
+                    intent.putExtra("memberId", cardInfo.member.memberId)
+                    context.startActivity(intent)
                 }
             }
         }
@@ -343,25 +323,12 @@ class CardAdapter(
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
                 }
 
+                // 채팅방 생성 및 이동
                 chatbuttonContainer.setOnClickListener {
-                    val apiService = NetworkModule.provideRetrofit(context)
-                    GlobalScope.launch {
-                        try {
-                            val response = apiService.createChatRoom(cardInfo.member.memberId)
-                            if (response.isSuccessful) {
-                                val intent = Intent(context, ChatActivity::class.java)
-                                intent.putExtra("memberId", cardInfo.member.memberId)
-                                Log.d("TAG", "bind: ${cardInfo.member.memberId}")
-                                context.startActivity(intent)
-                            } else {
-                                // API 호출이 실패하면 여기에 코드를 추가합니다.
-                                Log.e("API Error", "Failed to create chat room")
-                            }
-                        } catch (e: Exception) {
-                            // 네트워크 요청 중 오류가 발생하면 여기에 코드를 추가합니다.
-                            Log.e("Network Error", "Failed to create chat room: ${e.message}")
-                        }
-                    }
+                    val intent = Intent(context, ChatActivity::class.java)
+                    intent.putExtra("memberId", cardInfo.member.memberId)
+
+                    context.startActivity(intent)
                 }
             }
         }
@@ -381,8 +348,6 @@ class CardAdapter(
 
         val currentMargin = (binding.characterLocation.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
         val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
-
-        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
             duration = 800
@@ -408,8 +373,6 @@ class CardAdapter(
 
         val currentMargin = (binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams).leftMargin
         val newMargin = (newValue / 100 * binding.pinWrapper.width).toInt()
-
-        Log.d("MYTAG", "performAnimation: $newValue, $currentMargin, $newMargin")
 
         ValueAnimator.ofInt(currentMargin, newMargin).apply {
             duration = 600
