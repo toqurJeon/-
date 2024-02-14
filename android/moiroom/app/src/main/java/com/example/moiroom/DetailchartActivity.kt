@@ -34,12 +34,10 @@ class DetailchartActivity : AppCompatActivity() {
         binding = ActivityDetailchartBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val userResponse: UserResponse? = intent.getParcelableExtra<UserResponse>("memberData")
-        val memberData: UserResponse.Data.Member? = userResponse?.data?.member
+        val userResponse: UserResponse.Data.Member? = intent.getParcelableExtra<UserResponse.Data.Member>("memberData")
+        if (userResponse != null) {
+            val memberData: UserResponse.Data.Member = userResponse
 
-        Log.d("MYTAG", "onCreate: $memberData")
-
-        if (memberData != null) {
             // 성향 레이더 차트
             val chartView = RadarChartView(this, null)
 

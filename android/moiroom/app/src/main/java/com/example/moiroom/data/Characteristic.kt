@@ -14,8 +14,8 @@ data class Characteristic(
     val empathy: Int,
     val humor: Int,
     val generous: Int,
-    val sleepAt: String,
-    val wakeUpAt: String
+    val sleepAt: String?,
+    val wakeUpAt: String?
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readInt(),
@@ -26,8 +26,8 @@ data class Characteristic(
         parcel.readInt(),
         parcel.readInt(),
         parcel.readInt(),
-        parcel.readString()!!,
-        parcel.readString()!!
+        parcel.readString(),
+        parcel.readString()
     )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -55,6 +55,13 @@ data class Characteristic(
         override fun newArray(size: Int): Array<Characteristic?> {
             return arrayOfNulls(size)
         }
+    }
+
+    fun getNonNullSleepAt(): String {
+        return sleepAt ?: "11:30"
+    }
+    fun getNonNullWakeUpAt(): String {
+        return wakeUpAt ?: "06:30"
     }
 }
 
