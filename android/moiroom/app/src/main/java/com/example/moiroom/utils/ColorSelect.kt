@@ -6,12 +6,22 @@ import androidx.core.content.ContextCompat
 import com.example.moiroom.R
 
 private val interestColorMap = mapOf(
-    "운동" to R.color.pastelBlue,
-    "음악" to R.color.pastelGreen,
-    "요리" to R.color.pastelYellow,
-    "게임" to R.color.pastelPurple,
-    "그림" to R.color.pastelOrange,
-    "여행" to R.color.pastelPink,
+    "Film & Animation" to R.color.pastelBlue,
+    "Autos & Vehicles" to R.color.pastelGreen,
+    "Music" to R.color.pastelYellow,
+    "Pets & Animals" to R.color.pastelPurple,
+    "Sports" to R.color.pastelOrange,
+    "Travel & Events" to R.color.pastelPink,
+    "Gaming" to R.color.pastelPink,
+    "Videoblogging" to R.color.pastelPink,
+    "People & Blogs" to R.color.pastelPink,
+    "Comedy" to R.color.pastelPink,
+    "Entertainment" to R.color.pastelPink,
+    "News & Politics" to R.color.pastelPink,
+    "Howto & Style" to R.color.pastelPink,
+    "Education" to R.color.pastelPink,
+    "Science & Technology" to R.color.pastelPink,
+    "Nonprofits & Activism" to R.color.pastelPink
 )
 
 fun getColorInterest(interestName: String,  context: Context): Int {

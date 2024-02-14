@@ -19,6 +19,8 @@ import com.example.moiroom.extraction.CallExtract
 import com.example.moiroom.extraction.InstagramExtract
 import com.example.moiroom.extraction.PhotoExtract
 import com.example.moiroom.extraction.YoutubeExtract
+import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager
 import com.github.kittinunf.fuel.core.extensions.jsonBody
@@ -209,6 +211,9 @@ class LoadingActivity : AppCompatActivity() {
 
 //                        val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
 //                        startActivity(intent)
+
+                        getUserInfo(this@LoadingActivity)
+                        getMatchedMember(this@LoadingActivity, 1)
 
                         Handler(Looper.getMainLooper()).postDelayed({
                             val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
