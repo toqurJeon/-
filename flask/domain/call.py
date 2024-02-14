@@ -41,5 +41,5 @@ def calc(input, output):
 
     output['characteristic']['empathy'] = calc_emp(data_by_phone_number)
     # 부모 통화 비율로 공감성,
-    # 통화 시작 시간 + 통화시간 => 취침시간
+    # 통화 시작 시간 + 통화시간 => 취침시간git 
     # 기상시간 ~= 취침시간 + 수면시간(예측)
