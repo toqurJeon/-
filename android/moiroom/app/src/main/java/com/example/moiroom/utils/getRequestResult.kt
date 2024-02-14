@@ -3,9 +3,15 @@ package com.example.moiroom.utils
 import ApiService
 import NetworkModule
 import android.content.Context
+import android.content.Intent
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.util.LruCache
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
+import com.example.moiroom.NaviActivity
+import com.example.moiroom.NowMatchingAfterFragment
 import com.example.moiroom.data.Characteristic
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.MatchedMember
@@ -71,12 +77,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
     // 응답 데이터 저장 (현재: 더미 데이터)
     CoroutineScope(Dispatchers.IO).launch {
 
-        val response = apiService.getMatchedMemberList(1)
+        val response = apiService.getMatchedMemberList(pgno)
         if (response.isSuccessful) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: $data")
 
             updateMatchedMemberList(data!!)
+
+            Handler(Looper.getMainLooper()).postDelayed({
+                NowMatchingAfterFragment.isLoading = false
+            }, 500)
         } else {
             Log.d("MYTAG", "getMatchedMember: fail, $response")
 
