@@ -282,8 +282,10 @@ class CardAdapter(
                     val backgroundColor = Color.argb(200, 255, 255, 255)
 
                     // 변경할 배경색을 설정합니다.
-                    appBar.setBackgroundColor(backgroundColor)
+                    // appBar.setBackgroundColor(backgroundColor)
+                    appBar.background.alpha = (255 * 0.3).toInt()
                 })
+                appBar.background.alpha = (255 * 0.3).toInt()
 
                 chatbuttonContainer.setOnClickListener {
                     Log.d("memberId", "$cardInfo")

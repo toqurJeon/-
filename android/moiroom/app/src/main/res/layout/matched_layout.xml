@@ -14,8 +14,7 @@
         android:stateListAnimator="@null"
         android:elevation="0dp"
         android:background="@color/transparentWhite"
-        app:contentScrim="@color/transparentWhite"
-        app:statusBarScrim="@color/transparentWhite">
+        android:theme="@style/AppBarTheme">
 
         <!-- 스크롤 시 숨겨질 영역 -->
         <com.google.android.material.appbar.CollapsingToolbarLayout
