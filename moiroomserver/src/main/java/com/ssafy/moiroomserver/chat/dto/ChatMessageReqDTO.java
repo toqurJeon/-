@@ -9,9 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class ChatMessageReq {
+public class ChatMessageReqDTO {
 
-    private Long senderId; // 보낸 사람의 pk
-
+    private Long senderId; // 송신자 pk
+    private String senderName; // 송신자의 이름
     private String message;
+    private String createdAt;
 }

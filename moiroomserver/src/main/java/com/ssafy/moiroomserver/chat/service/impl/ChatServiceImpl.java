@@ -1,7 +1,7 @@
 package com.ssafy.moiroomserver.chat.service.impl;
 
-import com.ssafy.moiroomserver.chat.dto.ChatMessageDTO;
-import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageResDTO;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageReqDTO;
 import com.ssafy.moiroomserver.chat.dto.ChatRoomDTO;
 import com.ssafy.moiroomserver.chat.entity.ChatMessage;
 import com.ssafy.moiroomserver.chat.entity.ChatRoom;
@@ -42,7 +42,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
-    public void addChatMessage(ChatMessageReq request, Long chatRoomId) {
+    public void addChatMessage(ChatMessageReqDTO request, Long chatRoomId) {
         String message = request.getMessage();
         Long senderId = request.getSenderId();
 
@@ -145,7 +145,7 @@ public class ChatServiceImpl implements ChatService {
         PageRequest pageRequest = PageRequest.of(pgno - 1, GET_CHAT_MESSAGE_LIST_SIZE);
 
         // 내가 속한 채팅방에 있는 채팅 메시지 정보들을 가져올 수 있도록 하기
-        Page<ChatMessageDTO> chatMessageDTOPage = chatMessageRepository.findAllChatRoomMessage(chatRoomId, pageRequest);
+        Page<ChatMessageResDTO> chatMessageDTOPage = chatMessageRepository.findAllChatRoomMessage(chatRoomId, pageRequest);
 
         if (chatMessageDTOPage.getTotalElements() < 1) {
             return null;

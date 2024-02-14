@@ -1,6 +1,6 @@
 package com.ssafy.moiroomserver.chat.repository;
 
-import com.ssafy.moiroomserver.chat.dto.ChatMessageDTO;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageResDTO;
 import com.ssafy.moiroomserver.chat.entity.ChatMessage;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
 
-    @Query("select new com.ssafy.moiroomserver.chat.dto.ChatMessageDTO(" +
+    @Query("select new com.ssafy.moiroomserver.chat.dto.ChatMessageResDTO(" +
             "cm.chatMessageId, " +
             "mcr.member.memberId, " +
             "mcr.chatRoom.chatRoomId, " +
@@ -24,5 +24,5 @@ public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> 
             "join MemberChatRoom mcr on cm.memberChatRoom.chatRoom.chatRoomId = mcr.chatRoom.chatRoomId " +
             "and cm.memberChatRoom.member.memberId = mcr.member.memberId " +
             "where cm.memberChatRoom.chatRoom.chatRoomId = :chatRoomId order by cm.createdAt asc")
-    Page<ChatMessageDTO> findAllChatRoomMessage(@Param("chatRoomId") Long chatRoomId, PageRequest pageRequest);
+    Page<ChatMessageResDTO> findAllChatRoomMessage(@Param("chatRoomId") Long chatRoomId, PageRequest pageRequest);
 }

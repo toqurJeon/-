@@ -1,6 +1,6 @@
 package com.ssafy.moiroomserver.chat.controller;
 
-import com.ssafy.moiroomserver.chat.dto.ChatMessageReq;
+import com.ssafy.moiroomserver.chat.dto.ChatMessageReqDTO;
 import com.ssafy.moiroomserver.chat.service.ChatService;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,12 +30,12 @@ public class ChatController {
      * @param chatMessageReq
      * @param chatRoomId
      */
-    @MessageMapping("/room/{chatRoomId}")
-    public void addChatMessage(@Payload ChatMessageReq chatMessageReq,
+    @MessageMapping("/room/{chatRoomId}/send")
+    public void addChatMessage(@Payload ChatMessageReqDTO chatMessageReq,
                                @DestinationVariable("chatRoomId") Long chatRoomId) {
         chatService.addChatMessage(chatMessageReq, chatRoomId);
-        simpMessagingTemplate.convertAndSend("/subscribe/rooms/" + chatRoomId,
-                chatMessageReq.getMessage());
+        String destination = "/queue/chat/messages/" + chatMessageReq.getSenderId();
+        simpMessagingTemplate.convertAndSend(destination, chatMessageReq.getMessage());
     }
 
     /**
