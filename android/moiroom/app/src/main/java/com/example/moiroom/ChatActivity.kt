@@ -69,7 +69,7 @@ class ChatActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 val data = getListOfChatData().toMutableList()
-                adapter = ChatAdapter(data)
+                adapter = ChatAdapter(data, this@ChatActivity)
                 recyclerView.adapter = adapter
             } catch (e: Exception) {
                 // 데이터를 가져오는 중 오류 발생

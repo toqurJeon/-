@@ -5,19 +5,28 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
 import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.Chat
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ChatItemLayoutBinding
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.getUserInfo
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
-class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+class ChatAdapter(
+    private var dataList: MutableList<Chat>,
+    private final var context: Context
+) : RecyclerView.Adapter<ChatAdapter.ChatViewHolder>() {
+
+    var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
 
     inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         var nextViewHolder: ChatItemLayoutBinding? = null
@@ -25,6 +34,12 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
         val binding = ChatItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+
+        if (cachedUserInfo == null) {
+            getUserInfo(context)
+            cachedUserInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+        }
+
         return ChatViewHolder(binding)
     }
 
@@ -53,7 +68,7 @@ class ChatAdapter(private var dataList: MutableList<Chat>) : RecyclerView.Adapte
 
             Log.d("current_position", "current_position: $position, ${chatContent.text}")
 
-            if (currentMemberId == 1) {
+            if (currentMemberId == cachedUserInfo?.memberId) {
                 chatBallonDrawableFlipped?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.lightorange), PorterDuff.Mode.SRC_ATOP)
                 chatContent.background = chatBallonDrawableFlipped
 

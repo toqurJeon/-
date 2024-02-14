@@ -35,9 +35,9 @@ class DetailchartActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val userResponse: UserResponse? = intent.getParcelableExtra<UserResponse>("memberData")
-        val memberData: Member? = userResponse?.data?.member as Member?
+        val memberData: UserResponse.Data.Member? = userResponse?.data?.member
 
-        Log.d("TAG", "onCreate: $memberData")
+        Log.d("MYTAG", "onCreate: $memberData")
 
         if (memberData != null) {
             // 성향 레이더 차트
@@ -74,10 +74,10 @@ class DetailchartActivity : AppCompatActivity() {
             binding.interestRecyclerView.adapter = interestAdapter
 
             // 수면 차트
-            val sleepChart = binding.sleepChartView
-            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
-            binding.sleepTimeText.text = memberData.characteristic.sleepAt
-            binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
+//            val sleepChart = binding.sleepChartView
+//            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
+//            binding.sleepTimeText.text = memberData.characteristic.sleepAt
+//            binding.wakeTimeText.text = memberData.characteristic.wakeUpAt
 
             binding.characterDescriptionButton.setOnClickListener {
                 Log.d("MYTAG", "onCreate: ${binding.characterDetailName.text}")
