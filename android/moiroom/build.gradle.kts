@@ -28,5 +28,7 @@ tasks.register("clean", Delete::class) {
 allprojects {
     repositories {
         google()
+        jcenter()
+//        maven { url("https://jitpack.io") }
     }
 }
