@@ -1,5 +1,4 @@
 import requests
-from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
@@ -48,7 +47,6 @@ def calc_pos(captions):
 
 def calc(input, output):
     if input == [] or input is None:
-        output['characteristic']['positivity'] = None
         return None
 
     try:
@@ -72,5 +70,5 @@ def calc(input, output):
         output['characteristic']['positivity'] = calc_pos(captions)
 
     except Exception as e:
-        output['characteristic']['positivity'] = None
+        output['characteristic']['positivity'] = 0
         return None

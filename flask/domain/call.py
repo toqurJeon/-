@@ -14,7 +14,6 @@ def calc_emp(data_by_phone_number):
 
 def calc(input, output):
     if input == [] or input is None:
-        output['characteristic']['empathy'] = None
         return None
     phone_numbers = []
     owner_names = []

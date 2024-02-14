@@ -1,5 +1,8 @@
 from sklearn.cluster import DBSCAN
 import numpy as np
+# import matplotlib.pyplot as plt
+
+from domain import email_sender
 
 
 def calc_act(X):
@@ -13,6 +16,8 @@ def calc_act(X):
     labels = dbscan.labels_
     # print('Cluster Labels:', labels)
     result['Cluster Labels'] = str(labels)
+
+    # visualize(X, labels)
 
     classified = np.array([[0, 0]])
     # 각 클러스터에 속한 데이터 포인트의 수 계산
@@ -38,17 +43,20 @@ def calc_act(X):
     return round(10000 * 5 * (len(classified) - 1) / len(X))
 
 
-# def visualize(X):
+# def visualize(X, labels):
 #     # 시각화
-#     colors = ["g.", "r.", "b.", "y.", "w."]
+#     colors = ["g.", "r.", "b.", "y."]
 #     for i in range(len(X)):
 #         plt.plot(X[i][0], X[i][1], colors[labels[i]], markersize=10)
 #
+#     plt.savefig('example_plot.png')
+#     email_sender.send_email()
+#
 #     plt.show()
+
 
 def calc(input, output):
     if input == [] or input is None:
-        output['characteristic']['activity'] = None
         return None
     # 학습 데이터 배열 초기화
     X = np.array([[0, 0]])

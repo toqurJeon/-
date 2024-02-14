@@ -1,14 +1,17 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-from selenium.webdriver.common.by import By
 import chromedriver_autoinstaller
 
 def calc(input, output):
+    if input == [] or input is None:
+        return None
+
     # ChromeDriver를 자동으로 설치합니다.
     chromedriver_autoinstaller.install()
     driver = webdriver.Chrome()
 
     categories = {}
+    total_time = 0
     for i in input:
         # Selenium을 이용하여 웹 페이지를 엽니다.
         url = "https://play.google.com/store/apps/details?id=" + i['packageName']
@@ -31,9 +34,15 @@ def calc(input, output):
         else:
             categories[category] += i['totalUsageTime']
 
+        total_time += i['totalUsageTime']
+
     # 브라우저를 닫습니다.
     driver.quit()
 
-    output['characteristic']['interests'].append({'interestName': "Interest Name", 'interestPercent': 5000})
+    sorted_categories = dict(sorted(categories.items(), key=lambda item: item[1], reverse=True))
+
+    for category_name, value in sorted_categories.items():
+        output['characteristic']['interests'].append({'interestName': category_name,
+                                                      'interestPercent': round(10000*value/total_time)})
     # 통화, 카톡, 인스타 사용량으로 사교성
     # 카테고리 분류해서 관심사
