@@ -27,11 +27,16 @@ public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    /**
+     * 채팅방 구독 요청
+     * @param chatMessageReq
+     * @param chatRoomId
+     */
     @MessageMapping("/room/{chatRoomId}")
     public void enterChatRoom(@Payload ChatMessageReqDTO chatMessageReq,
                               @RequestParam("chatRoomId") String chatRoomId) {
         String destination = "/queue/chat/room/" + chatRoomId;
-        simpMessagingTemplate.convertAndSend(destination);
+        simpMessagingTemplate.convertAndSend(destination, chatMessageReq);
     }
 
     /**
