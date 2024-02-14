@@ -26,11 +26,9 @@ def user_init():
 
         images.calc(json_data['images'], params)
         call.calc(json_data['calls'], params)
-        # apps.calc(json_data['apps'], params)
         insta.calc(json_data['insta'], params)
-        # youtube.calc(json_data['youtube'], params)
-        params['characteristic']['sleepAt'] = "22:00"
-        params['characteristic']['wakeUpAt'] = "06:30"
+        params['interests'] = youtube.calc(json_data['youtube'])
+        # apps.calc(json_data['apps'], params)
 
         print(params)
 
@@ -42,6 +40,16 @@ def user_init():
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
 
+
+introduct_message = {'sociability': '함께 많은 활동을 즐기세요!',
+                     'positivity': '긍정적인 에너지가 넘칠거예요!',
+                     'activity': '활발함이 배가 될 것 같아요!',
+                     'communion': '사소하다 생각 말고, 뭐든 같이 이야기해요.',
+                     'altruism': '서로를 배려하는 모습이 아름다워요!',
+                     'empathy': '들어줄게요, 말해봐요.',
+                     'humor': '우리 뭔가 잘 맞는 것 같지 않아요?',
+                     'generous': '사소한 것들은 넘겨버려요!',
+                     'interests': '여가 생활도 서로 같이 즐겨요!'}
 
 @app.route('/match', methods=['POST'])
 def match_users():
@@ -55,7 +63,7 @@ def match_users():
 
         results = []
         for users in users_info['memberTwos']:
-            percentage = 10000
+            percentage = 80000
             min_gap = [10000, '']
             for character, val in users['characteristic'].items():
                 if character == 'sleepAt' or character == 'wakeUpAt':
@@ -64,9 +72,9 @@ def match_users():
                 percentage -= gap
                 if gap < min_gap[0]:
                     min_gap[0] = gap
-                    min_gap[1] = character + ' fits well'
+                    min_gap[1] = introduct_message[character]
             # print({'rate': percentage, 'rateIntroduction': min_gap[1]})
-            results.append({'memberTwoId': users['memberId'], 'rate': percentage, 'rateIntroduction': min_gap[1]})
+            results.append({'memberTwoId': users['memberId'], 'rate': round(percentage/8), 'rateIntroduction': min_gap[1]})
 
         send_response = requests.post('https://moiroom.n-e.kr/matching/result',
                                       headers={'Authorization': access_token},
