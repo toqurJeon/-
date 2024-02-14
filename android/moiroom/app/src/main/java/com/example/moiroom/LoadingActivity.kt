@@ -174,7 +174,6 @@ class LoadingActivity : AppCompatActivity() {
                         postFlask2(accessToken)
 //                        val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
 //                        startActivity(intent)
-                        finish()
                     },
                     failure = { error -> Log.d("서버 에러", "에러: $error") }
                 )
@@ -208,7 +207,6 @@ class LoadingActivity : AppCompatActivity() {
 
                         val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
                         startActivity(intent)
-                        finish()
                     },
                     failure = { error -> Log.d("서버 에러", "에러: $error") }
                 )
