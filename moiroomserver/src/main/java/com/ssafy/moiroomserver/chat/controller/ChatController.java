@@ -27,6 +27,13 @@ public class ChatController {
     private final ChatService chatService;
     private final SimpMessagingTemplate simpMessagingTemplate;
 
+    @MessageMapping("/room/{chatRoomId}")
+    public void enterChatRoom(@Payload ChatMessageReqDTO chatMessageReq,
+                              @RequestParam("chatRoomId") String chatRoomId) {
+        String destination = "/queue/chat/room/" + chatRoomId;
+        simpMessagingTemplate.convertAndSend(destination);
+    }
+
     /**
      * 챗 메시지 추가 기능 -> websocket, stomp 기능 구현 테스트 필요
      * @param chatMessageReq
@@ -37,7 +44,7 @@ public class ChatController {
                                @DestinationVariable("chatRoomId") Long chatRoomId) {
         log.info("addChatMessage 진입");
         chatService.addChatMessage(chatMessageReq, chatRoomId);
-        String destination = "/queue/chat/messages/" + chatMessageReq.getSenderId();
+        String destination = "/queue/chat/room/" + chatRoomId;
         simpMessagingTemplate.convertAndSend(destination, chatMessageReq.getMessage());
     }
 
