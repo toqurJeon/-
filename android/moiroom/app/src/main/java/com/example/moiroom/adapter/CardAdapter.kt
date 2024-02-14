@@ -104,7 +104,9 @@ class CardAdapter(
             binding.apply {
 
                 // 상대방 정보 데이터 바인딩
-                matchRate.text = "${cardInfo.matchRate}"
+                val matchRateResult = cardInfo.matchRate.toFloat() / 100
+                val decimalFormat2 = DecimalFormat("#.#")
+                matchRate.text = "${decimalFormat2.format(matchRateResult)}"
                 matchIntroduction.text = cardInfo.matchIntroduction
                 nickname.text = cardInfo.member.memberNickname
                 location.text = "${cardInfo.member.metropolitanName} ${cardInfo.member.cityName}"
@@ -117,7 +119,6 @@ class CardAdapter(
                     .into(binding.profileImage)
 
                 // 매칭률에 따라서 색상 설정
-                val matchRateResult = cardInfo.matchRate
                 if (matchRateResult >= 90) {
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
@@ -295,7 +296,8 @@ class CardAdapter(
             binding.apply {
 
                 // 상대방 정보 바인딩
-                matchRate.text = "${cardInfo.matchRate}"
+                val matchRateResult = (cardInfo.matchRate.toFloat() / 100).toInt()
+                matchRate.text = "$matchRateResult"
                 nickname.text = cardInfo.member.memberNickname
                 location.text = "${cardInfo.member.metropolitanName}, ${cardInfo.member.cityName}"
                 // 상대방 프로필 이미지 불러오기
@@ -305,7 +307,6 @@ class CardAdapter(
                     .into(binding.profileImage)
 
                 // 매칭률에 따라서 색상 변경
-                val matchRateResult = cardInfo.matchRate
                 if (matchRateResult >= 90) {
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))

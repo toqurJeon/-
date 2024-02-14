@@ -72,12 +72,6 @@ class LoadingActivity : AppCompatActivity() {
 //        finalCall =
 //        finalPhoto =
 //        finalGoogle =
-
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            val intent = Intent(this, NaviActivity::class.java)
-//            startActivity(intent)
-//            finish()
-//        }, 5000)
     }
 
     private fun getAnimator(view: View, duration: Long, delay: Long): ObjectAnimator {
@@ -205,8 +199,13 @@ class LoadingActivity : AppCompatActivity() {
                         Log.d("서버 응답2", "$data")
 
 
-                        val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
-                        startActivity(intent)
+//                        val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
+//                        startActivity(intent)
+
+                        Handler(Looper.getMainLooper()).postDelayed({
+                            val intent = Intent(this@LoadingActivity, NaviActivity::class.java)
+                            startActivity(intent)
+                        }, 2000)
                     },
                     failure = { error -> Log.d("서버 에러", "에러: $error") }
                 )

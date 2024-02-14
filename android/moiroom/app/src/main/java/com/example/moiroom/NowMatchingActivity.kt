@@ -129,7 +129,7 @@ class NowMatchingActivity : AppCompatActivity() {
 
         // 설정 화면에서 돌아왔을 때 처리
         if (requestCode == REQUEST_CODE_SETTINGS) {
-            Log.d("TAG", "Settings Activity Returned")
+            Log.d("MYTAG", "Settings Activity Returned")
 
             instagramPermissionDialog()
         } else if (requestCode == REQUEST_INSTAGRAM_PERMISSION) {
@@ -231,6 +231,8 @@ class NowMatchingActivity : AppCompatActivity() {
                 permissionsToRequest.toTypedArray(),
                 PERMISSION_REQUEST_CODE
             )
+        } else {
+            instagramPermissionDialog()
         }
     }
 
