@@ -122,15 +122,15 @@ class LoadingActivity : AppCompatActivity() {
             this,
             Manifest.permission.READ_EXTERNAL_STORAGE
         ) == PackageManager.PERMISSION_GRANTED
-
-        if ( isExternalStorageGranted ) {
+        Log.d("전화", "$isReadCallGranted")
+        if ( isReadCallGranted ) {
             Log.d("전화", "전화 권한 허용")
             finalCall = CallExtract().getCallLog(this)
         } else {
             finalCall = "\"calls\": []"
         }
 
-        if ( isReadCallGranted ) {
+        if ( isExternalStorageGranted ) {
             finalPhoto = PhotoExtract().getAllPhotos(this)
         } else {
             finalPhoto = "[]"

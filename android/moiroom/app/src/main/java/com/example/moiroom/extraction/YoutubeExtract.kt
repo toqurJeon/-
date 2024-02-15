@@ -48,7 +48,7 @@ import org.json.JSONObject
 
 class YoutubeExtract : AppCompatActivity() {
     companion object {
-        var youtubeToken = ""
+        var youtubeToken = "{ \"access_token\": \"\" }"
     }
     private val REQUEST_CODE_AUTHORIZATION = 1001 // 인증 요청 코드
     private lateinit var binding: ActivityWebviewtestBinding
