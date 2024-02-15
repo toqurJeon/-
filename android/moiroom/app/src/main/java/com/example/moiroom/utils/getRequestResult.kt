@@ -78,7 +78,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
     CoroutineScope(Dispatchers.IO).launch {
 
         val response = apiService.getMatchedMemberList(pgno)
-        if (response.isSuccessful && response.body() != null) {
+        if (response.isSuccessful && response.body()?.data != null) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: success, $data")
 

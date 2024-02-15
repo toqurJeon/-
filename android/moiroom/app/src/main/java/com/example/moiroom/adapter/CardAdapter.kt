@@ -206,10 +206,10 @@ class CardAdapter(
                 recyclerView.adapter = characterAdapter
 
                 // 성향 상세정보 다이얼로그 띄우기 위해서 Fragment에 데이터 전달
-                characterDescriptionButton.setOnClickListener {
-                    val description = characterDetailName.text.toString()
-                    characterClickListener?.onCharacterDescriptionClicked(description)
-                }
+//                characterDescriptionButton.setOnClickListener {
+//                    val description = characterDetailName.text.toString()
+//                    characterClickListener?.onCharacterDescriptionClicked(description)
+//                }
 
 //                // 상대방 관심사 사각형 차트
 //                val squareChart = binding.squareChartView
@@ -369,13 +369,13 @@ class CardAdapter(
                         binding.hiddenView.visibility = View.GONE
 
 
-                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
+                        characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
                     } else{
                         TransitionManager.beginDelayedTransition(binding.characterViewGroup,
                             AutoTransition())
 
                         binding.hiddenView.visibility = View.VISIBLE
-                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
+                        characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
                     }
                 }
 
@@ -402,10 +402,8 @@ class CardAdapter(
                     val backgroundColor = Color.argb(200, 255, 255, 255)
 
                     // 변경할 배경색을 설정합니다.
-                    // appBar.setBackgroundColor(backgroundColor)
-                    appBar.background.alpha = (255 * 0.3).toInt()
+                    appBar.setBackgroundColor(backgroundColor)
                 })
-                appBar.background.alpha = (255 * 0.3).toInt()
 
                 chatbuttonContainer.setOnClickListener {
                     Log.d("memberId", "$cardInfo")
@@ -588,7 +586,11 @@ class CardAdapter(
 
     fun interestPositionFinder(combinedList: List<CombinedInterest>, searchName: String): Int {
         val interest = combinedList.indexOfFirst { it.interestName == searchName }
-        return interest
+        if (interest > 0 && interest < combinedList.size) {
+            return interest
+        } else {
+            return 0
+        }
     }
 
     fun getRandomSadEmoji(): String {

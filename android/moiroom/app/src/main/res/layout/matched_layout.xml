@@ -297,22 +297,12 @@
                 android:layout_marginBottom="16dp"
                 tools:listitem="@layout/characteristic_item_layout" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/interest_view_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
             <com.google.android.material.card.MaterialCardView
                 android:id="@+id/character_view_group"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="12dp"
 
-                app:layout_constraintTop_toBottomOf="@+id/customer_number_tv"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:cardBackgroundColor="@color/white"
@@ -328,6 +318,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="64dp"
                         android:layout_marginHorizontal="12dp"
+
                         app:layout_constraintTop_toTopOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent">
@@ -375,12 +366,12 @@
                         </LinearLayout>
 
                         <ImageView
-                            android:id="@+id/characterDescriptionButton"
+                            android:id="@+id/character_description_button"
                             android:layout_width="28dp"
                             android:layout_height="28dp"
                             android:layout_alignParentEnd="true"
                             android:layout_centerVertical="true"
-                            android:src="@drawable/ic_help"
+                            android:src="@drawable/mtrl_ic_arrow_drop_down"
                             app:tint="@color/gray_low_brightness"/>
 
                     </RelativeLayout>
@@ -390,9 +381,10 @@
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingHorizontal="8dp"
+                        android:paddingVertical="12dp"
                         android:visibility="gone"
                         tools:visibility="visible"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/fixed_layout">
@@ -400,27 +392,36 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingHorizontal="12dp"
+                            android:paddingHorizontal="16dp"
                             android:text="자세한 설명이 이어집니다" />
 
-                        <View
+                        <!-- com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
-                            android:layout_height="1dp"
-                            android:background="@color/mediumGray"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toEndOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"/>
+                            android:layout_height="140dp"
+                            android:layout_marginHorizontal="16dp"
+                            app:cardElevation="0dp"
+                            app:cardBackgroundColor="@color/BGgray"
+                            app:strokeWidth="0dp">
+
+                        </com.google.android.material.card.MaterialCardView-->
 
                     </LinearLayout>
 
+                    <View
+                        android:id="@+id/detail_line"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="14dp"
+                        android:background="@color/mediumGray"
+                        android:visibility="visible"
+                        app:layout_constraintTop_toBottomOf="@+id/hidden_view"/>
+
                     <RelativeLayout
-                        android:id="@+id/interest_detail_view_group"
+                        android:id="@+id/character_detail_view_group"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/hidden_view">
+                        android:layout_marginTop="16dp"
+                        app:layout_constraintTop_toBottomOf="@+id/detail_line">
 
                         <LinearLayout
                             android:layout_width="match_parent"
@@ -472,6 +473,151 @@
 
                     </RelativeLayout >
 
+                    <!-- ______________________관심사 시작________________________ -->
+
+                    <LinearLayout
+                        android:id="@+id/interest_view_group"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/character_detail_view_group">
+
+                        <LinearLayout
+                            android:id="@+id/interest_header"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:layout_marginTop="36dp">
+
+                            <ImageView
+                                android:layout_width="30dp"
+                                android:layout_height="30dp"
+                                android:layout_marginRight="6dp"
+                                android:layout_gravity="center_vertical"
+                                app:tint="@color/darkorange"
+                                android:src="@drawable/character_interests"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:fontFamily="@font/pretendard_bold"
+                                android:layout_gravity="center_vertical"
+                                android:text="관심사"
+                                android:textSize="20sp"/>
+
+                        </LinearLayout>
+
+                        <!-- ______________________관심사 내용 시작________________________ -->
+
+                        <LinearLayout
+                            android:id="@+id/interest_simple_chart"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:orientation="vertical">
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recycler"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                android:layout_marginBottom="8dp"
+                                tools:listitem="@layout/interest_chart_item_layout"/>
+
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/recycler2"
+                                android:layout_width="match_parent"
+                                android:layout_height="40dp"
+                                tools:listitem="@layout/interest_chart_item_layout"/>
+
+                        </LinearLayout>
+
+                        <RelativeLayout
+                            android:id="@+id/interest_table_view_group"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="16dp"
+                            android:layout_marginBottom="8dp">
+
+                            <TextView
+                                android:id="@+id/interest_table_name"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:textSize="16sp"
+                                android:text="관심사 이름"/>
+
+                            <TextView
+                                android:id="@+id/interest_table_roommate_percent"
+                                android:layout_width="72dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="112dp"
+                                android:textAlignment="textStart"
+                                android:textSize="16sp"
+                                android:text="룸메이트"/>
+
+                            <TextView
+                                android:id="@+id/interest_table_my_percent"
+                                android:layout_width="56dp"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentEnd="true"
+                                android:layout_marginEnd="24dp"
+                                android:textAlignment="textStart"
+                                android:textSize="16sp"
+                                android:text="나"/>
+
+                        </RelativeLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/mediumGray" />
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/interest_table_recycler_item"
+                            android:layout_width="match_parent"
+                            android:layout_height="200dp"
+                            tools:listitem="@layout/interest_table_item_layout" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="1dp"
+                            android:background="@color/mediumGray" />
+
+                        <TextView
+                            android:id="@+id/interestDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:visibility="gone"
+                            android:text="관심사이름"/>
+
+                        <TextView
+                            android:id="@+id/matchInterestDescription"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginBottom="16dp"
+                            android:fontFamily="@font/pretendard_semibold"
+                            android:textSize="16sp"
+                            android:text="나의 관심사에 대한 설명 등"/>
+
+                        <!-- ______________________관심사 끝________________________ -->
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="160dp"
+                            android:background="@color/white"/>
+
+                    </LinearLayout>
+
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
             </com.google.android.material.card.MaterialCardView>
@@ -521,139 +667,6 @@
                     android:text="나의 특정 성향에 대한 설명, 상위 퍼센트 등"/>
 
             </LinearLayout -->
-
-            <!-- ______________________관심사 시작________________________ -->
-
-            <LinearLayout
-                android:id="@+id/interest_header"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="36dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginRight="6dp"
-                    android:layout_gravity="center_vertical"
-                    app:tint="@color/darkorange"
-                    android:src="@drawable/character_interests"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/pretendard_bold"
-                    android:layout_gravity="center_vertical"
-                    android:text="관심사"
-                    android:textSize="20sp"/>
-
-            </LinearLayout>
-
-            <!-- ______________________관심사 내용 시작________________________ -->
-
-            <LinearLayout
-                android:id="@+id/interest_simple_chart"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:orientation="vertical">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginBottom="8dp"
-                    tools:listitem="@layout/interest_chart_item_layout"/>
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/recycler2"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    tools:listitem="@layout/interest_chart_item_layout"/>
-
-            </LinearLayout>
-
-            <RelativeLayout
-                android:id="@+id/interest_table_view_group"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="8dp">
-
-                <TextView
-                    android:id="@+id/interest_table_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:textSize="16sp"
-                    android:text="관심사 이름"/>
-
-                <TextView
-                    android:id="@+id/interest_table_roommate_percent"
-                    android:layout_width="72dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="112dp"
-                    android:textAlignment="textStart"
-                    android:textSize="16sp"
-                    android:text="룸메이트"/>
-
-                <TextView
-                    android:id="@+id/interest_table_my_percent"
-                    android:layout_width="56dp"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginEnd="24dp"
-                    android:textAlignment="textStart"
-                    android:textSize="16sp"
-                    android:text="나"/>
-
-            </RelativeLayout>
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/mediumGray" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/interest_table_recycler_item"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                tools:listitem="@layout/interest_table_item_layout" />
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:background="@color/mediumGray" />
-
-            <TextView
-                android:id="@+id/interestDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/pretendard_semibold"
-                android:visibility="gone"
-                android:text="관심사이름"/>
-
-            <TextView
-                android:id="@+id/matchInterestDescription"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="20dp"
-                android:layout_marginBottom="16dp"
-                android:fontFamily="@font/pretendard_semibold"
-                android:textSize="16sp"
-                android:text="나의 관심사에 대한 설명 등"/>
-
-            <!-- ______________________관심사 끝________________________ -->
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="160dp"
-                android:background="@color/white"/>
 
         </LinearLayout>
 
