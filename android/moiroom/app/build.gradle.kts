@@ -1,5 +1,6 @@
 import org.gradle.internal.impldep.bsh.commands.dir
 import org.gradle.internal.impldep.org.junit.experimental.categories.Categories.CategoryFilter.exclude
+import org.jetbrains.kotlin.ir.backend.js.compile
 
 // Gradle:  Android 애플리케이션 및 기타 프로젝트의 빌드와 종속성 관리를 위한 강력한 빌드 도구
 
@@ -155,5 +156,8 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.0.0")
     //okhttp 라이브러리 추가
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+    // expandable-cardview
+    // implementation("com.alespero:expandable-cardview:0.8")
 }
 

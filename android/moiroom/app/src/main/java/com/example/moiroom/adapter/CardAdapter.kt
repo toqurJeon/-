@@ -9,8 +9,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.ChatActivity
+import com.example.moiroom.NowMatchingAfterFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.CombinedInterest
@@ -325,12 +330,10 @@ class CardAdapter(
 
                 interestDescription.addTextChangedListener(object : TextWatcher {
                     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                        Log.d("MYTAG", "bind: 텍스트 변경 전 ${interestDescription.text}")
-                        // 텍스트 변경 전에 호출됩니다.
                     }
 
                     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        Log.d("MYTAG", "bind: 텍스트 변경 중 ${interestDescription.text}")
+                        // 선택한 관심사로 레이아웃 변경
                         interestTableAdapter.selectInterestByName(interestDescription.text.toString())
                         interestChartAdapter.selectInterestByName(interestDescription.text.toString())
                         interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
@@ -344,14 +347,33 @@ class CardAdapter(
                         } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
                             matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
                         }
+                        // 리싸이클러뷰 스크롤 이동
+                        interestTableRecyclerItem.smoothScrollToPosition(interestPositionFinder(combinedList, interestDescription.text.toString()))
                     }
 
                     override fun afterTextChanged(s: Editable?) {
-                        Log.d("MYTAG", "bind: 텍스트 변경 ${interestDescription.text}")
                     }
                 })
 
                 matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)}! ${getRandomHappyEmoji()}"
+
+                fixedLayout.setOnClickListener {
+                    if (binding.hiddenView.visibility == View.VISIBLE){
+                        TransitionManager.beginDelayedTransition(binding.cardview,
+                            AutoTransition()
+                        )
+                        binding.hiddenView.visibility = View.GONE
+
+
+                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
+                    } else{
+                        TransitionManager.beginDelayedTransition(binding.cardview,
+                            AutoTransition())
+
+                        binding.hiddenView.visibility = View.VISIBLE
+                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
+                    }
+                }
 
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView
@@ -558,6 +580,11 @@ class CardAdapter(
             }
             else -> "none"
         }
+    }
+
+    fun interestPositionFinder(combinedList: List<CombinedInterest>, searchName: String): Int {
+        val interest = combinedList.indexOfFirst { it.interestName == searchName }
+        return interest
     }
 
     fun getRandomSadEmoji(): String {
