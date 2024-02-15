@@ -39,10 +39,10 @@ def code_converter(category_code):
 
 
 def calc(input):
-    if input == '':
+    if input is None:
         return None
 
-    access_token = input
+    access_token = input['access_token']
     try:
         # 액세스 토큰으로 사용자 피드 목록 받아오기
         like_request = requests.get('https://youtube.googleapis.com/youtube/v3/videos?part=snippet&myRating=like'
