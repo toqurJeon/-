@@ -22,4 +22,8 @@ public class ChatRoom extends BaseEntity {
     @Column(name = "last_message", nullable = false)
     @Builder.Default
     private String lastMessage = DEFAULT_MESSAGE;
+
+    public void updateLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
 }

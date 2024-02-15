@@ -67,6 +67,7 @@ public class ChatServiceImpl implements ChatService {
                 .build();
 
         chatMessageRepository.save(chatMessage);
+        chatRoom.updateLastMessage(message);
     }
 
     @Override
