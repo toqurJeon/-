@@ -2,12 +2,14 @@ package com.ssafy.moiroomserver.global.constants;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 
 import static org.springframework.http.HttpStatus.*;
 
 @AllArgsConstructor
 @Getter
+@ToString
 public enum ErrorCode {
 
     //일반

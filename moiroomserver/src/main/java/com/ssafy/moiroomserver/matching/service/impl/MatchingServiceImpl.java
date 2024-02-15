@@ -71,7 +71,7 @@ public class MatchingServiceImpl implements MatchingService {
 						.build();
 				memberTwoList.add(memberTwo);
 			} catch (NoExistException e) {
-				log.warn(matchingMember.toString());
+				log.warn(e.getCode().toString() + " : " + matchingMember);
 			}
 		}
 
@@ -144,7 +144,7 @@ public class MatchingServiceImpl implements MatchingService {
 						.matchIntroduction(matchingResult.getRateIntroduction())
 						.build());
 			} catch (NoExistException e) {
-				log.warn(memberTwo.toString());
+				log.warn(e.getCode().toString() + " : "  + memberTwo);
 			}
 		}
 		return PageResponse.builder()
