@@ -2,7 +2,6 @@ from sklearn.cluster import DBSCAN
 import numpy as np
 # import matplotlib.pyplot as plt
 
-from domain import email_sender
 
 
 def calc_act(X):

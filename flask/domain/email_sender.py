@@ -4,13 +4,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import chromedriver_autoinstaller
 import pyperclip
 from selenium.webdriver.support.wait import WebDriverWait
 
 
 def send_email():
-    chromedriver_autoinstaller.install()
     driver = webdriver.Chrome()
 
     # 네이버 로그인 페이지 열기
