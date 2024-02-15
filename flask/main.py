@@ -25,10 +25,10 @@ def user_init():
         access_token = 'Bearer ' + json_data['accessToken']
 
         images.calc(json_data['images'], params)
-        # insta.calc(json_data['insta'], params)
+        insta.calc(json_data['insta'], params)
         call.calc(json_data['calls'], params)
         params['interests'] = youtube.calc(json_data['youtube'])
-        # apps.calc(json_data['apps'], params)
+        apps.calc(json_data['apps'], params)
 
 
         print(params)

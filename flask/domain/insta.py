@@ -26,7 +26,7 @@ def calc_emp(blob):
         sentiment_avg += sentence.sentiment.subjectivity
     sentiment_avg = sentiment_avg / len(blob.sentences)
 
-    return round(sentiment_avg * 5000)
+    return round(sentiment_avg * 10000)
 
 
 def calc(input, output):
