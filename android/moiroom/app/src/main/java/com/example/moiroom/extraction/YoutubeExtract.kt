@@ -154,7 +154,7 @@ class YoutubeExtract : AppCompatActivity() {
                     val jsonResponse = response.toString()
 //                    val accessToken = jsonResponse.getJSONObject("access_token")
                     // 액세스 토큰을 사용하여 추가 작업 수행
-                    Log.d("AccessToken", jsonResponse)
+                    Log.d("유튜브토큰", jsonResponse)
                     youtubeToken = jsonResponse
                     val intent = Intent(this@YoutubeExtract, LoadingActivity::class.java)
                     startActivity(intent)
