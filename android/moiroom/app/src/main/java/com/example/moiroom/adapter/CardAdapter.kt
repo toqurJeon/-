@@ -363,7 +363,7 @@ class CardAdapter(
 
                 fixedLayout.setOnClickListener {
                     if (binding.hiddenView.visibility == View.VISIBLE){
-                        TransitionManager.beginDelayedTransition(binding.cardview,
+                        TransitionManager.beginDelayedTransition(binding.characterViewGroup,
                             AutoTransition()
                         )
                         binding.hiddenView.visibility = View.GONE
@@ -371,7 +371,7 @@ class CardAdapter(
 
                         //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
                     } else{
-                        TransitionManager.beginDelayedTransition(binding.cardview,
+                        TransitionManager.beginDelayedTransition(binding.characterViewGroup,
                             AutoTransition())
 
                         binding.hiddenView.visibility = View.VISIBLE
