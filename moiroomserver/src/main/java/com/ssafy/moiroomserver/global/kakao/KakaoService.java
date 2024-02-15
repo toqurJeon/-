@@ -78,6 +78,7 @@ public class KakaoService {
         if (member == null) {
             throw new NoExistException(NOT_EXISTS_MEMBER);
         }
+        System.out.println("Member 정보 : " + member.toString());
         return member;
     }
 
