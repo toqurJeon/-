@@ -3,6 +3,7 @@ package com.example.moiroom
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.content.Context
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,7 @@ class ChattingFragment : Fragment() {
             recyclerView.adapter = adapter
 
             adapter.onItemClickListener = object : ChatRoomAdapter.OnItemClickListener {
-                override fun onItemClick(memberId: Long, chatRoomId: Long) {
+                override fun onItemClick(memberId: Long, chatRoomId: Long, memberNickname: String, memberProfileImage: String) {
                     // 채팅방 생성 요청
                     CoroutineScope(Dispatchers.IO).launch {
                         val response = apiService.createChatRoom(memberId)
@@ -55,13 +56,29 @@ class ChattingFragment : Fragment() {
                         if (response.isSuccessful) {
                             // 채팅방 생성 성공
                             withContext(Dispatchers.Main) {
+                                // SharedPreferences에 데이터 저장
+                                val sharedPref = requireActivity().getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+                                with (sharedPref.edit()) {
+                                    putString("memberNickname", memberNickname)
+                                    putString("memberProfileImage", memberProfileImage)
+                                    putLong("memberId", memberId)
+                                    apply()
+                                    Log.d("ChattingFragment", "Saved data to SharedPreferences")
+                                }
+
+                                // Intent 생성 및 Activity 시작
                                 val intent = Intent(requireContext(), ChatActivity::class.java)
                                 intent.putExtra("memberId", memberId)
                                 intent.putExtra("chatRoomId", chatRoomId)
+
+                                // 데이터 저장 후에 startActivity 호출
                                 startActivity(intent)
                             }
                             Log.d("Chatting", "$memberId")
                             Log.d("Chatting", "$chatRoomId")
+                            Log.d("Chatting", "$memberNickname")
+                            Log.d("Chatting", "$memberProfileImage")
+                            Log.d("Chatting", "$memberId")
                         } else {
                             // 채팅방 생성 실패
                             // 에러 처리를 여기서 하세요.
