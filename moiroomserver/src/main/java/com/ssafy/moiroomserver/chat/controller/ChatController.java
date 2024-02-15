@@ -41,18 +41,6 @@ public class ChatController {
     }
 
     /**
-     * 챗 메시지 추가 기능 -> websocket, stomp 기능 구현 테스트 필요
-     * @param chatMessageReq
-     * @param chatRoomId
-     */
-    @PostMapping("/room/{chatRoomId}/send")
-    public void addChatMessageTest(@RequestBody ChatMessageReqDTO chatMessageReq,
-                               @PathVariable("chatRoomId") Long chatRoomId) {
-        log.info("addChatMessage 진입");
-        chatService.addChatMessage(chatMessageReq, chatRoomId);
-    }
-
-    /**
      * 채팅 메시지 내역 조회 api
      * @param chatRoomId
      * @param pgno
