@@ -4,6 +4,7 @@ package com.example.moiroom
 import ApiService
 import ChatAdapter
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -17,7 +18,10 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.data.Chat
 import com.example.moiroom.data.ChatMessageReqDTO
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityChatBinding
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.getUserInfo
 import com.google.gson.Gson
 import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.launch
@@ -44,12 +48,17 @@ class ChatActivity : AppCompatActivity() {
         NetworkModule.provideRetrofit(this)
     }
 
+    var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
-        val chatSocketManager = ChatSocketManager(this)
-        chatSocketManager.connect(chatRoomId)
+//        if (cachedUserInfo == null) {
+//            getUserInfo(context)
+//            cachedUserInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+//        }
+
+        val myMemberId = (cachedUserInfo?.memberId ?: -1).toLong()
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -59,6 +68,10 @@ class ChatActivity : AppCompatActivity() {
         memberId = intent.getLongExtra("memberId", -1)
         Log.d("MYTAG", "receivedData: $memberId")
         Log.d("MYTAG", "채팅Data: $chatRoomId")
+
+        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
+        val chatSocketManager = ChatSocketManager(this)
+        chatSocketManager.connect(chatRoomId)
 
 //        chatSocketManager.subscribe(chatRoomId)
 
@@ -90,6 +103,9 @@ class ChatActivity : AppCompatActivity() {
             } catch (e: Exception) {
                 // 데이터를 가져오는 중 오류 발생
                 Toast.makeText(this@ChatActivity, "Failed to load data: ${e.message}", Toast.LENGTH_LONG).show()
+                val data = mutableListOf<Chat>()
+                adapter = ChatAdapter(data, this@ChatActivity)
+                recyclerView.adapter = adapter
             }
         }
 
@@ -125,7 +141,7 @@ class ChatActivity : AppCompatActivity() {
                 recyclerView.scrollToPosition(adapter.itemCount - 1)
 
                 // WebSocket 통신을 통해 메시지 전송
-                val destination = "/room/$chatRoomId/send"
+                val destination = "$chatRoomId"
                 chatSocketManager.send(destination, json)
             }
         }
@@ -146,14 +162,16 @@ class ChatActivity : AppCompatActivity() {
     }
 
     private suspend fun getListOfChatData(): List<Chat> {
-        Log.d("채팅기록","$chatRoomId")
+        Log.d("채팅기록", "$chatRoomId")
         val response = apiService.getChatMessages(chatRoomId)
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!.data.content
         } else {
-            throw Exception("Failed to load chat data: ${response.message()}")
+//            throw Exception(null)
+            return emptyList()
         }
     }
+
 
     private fun showExitDialog() {
         val dialog = Dialog(this)
