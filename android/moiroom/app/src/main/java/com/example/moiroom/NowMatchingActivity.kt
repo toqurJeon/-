@@ -106,24 +106,25 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun goSettingActivityAlertDialog() {
-        val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
-        dialog.setContentView(dialogBinding.root)
-
-        dialogBinding.dialogTitle.text = "권한 승인을 해주세요."
-        dialogBinding.dialogContent.text = "권한 -> 통화 및 저장공간 -> 허용"
-
-        dialogBinding.dialogAcceptButton.setOnClickListener {
-            val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
-            goSettingPermission.data = Uri.parse("package:$packageName")
-            startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
-            dialog.dismiss()
-        }
-        dialogBinding.dialogDenyButton.setOnClickListener {
-            instagramPermissionDialog()
-            dialog.dismiss()
-        }
-        dialog.show()
+        instagramPermissionDialog()
+//        val dialog = Dialog(this, R.style.DialogTheme)
+//        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+//        dialog.setContentView(dialogBinding.root)
+//
+//        dialogBinding.dialogTitle.text = "권한 승인을 해주세요."
+//        dialogBinding.dialogContent.text = "권한 -> 통화 및 저장공간 -> 허용"
+//
+//        dialogBinding.dialogAcceptButton.setOnClickListener {
+//            val goSettingPermission = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
+//            goSettingPermission.data = Uri.parse("package:$packageName")
+//            startActivityForResult(goSettingPermission, REQUEST_CODE_SETTINGS)
+//            dialog.dismiss()
+//        }
+//        dialogBinding.dialogDenyButton.setOnClickListener {
+//            instagramPermissionDialog()
+//            dialog.dismiss()
+//        }
+//        dialog.show()
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -229,31 +230,31 @@ class NowMatchingActivity : AppCompatActivity() {
         }
 
 
-//        if (ContextCompat.checkSelfPermission(
-//                this,
-//                Manifest.permission.ACCESS_MEDIA_LOCATION
-//        ) != PackageManager.PERMISSION_GRANTED
-//        ) {
-//            permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
-//        }
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
-        val granted = mode == AppOpsManager.MODE_ALLOWED
-
-        if (!granted) {
-            val dialog = AlertDialog.Builder(this)
-                .setTitle("권한이 필요합니다")
-                .setMessage("사용정보접근허용 권한이 필요합니다. 설정으로 이동하시겠습니까?")
-                .setPositiveButton("예") { _, _ ->
-                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                    startActivity(intent)
-                }
-                .setNegativeButton("아니요") { dialog, _ ->
-                    dialog.dismiss()
-                }
-                .create()
-            dialog.show()
+        if (ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_MEDIA_LOCATION
+        ) != PackageManager.PERMISSION_GRANTED
+        ) {
+            permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
         }
+//        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+//        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+//        val granted = mode == AppOpsManager.MODE_ALLOWED
+//
+//        if (!granted) {
+//            val dialog = AlertDialog.Builder(this)
+//                .setTitle("권한이 필요합니다")
+//                .setMessage("사용정보접근허용 권한이 필요합니다. 설정으로 이동하시겠습니까?")
+//                .setPositiveButton("예") { _, _ ->
+//                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+//                    startActivity(intent)
+//                }
+//                .setNegativeButton("아니요") { dialog, _ ->
+//                    dialog.dismiss()
+//                }
+//                .create()
+//            dialog.show()
+//        }
 
         // 권한을 받아야하는 경우
         if (permissionsToRequest.isNotEmpty()) {
