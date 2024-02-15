@@ -8,11 +8,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import org.hibernate.annotations.ColumnDefault;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+@OnDelete(action = OnDeleteAction.CASCADE)
 @Table(name = "member")
 public class Member extends BaseEntity {
 
