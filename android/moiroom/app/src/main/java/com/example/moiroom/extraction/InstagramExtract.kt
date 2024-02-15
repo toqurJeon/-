@@ -14,7 +14,7 @@ import com.example.moiroom.NaviActivity
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
-import com.example.moiroom.utils.getRequestResult
+//import com.example.moiroom.utils.getRequestResult
 import com.facebook.CallbackManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
