@@ -26,9 +26,11 @@ import com.example.moiroom.extraction.YoutubeExtract
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
 import android.os.Process
+import androidx.appcompat.content.res.AppCompatResources
 import com.example.moiroom.databinding.DialogAuthorityFirstLayoutBinding
 import com.example.moiroom.databinding.DialogAuthorityInstagramLayoutBinding
 import com.example.moiroom.databinding.DialogAuthorityYoutubeLayoutBinding
+import com.example.moiroom.databinding.DialogBasicSingleBinding
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -93,11 +95,13 @@ class NowMatchingActivity : AppCompatActivity() {
 
     private fun showFirstAuthorityDialog() {
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogAuthorityFirstLayoutBinding.inflate(layoutInflater)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.dialogTitle.text = "앱 사용량 접근 권한이 필요해요!"
-        dialogBinding.dialogContent.text = "사용정보 접근 허용 - moiroom을 허용해주세요!"
+        dialogBinding.dialogContent.text = "사용정보 접근 허용\n-> moiroom을 허용해주세요!"
+
+        dialogBinding.dialogImage.setImageDrawable(getDrawable(R.drawable.il_authority_access))
 
         dialogBinding.dialogAcceptButton.setOnClickListener {
             // 설정으로 이동해서 권한 설정하지 않음
@@ -119,12 +123,14 @@ class NowMatchingActivity : AppCompatActivity() {
         val granted = mode == AppOpsManager.MODE_ALLOWED
 
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogAuthorityBinding.inflate(layoutInflater)
+        val dialogBinding = DialogBasicSingleBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
-        dialogBinding.authorityMessage.text = "앞으로의 권한을 설정해주시면, 나에게 맞는 룸메이트를 찾을 가능성이 올라가요!"
+        dialogBinding.dialogContent.text = "모이룸은 수집 데이터를 기반으로 매칭해요.\n앞으로의 권한을 설정해주시면, 나에게 딱 맞는 룸메이트를 찾을 가능성이 올라가요!"
 
-        dialogBinding.confirmButton.setOnClickListener {
+        dialogBinding.dialogImage.setImageDrawable(getDrawable(R.drawable.il_authority))
+
+        dialogBinding.dialogConfirmButton.setOnClickListener {
             if (!granted) {
                 showFirstAuthorityDialog()
             } else {
@@ -183,11 +189,13 @@ class NowMatchingActivity : AppCompatActivity() {
     private fun instagramPermissionDialog() {
 
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogAuthorityInstagramLayoutBinding.inflate(layoutInflater)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.dialogTitle.text = "인스타그램 권한 승인이 필요해요."
-        dialogBinding.dialogContent.text = "인스타그램으로 이동할까요?"
+        dialogBinding.dialogContent.text = "피드를 분석해서 룸메이트를 찾아볼게요!\n인스타그램으로 이동할까요?"
+
+        dialogBinding.dialogImage.setImageDrawable(getDrawable(R.drawable.il_authority_instagram))
 
         dialogBinding.dialogAcceptButton.setOnClickListener {
             goInsta()
@@ -205,11 +213,13 @@ class NowMatchingActivity : AppCompatActivity() {
 
     private fun youtubePermissionDialog() {
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogAuthorityYoutubeLayoutBinding.inflate(layoutInflater)
+        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.dialogTitle.text = "유튜브 권한 승인이 필요해요."
-        dialogBinding.dialogContent.text = "유튜브로 이동할까요?"
+        dialogBinding.dialogContent.text = "관심사가 맞는 룸메이트를 찾을 수 있어요!\n유튜브로 이동할까요?"
+
+        dialogBinding.dialogImage.setImageDrawable(getDrawable(R.drawable.il_authority_youtube))
 
         dialogBinding.dialogAcceptButton.setOnClickListener {
             val intent = Intent(this, YoutubeExtract::class.java)
