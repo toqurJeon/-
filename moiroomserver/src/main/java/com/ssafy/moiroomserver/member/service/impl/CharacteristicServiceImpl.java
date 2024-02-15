@@ -44,7 +44,6 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	public void addCharacteristic(HttpServletRequest request, CharacteristicAndInterestInfo.RequestResponse infoAddModifyReq) {
 		System.out.println("특성 메소드 내 진입");
 		Member member = kakaoService.getMemberByHttpServletRequest(request);
-		System.out.println("특성 메소드 내 Member 정보 : " + member.toString());
 		System.out.println("특성 및 관심사 데이터 추가 시작");
 		if (member.getCharacteristicId() == null) { //특성 및 관심사 첫 데이터 입력 (회원가입 후 첫 매칭 시작)
 			Characteristic characteristic = characteristicRepository.save(infoAddModifyReq.getCharacteristic().toEntity()); //특성 데이터 추가
