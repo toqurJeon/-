@@ -203,21 +203,20 @@ class ChatAdapter(
         // DateTimeFormatter 생성: 'yyyy-MM-dd HH:mm:ss' 형태의 날짜와 시간 문자열을 파싱
         val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
 
-        // dataList가 비어있지 않고, 가장 최근의 채팅 메시지와 내용과 날짜, 시간, 분이 같다면 추가하지 않음
-        if (dataList.isNotEmpty()) {
-            val lastChat = dataList[dataList.size - 1]
+        // 새로운 채팅 메시지의 날짜와 시간 문자열을 LocalDateTime 객체로 변환
+        val newChatDateTime = LocalDateTime.parse(chat.createdAt, formatter)
 
-            // 날짜와 시간 문자열을 LocalDateTime 객체로 변환
-            val lastChatDateTime = LocalDateTime.parse(lastChat.createdAt, formatter)
-            val newChatDateTime = LocalDateTime.parse(chat.createdAt, formatter)
+        // dataList의 모든 요소를 검사
+        for (existingChat in dataList) {
+            // 기존 채팅 메시지의 날짜와 시간 문자열을 LocalDateTime 객체로 변환
+            val existingChatDateTime = LocalDateTime.parse(existingChat.createdAt, formatter)
 
             // 내용과 날짜, 시간, 분이 모두 같다면 추가하지 않고 함수를 종료
-            if (lastChat.content == chat.content &&
-                lastChatDateTime.year == newChatDateTime.year &&
-                lastChatDateTime.month == newChatDateTime.month &&
-                lastChatDateTime.dayOfMonth == newChatDateTime.dayOfMonth &&
-                lastChatDateTime.hour == newChatDateTime.hour &&
-                lastChatDateTime.minute == newChatDateTime.minute) {
+            if (existingChat.content == chat.content &&
+                existingChatDateTime.year == newChatDateTime.year &&
+                existingChatDateTime.month == newChatDateTime.month &&
+                existingChatDateTime.dayOfMonth == newChatDateTime.dayOfMonth &&
+                existingChatDateTime.hour == newChatDateTime.hour) {
                 return
             }
         }
