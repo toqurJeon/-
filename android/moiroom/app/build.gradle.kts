@@ -36,7 +36,7 @@ android {
         // 명시적으로 대상이 되는 안드로이드 SDK 버전
         targetSdk = 34
         // 어플의 빌드 버전, 업데이트를 관리하고 구분할 때 사용
-        versionCode = 2
+        versionCode = 7
         // 사용자에게 표시되는 버전 이름
         versionName = "0.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정
@@ -155,5 +155,15 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.0.0")
     //okhttp 라이브러리 추가
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+    // stomp
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+
+    //rx
+    implementation("io.reactivex.rxjava2:rxjava:2.2.5")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.0")
+
+//    implementation("org.springframework:spring-websocket:5.3.10")
+
 }
 

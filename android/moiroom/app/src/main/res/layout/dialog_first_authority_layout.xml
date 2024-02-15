@@ -13,37 +13,51 @@
         android:padding="24dp">
 
         <TextView
-            android:id="@+id/character_title"
+            android:id="@+id/dialog_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="성향 이름"
+            android:text="잠시만요!"
             android:fontFamily="@font/pretendard_semibold"
             android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/character_description"
+            android:id="@+id/dialog_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:layout_marginVertical="12dp"
-            android:lineSpacingExtra="4dp"
-            android:text="성향 설명"
+            android:text="sample text"
             android:textSize="16sp" />
 
-        <Button
-            android:id="@+id/confirm_button"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:fontFamily="@font/pretendard_bold"
-            android:text="확인"
-            android:backgroundTint="@color/darkorange"
-            android:layout_marginHorizontal="8dp" />
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/dialog_deny_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="거절하기"
+                android:backgroundTint="@color/darkorange"
+                android:layout_marginHorizontal="4dp" />
+
+            <Button
+                android:id="@+id/dialog_accept_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/pretendard_bold"
+                android:text="진행하기"
+                android:backgroundTint="@color/darkorange"
+                android:layout_marginHorizontal="4dp" />
+
+        </LinearLayout>
 
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
-

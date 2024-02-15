@@ -8,6 +8,7 @@ import com.example.moiroom.R
 import com.example.moiroom.data.Interest
 import com.example.moiroom.databinding.InterestItemLayoutBinding
 import com.example.moiroom.utils.getColorInterest
+import com.example.moiroom.utils.getInterestName
 
 class InterestAdapter(private val context: Context, private var dataList: List<Interest>) : RecyclerView.Adapter<InterestAdapter.InterestViewHolder>() {
 
@@ -24,7 +25,7 @@ class InterestAdapter(private val context: Context, private var dataList: List<I
         val color = getColorInterest(data.interestName, context)
 
         holder.binding.apply {
-            interestName.text = data.interestName
+            interestName.text = getInterestName(data.interestName)
             interestPercent.text = "${data.interestPercent}%"
             cardBackground.setCardBackgroundColor(color)
         }

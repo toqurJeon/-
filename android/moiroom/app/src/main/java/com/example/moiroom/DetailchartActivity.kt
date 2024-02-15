@@ -5,6 +5,7 @@ import android.app.Dialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -22,6 +23,7 @@ import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterDetailDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
+import com.example.moiroom.utils.getInterestName
 import com.example.moiroom.view.RadarChartView
 import java.text.DecimalFormat
 
@@ -71,6 +73,14 @@ class DetailchartActivity : AppCompatActivity() {
             val interestAdapter = InterestAdapter(this, memberData.interests)
             binding.interestRecyclerView.adapter = interestAdapter
 
+            if (memberData.interests.isNotEmpty()) {
+                binding.interestViewGroup.visibility = View.VISIBLE
+                binding.myInterestDescription.text = "${getInterestName(memberData.interests[0].interestName)}에 가장 관심이 있어요"
+            } else {
+                binding.myInterestDescription.visibility = View.GONE
+                binding.interestViewGroup.visibility = View.GONE
+            }
+
             // 수면 차트
 //            val sleepChart = binding.sleepChartView
 //            sleepChart.setSleepTime(memberData.characteristic.sleepAt, memberData.characteristic.wakeUpAt)
@@ -85,7 +95,7 @@ class DetailchartActivity : AppCompatActivity() {
                 dialog.setContentView(dialogBinding.root)
 
                 dialogBinding.characterTitle.text = "${binding.characterDetailName.text}"
-                val detailDescription = getCharacterDetailDescription(binding.characterDetailName.text.toString())
+                val detailDescription = getCharacterDetailDescription(this, binding.characterDetailName.text.toString())
                 dialogBinding.characterDescription.text = detailDescription
 
                 dialogBinding.confirmButton.setOnClickListener {

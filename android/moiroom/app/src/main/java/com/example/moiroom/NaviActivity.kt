@@ -37,6 +37,8 @@ class NaviActivity : AppCompatActivity() {
 
         setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
 
+        binding.navigationView.background.alpha = (255 * 0.5).toInt()
+
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
                 R.id.nowMatchingFragment -> setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())

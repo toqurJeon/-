@@ -16,13 +16,19 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.data.Chat
+import com.example.moiroom.data.ChatMessageReqDTO
 import com.example.moiroom.databinding.ActivityChatBinding
+import com.google.gson.Gson
+import io.reactivex.disposables.Disposable
 import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
 import okhttp3.WebSocket
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
 
 class ChatActivity : AppCompatActivity() {
 
@@ -32,6 +38,7 @@ class ChatActivity : AppCompatActivity() {
     private var chatRoomId: Long = -1
     private var memberId: Long = -1
     private lateinit var chatSocketManager: ChatSocketManager
+    private lateinit var stompClient: StompClient
 
     private val apiService: ApiService by lazy {
         NetworkModule.provideRetrofit(this)
@@ -39,7 +46,10 @@ class ChatActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        chatSocketManager = ChatSocketManager(this)
+
+        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
+        val chatSocketManager = ChatSocketManager(this)
+        chatSocketManager.connect(chatRoomId)
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -49,6 +59,8 @@ class ChatActivity : AppCompatActivity() {
         memberId = intent.getLongExtra("memberId", -1)
         Log.d("MYTAG", "receivedData: $memberId")
         Log.d("MYTAG", "채팅Data: $chatRoomId")
+
+//        chatSocketManager.subscribe(chatRoomId)
 
 //        // chatRoomId 적용
 //        if (chatRoomId == -1) {
@@ -81,25 +93,44 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-//        binding.sendMsgBtn.setOnClickListener {
-//            val message = binding.sendMsg.text.toString().trim()
-//            if (message.isNotEmpty()) {
-//                val newChat = Chat(
-//                    data.size + 1,
-//                    1,
-//                    1,
-//                    message,
-//                    Instant.now()
-//                )
-//                data.add(newChat)
-//                adapter.updateData(data.toList())
-//                binding.sendMsg.text.clear()
-//                scrollToLastItem()
-//            }
-//        }
+        binding.sendMsgBtn.setOnClickListener {
+            val message = binding.sendMsg.text.toString().trim()
+            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
-        // 웹소켓 연결 시작
-        chatSocketManager.connect()
+            if (message.isNotEmpty()) {
+                val chatMessageReqDTO = ChatMessageReqDTO(
+                    senderId = memberId,
+                    senderName = "Your Name",
+                    message = message,
+                    createdAt = currentDateTime
+                )
+
+                val gson = Gson()
+                val json = gson.toJson(chatMessageReqDTO)
+
+                // (이전 코드 생략)
+
+                // 채팅 메시지 목록에 메시지 추가
+                val newChat = Chat(
+                    adapter.itemCount + 1,
+                    memberId,
+                    chatRoomId,
+                    "Your Name",
+                    "Your Profile Image",
+                    message,
+                    currentDateTime
+                )
+                adapter.addData(newChat)
+                binding.sendMsg.text.clear()
+                recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+                // WebSocket 통신을 통해 메시지 전송
+                val destination = "/room/$chatRoomId/send"
+                chatSocketManager.send(destination, json)
+            }
+        }
+
+        Log.d("채팅기록","$chatRoomId")
 
         val btnShowModal = binding.exitBtn
         btnShowModal.setOnClickListener {
@@ -150,3 +181,4 @@ class ChatActivity : AppCompatActivity() {
     }
 
 }
+

@@ -50,7 +50,7 @@ class ChatAdapter(
         val sample_name = "김민수"
 
         val currentMemberId = data.memberId
-        val myMemberId = cachedUserInfo?.memberId ?: -1
+        val myMemberId = (cachedUserInfo?.memberId ?: -1).toLong()
 
         holder.binding.apply {
             chatMemberName.text = "${data.memberId}"
@@ -196,6 +196,11 @@ class ChatAdapter(
         dataList.clear()
         dataList.addAll(newData)
         notifyDataSetChanged()
+    }
+
+    fun addData(chat: Chat) {
+        dataList.add(chat)
+        notifyItemInserted(dataList.size - 1)
     }
 
     // Instant를 포맷된 String으로 바꾸기
