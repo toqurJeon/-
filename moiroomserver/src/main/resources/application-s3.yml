@@ -1,8 +1,3 @@
-#spring:
-#  config:
-#    activate:
-#      on-profile: s3
-
 cloud:
   aws:
     s3:
