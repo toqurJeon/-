@@ -61,15 +61,7 @@ class NowMatchingActivity : AppCompatActivity() {
                 setContentView(binding.root)
 
                 binding.mainLayout.setOnClickListener {
-                    val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-                    val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
-                    val granted = mode == AppOpsManager.MODE_ALLOWED
-
-                    if (!granted) {
-                        showFirstAuthorityDialog()
-                    } else {
-                        showAuthorityDialog()
-                    }
+                    showAuthorityDialog()
                     // 클릭 여부를 SharedPreferences에 저장
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
@@ -79,15 +71,8 @@ class NowMatchingActivity : AppCompatActivity() {
         } else {
             Log.d("MYTAG", "새롭게 매칭을 진행합니다.")
             setContentView(binding.root)
-            val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-            val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
-            val granted = mode == AppOpsManager.MODE_ALLOWED
+            showAuthorityDialog()
 
-            if (!granted) {
-                showFirstAuthorityDialog()
-            } else {
-                showAuthorityDialog()
-            }
             val editor = sharedPreferences.edit()
             editor.putBoolean("isRematching", false)
             editor.apply()
@@ -121,13 +106,16 @@ class NowMatchingActivity : AppCompatActivity() {
         }
         dialogBinding.dialogDenyButton.setOnClickListener {
             // 설정으로 이동해서 권한 설정하지 않음
-            showAuthorityDialog()
+            permissionRequest()
             dialog.dismiss()
         }
         dialog.show()
     }
 
     private fun showAuthorityDialog() {
+        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+        val granted = mode == AppOpsManager.MODE_ALLOWED
 
         val dialog = Dialog(this, R.style.DialogTheme)
         val dialogBinding = DialogAuthorityBinding.inflate(layoutInflater)
@@ -136,7 +124,11 @@ class NowMatchingActivity : AppCompatActivity() {
         dialogBinding.authorityMessage.text = "앞으로의 권한을 설정해주시면, 나에게 맞는 룸메이트를 찾을 가능성이 올라가요!"
 
         dialogBinding.confirmButton.setOnClickListener {
-            permissionRequest()
+            if (!granted) {
+                showFirstAuthorityDialog()
+            } else {
+                permissionRequest()
+            }
             dialog.dismiss()
         }
         dialog.show()
@@ -177,7 +169,7 @@ class NowMatchingActivity : AppCompatActivity() {
             youtubePermissionDialog()
         } else if (requestCode == USAGE_ACCESS_REQUEST_CODE) {
             // 사용자가 설정으로 이동하고 돌아온 후에는 다시 권한을 확인할 수 있음
-            showAuthorityDialog()
+            permissionRequest()
         }
     }
 
