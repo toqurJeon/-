@@ -36,7 +36,7 @@ android {
         // 명시적으로 대상이 되는 안드로이드 SDK 버전
         targetSdk = 34
         // 어플의 빌드 버전, 업데이트를 관리하고 구분할 때 사용
-        versionCode = 2
+        versionCode = 7
         // 사용자에게 표시되는 버전 이름
         versionName = "0.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정

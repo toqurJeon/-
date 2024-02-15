@@ -144,7 +144,7 @@ class LoadingActivity : AppCompatActivity() {
 
     private fun postFlask1() {
         val stringBuilder = StringBuilder()
-        stringBuilder.append("{ ")
+        stringBuilder.append("{ \"images\": $finalPhoto, ")
         stringBuilder.append(finalCall)
         stringBuilder.append(", ")
         stringBuilder.append("\"accessToken\":\"")
@@ -154,9 +154,9 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append(", ")
         stringBuilder.append(" \"youtube\": { \"accessToken\": \"${YoutubeExtract.youtubeToken}\"} ")
         stringBuilder.append(", ")
-        stringBuilder.append("\"apps\": \"$apps\"")
-        stringBuilder.append(", ")
-        stringBuilder.append("\"images\": $finalPhoto }")
+        stringBuilder.append("\"apps\": \"$apps\" }")
+//        stringBuilder.append(", ")
+//        stringBuilder.append("\"images\": $finalPhoto }")
 
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://moiroom.r-e.kr"
