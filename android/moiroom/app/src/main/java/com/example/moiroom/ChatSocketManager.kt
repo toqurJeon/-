@@ -1,7 +1,10 @@
 package com.example.moiroom
 
 import android.util.Log
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import kotlinx.serialization.json.Json
 import okhttp3.OkHttpClient
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
@@ -9,6 +12,7 @@ import okhttp3.WebSocket
 import okhttp3.Request
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import java.util.concurrent.Flow
+
 
 //class ChatSocketManager(private val activity: ChatActivity) {
 //    private lateinit var stompClient: StompClient
@@ -59,68 +63,57 @@ import java.util.concurrent.Flow
 
 
 class ChatSocketManager(private val activity: ChatActivity) {
+
     private lateinit var stompClient: StompClient
-
-    var disposable: Disposable? = null
-
-
     fun connect(chatRoomId: Long) {
         val socketUrl = "wss://moiroom.n-e.kr/ws"
-        val client = OkHttpClient()
-        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl, null, client)
 
-        stompClient.lifecycle().subscribe { event ->
-            when (event.type) {
-                LifecycleEvent.Type.OPENED -> {
-                    Log.d("MYMYTAG", "Stomp connection opened")
-                    subscribe(chatRoomId)
-                }
-                LifecycleEvent.Type.ERROR -> Log.e("MYMYTAG", "Error", event.exception)
-                LifecycleEvent.Type.CLOSED -> Log.d("MYMYTAG", "Stomp connection closed")
-                else -> Log.d("MYMYTAG", "Other event: ${event.type}")
+        stompClient= Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl)
+        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe { topicMessage ->
+            if(topicMessage.payload == null){
+                Log.i("message Recieve", "null")
+            }else{
+                Log.i("message Recieve", topicMessage.payload)
             }
         }
 
+        stompClient.lifecycle().subscribe { lifecycleEvent ->
+            when (lifecycleEvent.type) {
+                LifecycleEvent.Type.OPENED -> {
+                    Log.i("OPEND", "!!")
+                }
+                LifecycleEvent.Type.CLOSED -> {
+                    Log.i("CLOSED", "!!")
+
+                }
+                LifecycleEvent.Type.ERROR -> {
+                    Log.i("ERROR", "!!")
+                    Log.e("CONNECT ERROR", lifecycleEvent.exception.toString())
+                }
+                else -> {
+                    Log.i("ELSE", lifecycleEvent.message)
+                }
+            }
+        }
         stompClient.connect()
     }
 
-//    fun subscribe(chatRoomId: Long) {
-//        Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId") // 로그 출력 코드 추가
-//        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-//            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-//        }, { throwable ->
-//            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//        })
-//    }
+        fun subscribe(chatRoomId: Long) {
+            Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId")
+            stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
+                Log.d("MYMYTAG", "Received: ${topicMessage}")
+            }, { throwable ->
+                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
+            })
+        }
 
-//    fun subscribe(chatRoomId: Long) {
-//            subscription = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-//                Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-//            }, { throwable ->
-//                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//            })
-//
-//    }
-    fun send(chatRoomId: String, message: String) {
-        stompClient.send("/room/$chatRoomId/send", message).subscribe({}, { throwable ->
-            Log.e("ChatSocketManager", "Error on send", throwable)
-        })
-    }
+        fun send(chatRoomId: String, message: String) {
+//            stompClient.send("/queue/chat/room/$chatRoomId", message).subscribe()
+            stompClient.send("/pub/room/$chatRoomId/send",message).subscribe()
+        }
 
-    fun disconnect() {
-        stompClient.disconnect()
+        fun disconnect() {
+            stompClient.disconnect()
+        }
     }
-
-    fun subscribe(chatRoomId: Long) {
-        disposable = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-        }, { throwable ->
-            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-        })
-    }
-
-    fun unsubscribe() {
-        disposable?.dispose()
-    }
-}
 

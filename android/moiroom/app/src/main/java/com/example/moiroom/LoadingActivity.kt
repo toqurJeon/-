@@ -159,6 +159,7 @@ class LoadingActivity : AppCompatActivity() {
 //        stringBuilder.append("\"images\": $finalPhoto }")
         Log.d("인스타토큰", "$finalInsta")
         Log.d("유튜브토큰", "${YoutubeExtract.youtubeToken}")
+        Log.d("카카오토큰", "$accessToken")
         // FuelManager 설정 (선택사항)
         FuelManager.instance.basePath = "https://moiroom.r-e.kr"
         Log.d("최종 전송 데이터", stringBuilder.toString())

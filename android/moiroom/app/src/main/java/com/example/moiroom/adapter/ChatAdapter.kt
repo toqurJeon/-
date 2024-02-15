@@ -60,6 +60,7 @@ class ChatAdapter(
             // Glide를 사용하여 이미지 로드
             Glide.with(root.context)
                 .load(data.memberProfileImage)
+                .placeholder(context.getDrawable(R.drawable.sample_profile1))
                 .into(chatMemberImage)
 
             // 이전 메세지와 비교
