@@ -3,6 +3,8 @@ package com.ssafy.moiroomserver.chat.entity;
 import com.ssafy.moiroomserver.member.entity.Member;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "member_chat_room")
@@ -11,6 +13,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
+@OnDelete(action = OnDeleteAction.CASCADE)
 public class MemberChatRoom {
 
     @Id

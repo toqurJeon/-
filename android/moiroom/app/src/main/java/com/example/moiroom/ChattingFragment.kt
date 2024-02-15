@@ -61,6 +61,7 @@ class ChattingFragment : Fragment() {
                                 startActivity(intent)
                             }
                             Log.d("Chatting", "$memberId")
+                            Log.d("Chatting", "$chatRoomId")
                         } else {
                             // 채팅방 생성 실패
                             // 에러 처리를 여기서 하세요.

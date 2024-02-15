@@ -51,6 +51,7 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
             // 프로필 이미지 URL로부터 이미지를 로드하는 코드
             Glide.with(chatMemberImage.context)
                 .load(data.profileImageUrl)
+                .placeholder(R.drawable.sample_profile1)
                 .into(chatMemberImage)
         }
     }

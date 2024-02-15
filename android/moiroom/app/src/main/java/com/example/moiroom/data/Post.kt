@@ -3,6 +3,7 @@ package com.example.moiroom.data
 
 import kotlinx.parcelize.Parcelize
 import android.os.Parcelable
+// import kotlinx.android.parcel.Parcelize
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -90,7 +91,7 @@ data class UserResponse(
     ) : Parcelable {
         @Parcelize
         data class Member(
-            val memberId: Int,
+            val memberId: Long,
             val memberProfileImageUrl: String,
             val memberNickname: String,
             val memberGender: String,

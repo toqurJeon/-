@@ -84,13 +84,14 @@ public class MemberController {
     }
     
     /**
-     * 특성 및 관심사 추가 및 수정
+     * 특징 및 관심사 추가 및 수정
      *
      * @param request
      * @param infoAddModifyReq 추가 및 수정 시 입력할 데이터
      */
     @PostMapping("/characteristic")
     public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicAndInterestInfo.RequestResponse infoAddModifyReq) {
+        System.out.println("특성 컨트롤러 내 진입");
         characteristicService.addCharacteristic(request, infoAddModifyReq);
 
         return ApiResponse.success(ADD_ALL_CHARACTER_INFO);

@@ -78,9 +78,9 @@ fun getMatchedMember(context: Context, pgno: Int) {
     CoroutineScope(Dispatchers.IO).launch {
 
         val response = apiService.getMatchedMemberList(pgno)
-        if (response.isSuccessful) {
+        if (response.isSuccessful && response.body()?.data != null) {
             val data = response.body()
-            Log.d("MYTAG", "getMatchedMember: $data")
+            Log.d("MYTAG", "getMatchedMember: success, $data")
 
             updateMatchedMemberList(data!!)
 
@@ -120,19 +120,19 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "운동",
+                                        "Sports",
                                         48
                                     ),
                                     Interest(
-                                        "음악",
+                                        "Entertainment",
                                         36
                                     ),
                                     Interest(
-                                        "요리",
+                                        "Science & Technology",
                                         11
                                     ),
                                     Interest(
-                                        "게임",
+                                        "Gaming",
                                         5
                                     )
                                 )
@@ -164,15 +164,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Videoblogging",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Travel & Events",
                                         15
                                     )
                                 )
@@ -484,15 +484,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Nonprofits & Activism",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Travel & Events",
                                         15
                                     )
                                 )
@@ -544,8 +544,8 @@ fun getUserInfo(context: Context) {
                                 1,
                                 "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
                                 "안드리아",
-                                "여자",
-                                "김민식",
+                                "female",
+                                "김민지",
                                 "1999",
                                 "서울특별시",
                                 "강남구",
@@ -565,19 +565,19 @@ fun getUserInfo(context: Context) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "운동",
+                                        "Sports",
                                         42
                                     ),
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         28
                                     ),
                                     Interest(
-                                        "게임",
+                                        "Entertainment",
                                         19
                                     ),
                                     Interest(
-                                        "요리",
+                                        "Film & Animation",
                                         11
                                     )
                                 )
@@ -602,8 +602,8 @@ fun getUserInfo(context: Context) {
                             1,
                             "https://images.dog.ceo/breeds/samoyed/n02111889_6249.jpg",
                             "안드리아",
-                            "여자",
-                            "김민식",
+                            "female",
+                            "김민지",
                             "1999",
                             "서울특별시",
                             "강남구",
@@ -623,19 +623,19 @@ fun getUserInfo(context: Context) {
                             ),
                             listOf(
                                 Interest(
-                                    "운동",
+                                    "Sports",
                                     42
                                 ),
                                 Interest(
-                                    "음악",
+                                    "Music",
                                     28
                                 ),
                                 Interest(
-                                    "게임",
+                                    "Entertainment",
                                     19
                                 ),
                                 Interest(
-                                    "요리",
+                                    "Film & Animation",
                                     11
                                 )
                             )

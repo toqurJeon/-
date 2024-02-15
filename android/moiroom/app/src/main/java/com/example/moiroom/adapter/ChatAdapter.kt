@@ -50,7 +50,7 @@ class ChatAdapter(
         val sample_name = "김민수"
 
         val currentMemberId = data.memberId
-        val myMemberId = cachedUserInfo?.memberId ?: -1
+        val myMemberId = (cachedUserInfo?.memberId ?: -1).toLong()
 
         holder.binding.apply {
             chatMemberName.text = "${data.memberId}"
@@ -60,6 +60,7 @@ class ChatAdapter(
             // Glide를 사용하여 이미지 로드
             Glide.with(root.context)
                 .load(data.memberProfileImage)
+                .placeholder(context.getDrawable(R.drawable.sample_profile1))
                 .into(chatMemberImage)
 
             // 이전 메세지와 비교
@@ -196,6 +197,11 @@ class ChatAdapter(
         dataList.clear()
         dataList.addAll(newData)
         notifyDataSetChanged()
+    }
+
+    fun addData(chat: Chat) {
+        dataList.add(chat)
+        notifyItemInserted(dataList.size - 1)
     }
 
     // Instant를 포맷된 String으로 바꾸기
