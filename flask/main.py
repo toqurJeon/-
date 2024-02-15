@@ -7,8 +7,8 @@ from domain import apps, call, images, insta, youtube
 app = Flask(__name__)
 CORS(app)
 
-params = {'characteristic': {'sociability': 0, 'positivity': 0, 'activity': 0, 'communion': 0,
-                             'altruism': 0, 'empathy': 0, 'humor': 0, 'generous': 0}, 'interests': []}
+params = {'characteristic': {'sociability': 5678, 'positivity': 9198, 'activity': 0, 'communion': 3814,
+                             'altruism': 1234, 'empathy': 1568, 'humor': 8423, 'generous': 4538}, 'interests': []}
 
 
 @app.route('/moiroom/privacy')
@@ -29,6 +29,7 @@ def user_init():
         insta.calc(json_data['insta'], params)
         params['interests'] = youtube.calc(json_data['youtube'])
         # apps.calc(json_data['apps'], params)
+
 
         print(params)
 
