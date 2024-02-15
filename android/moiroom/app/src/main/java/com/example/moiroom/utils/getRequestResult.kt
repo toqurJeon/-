@@ -18,10 +18,11 @@ import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
+import com.example.moiroom.data.Page
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMemberList
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData.updateMatchedMemberList
+import com.example.moiroom.utils.CachedMatchingResultLiveData.addMatchingResult
+import com.example.moiroom.utils.CachedPageLiveData.updatePage
 import com.example.moiroom.utils.CachedUserInfoLiveData.updateUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,35 +43,38 @@ object CachedUserInfoLiveData : LiveData<UserResponse.Data.Member>() {
     }
 }
 
-object CachedMatchedMemberListLiveData : LiveData<ResponseData>() {
-    val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+//object CachedMatchedMemberListLiveData : LiveData<ResponseData>() {
+//    val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+//
+//    fun updateMatchedMemberList(matchedMemberList: ResponseData) {
+//        cacheMatchedMemberList.put("matchedMemberList", matchedMemberList)
+//        postValue(matchedMemberList)
+//    }
+//}
 
-    fun updateMatchedMemberList(matchedMemberList: ResponseData) {
-        cacheMatchedMemberList.put("matchedMemberList", matchedMemberList)
-        postValue(matchedMemberList)
+object CachedMatchingResultLiveData : LiveData<MutableList<MatchedMemberData>>() {
+    val cacheMatchingResult = LruCache<String, MutableList<MatchedMemberData>>(cacheSize)
+
+    fun addMatchingResult(data: List<MatchedMemberData>) {
+        val cachedData = cacheMatchingResult.get("matchedData") ?: mutableListOf()
+
+        cachedData.addAll(data)
+        cacheMatchingResult.put("matchedData", cachedData)
+
+        postValue(cachedData)
+    }
+}
+
+object CachedPageLiveData : LiveData<Page>() {
+    val cachePage = LruCache<String, Page>(cacheSize)
+
+    fun updatePage(data: Page) {
+        cachePage.put("page", data)
+        postValue(data)
     }
 }
 
 private lateinit var apiService: ApiService
-
-var okCount: Int = 0
-
-fun getRequestResult(result: Boolean, context: Context) {
-    // ok response를 받아야 하는 갯수
-    val targetCount: Int = 1
-    Log.d("TAG", "getRequestResult: $result 응답 받음! okCount: $okCount")
-
-    if (result) {
-        okCount += 1
-        if (okCount == targetCount) {
-            // 매칭 리스트 GET 요청
-            Log.d("TAG", "getRequestResult: 매칭리스트 요청 보내기!")
-
-            getUserInfo(context)
-            getMatchedMember(context, 1)
-        }
-    }
-}
 
 fun getMatchedMember(context: Context, pgno: Int) {
     apiService = NetworkModule.provideRetrofit(context)
@@ -82,7 +86,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: success, $data")
 
-            updateMatchedMemberList(data!!)
+            // updateMatchedMemberList(data!!)
+            updatePage(
+                Page(
+                    data!!.data.totalPages,
+                    data.data.totalElements,
+                    data.data.currentPage,
+                    data.data.pageSize
+                )
+            )
+            addMatchingResult(data.data.content)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 NowMatchingAfterFragment.isLoading = false
@@ -507,7 +520,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
                     10
                 ),
             )
-            updateMatchedMemberList(responseMatchedMemberList)
+            updatePage(
+                Page(
+                    responseMatchedMemberList.data.totalPages,
+                    responseMatchedMemberList.data.totalElements,
+                    responseMatchedMemberList.data.currentPage,
+                    responseMatchedMemberList.data.pageSize
+                )
+            )
+            addMatchingResult(responseMatchedMemberList.data.content)
+            // updateMatchedMemberList(responseMatchedMemberList)
         }
     }
 }

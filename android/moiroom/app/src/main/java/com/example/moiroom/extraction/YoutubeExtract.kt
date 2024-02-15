@@ -33,7 +33,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.example.moiroom.GlobalApplication
 import com.example.moiroom.databinding.ActivityJaeeontestBinding
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
-import com.example.moiroom.utils.getRequestResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

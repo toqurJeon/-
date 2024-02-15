@@ -24,7 +24,6 @@ import android.widget.Toast
 import com.example.moiroom.databinding.DialogBasicBinding
 import com.example.moiroom.extraction.YoutubeExtract
 import com.example.moiroom.utils.getMatchedMember
-import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
 import android.os.Process
 import com.example.moiroom.databinding.DialogAuthorityFirstLayoutBinding
