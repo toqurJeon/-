@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 from selenium import webdriver
 import chromedriver_autoinstaller
 
+
 def calc(input, output):
     if input == [] or input is None:
         return None
@@ -13,6 +14,8 @@ def calc(input, output):
     categories = {}
     total_time = 0
     for i in input:
+        if 'youtube' in i['packageName'] or i['totalUsageTime'] == 0:
+            continue
         # Selenium을 이용하여 웹 페이지를 엽니다.
         url = "https://play.google.com/store/apps/details?id=" + i['packageName']
         driver.get(url)
@@ -26,8 +29,10 @@ def calc(input, output):
         # 카테고리 정보를 찾습니다.
         category_element = soup.select('span.VfPpkd-vQzf8d')
         category = category_element[3].text if category_element else 'Not Found'
+        if '인기' in category:
+            category = category_element[4].text
 
-        print(f"어플 카테고리: {category}")
+        # print(f"어플 카테고리: {category}")
 
         if category not in categories:
             categories[category] = i['totalUsageTime']
@@ -39,10 +44,13 @@ def calc(input, output):
     # 브라우저를 닫습니다.
     driver.quit()
 
-    sorted_categories = dict(sorted(categories.items(), key=lambda item: item[1], reverse=True))
+    del categories['Not Found']
 
-    for category_name, value in sorted_categories.items():
-        output['characteristic']['interests'].append({'interestName': category_name,
-                                                      'interestPercent': round(10000*value/total_time)})
+    sorted_categories = dict(sorted(categories.items(), key=lambda item: item[1], reverse=True))
+    print(sorted_categories)
+
+    # for category_name, value in sorted_categories.items():
+    #     output['characteristic']['interests'].append({'interestName': category_name,
+    #                                                   'interestPercent': round(10000*value/total_time)})
     # 통화, 카톡, 인스타 사용량으로 사교성
     # 카테고리 분류해서 관심사

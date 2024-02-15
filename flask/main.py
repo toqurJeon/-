@@ -7,8 +7,8 @@ from domain import apps, call, images, insta, youtube
 app = Flask(__name__)
 CORS(app)
 
-params = {'characteristic': {'sociability': 5678, 'positivity': 9198, 'activity': 0, 'communion': 3814,
-                             'altruism': 1234, 'empathy': 1568, 'humor': 8423, 'generous': 4538}, 'interests': []}
+params = {'characteristic': {'sociability': 5678, 'positivity': 0, 'activity': 0, 'communion': 3814,
+                             'altruism': 1234, 'empathy': 0, 'humor': 8423, 'generous': 4538}, 'interests': []}
 
 
 @app.route('/moiroom/privacy')
@@ -25,10 +25,10 @@ def user_init():
         access_token = 'Bearer ' + json_data['accessToken']
 
         images.calc(json_data['images'], params)
-        call.calc(json_data['calls'], params)
         insta.calc(json_data['insta'], params)
+        call.calc(json_data['calls'], params)
         params['interests'] = youtube.calc(json_data['youtube'])
-        # apps.calc(json_data['apps'], params)
+        apps.calc(json_data['apps'], params)
 
 
         print(params)
@@ -58,7 +58,7 @@ def match_users():
         access_token = 'Bearer ' + request.get_json()['accessToken']
         users_request = requests.get('https://moiroom.n-e.kr/matching/info', headers={'Authorization': access_token})
         if users_request.status_code != 200:
-            return jsonify({'status': 'error', 'message': 'not 200 in users info'})
+            return jsonify({'status': 'error', 'message': 'not 200 in users info, ' + str(users_request.status_code)})
         print(users_request.json())
         users_info = users_request.json()['data']
 
