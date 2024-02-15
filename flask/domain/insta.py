@@ -2,7 +2,6 @@ import requests
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 import time
-import chromedriver_autoinstaller
 import nltk
 
 nltk.download('punkt')
@@ -49,7 +48,7 @@ def calc(input, output):
             captions += feed['caption'] + '.\n'
 
         # ChromeDriver를 자동으로 설치합니다.
-        chromedriver_autoinstaller.install()
+        # chromedriver_autoinstaller.install()
 
         # Selenium을 이용하여 웹 페이지를  엽니다.
         url = "https://papago.naver.com/"

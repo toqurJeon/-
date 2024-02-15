@@ -1,6 +1,5 @@
 from bs4 import BeautifulSoup
 from selenium import webdriver
-import chromedriver_autoinstaller
 
 
 def calc(input, output):
@@ -8,7 +7,7 @@ def calc(input, output):
         return None
 
     # ChromeDriver를 자동으로 설치합니다.
-    chromedriver_autoinstaller.install()
+    # chromedriver_autoinstaller.install()
     driver = webdriver.Chrome()
 
     categories = {}
