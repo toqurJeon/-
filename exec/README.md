@@ -5,12 +5,12 @@
 </p>
 
 # 화면 구성 소개
-- - -
+
 ## 1. 입장 화면 및 동의 화면
 
    <img  src="https://github.com/hel-gather/hel-gather-server/assets/75198221/77c444de-9095-4360-9bc5-4a57eff27b82" width="200" height="350">  <img  src="https://github.com/hel-gather/hel-gather-server/assets/75198221/54d04bec-da50-41ca-962c-81c22fc78e4c" width="200" height="350">
 
-   첫 입장 시 카카오 소셜 로그인을 통해서 로그인을 진행을 합니다.  
+   첫 입장 시 카카오 소셜 로그인을 통해서 로그인을 진행을 합니다. 
 
 
 ## 2. 자기소개 및 정보 입력 화면
