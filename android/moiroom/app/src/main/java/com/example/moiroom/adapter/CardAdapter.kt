@@ -327,35 +327,39 @@ class CardAdapter(
                     interestChartAdapter2.selectInterestByName(selectedMyInterest)
                 }
 
-
-                interestDescription.addTextChangedListener(object : TextWatcher {
-                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-                    }
-
-                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                        // 선택한 관심사로 레이아웃 변경
-                        interestTableAdapter.selectInterestByName(interestDescription.text.toString())
-                        interestChartAdapter.selectInterestByName(interestDescription.text.toString())
-                        interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
-
-                        if (interestDescription.text.toString() == combinedList[0].interestName) {
-                            matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(interestDescription.text.toString())}! ${getRandomHappyEmoji()}"
-                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "both") {
-                            matchInterestDescription.text = "둘 다 ${getInterestName(interestDescription.text.toString())} 좋아해요! ${getRandomHappyEmoji()}"
-                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "me only") {
-                            matchInterestDescription.text = "나만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
-                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
-                            matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                if (combinedList.isNotEmpty()) {
+                    interestDescription.addTextChangedListener(object : TextWatcher {
+                        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                         }
-                        // 리싸이클러뷰 스크롤 이동
-                        interestTableRecyclerItem.smoothScrollToPosition(interestPositionFinder(combinedList, interestDescription.text.toString()))
-                    }
 
-                    override fun afterTextChanged(s: Editable?) {
-                    }
-                })
+                        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                            // 선택한 관심사로 레이아웃 변경
+                            interestTableAdapter.selectInterestByName(interestDescription.text.toString())
+                            interestChartAdapter.selectInterestByName(interestDescription.text.toString())
+                            interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
 
-                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)}! ${getRandomHappyEmoji()}"
+                            if (interestDescription.text.toString() == combinedList[0].interestName) {
+                                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(interestDescription.text.toString())}! ${getRandomHappyEmoji()}"
+                            } else if (interestFinder(combinedList, interestDescription.text.toString()) == "both") {
+                                matchInterestDescription.text = "둘 다 ${getInterestName(interestDescription.text.toString())} 좋아해요! ${getRandomHappyEmoji()}"
+                            } else if (interestFinder(combinedList, interestDescription.text.toString()) == "me only") {
+                                matchInterestDescription.text = "나만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                            } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
+                                matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                            }
+                            // 리싸이클러뷰 스크롤 이동
+                            interestTableRecyclerItem.smoothScrollToPosition(interestPositionFinder(combinedList, interestDescription.text.toString()))
+                        }
+
+                        override fun afterTextChanged(s: Editable?) {
+                        }
+                    })
+
+                    matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)}! ${getRandomHappyEmoji()}"
+
+                }
+
+
 
                 fixedLayout.setOnClickListener {
                     if (binding.hiddenView.visibility == View.VISIBLE){
