@@ -27,18 +27,6 @@ public class ChatController {
     private final SimpMessagingTemplate simpMessagingTemplate;
 
     /**
-     * 채팅방 입장 관련
-     * @param chatMessageReq
-     * @param chatRoomId
-     */
-    @MessageMapping("/room/{chatRoomId}")
-    public void enterChatRoom(@Payload ChatMessageReqDTO chatMessageReq,
-                              @RequestParam("chatRoomId") String chatRoomId) {
-        String destination = "/queue/chat/room/" + chatRoomId;
-        simpMessagingTemplate.convertAndSend(destination, chatMessageReq);
-    }
-
-    /**
      * 챗 메시지 추가 기능 -> websocket, stomp 기능 구현 테스트 필요
      * @param chatMessageReq
      * @param chatRoomId
