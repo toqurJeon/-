@@ -57,7 +57,7 @@ class YoutubeExtract : AppCompatActivity() {
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
-        getRequestResult(true, this)
+
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = MyWebViewClient()

@@ -526,7 +526,7 @@ fun getUserInfo(context: Context) {
                 updateUserInfo(member)
 
                 Log.d("MYTAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}, memberNickname: ${member.memberNickname}")
-                Log.d("MYTAG", "유저 데이터 가져옴 ${member.memberRoommateSearchStatus}")
+                Log.d("MYTAG", "유저 데이터 가져옴, 관심사 ${member.interests}")
             } else {
                 Log.d("MYTAG", "getUserInfo: Failed to get user info")
                 Log.d("TAG", "Response Code: ${response.code()}, Response Message: ${response.message()}")

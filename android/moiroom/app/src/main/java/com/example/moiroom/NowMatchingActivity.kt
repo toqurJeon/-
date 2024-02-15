@@ -27,7 +27,9 @@ import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
 import android.os.Process
-import com.example.moiroom.databinding.DialogFirstAuthorityLayoutBinding
+import com.example.moiroom.databinding.DialogAuthorityFirstLayoutBinding
+import com.example.moiroom.databinding.DialogAuthorityInstagramLayoutBinding
+import com.example.moiroom.databinding.DialogAuthorityYoutubeLayoutBinding
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -92,10 +94,10 @@ class NowMatchingActivity : AppCompatActivity() {
 
     private fun showFirstAuthorityDialog() {
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogFirstAuthorityLayoutBinding.inflate(layoutInflater)
+        val dialogBinding = DialogAuthorityFirstLayoutBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
-        dialogBinding.dialogTitle.text = "어플리케이션 사용량 접근 권한이 필요해요!"
+        dialogBinding.dialogTitle.text = "앱 사용량 접근 권한이 필요해요!"
         dialogBinding.dialogContent.text = "사용정보 접근 허용 - moiroom을 허용해주세요!"
 
         dialogBinding.dialogAcceptButton.setOnClickListener {
@@ -182,7 +184,7 @@ class NowMatchingActivity : AppCompatActivity() {
     private fun instagramPermissionDialog() {
 
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        val dialogBinding = DialogAuthorityInstagramLayoutBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.dialogTitle.text = "인스타그램 권한 승인이 필요해요."
@@ -204,7 +206,7 @@ class NowMatchingActivity : AppCompatActivity() {
 
     private fun youtubePermissionDialog() {
         val dialog = Dialog(this, R.style.DialogTheme)
-        val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
+        val dialogBinding = DialogAuthorityYoutubeLayoutBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.dialogTitle.text = "유튜브 권한 승인이 필요해요."
@@ -219,8 +221,7 @@ class NowMatchingActivity : AppCompatActivity() {
             Log.d("TAG", "instagramPermissionDialog: 유튜브 거절, 매칭 중 액티비티로 이동")
             // 유튜브 이동을 거절했을때의 요청 보내기
 
-            // 더미 응답
-            getRequestResult(true, this)
+
             // 매칭중 액티비티로 이동
             val intent = Intent(this, LoadingActivity::class.java)
             startActivity(intent)

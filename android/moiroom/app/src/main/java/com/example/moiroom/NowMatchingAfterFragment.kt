@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.util.LruCache
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +29,7 @@ import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getCharacterDetailDescription
 import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 
 class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
@@ -46,6 +48,10 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     var currentScrollPosition: Int = 0
     var currentViewPagerPosition: Int = 0
 
+    val cacheSize = 4 * 1024 * 1024
+    val previousMemberList = LruCache<String, MutableList<MatchedMemberData>>(cacheSize)
+    val previousLastPage = LruCache<String, Int>(cacheSize)
+
     companion object {
         var isLoading: Boolean = false
     }
@@ -63,15 +69,43 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        getMatchedMember(requireContext(), 1)
+
+//        val cachedPreviousMemberList: MutableList<MatchedMemberData>? = previousMemberList.get("previousMemberList")
+//        val cachedPreviousLastPage: Int? = previousLastPage.get("previousLastPage")
+//
+//        if (cachedPreviousMemberList != null && cachedPreviousLastPage != null) {
+//            Log.d("MYTAG", "Now Matching After Fragment , 돌아와서 새롭게 어댑터 세팅")
+//            currentPageNumber = cachedPreviousLastPage
+//            matchedMemberListForAdapter = cachedPreviousMemberList
+//
+//            setCardAdapter(toggled)
+//        }
+
         Log.d("MYTAG", "Now Matching After Fragment View Created.")
         Log.d("MYTAG", "Member: ${cachedMatchedMemberList?.data}")
+
+        if (cachedMatchedMemberList != null) {
+            if (cachedMatchedMemberList!!.data.currentPage != 1) {
+                Log.d("MYTAG", "NowMatchingAfterFragment: 다시 불러와야 함.")
+                getMatchedMember(requireContext(), 1)
+                currentPageNumber = 0
+                currentPageItems = 0
+                totalPage = 0
+                totalItems = 0
+                setCardAdapter(toggled)
+            }
+        }
 
         CachedUserInfoLiveData.observe(viewLifecycleOwner) { userInfo ->
             Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 사용자 데이터")
             cachedUserInfo = cacheUserInfo.get("userInfo")
 
+
             if (cachedUserInfo != null) {
                 setCardAdapter(toggled)
+            } else {
+                getUserInfo(requireContext())
             }
         }
 
@@ -264,7 +298,6 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
                     binding.recyclerView.adapter = null
                     toggled = !toggled
                     binding.viewPager2.currentItem = position
-
                 }
             }
         }
@@ -286,4 +319,5 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         }
         dialog.show()
     }
+
 }
