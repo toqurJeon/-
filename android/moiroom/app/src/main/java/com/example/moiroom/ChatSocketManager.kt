@@ -67,19 +67,6 @@ class ChatSocketManager(private val activity: ChatActivity) {
     private lateinit var stompClient: StompClient
     fun connect(chatRoomId: Long) {
         val socketUrl = "wss://moiroom.n-e.kr/ws"
-//        stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl, null, client)
-//
-//        stompClient.lifecycle().subscribe { event ->
-//            when (event.type) {
-//                LifecycleEvent.Type.OPENED -> {
-//                    Log.d("MYMYTAG", "Stomp connection opened")
-//                    subscribe(chatRoomId)
-//                }
-//                LifecycleEvent.Type.ERROR -> Log.e("MYMYTAG", "Error", event.exception)
-//                LifecycleEvent.Type.CLOSED -> Log.d("MYMYTAG", "Stomp connection closed")
-//                else -> Log.d("MYMYTAG", "Other event: ${event.type}")
-//            }
-//        }
 
         stompClient= Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl)
         stompClient.topic("/queue/chat/room/$chatRoomId").subscribe { topicMessage ->
@@ -111,49 +98,15 @@ class ChatSocketManager(private val activity: ChatActivity) {
         stompClient.connect()
     }
 
-//    fun subscribe(chatRoomId: Long) {
-//        Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId") // 로그 출력 코드 추가
-//        stompClient.topic("/queue/chat/room/$chatRoomId")
-////        Log.d("MYMYTAG", topic.)
-//            .subscribe({ topicMessage ->
-//            Log.d("MYMYTAG", "Received: 성공")
-//        }, { throwable ->
-//            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//        })
-//    }
-
         fun subscribe(chatRoomId: Long) {
             Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId")
-
-//        stompClient.topic("/pub/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-//                Log.d("MYMYTAG", "Received: ${topicMessage}")
-//            }, { throwable ->
-//                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//            })
             stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
                 Log.d("MYMYTAG", "Received: ${topicMessage}")
             }, { throwable ->
                 Log.e("MYMYTAG", "Error on subscribe topic", throwable)
             })
-
-
-//        if(stompClient.topic("/queue/chat/room/$chatRoomId").subscribe() != null){
-//            Log.d("MYMYTAG", "NULL 아님")
-//        }
-//        else{
-//            Log.d("MYMYTAG", "NULL")
-//        }
-
         }
 
-        //    fun subscribe(chatRoomId: Long) {
-//            subscription = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-//                Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-//            }, { throwable ->
-//                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//            })
-//
-//    }
         fun send(chatRoomId: String, message: String) {
 //            stompClient.send("/queue/chat/room/$chatRoomId", message).subscribe()
             stompClient.send("/pub/room/$chatRoomId/send",message).subscribe()
@@ -162,17 +115,5 @@ class ChatSocketManager(private val activity: ChatActivity) {
         fun disconnect() {
             stompClient.disconnect()
         }
-
-//    fun subscribe(chatRoomId: Long) {
-//        disposable = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-//            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-//        }, { throwable ->
-//            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-//        })
-//    }
-
-//    fun unsubscribe() {
-//        disposable?.dispose()
-//    }
     }
 

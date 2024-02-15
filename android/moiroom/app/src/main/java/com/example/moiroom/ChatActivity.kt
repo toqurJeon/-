@@ -48,6 +48,8 @@ class ChatActivity : AppCompatActivity() {
         NetworkModule.provideRetrofit(this)
     }
 
+    private var lastPageNumber: Int? = null
+
     var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,15 +96,40 @@ class ChatActivity : AppCompatActivity() {
         layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
 
-        // 코루틴을 사용해서 서버에서 채팅 데이터를 가져옴
         lifecycleScope.launch {
             try {
-                val data = getListOfChatData().toMutableList()
+                lastPageNumber = getLastPageNumber()
+                val data = getListOfChatData(lastPageNumber ?: 1).toMutableList()
+
+                // 화면이 충분히 채워지지 않았다면 이전 페이지의 채팅 데이터를 추가로 불러옵니다.
+                while (data.size < 13 && lastPageNumber!! > 1) {
+                    lastPageNumber = lastPageNumber!! - 1
+                    val previousPageData = getListOfChatData(lastPageNumber!!)
+                    data.addAll(0, previousPageData)
+                }
+
                 adapter = ChatAdapter(data, this@ChatActivity)
                 recyclerView.adapter = adapter
+
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+
+                        // Check if the user has scrolled to the top of the list
+                        if (!recyclerView.canScrollVertically(-1) && lastPageNumber ?: 1 > 1) {
+                            // Load previous page
+                            lifecycleScope.launch {
+                                lastPageNumber = lastPageNumber!! - 1
+                                val previousPageData = getListOfChatData(lastPageNumber!!)
+                                data.addAll(0, previousPageData)
+                                adapter.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                })
+
             } catch (e: Exception) {
                 // 데이터를 가져오는 중 오류 발생
-                Toast.makeText(this@ChatActivity, "Failed to load data: ${e.message}", Toast.LENGTH_LONG).show()
                 val data = mutableListOf<Chat>()
                 adapter = ChatAdapter(data, this@ChatActivity)
                 recyclerView.adapter = adapter
@@ -115,8 +142,8 @@ class ChatActivity : AppCompatActivity() {
 
             if (message.isNotEmpty()) {
                 val chatMessageReqDTO = ChatMessageReqDTO(
-                    senderId = memberId,
-                    senderName = "Your Name",
+                    senderId = cachedUserInfo!!.memberId,
+                    senderName = cachedUserInfo!!.memberNickname,
                     message = message,
                     createdAt = currentDateTime
                 )
@@ -129,9 +156,9 @@ class ChatActivity : AppCompatActivity() {
                 // 채팅 메시지 목록에 메시지 추가
                 val newChat = Chat(
                     adapter.itemCount + 1,
-                    memberId,
+                    cachedUserInfo!!.memberId,
                     chatRoomId,
-                    "Your Name",
+                    cachedUserInfo!!.memberNickname,
                     "Your Profile Image",
                     message,
                     currentDateTime
@@ -161,15 +188,18 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private suspend fun getListOfChatData(): List<Chat> {
-        Log.d("채팅기록", "$chatRoomId")
-        val response = apiService.getChatMessages(chatRoomId)
+    private suspend fun getListOfChatData(page: Int): List<Chat> {
+        val response = apiService.getChatMessages(chatRoomId, page)
         if (response.isSuccessful && response.body() != null) {
             return response.body()!!.data.content
         } else {
-//            throw Exception(null)
             return emptyList()
         }
+    }
+
+    private suspend fun getLastPageNumber(): Int {
+        val response = apiService.getChatMessages(chatRoomId, 1)
+        return response.body()?.data?.totalPages ?: 1
     }
 
 
@@ -197,6 +227,8 @@ class ChatActivity : AppCompatActivity() {
         super.onBackPressed()
         finish()
     }
+
+
 
 }
 
