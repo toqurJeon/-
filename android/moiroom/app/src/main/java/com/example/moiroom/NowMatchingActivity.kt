@@ -60,9 +60,29 @@ class NowMatchingActivity : AppCompatActivity() {
                 setContentView(binding.root)
 
                 binding.mainLayout.setOnClickListener {
+                    val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+                    val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+                    val granted = mode == AppOpsManager.MODE_ALLOWED
 
-                    showAuthorityDialog()
-
+                    if (!granted) {
+                        val dialog = AlertDialog.Builder(this)
+                            .setTitle("권한이 필요합니다")
+                            .setMessage("사용정보접근허용 권한이 필요합니다.")
+                            .setPositiveButton("예") { _, _ ->
+                                val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                                startActivity(intent)
+                            }
+                            .create()
+                        dialog.setOnDismissListener {
+                            // 다이얼로그가 닫힌 후에 수행할 동작을 여기에 작성합니다.
+                            // 예: 다이얼로그가 닫힌 후에 특정 작업 수행
+//                            instagramPermissionDialog()
+                            showAuthorityDialog()
+                        }
+                        dialog.show()
+                    } else {
+                        showAuthorityDialog()
+                    }
                     // 클릭 여부를 SharedPreferences에 저장
                     val editor = sharedPreferences.edit()
                     editor.putBoolean("isButtonClicked", true) // 버튼 클릭 후 'true'로 변경
@@ -72,9 +92,29 @@ class NowMatchingActivity : AppCompatActivity() {
         } else {
             Log.d("MYTAG", "새롭게 매칭을 진행합니다.")
             setContentView(binding.root)
+            val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
+            val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+            val granted = mode == AppOpsManager.MODE_ALLOWED
 
-            showAuthorityDialog()
-
+            if (!granted) {
+                val dialog = AlertDialog.Builder(this)
+                    .setTitle("권한이 필요합니다")
+                    .setMessage("사용정보접근허용 권한이 필요합니다.")
+                    .setPositiveButton("예") { _, _ ->
+                        val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+                        startActivity(intent)
+                    }
+                    .create()
+                dialog.setOnDismissListener {
+                    // 다이얼로그가 닫힌 후에 수행할 동작을 여기에 작성합니다.
+                    // 예: 다이얼로그가 닫힌 후에 특정 작업 수행
+//                    instagramPermissionDialog()
+                    showAuthorityDialog()
+                }
+                dialog.show()
+            } else {
+                showAuthorityDialog()
+            }
             val editor = sharedPreferences.edit()
             editor.putBoolean("isRematching", false)
             editor.apply()
@@ -84,6 +124,7 @@ class NowMatchingActivity : AppCompatActivity() {
     companion object {
         const val REQUEST_CODE_SETTINGS = 1001
         const val REQUEST_INSTAGRAM_PERMISSION = 1002
+        private val USAGE_ACCESS_REQUEST_CODE = 1003
         var callAuth = false
         var mediaAuth = false
         var instaAuth = false
@@ -138,6 +179,9 @@ class NowMatchingActivity : AppCompatActivity() {
         } else if (requestCode == REQUEST_INSTAGRAM_PERMISSION) {
             Log.d("TAG", "인스타그램 권한 설정에서 돌아옴.")
             youtubePermissionDialog()
+        } else if (requestCode == USAGE_ACCESS_REQUEST_CODE) {
+            // 사용자가 설정으로 이동하고 돌아온 후에는 다시 권한을 확인할 수 있음
+            instagramPermissionDialog()
         }
     }
 
@@ -148,6 +192,7 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun instagramPermissionDialog() {
+
         val dialog = Dialog(this, R.style.DialogTheme)
         val dialogBinding = DialogBasicBinding.inflate(layoutInflater)
         dialog.setContentView(dialogBinding.root)
@@ -237,24 +282,7 @@ class NowMatchingActivity : AppCompatActivity() {
         ) {
             permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
         }
-//        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-//        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
-//        val granted = mode == AppOpsManager.MODE_ALLOWED
-//
-//        if (!granted) {
-//            val dialog = AlertDialog.Builder(this)
-//                .setTitle("권한이 필요합니다")
-//                .setMessage("사용정보접근허용 권한이 필요합니다. 설정으로 이동하시겠습니까?")
-//                .setPositiveButton("예") { _, _ ->
-//                    val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-//                    startActivity(intent)
-//                }
-//                .setNegativeButton("아니요") { dialog, _ ->
-//                    dialog.dismiss()
-//                }
-//                .create()
-//            dialog.show()
-//        }
+
 
         // 권한을 받아야하는 경우
         if (permissionsToRequest.isNotEmpty()) {
@@ -263,7 +291,8 @@ class NowMatchingActivity : AppCompatActivity() {
                 permissionsToRequest.toTypedArray(),
                 PERMISSION_REQUEST_CODE
             )
-        } else {
+        }
+        else {
             instagramPermissionDialog()
         }
     }
