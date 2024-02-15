@@ -4,7 +4,7 @@ import java.time.Instant
 
 data class Chat(
     val chatMessageId: Int,
-    val memberId: Int,
+    val memberId: Long,
     val chatRoomId: Long,
     val memberNickname: String,
     val memberProfileImage: String,
@@ -31,3 +31,11 @@ data class  ChatCreate(
     val status: String,
     val message: String,
 )
+
+data class ChatMessageReqDTO(
+    val senderId: Long,
+    val senderName: String,
+    val message: String,
+    val createdAt: String
+)
+

@@ -155,5 +155,15 @@ dependencies {
     implementation("com.google.android.gms:play-services-auth:20.0.0")
     //okhttp 라이브러리 추가
     implementation("com.squareup.okhttp3:okhttp:4.9.0")
+
+    // stomp
+    implementation("com.github.NaikSoftware:StompProtocolAndroid:1.6.6")
+
+    //rx
+    implementation("io.reactivex.rxjava2:rxjava:2.2.5")
+    implementation("io.reactivex.rxjava2:rxandroid:2.1.0")
+
+//    implementation("org.springframework:spring-websocket:5.3.10")
+
 }
 
