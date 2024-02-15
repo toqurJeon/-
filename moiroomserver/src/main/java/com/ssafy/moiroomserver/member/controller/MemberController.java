@@ -84,7 +84,7 @@ public class MemberController {
     }
     
     /**
-     * 특성 및 관심사 추가 및 수정
+     * 특징 및 관심사 추가 및 수정
      *
      * @param request
      * @param infoAddModifyReq 추가 및 수정 시 입력할 데이터

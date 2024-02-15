@@ -1,6 +1,5 @@
 package com.ssafy.moiroomserver.member.service.impl;
 
-import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.exception.ExistException;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
@@ -138,7 +137,7 @@ public class MemberServiceImpl implements MemberService {
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
         memberInfo.setCharacteristic(CharacteristicInfo.RequestResponse.builder()
                 .characteristic(characteristicRepository.findById(characteristicId)
-                        .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)))
+                        .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC)))
                 .build());
         memberInfo.setInterests(memberInterestRepository.findByMemberId(memberId));
 
