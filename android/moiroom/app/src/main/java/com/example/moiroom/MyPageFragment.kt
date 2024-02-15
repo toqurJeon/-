@@ -58,7 +58,7 @@ class MyPageFragment : Fragment() {
 
         binding.memberNickname.text = memberData.memberNickname
         binding.memberName.text = memberData.memberName
-        binding.memberGender.text = memberData.memberGender
+        binding.memberGender.text = if (memberData.memberGender == "male") "남성" else "여성"
         //binding.memberBirthYear.text = "${memberData.memberBirthYear}"
         binding.memberIntroduction.text = memberData.memberIntroduction
 

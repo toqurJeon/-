@@ -1,6 +1,8 @@
 package com.example.moiroom.utils
 
+import android.content.Context
 import androidx.compose.ui.graphics.colorspace.Illuminant.C
+import androidx.core.content.ContextCompat.getString
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
 
@@ -34,16 +36,16 @@ fun getCharacterDescription(type: CharacteristicType): String {
     }
 }
 
-fun getCharacterDetailDescription(type: String): String {
+fun getCharacterDetailDescription(context: Context, type: String): String {
     return when (type) {
-        "사교" -> "사교 데이터에 대한 설명."
-        "긍정" -> "긍정 데이터에 대한 설명."
-        "활동" -> "활동 데이터에 대한 설명."
-        "공유" -> "공유 데이터에 대한 설명."
-        "이타" -> "이타 데이터에 대한 설명."
-        "공감" -> "공감 데이터에 대한 설명."
-        "감각" -> "감각 데이터에 대한 설명."
-        "관대" -> "관대 데이터에 대한 설명."
+        "사교" -> getString(context, R.string.sociable_description)
+        "긍정" -> getString(context, R.string.positivity_description)
+        "활동" -> getString(context, R.string.activity_description)
+        "공유" -> getString(context, R.string.communion_description)
+        "이타" -> getString(context, R.string.altruism_description)
+        "공감" -> getString(context, R.string.empathy_description)
+        "감각" -> getString(context, R.string.humor_description)
+        "관대" -> getString(context, R.string.generous_description)
 
         else -> "성향이 로드되지 않았습니다."
     }

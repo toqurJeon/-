@@ -74,9 +74,11 @@ class DetailchartActivity : AppCompatActivity() {
             binding.interestRecyclerView.adapter = interestAdapter
 
             if (memberData.interests.isNotEmpty()) {
+                binding.interestViewGroup.visibility = View.VISIBLE
                 binding.myInterestDescription.text = "${getInterestName(memberData.interests[0].interestName)}에 가장 관심이 있어요"
             } else {
                 binding.myInterestDescription.visibility = View.GONE
+                binding.interestViewGroup.visibility = View.GONE
             }
 
             // 수면 차트
@@ -93,7 +95,7 @@ class DetailchartActivity : AppCompatActivity() {
                 dialog.setContentView(dialogBinding.root)
 
                 dialogBinding.characterTitle.text = "${binding.characterDetailName.text}"
-                val detailDescription = getCharacterDetailDescription(binding.characterDetailName.text.toString())
+                val detailDescription = getCharacterDetailDescription(this, binding.characterDetailName.text.toString())
                 dialogBinding.characterDescription.text = detailDescription
 
                 dialogBinding.confirmButton.setOnClickListener {

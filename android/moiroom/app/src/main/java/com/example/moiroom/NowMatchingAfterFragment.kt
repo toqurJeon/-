@@ -125,6 +125,12 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
                 val totalItemCount = layoutManager.itemCount
                 val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
 
+                if (firstVisibleItemPosition != 0) {
+                    binding.scrollTopButton.visibility = View.VISIBLE
+                } else {
+                    binding.scrollTopButton.visibility = View.GONE
+                }
+
                 if (!isLoading && currentPageNumber != totalPage) {
                     if (visibleItemCount + firstVisibleItemPosition >= totalItemCount
                         && firstVisibleItemPosition >= 0
@@ -139,6 +145,16 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
                 }
             }
         })
+
+        // 가장 위로 올리기
+        binding.scrollTopButton.setOnClickListener {
+            val layoutManager = binding.recyclerView.layoutManager as LinearLayoutManager
+            val firstVisibleItemPosition = layoutManager.findFirstVisibleItemPosition()
+
+            if (firstVisibleItemPosition != 0) {
+                (binding.recyclerView.layoutManager as LinearLayoutManager).smoothScrollToPosition(binding.recyclerView, null, 0)
+            }
+        }
 
         // 현재 몇번째 뷰페이저를 보고 있는지 확인
         binding.viewPager2.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback() {
@@ -206,6 +222,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         binding.viewPager2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
         binding.cardIndicator.visibility = View.VISIBLE
+        binding.scrollTopButton.visibility = View.GONE
 
         binding.layoutChangerIcon.setImageDrawable(iconListDrawable)
     }
@@ -261,7 +278,7 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         dialog.setContentView(dialogBinding.root)
 
         dialogBinding.characterTitle.text = "$description"
-        val detailDescription = getCharacterDetailDescription(description)
+        val detailDescription = getCharacterDetailDescription(requireContext(), description)
         dialogBinding.characterDescription.text = detailDescription
 
         dialogBinding.confirmButton.setOnClickListener {

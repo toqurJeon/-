@@ -27,6 +27,7 @@ import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getRequestResult
 import com.example.moiroom.utils.getUserInfo
 import android.os.Process
+import com.example.moiroom.databinding.DialogFirstAuthorityLayoutBinding
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -65,21 +66,7 @@ class NowMatchingActivity : AppCompatActivity() {
                     val granted = mode == AppOpsManager.MODE_ALLOWED
 
                     if (!granted) {
-                        val dialog = AlertDialog.Builder(this)
-                            .setTitle("권한이 필요합니다")
-                            .setMessage("사용정보접근허용 권한이 필요합니다.")
-                            .setPositiveButton("예") { _, _ ->
-                                val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                                startActivity(intent)
-                            }
-                            .create()
-                        dialog.setOnDismissListener {
-                            // 다이얼로그가 닫힌 후에 수행할 동작을 여기에 작성합니다.
-                            // 예: 다이얼로그가 닫힌 후에 특정 작업 수행
-//                            instagramPermissionDialog()
-                            showAuthorityDialog()
-                        }
-                        dialog.show()
+                        showFirstAuthorityDialog()
                     } else {
                         showAuthorityDialog()
                     }
@@ -97,21 +84,7 @@ class NowMatchingActivity : AppCompatActivity() {
             val granted = mode == AppOpsManager.MODE_ALLOWED
 
             if (!granted) {
-                val dialog = AlertDialog.Builder(this)
-                    .setTitle("권한이 필요합니다")
-                    .setMessage("사용정보접근허용 권한이 필요합니다.")
-                    .setPositiveButton("예") { _, _ ->
-                        val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
-                        startActivity(intent)
-                    }
-                    .create()
-                dialog.setOnDismissListener {
-                    // 다이얼로그가 닫힌 후에 수행할 동작을 여기에 작성합니다.
-                    // 예: 다이얼로그가 닫힌 후에 특정 작업 수행
-//                    instagramPermissionDialog()
-                    showAuthorityDialog()
-                }
-                dialog.show()
+                showFirstAuthorityDialog()
             } else {
                 showAuthorityDialog()
             }
@@ -125,10 +98,33 @@ class NowMatchingActivity : AppCompatActivity() {
         const val REQUEST_CODE_SETTINGS = 1001
         const val REQUEST_INSTAGRAM_PERMISSION = 1002
         private val USAGE_ACCESS_REQUEST_CODE = 1003
+        const val REQUEST_SETTING_PERMISSION = 1004
         var callAuth = false
         var mediaAuth = false
         var instaAuth = false
         var googleAuth = false
+    }
+
+    private fun showFirstAuthorityDialog() {
+        val dialog = Dialog(this, R.style.DialogTheme)
+        val dialogBinding = DialogFirstAuthorityLayoutBinding.inflate(layoutInflater)
+        dialog.setContentView(dialogBinding.root)
+
+        dialogBinding.dialogTitle.text = "어플리케이션 사용량 접근 권한이 필요해요!"
+        dialogBinding.dialogContent.text = "사용정보 접근 허용 - moiroom을 허용해주세요!"
+
+        dialogBinding.dialogAcceptButton.setOnClickListener {
+            // 설정으로 이동해서 권한 설정하지 않음
+            val intent = Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS)
+            startActivityForResult(intent, USAGE_ACCESS_REQUEST_CODE)
+            dialog.dismiss()
+        }
+        dialogBinding.dialogDenyButton.setOnClickListener {
+            // 설정으로 이동해서 권한 설정하지 않음
+            showAuthorityDialog()
+            dialog.dismiss()
+        }
+        dialog.show()
     }
 
     private fun showAuthorityDialog() {
@@ -181,7 +177,7 @@ class NowMatchingActivity : AppCompatActivity() {
             youtubePermissionDialog()
         } else if (requestCode == USAGE_ACCESS_REQUEST_CODE) {
             // 사용자가 설정으로 이동하고 돌아온 후에는 다시 권한을 확인할 수 있음
-            instagramPermissionDialog()
+            showAuthorityDialog()
         }
     }
 

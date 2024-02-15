@@ -244,7 +244,7 @@
                 android:id="@+id/radarChartContainer"
                 android:layout_width="match_parent"
                 android:layout_height="300dp"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
                 android:orientation="vertical">
 
             </LinearLayout>
@@ -351,7 +351,7 @@
                                     android:layout_gravity="center_vertical"
                                     android:layout_marginLeft="4dp"
                                     android:fontFamily="@font/pretendard_bold"
-                                    android:textSize="16sp"
+                                    android:textSize="18sp"
                                     android:text="성향 이름"/>
 
                             </LinearLayout>
@@ -390,10 +390,13 @@
                         app:layout_constraintTop_toBottomOf="@+id/fixed_layout">
 
                         <TextView
+                            android:id="@+id/character_data_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:paddingHorizontal="16dp"
-                            android:text="자세한 설명이 이어집니다" />
+                            android:lineSpacingExtra="4dp"
+                            android:textSize="16sp"
+                            android:text="@string/sampleString" />
 
                         <!-- com.google.android.material.card.MaterialCardView
                             android:layout_width="match_parent"
@@ -490,7 +493,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
-                            android:layout_marginTop="36dp">
+                            android:layout_marginTop="44dp">
 
                             <ImageView
                                 android:layout_width="30dp"
@@ -546,7 +549,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="16dp"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:text="관심사 이름"/>
 
                             <TextView
@@ -556,7 +559,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="112dp"
                                 android:textAlignment="textStart"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:text="룸메이트"/>
 
                             <TextView
@@ -566,7 +569,7 @@
                                 android:layout_alignParentEnd="true"
                                 android:layout_marginEnd="24dp"
                                 android:textAlignment="textStart"
-                                android:textSize="16sp"
+                                android:textSize="14sp"
                                 android:text="나"/>
 
                         </RelativeLayout>

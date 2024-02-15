@@ -14,6 +14,8 @@ import android.os.Looper
 import android.text.Editable
 import android.text.TextWatcher
 import android.transition.AutoTransition
+import android.transition.Fade
+import android.transition.Slide
 import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,6 +47,7 @@ import com.example.moiroom.databinding.MatchedListLayoutBinding
 import com.example.moiroom.databinding.MatchedLayoutBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
+import com.example.moiroom.utils.getCharacterDetailDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
 import com.example.moiroom.utils.getInterestName
@@ -198,6 +201,9 @@ class CardAdapter(
                     characterLocation.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
                     pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData[0].type.value, context))
 
+                    val description = getCharacterDetailDescription(context, clickedData[0].type.value)
+                    characterDataDescription.text = description
+
                     val decimalFormat = DecimalFormat("#.##")
                     val abs = abs(clickedData[0].value - clickedData[1].value)
                     myCharacterDescription.text = "${cardInfo.member.memberNickname}님과 ${clickedData[0].type.value} 성향이 ${decimalFormat.format(abs)}% 차이 나요."
@@ -345,7 +351,7 @@ class CardAdapter(
                             } else if (interestFinder(combinedList, interestDescription.text.toString()) == "me only") {
                                 matchInterestDescription.text = "나만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
                             } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
-                                matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                                matchInterestDescription.text = "${cardInfo.member.memberNickname}님만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
                             }
                             // 리싸이클러뷰 스크롤 이동
                             interestTableRecyclerItem.smoothScrollToPosition(interestPositionFinder(combinedList, interestDescription.text.toString()))
@@ -367,15 +373,15 @@ class CardAdapter(
                             AutoTransition()
                         )
                         binding.hiddenView.visibility = View.GONE
-
-
                         characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
+                        detailLine.setBackgroundColor(context.getColor(R.color.mediumGray))
                     } else{
                         TransitionManager.beginDelayedTransition(binding.characterViewGroup,
-                            AutoTransition())
-
+                            AutoTransition()
+                        )
                         binding.hiddenView.visibility = View.VISIBLE
                         characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
+                        detailLine.setBackgroundColor(context.getColor(R.color.transparent_orange))
                     }
                 }
 

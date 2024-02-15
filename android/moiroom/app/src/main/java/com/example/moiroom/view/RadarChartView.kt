@@ -41,7 +41,7 @@ class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, at
     // 픽셀 단위의 텍스트 크기를 sp 단위의 텍스트 크기로 동적 설정
     private val scaledDensity: Float = resources.displayMetrics.scaledDensity
     private val dataGuideTextSizeInSp: Float = 14f // sp 단위의 텍스트 크기 지정
-    private val labelTextSizeInSp: Float = 18f
+    private val labelTextSizeInSp: Float = 16f
 
     val myTypeface = context?.assets?.let { Typeface.createFromAsset(it, "pretendard_semibold.ttf") }
 
@@ -119,7 +119,7 @@ class RadarChartView(context: Context?, attrs: AttributeSet?) : View(context, at
         // 3. 각 꼭지점 부근에 각 특성 문자열 표시하기
 
         // dp 단위로 마진 설정
-        val marginInDp = 384f
+        val marginInDp = 368f
         val marginInPixel = (marginInDp * scale).toInt() // dp를 픽셀로 변환
 
         textPaint.color = Color.BLACK
