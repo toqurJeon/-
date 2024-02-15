@@ -91,7 +91,7 @@ data class UserResponse(
     ) : Parcelable {
         @Parcelize
         data class Member(
-            val memberId: Int,
+            val memberId: Long,
             val memberProfileImageUrl: String,
             val memberNickname: String,
             val memberGender: String,
