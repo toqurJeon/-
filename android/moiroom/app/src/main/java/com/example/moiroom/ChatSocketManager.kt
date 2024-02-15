@@ -1,12 +1,14 @@
 package com.example.moiroom
 
 import android.util.Log
+import io.reactivex.disposables.Disposable
 import okhttp3.OkHttpClient
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import okhttp3.WebSocket
 import okhttp3.Request
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import java.util.concurrent.Flow
 
 //class ChatSocketManager(private val activity: ChatActivity) {
 //    private lateinit var stompClient: StompClient
@@ -59,6 +61,9 @@ import ua.naiksoftware.stomp.dto.LifecycleEvent
 class ChatSocketManager(private val activity: ChatActivity) {
     private lateinit var stompClient: StompClient
 
+    var disposable: Disposable? = null
+
+
     fun connect(chatRoomId: Long) {
         val socketUrl = "wss://moiroom.n-e.kr/ws"
         val client = OkHttpClient()
@@ -79,15 +84,23 @@ class ChatSocketManager(private val activity: ChatActivity) {
         stompClient.connect()
     }
 
-    fun subscribe(chatRoomId: Long) {
-        Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId") // 로그 출력 코드 추가
-        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
-        }, { throwable ->
-            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-        })
-    }
+//    fun subscribe(chatRoomId: Long) {
+//        Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId") // 로그 출력 코드 추가
+//        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
+//            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
+//        }, { throwable ->
+//            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
+//        })
+//    }
 
+//    fun subscribe(chatRoomId: Long) {
+//            subscription = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
+//                Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
+//            }, { throwable ->
+//                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
+//            })
+//
+//    }
     fun send(chatRoomId: String, message: String) {
         stompClient.send("/room/$chatRoomId/send", message).subscribe({}, { throwable ->
             Log.e("ChatSocketManager", "Error on send", throwable)
@@ -96,6 +109,18 @@ class ChatSocketManager(private val activity: ChatActivity) {
 
     fun disconnect() {
         stompClient.disconnect()
+    }
+
+    fun subscribe(chatRoomId: Long) {
+        disposable = stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
+            Log.d("MYMYTAG", "Received: ${topicMessage.payload}")
+        }, { throwable ->
+            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
+        })
+    }
+
+    fun unsubscribe() {
+        disposable?.dispose()
     }
 }
 

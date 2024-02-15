@@ -47,6 +47,10 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
+        val chatSocketManager = ChatSocketManager(this)
+        chatSocketManager.connect(chatRoomId)
+
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -56,9 +60,6 @@ class ChatActivity : AppCompatActivity() {
         Log.d("MYTAG", "receivedData: $memberId")
         Log.d("MYTAG", "채팅Data: $chatRoomId")
 
-        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
-        val chatSocketManager = ChatSocketManager(this)
-        chatSocketManager.connect(chatRoomId)
 //        chatSocketManager.subscribe(chatRoomId)
 
 //        // chatRoomId 적용
