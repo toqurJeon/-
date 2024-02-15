@@ -389,10 +389,18 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/fixed_layout">
 
+                        <!--ImageView
+                            android:id="@+id/character_data_description_image"
+                            android:layout_width="260dp"
+                            android:layout_height="100dp"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@color/BGgray"/-->
+
                         <TextView
                             android:id="@+id/character_data_description"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
                             android:paddingHorizontal="16dp"
                             android:lineSpacingExtra="4dp"
                             android:textSize="16sp"
@@ -439,19 +447,53 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content">
 
-                                <ImageView
+                                <LinearLayout
                                     android:id="@+id/character_location"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:tint="@color/darkorange"
-                                    android:src="@drawable/character_member_pin"/>
+                                    android:orientation="vertical">
 
-                                <ImageView
+                                    <TextView
+                                        android:id="@+id/character_location_roommate"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:fontFamily="@font/pretendard_semibold"
+                                        android:textSize="12sp"
+                                        android:text="나"/>
+
+                                    <ImageView
+                                        android:id="@+id/character_location_roommate_image"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        app:tint="@color/darkorange"
+                                        android:src="@drawable/character_member_pin"/>
+
+                                </LinearLayout>
+
+                                <LinearLayout
                                     android:id="@+id/character_location2"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    app:tint="@color/darkorange"
-                                    android:src="@drawable/character_person_pin"/>
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        android:fontFamily="@font/pretendard_semibold"
+                                        android:textSize="12sp"
+                                        android:text="나"/>
+
+                                    <ImageView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_horizontal"
+                                        app:tint="@color/darkorange"
+                                        android:src="@drawable/character_person_pin"/>
+
+                                </LinearLayout>
 
                             </FrameLayout>
 
@@ -553,7 +595,7 @@
                                 android:text="관심사 이름"/>
 
                             <TextView
-                                android:id="@+id/interest_table_roommate_percent"
+                                android:id="@+id/interest_table_roommate_caption"
                                 android:layout_width="72dp"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentEnd="true"

@@ -198,7 +198,7 @@ class CardAdapter(
                     characterIcon.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
                     characterDetailName.text = clickedData[0].type.value
                     characterDetailDescription.text = getCharacterDescription(clickedData[0].type)
-                    characterLocation.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
+                    characterLocationRoommateImage.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
                     pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData[0].type.value, context))
 
                     val description = getCharacterDetailDescription(context, clickedData[0].type.value)
@@ -210,6 +210,7 @@ class CardAdapter(
                     performAnimation(clickedData[0], clickedData[1], binding)
                 }
                 recyclerView.adapter = characterAdapter
+                characterLocationRoommate.text = cardInfo.member.memberNickname
 
                 // 성향 상세정보 다이얼로그 띄우기 위해서 Fragment에 데이터 전달
 //                characterDescriptionButton.setOnClickListener {
@@ -305,6 +306,8 @@ class CardAdapter(
                         )
                     )
                 }
+
+                interestTableRoommateCaption.text = cardInfo.member.memberNickname
 
                 val interestTableAdapter = InterestTableItemAdapter(context, combinedList) { combinedInterest ->
                     interestDescription.text = combinedInterest.interestName
