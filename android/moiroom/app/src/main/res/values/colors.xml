@@ -26,6 +26,7 @@
     <color name="gray_low_brightness">#888888</color>
     <color name="gray_medium_brightness">#C8C8C8</color>
     <color name="gray_high_brightness">#E1E1E1</color>
+    <color name="gray_more_high_brightness">#EBEBEB</color>
     <color name="gray_high_brightness_60">#99E1E1E1</color>
 
     <!-- 폰트 색상 -->
@@ -43,8 +44,8 @@
     <color name="bg_generous">#E8E0FB</color>
 
     <color name="socialable">#73DA60</color>
-    <color name="positivity">#DCC500</color>
-    <color name="activity">#EC1414</color>
+    <color name="positivity">#FFBF1E</color>
+    <color name="activity">#F8371E</color>
     <color name="communion">#EC35E9</color>
     <color name="altruism">#E65E14</color>
     <color name="empathy">#E32772</color>
@@ -53,11 +54,24 @@
 
     <!--채도가 낮은 색상들-->
     <color name="pastelOrange">#FFE8CF</color>
-    <color name="pastelBlue">#CFECFF</color>
-    <color name="pastelYellow">#FFF7B0</color>
+    <color name="pastelBlue">#CFE1FF</color>
+    <color name="pastelYellow">#FFE9B0</color>
     <color name="pastelPurple">#EFD6FF</color>
+
     <color name="pastelGreen">#E1FFD6</color>
     <color name="pastelPink">#FFD6F1</color>
+    <color name="pastelSkyBlue">#B0EFFF</color>
+    <color name="pastelAquaGreen">#D6FFEF</color>
+
+    <color name="pastelOrange2">#FFDDCF</color>
+    <color name="pastelBlue2">#CFD5FF</color>
+    <color name="pastelYellow2">#F1FFB0</color>
+    <color name="pastelPurple2">#F4D6FF</color>
+
+    <color name="pastelGreen2">#D6FFDA</color>
+    <color name="pastelPink2">#FFD6E9</color>
+    <color name="pastelSkyBlue2">#B0DDFF</color>
+    <color name="pastelRed">#FFD6D6</color>
 
     <!--SleepChart 색상-->
     <color name="sleepIndigo">#5C60A7</color>

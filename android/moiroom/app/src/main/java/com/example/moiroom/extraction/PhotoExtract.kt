@@ -29,12 +29,13 @@ class PhotoExtract: AppCompatActivity() {
         setContentView(binding.root)
         // 갤러리에서 모든 사진 가져오기
         val photos = getAllPhotos(this)
-        postFuel(photos)
+        binding.textview.text = photos
+//        postFuel(photos)
     }
-    fun photoExtract() {
-        val photos = getAllPhotos(this)
-        return postFuel(photos)
-    }
+//    fun photoExtract() {
+//        val photos = getAllPhotos(this)
+//        return postFuel(photos)
+//    }
 
     fun getAllPhotos(context: Context): String {
         val projection = arrayOf(
@@ -59,6 +60,7 @@ class PhotoExtract: AppCompatActivity() {
             null,
             null
         )
+        Log.d("커서", "$cursor")
         cursor?.use {
             var number = 1
             val columnIndexData = it.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
@@ -82,14 +84,16 @@ class PhotoExtract: AppCompatActivity() {
 //                    it.getString(it.getColumnIndexOrThrow(MediaStore.Images.Media.LATITUDE))
 
                 val a = readMetadata(photoPath)
+//                Log.d("사진", "$photoPath")
+//                val a = photoPath
                 if (a != "{\"latitude\": null, \"longitude\": null}, "
-//                    && a != "{\"latitude\": 0.0, \"longitude\": 0.0}, "
+                    && a != "{\"latitude\": 0.0, \"longitude\": 0.0}, "
                     ) {
-//                    number += 1
+                    number += 1
                     stringBuilder.append(a)
                 }
-                number += 1
-                if (number > 3 ) {
+//                number += 1
+                if (number > 1000 ) {
                     break
                 }
 
@@ -164,5 +168,7 @@ class PhotoExtract: AppCompatActivity() {
             }
         }
     }
+//////////////////////////////////
+
 }
 
