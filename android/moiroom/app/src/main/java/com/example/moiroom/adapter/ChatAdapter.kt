@@ -200,8 +200,10 @@ class ChatAdapter(
     }
 
     fun addData(chat: Chat) {
+        Log.d("chat","$chat")
         dataList.add(chat)
         notifyItemInserted(dataList.size - 1)
+        notifyDataSetChanged()
     }
 
     // Instant를 포맷된 String으로 바꾸기

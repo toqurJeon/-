@@ -24,7 +24,11 @@ import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.getUserInfo
 import com.google.gson.Gson
 import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.WebSocket
 import java.time.Instant
@@ -44,6 +48,7 @@ class ChatActivity : AppCompatActivity() {
     private lateinit var chatSocketManager: ChatSocketManager
     private lateinit var stompClient: StompClient
 
+
     private val apiService: ApiService by lazy {
         NetworkModule.provideRetrofit(this)
     }
@@ -55,10 +60,14 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-//        if (cachedUserInfo == null) {
-//            getUserInfo(context)
-//            cachedUserInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
-//        }
+        val sharedPref = getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+        val memberNickname = sharedPref.getString("memberNickname", "defaultNickname") ?: "defaultNickname"
+        val memberProfileImage = sharedPref.getString("memberProfileImage", "defaultProfileImage") ?: "defaultProfileImage"
+        val anothermemberId = sharedPref.getLong("memberId", 0L)
+
+        Log.d("Chatting", "2 : $memberNickname")
+        Log.d("Chatting", "2 : $memberProfileImage")
+        Log.d("Chatting", "2 : $anothermemberId")
 
         val myMemberId = (cachedUserInfo?.memberId ?: -1).toLong()
 
@@ -66,14 +75,22 @@ class ChatActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         // 채팅방 리스트 (ChattingFragment)로부터 전달된 chatRoomId 받기
-        chatRoomId = intent.getLongExtra("chatRoomId", -1)
-        memberId = intent.getLongExtra("memberId", -1)
+        chatRoomId = intent.getLongExtra("chatRoomId", 0)
+        memberId = intent.getLongExtra("memberId", 0)
         Log.d("MYTAG", "receivedData: $memberId")
         Log.d("MYTAG", "채팅Data: $chatRoomId")
 
+//        adapter = ChatAdapter(data, this@ChatActivity)
+//        recyclerView.adapter = adapter
+
         // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
         val chatSocketManager = ChatSocketManager(this)
-        chatSocketManager.connect(chatRoomId)
+
+//        // connect 메서드로 stompClient 초기화
+//        chatSocketManager.connect(chatRoomId, memberNickname!!, memberProfileImage!!, memberId)
+
+//        chatSocketManager.setAdapterAndRecyclerView(adapter, recyclerView)
+//        chatSocketManager.connect(chatRoomId)
 
 //        chatSocketManager.subscribe(chatRoomId)
 
@@ -99,7 +116,7 @@ class ChatActivity : AppCompatActivity() {
         lifecycleScope.launch {
             try {
                 lastPageNumber = getLastPageNumber()
-                val data = getListOfChatData(lastPageNumber ?: 1).toMutableList()
+                var data = getListOfChatData(lastPageNumber ?: 1).toMutableList()
 
                 // 화면이 충분히 채워지지 않았다면 이전 페이지의 채팅 데이터를 추가로 불러옵니다.
                 while (data.size < 13 && lastPageNumber!! > 1) {
@@ -110,6 +127,9 @@ class ChatActivity : AppCompatActivity() {
 
                 adapter = ChatAdapter(data, this@ChatActivity)
                 recyclerView.adapter = adapter
+
+                chatSocketManager.setAdapterAndRecyclerView(adapter, recyclerView)
+                chatSocketManager.connect(chatRoomId, memberNickname,memberProfileImage,anothermemberId)
 
                 recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
                     override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
@@ -170,6 +190,7 @@ class ChatActivity : AppCompatActivity() {
                 // WebSocket 통신을 통해 메시지 전송
                 val destination = "$chatRoomId"
                 chatSocketManager.send(destination, json)
+
             }
         }
 
