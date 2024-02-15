@@ -152,7 +152,7 @@ class LoadingActivity : AppCompatActivity() {
         stringBuilder.append("\", ")
         stringBuilder.append(finalInsta)
         stringBuilder.append(", ")
-        stringBuilder.append(" \"youtube\": { \"accessToken\": \"${YoutubeExtract.youtubeToken}\"} ")
+        stringBuilder.append(" \"youtube\": ${YoutubeExtract.youtubeToken} ")
         stringBuilder.append(", ")
         stringBuilder.append("\"apps\": $apps }")
 //        stringBuilder.append(", ")
