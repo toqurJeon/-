@@ -17,6 +17,7 @@ import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -44,6 +45,7 @@ public class ChatServiceImpl implements ChatService {
 
 
     @Override
+    @Transactional
     public void addChatMessage(ChatMessageReqDTO request, Long chatRoomId) {
         log.info("addChatMessage 진입");
         String message = request.getMessage();
