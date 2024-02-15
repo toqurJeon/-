@@ -43,15 +43,18 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	@Override
 	public void addCharacteristic(HttpServletRequest request, CharacteristicAndInterestInfo.RequestResponse infoAddModifyReq) {
 		Member member = kakaoService.getMemberByHttpServletRequest(request);
+		System.out.println("특성 및 관심사 데이터 추가 시작");
 		if (member.getCharacteristicId() == null) { //특성 및 관심사 첫 데이터 입력 (회원가입 후 첫 매칭 시작)
 			Characteristic characteristic = characteristicRepository.save(infoAddModifyReq.getCharacteristic().toEntity()); //특성 데이터 추가
 			member.modifyCharacteristicId(characteristic.getCharacteristicsId()); //추가한 특성 아이디 회원 테이블의 특성 아이디 컬럼에 추가
+			System.out.println("첫 특성 데이터 추가 끝");
 		}
 		if (member.getCharacteristicId() != null) { //특성 및 관심사 데이터 수정 (기존 특성 데이터 존재)
 			Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC_ID)); //기존의 특성 데이터 찾기
 			characteristic.modifyCharacteristicInfo(infoAddModifyReq.getCharacteristic()); //특성 데이터 수정
 			memberInterestRepository.deleteByMember(member); //기존의 관심사 데이터 전부 삭제
+			System.out.println("두 번재 이후 특성 데이터 추가 끝");
 		}
 		//관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
 		if (infoAddModifyReq.getInterests() == null) return;
@@ -60,6 +63,7 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_INTEREST_NAME));
 			memberInterestRepository.save(interestAddReq.toEntity(member, interest));
 		}
+		System.out.println("특성 및 관심사 데이터 추가 끝");
 	}
 
 	/**
