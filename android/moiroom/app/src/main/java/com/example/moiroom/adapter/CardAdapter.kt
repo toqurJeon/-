@@ -9,6 +9,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.Color
+import android.os.Handler
+import android.os.Looper
+import android.text.Editable
+import android.text.TextWatcher
+import android.transition.AutoTransition
+import android.transition.TransitionManager
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -24,8 +30,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.ChatActivity
+import com.example.moiroom.NowMatchingAfterFragment
 import com.example.moiroom.R
 import com.example.moiroom.data.CharacteristicType
+import com.example.moiroom.data.CombinedInterest
+import com.example.moiroom.data.Interest
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.Member
@@ -38,6 +47,7 @@ import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterIcon
 import com.example.moiroom.utils.getColorCharacter
+import com.example.moiroom.utils.getInterestName
 import com.example.moiroom.view.RadarChartView
 import com.example.moiroom.view.RectangleChartView
 import com.github.mikephil.charting.utils.Utils.convertDpToPixel
@@ -210,14 +220,14 @@ class CardAdapter(
 //                squareChart2.setData(myInfo.interests)
 
                 // 상대방 관심사 목록
-                binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
-                val interestAdapter = InterestAdapter(context, cardInfo.member.interests)
-                binding.interestRecyclerView.adapter = interestAdapter
+//                binding.interestRecyclerView.layoutManager = LinearLayoutManager(context)
+//                val interestAdapter = InterestAdapter(context, cardInfo.member.interests)
+//                binding.interestRecyclerView.adapter = interestAdapter
 
                 // 내 관심사 목록
-                binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
-                val interestAdapter2 = InterestAdapter(context, myInfo.interests)
-                binding.interestRecyclerView2.adapter = interestAdapter2
+//                binding.interestRecyclerView2.layoutManager = LinearLayoutManager(context)
+//                val interestAdapter2 = InterestAdapter(context, myInfo.interests)
+//                binding.interestRecyclerView2.adapter = interestAdapter2
 
 //                // 직사각형 차트
 //                val rectangleChartView: RectangleChartView = binding.rectangleChartView
@@ -225,17 +235,20 @@ class CardAdapter(
 
                 // 리싸이클러
                 binding.recycler.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                val interestChartAdapter = InterestChartAdapter(context, cardInfo.member.interests)
+
+                val interestChartAdapter = InterestChartAdapter(context, cardInfo.member.interests) { interest ->
+                    interestDescription.text = interest.interestName
+                }
 //                interestChartAdapter.setTotalWidth(binding.recycler.layoutParams.width)
 //                binding.recycler.adapter = interestChartAdapter
 
                 binding.recycler.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        // RecyclerView의 너비가 측정되었을 때 호출
                         val width = binding.recycler.width
                         interestChartAdapter.setTotalWidth(width)
 
-                        // 레이아웃 리스너를 제거합니다.
+                        // 레이아웃 리스너 제거
                         binding.recycler.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                         binding.recycler.adapter = interestChartAdapter
@@ -244,20 +257,123 @@ class CardAdapter(
 
                 // 리싸이클러2
                 binding.recycler2.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
-                val interestChartAdapter2 = InterestChartAdapter(context, myInfo.interests)
+                val interestChartAdapter2 = InterestChartAdapter(context, myInfo.interests) { interest ->
+                    interestDescription.text = interest.interestName
+                }
 
                 binding.recycler2.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
                     override fun onGlobalLayout() {
-                        // RecyclerView의 너비가 측정되었을 때 호출됩니다.
+                        // RecyclerView의 너비가 측정되었을 때 호출
                         val width = binding.recycler2.width
                         interestChartAdapter2.setTotalWidth(width)
 
-                        // 레이아웃 리스너를 제거합니다.
+                        // 레이아웃 리스너 제거
                         binding.recycler2.viewTreeObserver.removeOnGlobalLayoutListener(this)
 
                         binding.recycler2.adapter = interestChartAdapter2
                     }
                 })
+
+                // Interest 데이터 합치기
+                val combinedList = mutableListOf<CombinedInterest>()
+
+                cardInfo.member.interests.forEach { roommateInterest ->
+                    val myInterest = myInfo.interests.find { it.interestName == roommateInterest.interestName }
+                    combinedList.add(
+                        CombinedInterest(
+                            roommateInterest.interestName,
+                            roommateInterest.interestPercent,
+                            myInterest?.interestPercent
+                        )
+                    )
+                }
+
+                myInfo.interests.filter { myInterest ->
+                    cardInfo.member.interests.none { it.interestName == myInterest.interestName }
+                }.forEach { combinedInterest ->
+                    combinedList.add(
+                        CombinedInterest(
+                            combinedInterest.interestName,
+                            null,
+                            combinedInterest.interestPercent
+                        )
+                    )
+                }
+
+                val interestTableAdapter = InterestTableItemAdapter(context, combinedList) { combinedInterest ->
+                    interestDescription.text = combinedInterest.interestName
+                }
+                interestTableRecyclerItem.layoutManager = LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false)
+                interestTableRecyclerItem.adapter = interestTableAdapter
+
+                interestTableAdapter.selectFirstItem()
+
+                var selectedCombinedInterest = interestTableAdapter.getSelectedItem()?.interestName
+                if (selectedCombinedInterest != null) {
+                    interestDescription.text = selectedCombinedInterest
+                    interestChartAdapter.selectInterestByName(selectedCombinedInterest)
+                    interestChartAdapter2.selectInterestByName(selectedCombinedInterest)
+                }
+                var selectedRoommateInterest = interestChartAdapter.getSelectedItem()?.interestName
+                if (selectedRoommateInterest != null) {
+                    interestDescription.text = selectedRoommateInterest
+                    interestChartAdapter.selectInterestByName(selectedRoommateInterest)
+                    interestChartAdapter2.selectInterestByName(selectedRoommateInterest)
+                }
+                var selectedMyInterest = interestChartAdapter2.getSelectedItem()?.interestName
+                if (selectedMyInterest != null) {
+                    interestDescription.text = selectedMyInterest
+                    interestChartAdapter.selectInterestByName(selectedMyInterest)
+                    interestChartAdapter2.selectInterestByName(selectedMyInterest)
+                }
+
+
+                interestDescription.addTextChangedListener(object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        // 선택한 관심사로 레이아웃 변경
+                        interestTableAdapter.selectInterestByName(interestDescription.text.toString())
+                        interestChartAdapter.selectInterestByName(interestDescription.text.toString())
+                        interestChartAdapter2.selectInterestByName(interestDescription.text.toString())
+
+                        if (interestDescription.text.toString() == combinedList[0].interestName) {
+                            matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(interestDescription.text.toString())}! ${getRandomHappyEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "both") {
+                            matchInterestDescription.text = "둘 다 ${getInterestName(interestDescription.text.toString())} 좋아해요! ${getRandomHappyEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "me only") {
+                            matchInterestDescription.text = "나만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                        } else if (interestFinder(combinedList, interestDescription.text.toString()) == "roommate only") {
+                            matchInterestDescription.text = "${cardInfo.member.memberNickname}만 ${getInterestName(interestDescription.text.toString())} 좋아해요 ${getRandomSadEmoji()}"
+                        }
+                        // 리싸이클러뷰 스크롤 이동
+                        interestTableRecyclerItem.smoothScrollToPosition(interestPositionFinder(combinedList, interestDescription.text.toString()))
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                    }
+                })
+
+                matchInterestDescription.text = "가장 잘 맞는 관심사는 ${getInterestName(combinedList[0].interestName)}! ${getRandomHappyEmoji()}"
+
+                fixedLayout.setOnClickListener {
+                    if (binding.hiddenView.visibility == View.VISIBLE){
+                        TransitionManager.beginDelayedTransition(binding.cardview,
+                            AutoTransition()
+                        )
+                        binding.hiddenView.visibility = View.GONE
+
+
+                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
+                    } else{
+                        TransitionManager.beginDelayedTransition(binding.cardview,
+                            AutoTransition())
+
+                        binding.hiddenView.visibility = View.VISIBLE
+                        //binding.historyExpandIv.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
+                    }
+                }
 
                 // 수면 차트
 //                val sleepChart = binding.sleepChartView
@@ -282,8 +398,10 @@ class CardAdapter(
                     val backgroundColor = Color.argb(200, 255, 255, 255)
 
                     // 변경할 배경색을 설정합니다.
-                    appBar.setBackgroundColor(backgroundColor)
+                    // appBar.setBackgroundColor(backgroundColor)
+                    appBar.background.alpha = (255 * 0.3).toInt()
                 })
+                appBar.background.alpha = (255 * 0.3).toInt()
 
                 chatbuttonContainer.setOnClickListener {
                     Log.d("memberId", "$cardInfo")
@@ -447,5 +565,56 @@ class CardAdapter(
     private fun convertDpToPixel(dp: Int): Int {
         val density = Resources.getSystem().displayMetrics.density
         return (dp * density).toInt()
+    }
+
+    fun interestFinder(combinedList: List<CombinedInterest>, searchName: String): String {
+        val interest = combinedList.find { it.interestName == searchName }
+        return when {
+            interest != null -> {
+                when {
+                    interest.roommateInterestPercent != null && interest.myInterestPercent != null -> "both"
+                    interest.roommateInterestPercent == null && interest.myInterestPercent != null -> "me only"
+                    interest.roommateInterestPercent != null && interest.myInterestPercent == null -> "roommate only"
+                    else -> "none"
+                }
+            }
+            else -> "none"
+        }
+    }
+
+    fun interestPositionFinder(combinedList: List<CombinedInterest>, searchName: String): Int {
+        val interest = combinedList.indexOfFirst { it.interestName == searchName }
+        return interest
+    }
+
+    fun getRandomSadEmoji(): String {
+        val unicodeEmojis = listOf(
+            "\uD83E\uDD72", // U+1F972
+            "\uD83D\uDE35", // U+1F635
+            "\uD83D\uDE30", // U+1F630
+            "\uD83D\uDE2D", // U+1F62D
+            "\uD83D\uDE25", // U+1F625
+            "\uD83D\uDE1E", // U+1F61E
+            "\uD83E\uDD7A"
+        )
+
+        return unicodeEmojis.random()
+    }
+
+    fun getRandomHappyEmoji(): String {
+        val unicodeEmojis = listOf(
+            "\uD83D\uDE01", // U+1F601
+            "\uD83D\uDE04", // U+1F604
+            "\uD83D\uDE07", // U+1F607
+            "\uD83D\uDE06", // U+1F606
+            "\uD83D\uDE09", // U+1F609
+            "\uD83D\uDE0A", // U+1F60A
+            "\uD83D\uDE0B", // U+1F60B
+            "\uD83D\uDE0C", // U+1F60C
+            "\uD83D\uDE0D", // U+1F60D
+            "\uD83D\uDE1D"  // U+1F61D
+        )
+
+        return unicodeEmojis.random()
     }
 }

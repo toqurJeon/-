@@ -6,22 +6,22 @@ import androidx.core.content.ContextCompat
 import com.example.moiroom.R
 
 private val interestColorMap = mapOf(
-    "Film & Animation" to R.color.pastelBlue,
-    "Autos & Vehicles" to R.color.pastelGreen,
+    "Film & Animation" to R.color.pastelGreen2,
+    "Autos & Vehicles" to R.color.pastelRed,
     "Music" to R.color.pastelYellow,
-    "Pets & Animals" to R.color.pastelPurple,
-    "Sports" to R.color.pastelOrange,
-    "Travel & Events" to R.color.pastelPink,
-    "Gaming" to R.color.pastelPink,
-    "Videoblogging" to R.color.pastelPink,
-    "People & Blogs" to R.color.pastelPink,
-    "Comedy" to R.color.pastelPink,
-    "Entertainment" to R.color.pastelPink,
-    "News & Politics" to R.color.pastelPink,
+    "Pets & Animals" to R.color.pastelBlue2,
+    "Sports" to R.color.pastelBlue,
+    "Travel & Events" to R.color.pastelPurple2,
+    "Gaming" to R.color.pastelAquaGreen,
+    "Videoblogging" to R.color.pastelSkyBlue,
+    "People & Blogs" to R.color.pastelOrange,
+    "Comedy" to R.color.pastelYellow2,
+    "Entertainment" to R.color.pastelPink2,
+    "News & Politics" to R.color.pastelPurple,
     "Howto & Style" to R.color.pastelPink,
-    "Education" to R.color.pastelPink,
-    "Science & Technology" to R.color.pastelPink,
-    "Nonprofits & Activism" to R.color.pastelPink
+    "Education" to R.color.pastelSkyBlue2,
+    "Science & Technology" to R.color.pastelGreen,
+    "Nonprofits & Activism" to R.color.pastelOrange2
 )
 
 fun getColorInterest(interestName: String,  context: Context): Int {

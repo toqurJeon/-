@@ -120,19 +120,19 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "운동",
+                                        "Sports",
                                         48
                                     ),
                                     Interest(
-                                        "음악",
+                                        "Entertainment",
                                         36
                                     ),
                                     Interest(
-                                        "요리",
+                                        "Science & Technology",
                                         11
                                     ),
                                     Interest(
-                                        "게임",
+                                        "Gaming",
                                         5
                                     )
                                 )
@@ -164,15 +164,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Videoblogging",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Travel & Events",
                                         15
                                     )
                                 )
@@ -484,15 +484,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Nonprofits & Activism",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Travel & Events",
                                         15
                                     )
                                 )
@@ -565,19 +565,19 @@ fun getUserInfo(context: Context) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "운동",
+                                        "Sports",
                                         42
                                     ),
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         28
                                     ),
                                     Interest(
-                                        "게임",
+                                        "Entertainment",
                                         19
                                     ),
                                     Interest(
-                                        "요리",
+                                        "Film & Animation",
                                         11
                                     )
                                 )
@@ -623,19 +623,19 @@ fun getUserInfo(context: Context) {
                             ),
                             listOf(
                                 Interest(
-                                    "운동",
+                                    "Sports",
                                     42
                                 ),
                                 Interest(
-                                    "음악",
+                                    "Music",
                                     28
                                 ),
                                 Interest(
-                                    "게임",
+                                    "Entertainment",
                                     19
                                 ),
                                 Interest(
-                                    "요리",
+                                    "Film & Animation",
                                     11
                                 )
                             )

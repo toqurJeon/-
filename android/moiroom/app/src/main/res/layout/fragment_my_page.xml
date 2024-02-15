@@ -87,14 +87,14 @@
                                 android:layout_marginHorizontal="4dp"
                                 android:text="gender" />
 
-                            <TextView
+                            <!-- TextView
                                 android:id="@+id/memberBirthYear"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:fontFamily="@font/pretendard_regular"
                                 android:textSize="16dp"
                                 android:layout_marginHorizontal="4dp"
-                                android:text="birthYear" />
+                                android:text="birthYear" /-->
 
                         </LinearLayout>
 
