@@ -38,7 +38,7 @@ android {
         // 어플의 빌드 버전, 업데이트를 관리하고 구분할 때 사용
         versionCode = 2
         // 사용자에게 표시되는 버전 이름
-        versionName = "0.0"
+        versionName = "1.0"
         // 테스트를 실행할 때 사용할 도구(instrumentation runner) 설정
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         // 멀티덱스 활성화

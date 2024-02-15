@@ -213,10 +213,10 @@ class NowMatchingActivity : AppCompatActivity() {
         // 미디어 접근 권한 허용 여부
         if (ContextCompat.checkSelfPermission(
                 this,
-                Manifest.permission.READ_EXTERNAL_STORAGE
+                Manifest.permission.READ_MEDIA_IMAGES
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            permissionsToRequest.add(Manifest.permission.READ_EXTERNAL_STORAGE)
+            permissionsToRequest.add(Manifest.permission.READ_MEDIA_IMAGES)
         }
 
         // 위치 권한 허용 여부
@@ -284,7 +284,7 @@ class NowMatchingActivity : AppCompatActivity() {
 //                        Log.d("오스 바꾸기", "전화")
 //
 //                    }
-//                    if (permissions[i] == "android.permission.READ_EXTERNAL_STORAGE") {
+//                    if (permissions[i] == "android.permission.READ_MEDIA_IMAGES") {
 //                        Log.d("오스 바꾸기", "사진")
 //                        mediaAuth = true
 //                    }
