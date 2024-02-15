@@ -91,6 +91,7 @@ public class MemberController {
      */
     @PostMapping("/characteristic")
     public ApiResponse<?> addCharacteristic(HttpServletRequest request, @RequestBody CharacteristicAndInterestInfo.RequestResponse infoAddModifyReq) {
+        System.out.println("특성 컨트롤러 내 진입");
         characteristicService.addCharacteristic(request, infoAddModifyReq);
 
         return ApiResponse.success(ADD_ALL_CHARACTER_INFO);
