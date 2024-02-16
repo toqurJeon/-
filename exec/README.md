@@ -50,7 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-[![모이룸 화면 영상](https://github.com/hel-gather/hel-gather-server/assets/75198221/77c444de-9095-4360-9bc5-4a57eff27b82)](https://youtu.be/3-LKObPYyzA)
+[![모이룸 화면 영상](image/mainpage.jpeg)](https://youtu.be/3-LKObPYyzA)
 
 ## 1. 입장 화면 및 동의 화면
 
