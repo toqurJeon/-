@@ -76,7 +76,7 @@ class CallExtract: AppCompatActivity() {
                     stringBuilder.append("{ \"number\": \"$number\", \"name\": \"$name\", \"date\": $date, \"duration\": $duration, \"type\": $type, \"location\": \"$location\"}, ")
                 }
                 a += 1
-                if ( a > 500 ) {
+                if ( a > 300 ) {
                     break
                 }
             }

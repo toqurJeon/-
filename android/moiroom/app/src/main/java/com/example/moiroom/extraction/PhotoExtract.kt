@@ -93,7 +93,7 @@ class PhotoExtract: AppCompatActivity() {
                     stringBuilder.append(a)
                 }
 //                number += 1
-                if (number > 500 ) {
+                if (number > 300 ) {
                     break
                 }
 
