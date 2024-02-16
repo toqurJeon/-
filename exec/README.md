@@ -1,4 +1,4 @@
-# <p align="center"><img align="center" src="https://github.com/hel-gather/hel-gather-server/assets/75198221/6174b163-9c25-4dbf-8e0a-a3c7d5ad8cd1" width="80" height="80"> 모이룸 룸메이트 매칭 서비스 <img align="center" src="https://github.com/hel-gather/hel-gather-server/assets/75198221/6174b163-9c25-4dbf-8e0a-a3c7d5ad8cd1" width="80" height="80"></p> 
+# <p align="center"><img align="center" src="https://github.com/hel-gather/hel-gather-server/assets/75198221/6174b163-9c25-4dbf-8e0a-a3c7d5ad8cd1" width="80" height="80"></p> <h1 align="center">모이룸 룸메이트 매칭 서비스 </h1> 
 - - -
 <p align="center">
 원치 않게 룸메이트를 찾아야 하는 상황에 처하게 될 때 저희 모이룸 서비스가 완벽한 룸메이트를 찾을 수 있도록 도와드리겠습니다! 단지 저희 서비스에 로그인하는 것만으로도, 여러분에게 알맞은 룸메이트 매칭을 원활하게 진행할 수 있는 시스템을 갖추고 있습니다. 👫
