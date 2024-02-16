@@ -2,12 +2,17 @@ package com.ssafy.moiroomserver.member.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@DynamicInsert
+@DynamicUpdate
 @IdClass(MemberInterestId.class)
 @Table(name = "member_interest")
 public class MemberInterest {
@@ -24,4 +29,11 @@ public class MemberInterest {
 
     @Column(name = "percent", nullable = false)
     private int percent;
+
+    @Builder
+    public MemberInterest(Member member, Interest interest, int percent) {
+        this.member = member;
+        this.interest = interest;
+        this.percent = percent;
+    }
 }

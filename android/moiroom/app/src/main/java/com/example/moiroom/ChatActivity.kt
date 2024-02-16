@@ -1,7 +1,10 @@
 package com.example.moiroom
 
 
+import ApiService
+import ChatAdapter
 import android.app.Dialog
+import android.content.Context
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -9,35 +12,77 @@ import android.util.Log
 import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moiroom.adapter.ChatAdapter
 import com.example.moiroom.data.Chat
+import com.example.moiroom.data.ChatMessageReqDTO
+import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityChatBinding
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.example.moiroom.utils.getUserInfo
+import com.google.gson.Gson
+import io.reactivex.disposables.Disposable
+import kotlinx.coroutines.launch
+import okhttp3.OkHttpClient
+import okhttp3.WebSocket
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
+import ua.naiksoftware.stomp.Stomp
+import ua.naiksoftware.stomp.StompClient
 
 class ChatActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityChatBinding
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ChatAdapter
-    // chatRoomId의 초기값
-    private var chatRoomId: Int = -1
+    private var chatRoomId: Long = -1
+    private var memberId: Long = -1
+    private lateinit var chatSocketManager: ChatSocketManager
+    private lateinit var stompClient: StompClient
+
+    private val apiService: ApiService by lazy {
+        NetworkModule.provideRetrofit(this)
+    }
+
+    private var lastPageNumber: Int? = null
+
+    var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+//        if (cachedUserInfo == null) {
+//            getUserInfo(context)
+//            cachedUserInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+//        }
+
+        val myMemberId = (cachedUserInfo?.memberId ?: -1).toLong()
 
         binding = ActivityChatBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         // 채팅방 리스트 (ChattingFragment)로부터 전달된 chatRoomId 받기
-        chatRoomId = intent.getIntExtra("chatRoomId", -1)
+        chatRoomId = intent.getLongExtra("chatRoomId", -1)
+        memberId = intent.getLongExtra("memberId", -1)
+        Log.d("MYTAG", "receivedData: $memberId")
+        Log.d("MYTAG", "채팅Data: $chatRoomId")
 
-        // chatRoomId 적용
-        binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+        // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
+        val chatSocketManager = ChatSocketManager(this)
+        chatSocketManager.connect(chatRoomId)
+
+//        chatSocketManager.subscribe(chatRoomId)
+
+//        // chatRoomId 적용
+//        if (chatRoomId == -1) {
+//            binding.chatRoomName.text = "chatRoomName : $memberId"
+//        } else {
+//            binding.chatRoomName.text = "chatRoomName : $chatRoomId"
+//        }
 
         // 뒤로 가기 버튼
         binding.backwardButton.setOnClickListener {
@@ -51,27 +96,84 @@ class ChatActivity : AppCompatActivity() {
         layoutManager.stackFromEnd = true
         recyclerView.layoutManager = layoutManager
 
-        // 데이터를 가져오는 함수
-        val data = getListOfChatData().toMutableList()
-        adapter = ChatAdapter(data)
-        recyclerView.adapter = adapter
+        lifecycleScope.launch {
+            try {
+                lastPageNumber = getLastPageNumber()
+                val data = getListOfChatData(lastPageNumber ?: 1).toMutableList()
+
+                // 화면이 충분히 채워지지 않았다면 이전 페이지의 채팅 데이터를 추가로 불러옵니다.
+                while (data.size < 13 && lastPageNumber!! > 1) {
+                    lastPageNumber = lastPageNumber!! - 1
+                    val previousPageData = getListOfChatData(lastPageNumber!!)
+                    data.addAll(0, previousPageData)
+                }
+
+                adapter = ChatAdapter(data, this@ChatActivity)
+                recyclerView.adapter = adapter
+
+                recyclerView.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                    override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                        super.onScrollStateChanged(recyclerView, newState)
+
+                        // Check if the user has scrolled to the top of the list
+                        if (!recyclerView.canScrollVertically(-1) && lastPageNumber ?: 1 > 1) {
+                            // Load previous page
+                            lifecycleScope.launch {
+                                lastPageNumber = lastPageNumber!! - 1
+                                val previousPageData = getListOfChatData(lastPageNumber!!)
+                                data.addAll(0, previousPageData)
+                                adapter.notifyDataSetChanged()
+                            }
+                        }
+                    }
+                })
+
+            } catch (e: Exception) {
+                // 데이터를 가져오는 중 오류 발생
+                val data = mutableListOf<Chat>()
+                adapter = ChatAdapter(data, this@ChatActivity)
+                recyclerView.adapter = adapter
+            }
+        }
 
         binding.sendMsgBtn.setOnClickListener {
             val message = binding.sendMsg.text.toString().trim()
+            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+
             if (message.isNotEmpty()) {
-                val newChat = Chat(
-                    data.size + 1,
-                    1,
-                    1,
-                    message,
-                    Instant.now()
+                val chatMessageReqDTO = ChatMessageReqDTO(
+                    senderId = cachedUserInfo!!.memberId,
+                    senderName = cachedUserInfo!!.memberNickname,
+                    message = message,
+                    createdAt = currentDateTime
                 )
-                data.add(newChat)
-                adapter.updateData(data.toList())
+
+                val gson = Gson()
+                val json = gson.toJson(chatMessageReqDTO)
+
+                // (이전 코드 생략)
+
+                // 채팅 메시지 목록에 메시지 추가
+                val newChat = Chat(
+                    adapter.itemCount + 1,
+                    cachedUserInfo!!.memberId,
+                    chatRoomId,
+                    cachedUserInfo!!.memberNickname,
+                    "Your Profile Image",
+                    message,
+                    currentDateTime
+                )
+                adapter.addData(newChat)
                 binding.sendMsg.text.clear()
-                scrollToLastItem()
+                recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+                // WebSocket 통신을 통해 메시지 전송
+                val destination = "$chatRoomId"
+                chatSocketManager.send(destination, json)
             }
         }
+
+        Log.d("채팅기록","$chatRoomId")
 
         val btnShowModal = binding.exitBtn
         btnShowModal.setOnClickListener {
@@ -86,24 +188,20 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
-    private fun getListOfChatData(): List<Chat> {
-        return listOf(
-            Chat(1, 1, 1, "안녕하세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(2, 2, 1, "안녕하세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(3, 1, 1, "감사합니다", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(4, 1, 1, "모든것이", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(5, 2, 1, "나두", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(6, 2, 1, "감사합니다", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(7, 1, 1, "안녕히가세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(8, 2, 1, "잘가세요", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(9, 1, 1, "가지마", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(10, 2, 1, "띠용", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(11, 2, 1, "왜 가지마", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(12, 1, 1, "구냥", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(13, 2, 1, "음 말이 길어지면 어떻게 되는 지 테스트 중입니다. 엄청나게 말을 길게하는 사람이에요. 계속 말해 계속 끝까지 말을 합니다. 정말 많이 말을해요.", Instant.parse("2024-01-23T12:34:56Z")),
-            Chat(14, 1, 1, "ㅋㅋ", Instant.parse("2024-01-23T12:34:56Z"))
-        )
+    private suspend fun getListOfChatData(page: Int): List<Chat> {
+        val response = apiService.getChatMessages(chatRoomId, page)
+        if (response.isSuccessful && response.body() != null) {
+            return response.body()!!.data.content
+        } else {
+            return emptyList()
+        }
     }
+
+    private suspend fun getLastPageNumber(): Int {
+        val response = apiService.getChatMessages(chatRoomId, 1)
+        return response.body()?.data?.totalPages ?: 1
+    }
+
 
     private fun showExitDialog() {
         val dialog = Dialog(this)
@@ -114,23 +212,23 @@ class ChatActivity : AppCompatActivity() {
         val btnNo: Button = dialog.findViewById(R.id.btnNo)
 
         btnYes.setOnClickListener {
-            // 'Yes' 버튼이 클릭되었을 때의 동작
-            // 여기에 원하는 동작을 추가하세요.
             dialog.dismiss() // 다이얼로그 닫기
             onBackPressed()
         }
 
         btnNo.setOnClickListener {
-            // 'No' 버튼이 클릭되었을 때의 동작
-            // 여기에 원하는 동작을 추가하세요.
-            dialog.dismiss() // 다이얼로그 닫기
+            dialog.dismiss()
         }
 
         dialog.show()
     }
 
     override fun onBackPressed() {
-        // 뒤로가기
+        super.onBackPressed()
         finish()
     }
+
+
+
 }
+

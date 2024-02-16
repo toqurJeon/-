@@ -4,9 +4,21 @@
 package com.example.moiroom
 
 import android.app.Application
+import androidx.multidex.MultiDexApplication
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import com.kakao.sdk.common.KakaoSdk
+import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Converter
+import java.lang.reflect.Type
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.storage.ktx.storage
 
 // Application: 앱의 진입점에서 실행되는 컴포넌트
 class GlobalApplication : Application() {
@@ -14,6 +26,7 @@ class GlobalApplication : Application() {
     // Retrofit: HTTP 통신을 수행할 때 사용하는 인스턴스
     lateinit var retrofit: Retrofit
     lateinit var retrofit2: Retrofit
+    lateinit var retrofitInstagram: Retrofit
 
 
     // override: 부모 클래스에 정의된 매서드를 자식 클래스에서 동일한 시그니처(이름, 매개변수)로 다시 구현
@@ -23,7 +36,7 @@ class GlobalApplication : Application() {
         super.onCreate()
 
         // 발급받은 카카오키를 통해 카카오SDK 초기화
-        KakaoSdk.init(this, "1cbfb61d83c4ab599a7d1b1771485417")
+        KakaoSdk.init(this, "dafe1201ec34d9c314a0564155c291ba")
 
         // Retrofit 인스턴스 생성
         retrofit = Retrofit.Builder()
@@ -39,5 +52,30 @@ class GlobalApplication : Application() {
             .baseUrl("http://i10a308.p.ssafy.io:5000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
+
+        retrofitInstagram = Retrofit.Builder()
+            .baseUrl("https://api.instagram.com/oauth/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+
+        GlobalApplication.auth = Firebase.auth
+        GlobalApplication.db = FirebaseFirestore.getInstance()
+        GlobalApplication.storage = Firebase.storage
+    }
+
+    companion object {
+        lateinit var auth: FirebaseAuth
+        var email: String? = null
+        lateinit var db: FirebaseFirestore
+        lateinit var storage: FirebaseStorage
+        fun checkAuth(): Boolean {
+            var currentUser = auth.currentUser
+            return currentUser?.let {
+                email = currentUser.email
+                currentUser.isEmailVerified
+            } ?: let {
+                false
+            }
+        }
     }
 }

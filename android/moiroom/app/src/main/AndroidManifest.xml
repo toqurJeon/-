@@ -11,6 +11,24 @@
     <!-- 위치 정보 권한 허용 -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+<!--    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />-->
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION" />
+    <!-- 전화 기록 접근 권한 허용-->
+    <uses-permission android:name="android.permission.READ_CALL_LOG" />
+    <!-- 어플별 사용 기록 -->
+    <uses-permission android:name="android.permission.ACTION_USAGE_ACCESS_SETTINGS" />
+    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" />
+    <!-- sms 접근 권한 허용 -->
+    <uses-feature android:name="android.hardware.telephony" android:required="true"/>
+    <uses-permission android:name="android.permission.READ_SMS" />
+    <!-- 캘린터 접근 권한 허용 -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <!-- 네트워크 엑세스 권한 -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="com.google.android.gms.auth.api.signin.permission.SIGN_IN" />
+
 
     <!-- queries: 사용자의 기기에서 연결할 다른 앱 설정-->
     <queries>
@@ -36,22 +54,38 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:usesCleartextTraffic="true"
-        android:theme="@style/Theme.Moiroom">
+        android:theme="@style/Theme.Moiroom"
+        android:usesCleartextTraffic="true">
+        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.google.android.gms.signin.389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0"
+            android:value="389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0.apps.googleusercontent.com" />
+        <activity
+            android:name=".DetailchartActivity"
+            android:exported="true" />
+        <activity
+            android:name=".InfoupdateActivity"
+            android:exported="false" />
+        <activity
+            android:name=".AdsettingActivity"
+            android:exported="false" />
         <activity
             android:name=".ChatActivity"
+            android:theme="@style/ChatActivityTheme"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
+
         <activity
             android:name=".NowMatchingActivity"
-            android:exported="false" />
+            android:theme="@style/NowMatchingTheme"
+            android:exported="true" />
         <!--
        activity 태그: 화면에 나타날 액티비티들을 정의
        exported: 다른 앱에서 접근 허용 여부
        -->
         <activity
             android:name=".LoadingActivity"
-            android:exported="false" />
+            android:exported="true" />
 
         <activity
             android:name=".NaviActivity"
@@ -76,7 +110,49 @@
         <activity
             android:name=".extraction.AccessGallery"
             android:exported="true" />
+        <activity
+            android:name=".extraction.CallExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.SmsExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.PhotoExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.VideoExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.AppExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.CalendarExtract"
+            android:exported="true" />
+        <activity
+            android:name=".extraction.YoutubeExtract"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="moiroom.firebaseapp.com" />
+            </intent-filter>
+        </activity>
 
+        <activity
+            android:name=".extraction.InstagramExtract"
+            android:exported="true">
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--                <data-->
+<!--                    android:scheme="https"-->
+<!--                    android:host="example.com"-->
+<!--                    android:path="/instagramredirection"-->
+<!--                    />-->
+<!--            </intent-filter>-->
+        </activity>
         <activity
             android:name=".MainActivity"
             android:exported="true">
@@ -107,7 +183,7 @@
                 -->
                 <data
                     android:host="oauth"
-                    android:scheme="kakao1cbfb61d83c4ab599a7d1b1771485417" />
+                    android:scheme="kakaodafe1201ec34d9c314a0564155c291ba" />
             </intent-filter>
         </activity>
 
@@ -119,18 +195,38 @@
             <meta-data android:name="health_permissions"
                 android:resource="@array/health_permissions" />
         </activity>
-
+        <activity
+            android:name=".extraction.RedirectActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="example.com" />
+            </intent-filter>
+        </activity>
         <!--
         콘텐트 프로바이더 등록
         콘텐트 프로바이더는 exported를 false 추천
         -->
+<!--        <provider-->
+<!--            android:name=".extraction.MyContentProvider"-->
+<!--            android:authorities="com.example.moiroom_content_provider"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="false"-->
+<!--            android:grantUriPermissions="true" />-->
         <provider
-            android:name=".extraction.MyContentProvider"
-            android:authorities="com.example.moiroom_content_provider"
-            android:enabled="true"
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.example.moiroom.fileprovider"
             android:exported="false"
-            android:grantUriPermissions="true" />
-
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
+        <service android:name=".MyForegroundService" />
     </application>
 
 </manifest>

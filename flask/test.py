@@ -1,60 +1,73 @@
-from flask import Flask, redirect, url_for, session, request
-from flask_oauthlib.client import OAuth
+from bs4 import BeautifulSoup
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+import time
+import chromedriver_autoinstaller
+import nltk
 
-app = Flask(__name__)
-app.secret_key = 'your_secret_key'  # 반드시 안전한 랜덤한 키로 변경해야 합니다.
-
-oauth = OAuth(app)
-
-# Instagram API 설정
-instagram = oauth.remote_app(
-    'instagram',
-    consumer_key='wjswwkd@gmail.com',
-    consumer_secret='Lvp2016!',
-    request_token_params=None,
-    base_url='https://api.instagram.com/v1/',
-    request_token_url=None,
-    access_token_url='/oauth/access_token',
-    authorize_url='https://api.instagram.com/oauth/authorize/',
-)
+nltk.download('punkt')
+from textblob import TextBlob
 
 
-@app.route('/')
-def index():
-    return 'Welcome to Flask Instagram API Example'
+def crawl_playstore(package_name):
+    # ChromeDriver를 자동으로 설치합니다.
+    chromedriver_autoinstaller.install()
+
+    # Selenium을 이용하여 웹 페이지를 엽니다.
+    url = "https://play.google.com/store/apps/details?id=" + package_name
+    driver = webdriver.Chrome()
+    driver.get(url)
+
+    # 페이지가 로딩될 때까지 기다립니다.
+    driver.implicitly_wait(5)
+
+    # 페이지 소스를 가져와 BeautifulSoup으로 파싱합니다.
+    soup = BeautifulSoup(driver.page_source, 'lxml')
+
+    # 카테고리 정보를 찾습니다.
+    category_element = soup.select('span.VfPpkd-vQzf8d')
+    category = category_element[3].text if category_element else 'Not Found'
+
+    print(f"어플 카테고리: {category}")
+
+    # 브라우저를 닫습니다.
+    driver.quit()
 
 
-@app.route('/login')
-def login():
-    return instagram.authorize(callback=url_for('authorized', _external=True))
+def crawl_translator(caption):
+    # ChromeDriver를 자동으로 설치합니다.
+    chromedriver_autoinstaller.install()
 
+    # Selenium을 이용하여 웹 페이지를  엽니다.
+    url = "https://papago.naver.com/"
+    driver = webdriver.Chrome()
+    driver.get(url)
 
-@app.route('/logout')
-def logout():
-    session.pop('instagram_token', None)
-    return 'Logged out'
+    # 페이지가 로딩될 때까지 기다립니다.
+    driver.implicitly_wait(5)
 
+    source_textbox = driver.find_element(By.ID, "txtSource")
+    source_textbox.clear()
+    source_textbox.send_keys(caption)
 
-@app.route('/login/authorized')
-def authorized():
-    response = instagram.authorized_response()
+    # 번역 결과 기다림 (일부 서버 응답에 시간이 걸릴 수 있으므로 적절한 대기 시간을 설정)
+    time.sleep(2)
 
-    if response is None or response.get('access_token') is None:
-        return 'Access denied: reason={} error={}'.format(
-            request.args['error_reason'],
-            request.args['error_description']
-        )
+    # 번역된 텍스트 가져오기
+    target_textbox = driver.find_element(By.ID, "txtTarget")
+    translated_text = target_textbox.text
 
-    session['instagram_token'] = (response['access_token'], '')
-    user_info = instagram.get('users/self')
-    return 'Logged in as {}<br>Access Token: {}'.format(user_info.data['data']['username'],
-                                                        session['instagram_token'][0])
+    # 결과 출력
+    print(f"Source Text: {caption}")
+    print(f"Translated Text: {translated_text}")
 
+    # 브라우저 종료
+    driver.quit()
 
-@instagram.tokengetter
-def get_instagram_oauth_token():
-    return session.get('instagram_token')
+    blob = TextBlob(translated_text)
+    print(blob.sentiment.polarity, blob.sentiment.subjectivity, blob)
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # crawl_playstore('com.wooribank.smart.npib')
+    crawl_translator('술마심 기분좋음')

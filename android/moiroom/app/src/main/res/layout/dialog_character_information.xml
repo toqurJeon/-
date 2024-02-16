@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="300dp"
+    android:layout_height="450dp"
+    app:cardElevation="0dp"
+    app:cardCornerRadius="16dp">
+
+    <RelativeLayout
+        android:layout_width="300dp"
+        android:layout_height="450dp"
+        android:padding="24dp">
+
+        <TextView
+            android:id="@+id/character_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="성향 이름"
+            android:fontFamily="@font/pretendard_semibold"
+            android:textSize="20sp"/>
+
+        <TextView
+            android:id="@+id/character_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginVertical="12dp"
+            android:lineSpacingExtra="4dp"
+            android:text="성향 설명"
+            android:textSize="16sp" />
+
+        <Button
+            android:id="@+id/confirm_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="확인"
+            android:backgroundTint="@color/darkorange"
+            android:layout_marginHorizontal="8dp" />
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>
+

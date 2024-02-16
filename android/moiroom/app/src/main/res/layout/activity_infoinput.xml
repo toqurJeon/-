@@ -1,75 +1,202 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:gravity="center_horizontal"
-
-    android:paddingTop="64dp"
-    android:paddingHorizontal="24dp">
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="어느 지역의 룸메이트를 구하고 있나요?"
-        android:layout_marginBottom="16dp"
-        style="@style/HeaderStyle"/>
-
-    <com.example.moiroom.BorderedTextView
-        android:id="@+id/findInput"
-        android:layout_width="match_parent"
-        android:layout_height="64dp"
-        android:text="지역 찾기"
-        android:singleLine="true"
-        android:ellipsize="end"
-        style="@style/HeaderStyle"
-        android:gravity="center_vertical"
-        android:paddingStart="16dp"
-        android:paddingEnd="8dp"
-        android:drawableStart="@drawable/search_black_36dp"
-        android:drawablePadding="8dp"
-        android:layout_marginBottom="32dp"/>
+    android:paddingHorizontal="40dp">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginBottom="8dp"
-        android:gravity="center_horizontal">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="@style/HeaderStyle"
-            android:text="간단하게 본인을 소개해주세요"
-            android:layout_marginRight="8dp"/>
+            android:text="어느 지역의 룸메이트를 찾나요?"
+            android:layout_marginBottom="24dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:textSize="20sp"/>
+
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/findInput"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="52dp"
+            app:cardCornerRadius="32dp"
+            app:cardElevation="0dp"
+            app:cardBackgroundColor="@color/white"
+            app:strokeWidth="2dp"
+            app:strokeColor="@color/main_orange">
+
+            <ImageView
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="16dp"
+                android:src="@drawable/ic_search"/>
+
+            <TextView
+                android:id="@+id/findInputText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:fontFamily="@font/pretendard_regular"
+                android:textSize="20sp"
+                android:text="지역찾기"/>
+
+        </com.google.android.material.card.MaterialCardView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="@font/pretendard_bold"
+            android:textSize="20sp"
+            android:text="본인의 성별을 알려주세요." />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:orientation="horizontal">
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/maleCard"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/gray_medium_brightness">
+
+                <ImageView
+                    android:id="@+id/maleImage"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="bottom"
+                    android:src="@drawable/il_male"
+                    app:tint="@color/gray_medium_brightness"/>
+
+                <TextView
+                    android:id="@+id/maleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|end"
+                    android:layout_marginEnd="20dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:textColor="@color/gray_medium_brightness"
+                    android:textSize="28sp"
+                    android:text="남"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+            <com.google.android.material.card.MaterialCardView
+                android:id="@+id/femaleCard"
+                android:layout_width="120dp"
+                android:layout_height="80dp"
+                android:layout_marginHorizontal="10dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardElevation="0dp"
+                app:cardCornerRadius="16dp"
+                app:strokeWidth="3dp"
+                app:strokeColor="@color/gray_medium_brightness">
+
+                <ImageView
+                    android:id="@+id/femaleImage"
+                    android:layout_width="72dp"
+                    android:layout_height="72dp"
+                    android:layout_gravity="bottom|end"
+                    android:src="@drawable/il_female"
+                    app:tint="@color/gray_medium_brightness"/>
+
+                <TextView
+                    android:id="@+id/femaleText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical|start"
+                    android:layout_marginStart="20dp"
+                    android:fontFamily="@font/pretendard_bold"
+                    android:textColor="@color/gray_medium_brightness"
+                    android:textSize="28sp"
+                    android:text="여"/>
+
+            </com.google.android.material.card.MaterialCardView>
+
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="52dp"
+            android:gravity="center_horizontal">
+
+            <TextView
+                android:id="@+id/introductionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:fontFamily="@font/pretendard_bold"
+                android:textSize="20sp"
+                android:text="간단하게 본인을 소개해주세요." />
+
+        </FrameLayout>
 
         <TextView
             android:id="@+id/textLength"
             android:layout_width="40dp"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:layout_gravity="center_horizontal"
+            android:text="0/30"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp">
+
+            <EditText
+                android:id="@+id/editText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="입력하기"
+                android:inputType="textMultiLine"
+                android:maxLength="30"
+                android:paddingStart="32dp"
+                android:paddingEnd="32dp"
+                android:textAlignment="center"
+                android:fontFamily="@font/pretendard_regular"
+                android:lineSpacingExtra="6sp"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/textCancel"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center_vertical|end"
+                android:layout_marginBottom="2dp"
+                android:layout_marginEnd="2dp"
+                app:tint="@color/font_Gray_3"
+                android:src="@drawable/ic_cancel"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/saveButton"
+            android:layout_width="128dp"
+            android:layout_height="56dp"
+            android:layout_marginTop="72dp"
+            android:fontFamily="@font/pretendard_bold"
+            android:text="확인"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:backgroundTint="@color/darkorange" />
 
     </LinearLayout>
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="입력"
-        android:inputType="text"
-        android:maxLength="30"
-        android:paddingStart="32dp"
-        android:paddingEnd="32dp"
-        android:textSize="20sp"/>
-
-    <Button
-        android:id="@+id/saveButton"
-        android:layout_width="128dp"
-        android:layout_height="56dp"
-        android:text="확인"
-        android:textSize="16dp"
-        android:textStyle="bold"
-        android:backgroundTint="@color/darkorange"
-        android:layout_marginTop="16dp"/>
-
-</LinearLayout>
+</FrameLayout>

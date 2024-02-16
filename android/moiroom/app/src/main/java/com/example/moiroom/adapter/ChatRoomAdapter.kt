@@ -3,6 +3,7 @@ package com.example.moiroom.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.ChatRoom
 import com.example.moiroom.databinding.ChatroomItemLayoutBinding
@@ -14,7 +15,7 @@ import java.time.format.DateTimeFormatter
 class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapter<ChatRoomAdapter.ChatRoomViewHolder>() {
 
     interface OnItemClickListener {
-        fun onItemClick(chatRoomId: Int)
+        fun onItemClick(memberId: Long, chatRoomId: Long)  // 파라미터 타입을 Int로 변경했습니다.
     }
 
     // 클릭 리스너
@@ -26,8 +27,9 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
             binding.root.setOnClickListener {
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
-                    val chatRoomId = dataList[position].id
-                    onItemClickListener?.onItemClick(chatRoomId)
+                    val memberId = dataList[position].memberId
+                    val chatRoomId = dataList[position].chatRoomId
+                    onItemClickListener?.onItemClick(memberId, chatRoomId)
                 }
             }
         }
@@ -40,19 +42,17 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
 
     override fun onBindViewHolder(holder: ChatRoomViewHolder, position: Int) {
         val data = dataList[position]
-        val time: String = formatting(data.created_at)
-        val sample_name1 = "김민수"
-        val sample_name2 = "김민지"
+        val time: String = data.updatedAt
 
         holder.binding.apply {
-            chatRoomName.text = sample_name1
-            chatRoomLastMsg.text = data.last_message
+            chatRoomName.text = data.memberNickname
+            chatRoomLastMsg.text = data.lastMessage
             chatRoomCreatedAt.text = time
-
-            if (data.id == 2) {
-                chatRoomName.text = sample_name2
-                chatMemberImage.setImageResource(R.drawable.sample_profile2)
-            }
+            // 프로필 이미지 URL로부터 이미지를 로드하는 코드
+            Glide.with(chatMemberImage.context)
+                .load(data.profileImageUrl)
+                .placeholder(R.drawable.sample_profile1)
+                .into(chatMemberImage)
         }
     }
 
@@ -62,11 +62,8 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
 
     private fun formatting(timeInstant: Instant): String {
         val localDateTime = LocalDateTime.ofInstant(timeInstant, ZoneId.of("Asia/Seoul"))
-
-        val formatter = DateTimeFormatter.ofPattern("MM월 DD일 HH:mm")
-
+        val formatter = DateTimeFormatter.ofPattern("MM월 dd일 HH:mm")
         val formattedDateTime = localDateTime.format(formatter)
-
         return formattedDateTime
     }
 }

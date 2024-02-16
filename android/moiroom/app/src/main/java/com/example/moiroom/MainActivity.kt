@@ -23,10 +23,18 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import com.bumptech.glide.Glide
+import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
 import com.kakao.sdk.common.model.AuthErrorCause.*
 import com.kakao.sdk.user.UserApiClient
+import fetchUserInfo
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 // AppCompatActivity: AndroidX에서 제공하는 액티비티 클래스
 class MainActivity : AppCompatActivity() {
@@ -39,7 +47,6 @@ class MainActivity : AppCompatActivity() {
         // res/layout/activity_login.xml 파일을 화면에 띄움
         // 수정 필요!!! 카카오 토큰이 있으면 바로 activity_navi로 가도록 수정 필요
         setContentView(R.layout.activity_login)
-
         // 로그인 정보 확인(성현)
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             // 토큰 정보가 없어서 에러가 나면 토스트 띄운 후 현재 화면 유지
@@ -48,6 +55,7 @@ class MainActivity : AppCompatActivity() {
             }
             // 토큰 정보가 있으면 토스트 띄운 후 NaviActivity로 인텐트 보내기
             else if (tokenInfo != null) {
+
                 Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
@@ -57,6 +65,9 @@ class MainActivity : AppCompatActivity() {
                 // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
                 if (isButtonClicked) {
                     intent = Intent(this, NaviActivity::class.java)
+                    // 통신 구현 후 삭제 필요
+                    getUserInfo(this)
+                    getMatchedMember(this, 1)
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)
@@ -119,6 +130,41 @@ class MainActivity : AppCompatActivity() {
             }
             // 토큰이 있으면 토스트 띄우고 InfoinputActivity로 인텐트 보내기
             else if (token != null) {
+
+                val accessToken = token.accessToken
+                val refreshToken = token.refreshToken
+
+                // 액세스 토큰을 SharedPreferences에 저장
+                val sharedAccessToken = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val editor = sharedAccessToken.edit()
+                editor.putString("accessToken", accessToken)
+                editor.putString("refreshToken", refreshToken)
+                editor.apply()
+
+                System.out.println("Access Token: $accessToken")
+                System.out.println("Refresh Token: $refreshToken")
+                Log.d("KaKaoAccessToken", "Access Token: $accessToken")
+                Log.d("KaKaoRefreshToken", "Refresh Token: $refreshToken")
+
+                CoroutineScope(Dispatchers.Main).launch {
+                    val userInfo = fetchUserInfo(this@MainActivity, accessToken, refreshToken)
+                    if (userInfo == null) {
+                        Toast.makeText(this@MainActivity, "사용자 정보를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                        return@launch
+                    }
+                    val apiService = NetworkModule.provideRetrofit(this@MainActivity)
+                    val response = apiService.postUser(userInfo)
+                    if (response.isSuccessful) {
+                        Log.d("Login", "Response body: ${response.body()?.string()}")
+                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        // 상태 코드와 메시지를 로그에 출력합니다.
+                        Log.d("Login", "Status code: ${response.code()}, message: ${response.message()}")
+                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보내는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+
                 Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
@@ -127,6 +173,9 @@ class MainActivity : AppCompatActivity() {
                 // '매칭 시작하기' 버튼을 한 번이라도 클릭했다면 NaviActivity로 이동
                 if (isButtonClicked) {
                     intent = Intent(this, NaviActivity::class.java)
+                    // 통신 구현 후 삭제 필요
+                    getUserInfo(this)
+                    getMatchedMember(this, 1)
                 } else {
                     // '매칭 시작하기' 버튼을 한 번도 클릭하지 않았다면 InfoinputActivity로 이동
                     intent = Intent(this, InfoinputActivity::class.java)

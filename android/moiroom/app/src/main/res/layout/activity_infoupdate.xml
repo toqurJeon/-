@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".InfoupdateActivity"
+    android:paddingHorizontal="16dp"
+    android:background="@color/BGgray">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="12dp">
+
+            <ImageView
+                android:id="@+id/backwardButton"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginLeft="8dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/arrow_back_ios_new_fill0_wght400_grad0_opsz24"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="프로필 수정"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="20dp"
+                android:layout_gravity="center_vertical|center_horizontal"/>
+
+        </FrameLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="12dp">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/imageCard"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                app:cardCornerRadius="16dp"
+                android:layout_marginBottom="12dp"
+                android:layout_marginTop="12dp"
+                android:layout_gravity="top|center_horizontal">
+
+                <ImageView
+                    android:id="@+id/memberProfileImage"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
+                    android:layout_gravity="top"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/sample_profile1" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/openGalleryButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                android:backgroundTint="@color/darkorange"
+                android:layout_gravity="bottom|center"
+                android:layout_marginTop="8dp"
+                android:layout_marginLeft="48dp"
+                app:cardElevation="4dp">
+
+                <ImageView
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_margin="8dp"
+                    android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/returnDefault"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:cardCornerRadius="16dp"
+                android:backgroundTint="#E30000"
+                android:layout_gravity="top|center"
+                android:layout_marginBottom="30dp"
+                android:layout_marginLeft="56dp"
+                app:cardElevation="4dp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_margin="8dp"
+                    app:tint="@color/white"
+                    android:src="@drawable/close_fill0_wght400_grad0_opsz24"/>
+
+            </androidx.cardview.widget.CardView>
+
+        </FrameLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editNickname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="닉네임"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/nicknameChanged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_marginLeft="4dp"
+                    android:text="(수정됨)"
+                    android:textColor="@color/darkorange"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/memberNickname"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Nickname"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="36dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="18dp"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="12dp"
+                android:layout_gravity="end|center_vertical"
+                app:tint="@color/darkorange"
+                android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editIntroduction"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="자기소개"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/introductionChanged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_marginLeft="4dp"
+                    android:text="(수정됨)"
+                    android:textColor="@color/darkorange"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/memberIntroduction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Introduction"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="18dp"
+                android:lineSpacingMultiplier="1.15"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="12dp"
+                android:layout_gravity="end|center_vertical"
+                app:tint="@color/darkorange"
+                android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="16dp">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="14dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="찾고있는 지역"
+                    android:fontFamily="@font/pretendard_regular"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+                <TextView
+                    android:id="@+id/locationChanged"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="invisible"
+                    android:layout_marginLeft="4dp"
+                    android:text="(수정됨)"
+                    android:textColor="@color/darkorange"
+                    android:fontFamily="@font/pretendard_semibold"
+                    android:textSize="14dp"
+                    android:layout_gravity="center_vertical"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/memberLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Metropolitan, City"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="40dp"
+                android:layout_marginTop="38dp"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="18dp"
+                android:lineSpacingMultiplier="1.15"/>
+
+            <ImageView
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginRight="12dp"
+                android:layout_gravity="end|center_vertical"
+                app:tint="@color/darkorange"
+                android:src="@drawable/ic_search"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/editStatus"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@color/white"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="16dp">
+
+            <TextView
+                android:id="@+id/statusText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="now searching?"
+                android:layout_marginLeft="16dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="20dp"
+                android:fontFamily="@font/pretendard_semibold"
+                android:textSize="18dp"
+                android:lineSpacingMultiplier="1.15"/>
+
+            <Switch
+                android:id="@+id/statusSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="8dp"
+                android:checked="true"
+                android:layout_gravity="end|center_vertical"/>
+
+        </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/patchAllButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="12dp"
+        app:cardCornerRadius="16dp"
+        app:cardElevation="0dp"
+        android:backgroundTint="@color/darkorange"
+        android:layout_alignParentBottom="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="완료"
+            android:layout_marginVertical="12dp"
+            android:fontFamily="@font/pretendard_semibold"
+            android:textSize="20dp"
+            android:textColor="@color/white"
+            android:layout_gravity="center"/>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

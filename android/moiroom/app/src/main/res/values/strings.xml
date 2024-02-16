@@ -5,4 +5,47 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="chatting">This is chatting page</string>
     <string name="now_matching">This is now Matching page</string>
+    <string name="detailButtonText">&lt;&lt;\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020\u0020이 룸메이트의 정보 더보기</string>
+    <string name="facebook_app_id">1429064924713303</string>
+
+    <!-- NowMatchingActivity 용 -->
+    <string name="nowMatchingHeader">매칭을 시작해보세요.</string>
+    <string name="nowMatchingHeader2">룸메이트가 기다리고 있어요!</string>
+    <string name="nowMatchingSign">터치해서 매칭 시작하기</string>
+    <string name="nowMatchingMainImage">메인 이미지</string>
+
+    <!-- 아이콘 설명 -->
+    <string name="iconTouch">터치 아이콘</string>
+
+    <!-- 로고 설명 -->
+    <string name="logoLetter">모이룸 글자 로고</string>
+
+    <!-- sample -->
+    <string name="sampleString">이것은 샘플 테스트 문장입니다.</string>
+    <string name="sampleMatchRate">99</string>
+    <string name="sampleNickname">Abraham</string>
+
+    <!-- 권한 확인 용 -->
+    <string name="callAuth">true</string>
+    <string name="mediaAuth">true</string>
+    <string name="instaAuth">true</string>
+    <string name="googleAuth">true</string>
+
+    <!-- 데이터 수집 및 가공 과정 설명 -->
+    <string name="sociable_description">
+        먼저 사용자의 전체 어플리케이션 사용량을 조회해요. 그리고 통화, 카카오톡, 인스타그램 등 사교 활동을 위한 어플리케이션의 사용량을 비교해요. 전체 활동 중 사교 활동의 비중을 분석하여 사교 수치를 만들어요!
+    </string>
+    <string name="positivity_description">
+        사용자의 인스타그램 피드를 조회해요. 피드의 내용을 자연어처리 및 분석을 통해서 긍정 및 부정도를 수치화해요!
+    </string>
+    <string name="activity_description">
+        사진 데이터의 위치를 분석해요. 위치 데이터를 그룹화하고, 위치 그룹의 다양성을 분석해서 활동성을 수치화해요!
+    </string>
+    <string name="communion_description">공유 데이터에 대한 설명.</string>
+    <string name="altruism_description">이타 데이터에 대한 설명.</string>
+    <string name="empathy_description">
+        공감능력은 부모님의 영향이 크다고 해요. 통화 데이터를 조회하고, 전체 통화시간 중 부모님과의 통화시간의 비중을 분석해요. 부모님과의 관계 데이터를 통해서 공감 수치를 만들어요!
+    </string>
+    <string name="humor_description">감각 데이터에 대한 설명.</string>
+    <string name="generous_description">관대 데이터에 대한 설명.</string>
 </resources>

@@ -1,0 +1,30 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://i10a308.p.ssafy.io:3306/moiroom?serverTimezone=Asia/Seoul&useUnicode=true&characterEncoding=utf8&useLegacyDatetimeCode=false
+    username: root
+    password: ${MYSQL_PW}
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      globally_quoted_identifiers: true
+      hibernate:
+        format_sql: true
+        show_sql: true
+  security:
+    user:
+      name: hello
+      password: 12345
+  sql:
+    init:
+      data-locations:
+      - "classpath:db/*"
+      mode: never
+
+jwt:
+  secret: 'jxgEQeXHuPq8VdbyYFNkANdudQ53YUn4'

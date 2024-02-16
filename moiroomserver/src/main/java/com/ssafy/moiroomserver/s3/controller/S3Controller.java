@@ -17,10 +17,10 @@ public class S3Controller {
 
     private final S3Service s3Service;
 
-    @PostMapping("/upload/profileImage")
-    public ApiResponse<?> upload(@RequestParam("memberProfileImage") MultipartFile file) {
-        String memberProfileImageUrl = s3Service.uploadProfileImage(file);
-
-        return ApiResponse.success(SuccessCode.UPLOAD_PROFILE_IMAGE, memberProfileImageUrl);
-    }
+//    @PostMapping("/upload/profileImage")
+//    public ApiResponse<?> upload(@RequestParam("memberProfileImage") MultipartFile file) {
+//        String memberProfileImageUrl = s3Service.uploadProfileImage(file);
+//
+//        return ApiResponse.success(SuccessCode.UPLOAD_PROFILE_IMAGE, memberProfileImageUrl);
+//    }
 }
