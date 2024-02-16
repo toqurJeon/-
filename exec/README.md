@@ -50,7 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3-LKObPYyzA?si=QT5Jwk2sjZyiv3sd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![모이룸 화면 영상](https://github.com/hel-gather/hel-gather-server/assets/75198221/77c444de-9095-4360-9bc5-4a57eff27b82)](https://youtu.be/3-LKObPYyzA)
 
 ## 1. 입장 화면 및 동의 화면
 
