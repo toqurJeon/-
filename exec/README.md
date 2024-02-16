@@ -50,9 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-<video autoplay controls loop muted width=50%>
-   <source src="image/result_video.mp4" type="video/mp4"/>
-</video>
+<img src="image/result_video.gif" width=60% />
 
 ## 1. 입장 화면 및 동의 화면
 
