@@ -8,7 +8,10 @@ app = Flask(__name__)
 CORS(app)
 
 params = {'characteristic': {'sociability': 5678, 'positivity': 7896, 'activity': 1874, 'communion': 3814,
-                             'altruism': 1234, 'empathy': 4183, 'humor': 8423, 'generous': 4538}, 'interests': []}
+                             'altruism': 1234, 'empathy': 4183, 'humor': 8423, 'generous': 4538},
+          'interests': [{'interestName': 'Entertainment', 'interestPercent': 5000},
+                        {'interestName': 'Sports', 'interestPercent': 3000},
+                        {'interestName': 'Film & Animation', 'interestPercent': 2000}]}
 
 
 @app.route('/moiroom/privacy')
