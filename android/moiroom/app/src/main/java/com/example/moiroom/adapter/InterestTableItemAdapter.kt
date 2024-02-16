@@ -11,6 +11,7 @@ import com.example.moiroom.data.CombinedInterest
 import com.example.moiroom.databinding.InterestTableItemLayoutBinding
 import com.example.moiroom.utils.getColorInterest
 import com.example.moiroom.utils.getInterestName
+import java.text.DecimalFormat
 
 class InterestTableItemAdapter(
     private val context: Context,
@@ -44,6 +45,7 @@ class InterestTableItemAdapter(
     override fun onBindViewHolder(holder: InterestTableItemViewHolder, position: Int) {
         val data = dataList[position]
         val color = getColorInterest(data.interestName, context)
+        val decimalFormat = DecimalFormat("#.#")
 
         holder.binding.apply {
             interestTableName.text = getInterestName(data.interestName)
@@ -56,18 +58,18 @@ class InterestTableItemAdapter(
 
             if (data.myInterestPercent != null && data.roommateInterestPercent != null) {
 
-                interestTableRoommatePercent.text = "${data.roommateInterestPercent}%"
-                interestTableMyPercent.text = "${data.myInterestPercent}%"
+                interestTableRoommatePercent.text = "${decimalFormat.format(data.roommateInterestPercent/100)}%"
+                interestTableMyPercent.text = "${decimalFormat.format(data.myInterestPercent/100)}%"
 
             } else if (data.roommateInterestPercent != null) {
 
-                interestTableRoommatePercent.text = "${data.roommateInterestPercent}%"
+                interestTableRoommatePercent.text = "${decimalFormat.format(data.roommateInterestPercent/100)}%"
                 interestTableMyPercent.text = ""
 
-            } else {
+            } else if (data.myInterestPercent != null) {
 
                 interestTableRoommatePercent.text = ""
-                interestTableMyPercent.text = "${data.myInterestPercent}%"
+                interestTableMyPercent.text = "${decimalFormat.format(data.myInterestPercent/100)}%"
 
             }
         }

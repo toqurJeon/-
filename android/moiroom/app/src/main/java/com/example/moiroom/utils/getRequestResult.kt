@@ -134,19 +134,19 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Sports",
-                                        48
+                                        4800
                                     ),
                                     Interest(
                                         "Entertainment",
-                                        36
+                                        3600
                                     ),
                                     Interest(
                                         "Science & Technology",
-                                        11
+                                        1100
                                     ),
                                     Interest(
                                         "Gaming",
-                                        5
+                                        500
                                     )
                                 )
                             ),
@@ -178,15 +178,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Music",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Film & Animation",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Travel & Events",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -218,15 +218,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Music",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Comedy",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Education",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -258,15 +258,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Film & Animation",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Travel & Events",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Entertainment",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -298,15 +298,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Howto & Style",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Nonprofits & Activism",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Film & Animation",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -338,15 +338,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Film & Animation",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Autos & Vehicles",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Gaming",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -378,15 +378,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Entertainment",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "News & Politics",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Autos & Vehicles",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -418,15 +418,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Sports",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Film & Animation",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Entertainment",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -458,15 +458,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Film & Animation",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Music",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Travel & Events",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -498,15 +498,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 listOf(
                                     Interest(
                                         "Music",
-                                        60
+                                        6000
                                     ),
                                     Interest(
                                         "Nonprofits & Activism",
-                                        25
+                                        2500
                                     ),
                                     Interest(
                                         "Travel & Events",
-                                        15
+                                        1500
                                     )
                                 )
                             ),
@@ -588,23 +588,23 @@ fun getUserInfo(context: Context) {
                                 listOf(
                                     Interest(
                                         "Sports",
-                                        42
+                                        4200
                                     ),
                                     Interest(
                                         "Music",
-                                        28
+                                        2800
                                     ),
                                     Interest(
                                         "Gaming",
-                                        19
+                                        1900
                                     ),
                                     Interest(
                                         "Film & Animation",
-                                        6
+                                        600
                                     ),
                                     Interest(
                                         "Science & Technology",
-                                        5
+                                        500
                                     )
                                 )
                             )
@@ -650,23 +650,23 @@ fun getUserInfo(context: Context) {
                             listOf(
                                 Interest(
                                     "Sports",
-                                    42
+                                    4200
                                 ),
                                 Interest(
                                     "Music",
-                                    28
+                                    2800
                                 ),
                                 Interest(
                                     "Gaming",
-                                    19
+                                    1900
                                 ),
                                 Interest(
                                     "Film & Animation",
-                                    6
+                                    600
                                 ),
                                 Interest(
                                     "Science & Technology",
-                                    5
+                                    500
                                 )
                             )
                         )

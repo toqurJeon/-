@@ -52,7 +52,7 @@ class InterestChartAdapter(
                 interestItem.setCardBackgroundColor(context.getColor(R.color.gray_more_high_brightness))
             }
             val layoutParams = interestItem.layoutParams
-            layoutParams.width = calculateItemWidth(data.interestPercent)
+            layoutParams.width = calculateItemWidth((data.interestPercent / 100).toInt())
             interestItem.layoutParams = layoutParams
             // Log.d("MYTAG", "onBindViewHolder: ${calculateItemWidth(data.interestPercent)}")
         }
