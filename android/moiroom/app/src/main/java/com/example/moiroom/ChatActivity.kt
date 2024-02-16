@@ -189,6 +189,7 @@ class ChatActivity : AppCompatActivity() {
 
                 // WebSocket 통신을 통해 메시지 전송
                 val destination = "$chatRoomId"
+                chatSocketManager.connect(chatRoomId, memberNickname, memberProfileImage, memberId)
                 chatSocketManager.send(destination, json)
 
             }
