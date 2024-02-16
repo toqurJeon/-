@@ -18,10 +18,11 @@ import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.MatchedMemberList
 import com.example.moiroom.data.Member
+import com.example.moiroom.data.Page
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMemberList
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData.updateMatchedMemberList
+import com.example.moiroom.utils.CachedMatchingResultLiveData.addMatchingResult
+import com.example.moiroom.utils.CachedPageLiveData.updatePage
 import com.example.moiroom.utils.CachedUserInfoLiveData.updateUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -42,35 +43,38 @@ object CachedUserInfoLiveData : LiveData<UserResponse.Data.Member>() {
     }
 }
 
-object CachedMatchedMemberListLiveData : LiveData<ResponseData>() {
-    val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+//object CachedMatchedMemberListLiveData : LiveData<ResponseData>() {
+//    val cacheMatchedMemberList = LruCache<String, ResponseData>(cacheSize)
+//
+//    fun updateMatchedMemberList(matchedMemberList: ResponseData) {
+//        cacheMatchedMemberList.put("matchedMemberList", matchedMemberList)
+//        postValue(matchedMemberList)
+//    }
+//}
 
-    fun updateMatchedMemberList(matchedMemberList: ResponseData) {
-        cacheMatchedMemberList.put("matchedMemberList", matchedMemberList)
-        postValue(matchedMemberList)
+object CachedMatchingResultLiveData : LiveData<MutableList<MatchedMemberData>>() {
+    val cacheMatchingResult = LruCache<String, MutableList<MatchedMemberData>>(cacheSize)
+
+    fun addMatchingResult(data: List<MatchedMemberData>) {
+        val cachedData = cacheMatchingResult.get("matchedData") ?: mutableListOf()
+
+        cachedData.addAll(data)
+        cacheMatchingResult.put("matchedData", cachedData)
+
+        postValue(cachedData)
+    }
+}
+
+object CachedPageLiveData : LiveData<Page>() {
+    val cachePage = LruCache<String, Page>(cacheSize)
+
+    fun updatePage(data: Page) {
+        cachePage.put("page", data)
+        postValue(data)
     }
 }
 
 private lateinit var apiService: ApiService
-
-var okCount: Int = 0
-
-fun getRequestResult(result: Boolean, context: Context) {
-    // ok response를 받아야 하는 갯수
-    val targetCount: Int = 1
-    Log.d("TAG", "getRequestResult: $result 응답 받음! okCount: $okCount")
-
-    if (result) {
-        okCount += 1
-        if (okCount == targetCount) {
-            // 매칭 리스트 GET 요청
-            Log.d("TAG", "getRequestResult: 매칭리스트 요청 보내기!")
-
-            getUserInfo(context)
-            getMatchedMember(context, 1)
-        }
-    }
-}
 
 fun getMatchedMember(context: Context, pgno: Int) {
     apiService = NetworkModule.provideRetrofit(context)
@@ -82,7 +86,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
             val data = response.body()
             Log.d("MYTAG", "getMatchedMember: success, $data")
 
-            updateMatchedMemberList(data!!)
+            // updateMatchedMemberList(data!!)
+            updatePage(
+                Page(
+                    data!!.data.totalPages,
+                    data.data.totalElements,
+                    data.data.currentPage,
+                    data.data.pageSize
+                )
+            )
+            addMatchingResult(data.data.content)
 
             Handler(Looper.getMainLooper()).postDelayed({
                 NowMatchingAfterFragment.isLoading = false
@@ -105,18 +118,18 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 2000,
                                 "서울특별시",
                                 "강남구",
-                                "운동을 좋아해서 같이 운동할 수 있는 분이 좋아요.",
+                                "운동 좋아! 같이 운동할 수 있는 분이 좋아요.",
                                 Characteristic(
-                                    5123,
-                                    6656,
-                                    8634,
-                                    4156,
-                                    3223,
-                                    1278,
-                                    6723,
-                                    3534,
-                                    "23:40",
-                                    "06:30",
+                                    6320,
+                                    7052,
+                                    6493,
+                                    8553,
+                                    5083,
+                                    4910,
+                                    6120,
+                                    8358,
+                                    "23:47",
+                                    "06:32",
                                 ),
                                 listOf(
                                     Interest(
@@ -151,16 +164,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 "강남구",
                                 "반가워요. 잘 살고 싶어요.",
                                 Characteristic(
-                                    4423,
-                                    8156,
-                                    8034,
-                                    2456,
-                                    1187,
-                                    7545,
-                                    3634,
-                                    3565,
-                                    "00:10",
-                                    "08:38",
+                                    6120,
+                                    7252,
+                                    6193,
+                                    8053,
+                                    5283,
+                                    5510,
+                                    6320,
+                                    8058,
+                                    "23:47",
+                                    "06:32",
                                 ),
                                 listOf(
                                     Interest(
@@ -168,7 +181,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                         60
                                     ),
                                     Interest(
-                                        "Videoblogging",
+                                        "Film & Animation",
                                         25
                                     ),
                                     Interest(
@@ -189,7 +202,7 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 1998,
                                 "서울특별시",
                                 "강남구",
-                                "ㅎㅇㅎㅇ~~",
+                                "ㅎㅇㅎㅇ 안녕하세요~~",
                                 Characteristic(
                                     5423,
                                     8956,
@@ -204,15 +217,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Music",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Comedy",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Education",
                                         15
                                     )
                                 )
@@ -244,15 +257,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Film & Animation",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Travel & Events",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Entertainment",
                                         15
                                     )
                                 )
@@ -284,15 +297,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Howto & Style",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Nonprofits & Activism",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Film & Animation",
                                         15
                                     )
                                 )
@@ -324,15 +337,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Film & Animation",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Autos & Vehicles",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Gaming",
                                         15
                                     )
                                 )
@@ -364,15 +377,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Entertainment",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "News & Politics",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Autos & Vehicles",
                                         15
                                     )
                                 )
@@ -404,15 +417,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Sports",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Film & Animation",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Entertainment",
                                         15
                                     )
                                 )
@@ -444,15 +457,15 @@ fun getMatchedMember(context: Context, pgno: Int) {
                                 ),
                                 listOf(
                                     Interest(
-                                        "음악",
+                                        "Film & Animation",
                                         60
                                     ),
                                     Interest(
-                                        "그림",
+                                        "Music",
                                         25
                                     ),
                                     Interest(
-                                        "여행",
+                                        "Travel & Events",
                                         15
                                     )
                                 )
@@ -507,7 +520,16 @@ fun getMatchedMember(context: Context, pgno: Int) {
                     10
                 ),
             )
-            updateMatchedMemberList(responseMatchedMemberList)
+            updatePage(
+                Page(
+                    responseMatchedMemberList.data.totalPages,
+                    responseMatchedMemberList.data.totalElements,
+                    responseMatchedMemberList.data.currentPage,
+                    responseMatchedMemberList.data.pageSize
+                )
+            )
+            addMatchingResult(responseMatchedMemberList.data.content)
+            // updateMatchedMemberList(responseMatchedMemberList)
         }
     }
 }
@@ -526,7 +548,7 @@ fun getUserInfo(context: Context) {
                 updateUserInfo(member)
 
                 Log.d("MYTAG", "getUserInfo: User info saved in cache. memberId: ${member.memberId}, memberName: ${member.memberName}, memberNickname: ${member.memberNickname}")
-                Log.d("MYTAG", "유저 데이터 가져옴 ${member.memberRoommateSearchStatus}")
+                Log.d("MYTAG", "유저 데이터 가져옴, 관심사 ${member.interests}")
             } else {
                 Log.d("MYTAG", "getUserInfo: Failed to get user info")
                 Log.d("TAG", "Response Code: ${response.code()}, Response Message: ${response.message()}")
@@ -573,12 +595,16 @@ fun getUserInfo(context: Context) {
                                         28
                                     ),
                                     Interest(
-                                        "Entertainment",
+                                        "Gaming",
                                         19
                                     ),
                                     Interest(
                                         "Film & Animation",
-                                        11
+                                        6
+                                    ),
+                                    Interest(
+                                        "Science & Technology",
+                                        5
                                     )
                                 )
                             )
@@ -631,12 +657,16 @@ fun getUserInfo(context: Context) {
                                     28
                                 ),
                                 Interest(
-                                    "Entertainment",
+                                    "Gaming",
                                     19
                                 ),
                                 Interest(
                                     "Film & Animation",
-                                    11
+                                    6
+                                ),
+                                Interest(
+                                    "Science & Technology",
+                                    5
                                 )
                             )
                         )
