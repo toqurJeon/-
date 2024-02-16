@@ -50,7 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-<iframe width="560" height="315" src="https://www.youtube.com/embed/3-LKObPYyzA?si=BWPBM7N3C3OTOqUe" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/3-LKObPYyzA?si=QT5Jwk2sjZyiv3sd" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
 
 ## 1. 입장 화면 및 동의 화면
 
