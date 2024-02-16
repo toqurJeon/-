@@ -1,6 +1,12 @@
 package com.example.moiroom
 
+import ChatAdapter
 import android.util.Log
+import com.example.moiroom.data.Chat
+import com.example.moiroom.data.ChatMessageReqDTO
+import com.example.moiroom.data.UserResponse
+import com.example.moiroom.utils.CachedUserInfoLiveData
+import com.google.gson.Gson
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
@@ -10,8 +16,15 @@ import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
 import okhttp3.WebSocket
 import okhttp3.Request
+import org.json.JSONObject
 import ua.naiksoftware.stomp.dto.LifecycleEvent
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.Flow
+import android.content.Context
+import androidx.recyclerview.widget.RecyclerView
+import com.example.moiroom.adapter.ChatRoomAdapter
+import com.google.gson.JsonSyntaxException
 
 
 //class ChatSocketManager(private val activity: ChatActivity) {
@@ -65,17 +78,55 @@ import java.util.concurrent.Flow
 class ChatSocketManager(private val activity: ChatActivity) {
 
     private lateinit var stompClient: StompClient
-    fun connect(chatRoomId: Long) {
-        val socketUrl = "wss://moiroom.n-e.kr/ws"
+    var cachedUserInfo: UserResponse.Data.Member? =
+        CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
+    val currentDateTime =
+        LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+//    private val sharedPref = activity.getPreferences(Context.MODE_PRIVATE)
 
-        stompClient= Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl)
-        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe { topicMessage ->
-            if(topicMessage.payload == null){
-                Log.i("message Recieve", "null")
-            }else{
-                Log.i("message Recieve", topicMessage.payload)
-            }
-        }
+    lateinit var adapter: ChatAdapter
+    lateinit var recyclerView: RecyclerView
+
+    fun setAdapterAndRecyclerView(adapter: ChatAdapter, recyclerView: RecyclerView) {
+        this.adapter = adapter
+        this.recyclerView = recyclerView
+    }
+
+    fun connect(chatRoomId: Long, memberNickname: String, memberProfileImage: String, memberId: Long) {
+            val socketUrl = "wss://moiroom.n-e.kr/ws"
+
+            stompClient = Stomp.over(Stomp.ConnectionProvider.OKHTTP, socketUrl)
+        stompClient.topic("/queue/chat/room/$chatRoomId")
+            .subscribe({ topicMessage ->
+                // 메시지 수신 확인
+                Log.d("Check Message", "Received Message: ${topicMessage.payload}")
+
+                val newChat = Chat(
+                    adapter.itemCount + 1,
+                    memberId,
+                    chatRoomId,
+                    memberNickname,
+                    memberProfileImage,
+                    topicMessage.payload,
+                    currentDateTime
+                )
+                // Chat 객체 생성 확인
+                Log.d("Check Message", "Created Chat object: $newChat")
+
+                activity.runOnUiThread {
+                    // 화면 업데이트 전 adapter의 아이템 개수 확인
+                    Log.d("Check Message", "Number of items before update: ${adapter.itemCount}")
+
+                    adapter.addData(newChat)
+                    recyclerView.scrollToPosition(adapter.itemCount - 1)
+
+                    // 화면 업데이트 후 adapter의 아이템 개수 확인
+                    Log.d("Check Message", "Number of items after update: ${adapter.itemCount}")
+                }
+            }, { throwable ->
+                // 오류 처리
+                Log.e("STOMP", "Error on websocket connection", throwable)
+            })
 
         stompClient.lifecycle().subscribe { lifecycleEvent ->
             when (lifecycleEvent.type) {
@@ -98,22 +149,34 @@ class ChatSocketManager(private val activity: ChatActivity) {
         stompClient.connect()
     }
 
-        fun subscribe(chatRoomId: Long) {
-            Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId")
-            stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
-                Log.d("MYMYTAG", "Received: ${topicMessage}")
-            }, { throwable ->
-                Log.e("MYMYTAG", "Error on subscribe topic", throwable)
-            })
-        }
-
-        fun send(chatRoomId: String, message: String) {
-//            stompClient.send("/queue/chat/room/$chatRoomId", message).subscribe()
-            stompClient.send("/pub/room/$chatRoomId/send",message).subscribe()
-        }
-
-        fun disconnect() {
-            stompClient.disconnect()
-        }
+    fun subscribe(chatRoomId: Long) {
+        Log.d("MYMYTAG", "Subscribe function is called with chatRoomId: $chatRoomId")
+        stompClient.topic("/queue/chat/room/$chatRoomId").subscribe({ topicMessage ->
+            Log.d("MYMYTAG", "Received: ${topicMessage}")
+        }, { throwable ->
+            Log.e("MYMYTAG", "Error on subscribe topic", throwable)
+        })
     }
 
+    fun send(chatRoomId: String, message: String) {
+//            stompClient.send("/queue/chat/room/$chatRoomId", message).subscribe()
+        stompClient.send("/pub/room/$chatRoomId/send",message).subscribe()
+    }
+
+
+    fun disconnect() {
+            stompClient.disconnect()
+        }
+
+        // JSON 형식인지 확인
+//        private fun isJson(message: String): Boolean {
+//            return try {
+//                Gson().fromJson(message, Any::class.java)
+//                true
+//            } catch (e: JsonSyntaxException) {
+//                false
+//            }
+//        }
+
+
+    }

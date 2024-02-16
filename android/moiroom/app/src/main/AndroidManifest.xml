@@ -142,16 +142,16 @@
         <activity
             android:name=".extraction.InstagramExtract"
             android:exported="true">
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                <category android:name="android.intent.category.BROWSABLE" />-->
-<!--                <data-->
-<!--                    android:scheme="https"-->
-<!--                    android:host="example.com"-->
-<!--                    android:path="/instagramredirection"-->
-<!--                    />-->
-<!--            </intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data
+                    android:scheme="https"
+                    android:host="example.com"
+                    android:path="/instagramredirection"
+                    />
+            </intent-filter>
         </activity>
         <activity
             android:name=".MainActivity"

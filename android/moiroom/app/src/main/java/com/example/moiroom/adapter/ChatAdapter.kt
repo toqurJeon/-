@@ -200,6 +200,27 @@ class ChatAdapter(
     }
 
     fun addData(chat: Chat) {
+        // DateTimeFormatter 생성: 'yyyy-MM-dd HH:mm:ss' 형태의 날짜와 시간 문자열을 파싱
+        val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")
+
+        // 새로운 채팅 메시지의 날짜와 시간 문자열을 LocalDateTime 객체로 변환
+        val newChatDateTime = LocalDateTime.parse(chat.createdAt, formatter)
+
+        // dataList의 모든 요소를 검사
+        for (existingChat in dataList) {
+            // 기존 채팅 메시지의 날짜와 시간 문자열을 LocalDateTime 객체로 변환
+            val existingChatDateTime = LocalDateTime.parse(existingChat.createdAt, formatter)
+
+            // 내용과 날짜, 시간, 분이 모두 같다면 추가하지 않고 함수를 종료
+            if (existingChat.content == chat.content &&
+                existingChatDateTime.year == newChatDateTime.year &&
+                existingChatDateTime.month == newChatDateTime.month &&
+                existingChatDateTime.dayOfMonth == newChatDateTime.dayOfMonth &&
+                existingChatDateTime.hour == newChatDateTime.hour) {
+                return
+            }
+        }
+
         dataList.add(chat)
         notifyItemInserted(dataList.size - 1)
     }

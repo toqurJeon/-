@@ -39,12 +39,12 @@ class AdsettingActivity : AppCompatActivity() {
         logoutButton.setOnClickListener {
             UserApiClient.instance.me { user, error ->
                 if (error != null) {
-                    Toast.makeText(this, "사용자 정보 요청 실패 $error", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "사용자 정보 요청 실패 $error", Toast.LENGTH_SHORT).show()
                 } else if (user != null) {
                     val userId = user.id
                     UserApiClient.instance.logout { error ->
                         if (error != null) {
-                            Toast.makeText(this, "카카오 로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
+//                            Toast.makeText(this, "카카오 로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                         } else {
                             // 카카오 로그아웃 성공, 이제 백엔드 서버에 로그아웃 요청을 보낸다.
                             val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
@@ -67,7 +67,7 @@ class AdsettingActivity : AppCompatActivity() {
         unregisterButton.setOnClickListener {
             UserApiClient.instance.unlink { error ->
                 if (error != null) {
-                    Toast.makeText(this, "회원 탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "회원 탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     // 회원탈퇴 성공 시, 'isButtonClicked' 값을 초기화
                     val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
@@ -75,7 +75,7 @@ class AdsettingActivity : AppCompatActivity() {
                     editor?.putBoolean("isButtonClicked", false)
                     editor?.apply()
 
-                    Toast.makeText(this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
+//                    Toast.makeText(this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()
@@ -122,7 +122,7 @@ class AdsettingActivity : AppCompatActivity() {
         editor?.putBoolean("isButtonClicked", false)
         editor?.apply()
 
-        Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
         val intent = Intent(this, MainActivity::class.java)
         startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
         finish()
@@ -134,7 +134,7 @@ class AdsettingActivity : AppCompatActivity() {
     }
 
     fun logoutFailure(message: String) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+//        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
 
