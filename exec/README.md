@@ -50,7 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-<p>↓ 영상 클릭하기</p>
+<p>↓ 클릭하기</p>
 
 [![모이룸 화면 영상](image/mainpage.jpeg)](https://youtu.be/3-LKObPYyzA)
 
