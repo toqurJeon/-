@@ -30,7 +30,7 @@ def user_init():
         images.calc(json_data['images'], params)
         # insta.calc(json_data['insta'], params)
         call.calc(json_data['calls'], params)
-        params['interests'] = youtube.calc(json_data['youtube'])
+        # params['interests'] = youtube.calc(json_data['youtube'])
         # apps.calc(json_data['apps'], params)
 
 
