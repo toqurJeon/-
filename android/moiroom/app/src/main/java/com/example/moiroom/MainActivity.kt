@@ -51,12 +51,12 @@ class MainActivity : AppCompatActivity() {
         UserApiClient.instance.accessTokenInfo { tokenInfo, error ->
             // 토큰 정보가 없어서 에러가 나면 토스트 띄운 후 현재 화면 유지
             if (error != null) {
-                Toast.makeText(this, "토큰 정보 보기 실패", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "토큰 정보 보기 실패", Toast.LENGTH_SHORT).show()
             }
             // 토큰 정보가 있으면 토스트 띄운 후 NaviActivity로 인텐트 보내기
             else if (tokenInfo != null) {
 
-                Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
@@ -97,34 +97,34 @@ class MainActivity : AppCompatActivity() {
                 // 에러가 아래 옵션 중에 있으면 특정 토스트 띄우기
                 when {
                     error.toString() == AccessDenied.toString() -> {
-                        Toast.makeText(this, "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidClient.toString() -> {
-                        Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidGrant.toString() -> {
-                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidRequest.toString() -> {
-                        Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == InvalidScope.toString() -> {
-                        Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == Misconfigured.toString() -> {
-                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == ServerError.toString() -> {
-                        Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
                     }
                     error.toString() == Unauthorized.toString() -> {
-                        Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
                     }
                     // 에러가 위 옵션 중에 없으면 '기타 에러' 토스트 띄우기'
                     else -> {
                         Log.e("Kakao Login Error", error?.message ?: "Unknown error")
                         error.printStackTrace()
-                        Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this, "기타 에러", Toast.LENGTH_SHORT).show()
                     }
                 }
             }
@@ -149,23 +149,23 @@ class MainActivity : AppCompatActivity() {
                 CoroutineScope(Dispatchers.Main).launch {
                     val userInfo = fetchUserInfo(this@MainActivity, accessToken, refreshToken)
                     if (userInfo == null) {
-                        Toast.makeText(this@MainActivity, "사용자 정보를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@MainActivity, "사용자 정보를 가져오는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
                         return@launch
                     }
                     val apiService = NetworkModule.provideRetrofit(this@MainActivity)
                     val response = apiService.postUser(userInfo)
                     if (response.isSuccessful) {
                         Log.d("Login", "Response body: ${response.body()?.string()}")
-                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         // 상태 코드와 메시지를 로그에 출력합니다.
                         Log.d("Login", "Status code: ${response.code()}, message: ${response.message()}")
-                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보내는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
+//                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보내는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
 
-                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
+//                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
                 val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
                 val intent: Intent

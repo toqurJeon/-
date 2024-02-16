@@ -451,11 +451,11 @@ class InfoupdateActivity : AppCompatActivity() {
 
                     withContext(Dispatchers.Main) {
                         if (response.isSuccessful) {
-                            Toast.makeText(
-                                this@InfoupdateActivity,
-                                "회원 정보 수정 성공",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//                            Toast.makeText(
+//                                this@InfoupdateActivity,
+//                                "회원 정보 수정 성공",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
                             // NaviActivity.isUpdateCalled = true
                             Log.d("MYTAG", "onCreateView: 수정 성공")
                             getUserInfo(this@InfoupdateActivity)
@@ -465,11 +465,11 @@ class InfoupdateActivity : AppCompatActivity() {
                         } else {
                             // 회원 정보 수정 실패
                             val errorMsg = response.errorBody()?.string() ?: "Unknown error"
-                            Toast.makeText(
-                                this@InfoupdateActivity,
-                                "회원 정보 수정 실패: $errorMsg",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//                            Toast.makeText(
+//                                this@InfoupdateActivity,
+//                                "회원 정보 수정 실패: $errorMsg",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
                             // 로그에 에러 메시지 출력
                             Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
                         }

@@ -198,7 +198,7 @@ class CardAdapter(
                     characterIcon.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
                     characterDetailName.text = clickedData[0].type.value
                     characterDetailDescription.text = getCharacterDescription(clickedData[0].type)
-                    characterLocation.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
+                    characterLocationRoommateImage.setColorFilter(getColorCharacter(clickedData[0].type.value, context))
                     pinBase.setCardBackgroundColor(getBGColorCharacter(clickedData[0].type.value, context))
 
                     val description = getCharacterDetailDescription(context, clickedData[0].type.value)
@@ -210,6 +210,7 @@ class CardAdapter(
                     performAnimation(clickedData[0], clickedData[1], binding)
                 }
                 recyclerView.adapter = characterAdapter
+                characterLocationRoommate.text = cardInfo.member.memberNickname
 
                 // 성향 상세정보 다이얼로그 띄우기 위해서 Fragment에 데이터 전달
 //                characterDescriptionButton.setOnClickListener {
@@ -305,6 +306,8 @@ class CardAdapter(
                         )
                     )
                 }
+
+                interestTableRoommateCaption.text = cardInfo.member.memberNickname
 
                 val interestTableAdapter = InterestTableItemAdapter(context, combinedList) { combinedInterest ->
                     interestDescription.text = combinedInterest.interestName
@@ -424,9 +427,8 @@ class CardAdapter(
                                 201 -> {
                                     // 채팅방 생성 성공
                                     val intent = Intent(context, ChatActivity::class.java)
-                                    intent.putExtra("memberId", cardInfo.member.memberId)
                                     Log.d("memberId", "생성 성공")
-                                    context.startActivity(intent)
+                                    Toast.makeText(context, "채팅방 생성을 성공했습니다!.", Toast.LENGTH_LONG).show()
                                 }
                                 400 -> {
                                     // 채팅방 이미 존재
@@ -488,32 +490,35 @@ class CardAdapter(
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
                 }
 
-                // 채팅방 생성 및 이동
                 chatbuttonContainer.setOnClickListener {
-                    val intent = Intent(context, ChatActivity::class.java)
-                    intent.putExtra("memberId", cardInfo.member.memberId)
-
+                    Log.d("memberId", "$cardInfo")
                     // 채팅방 생성 요청
                     CoroutineScope(Dispatchers.IO).launch {
                         val apiService = NetworkModule.provideRetrofit(context)
                         val response = apiService.createChatRoom(cardInfo.member.memberId)
+                        Log.d("memberId","$response")
 
-                        if (response.isSuccessful) {
-                            // 채팅방 생성 성공
-                            withContext(Dispatchers.Main) {
-                                context.startActivity(intent)
-                            }
-                        } else {
-                            // 채팅방 생성 실패
-                            // 에러 처리를 여기서 하세요.
-                            // 예: Toast 메시지를 출력하거나, 로그를 기록하는 등
-                            withContext(Dispatchers.Main) {
-                                Toast.makeText(context, "채팅방 생성 실패: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
+                        withContext(Dispatchers.Main) {
+                            when (response.body()?.code) {
+                                201 -> {
+                                    // 채팅방 생성 성공
+                                    val intent = Intent(context, ChatActivity::class.java)
+                                    Toast.makeText(context, "채팅방이 생성되었습니다.", Toast.LENGTH_LONG).show()
+                                }
+                                400 -> {
+                                    // 채팅방 이미 존재
+                                    Log.d("ChatRoomCreateFail", "Response code: ${response.code()}, Error body: ${response.errorBody()?.string()}")
+                                    Toast.makeText(context, "이미 존재하는 채팅방입니다.", Toast.LENGTH_LONG).show()
+                                }
+                                else -> {
+                                    // 채팅방 생성 실패
+                                    Log.d("ChatRoomCreateFail", "Response code: ${response.code()}, Error body: ${response.errorBody()?.string()}")
+                                    Toast.makeText(context, "채팅방 생성 실패: ${response.errorBody()?.string()}", Toast.LENGTH_LONG).show()
+                                }
                             }
                         }
                     }
                 }
-
             }
         }
     }
