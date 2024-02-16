@@ -326,11 +326,11 @@ class InfoinputActivity : AppCompatActivity() {
 
                         if (response.isSuccessful) {
                             // 요청이 성공했을 때의 처리
-                            Toast.makeText(
-                                this@InfoinputActivity,
-                                "회원 정보 수정 성공",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//                            Toast.makeText(
+//                                this@InfoinputActivity,
+//                                "회원 정보 수정 성공",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
 
                             // 요청이 성공했으므로 NowMatchingActivity로 화면을 전환합니다.
                             val intent =
@@ -340,27 +340,27 @@ class InfoinputActivity : AppCompatActivity() {
                         }else {
                             // 요청이 실패했을 때의 처리
                             val errorMsg = response.errorBody()?.string() ?: "Unknown error"
-                            Toast.makeText(
-                                this@InfoinputActivity,
-                                "회원 정보 수정 실패: $errorMsg",
-                                Toast.LENGTH_SHORT
-                            ).show()
+//                            Toast.makeText(
+//                                this@InfoinputActivity,
+//                                "회원 정보 수정 실패: $errorMsg",
+//                                Toast.LENGTH_SHORT
+//                            ).show()
 
                             // 로그에 에러 메시지 출력
                             Log.e("UpdateMemberInfo", "Failed to update member info: $errorMsg")
                         }
                     } else {
                         // 사용자 정보를 가져오지 못한 경우 처리
-                        Toast.makeText(
-                            this@InfoinputActivity,
-                            "사용자 정보를 가져오지 못했습니다",
-                            Toast.LENGTH_SHORT
-                        ).show()
+//                        Toast.makeText(
+//                            this@InfoinputActivity,
+//                            "사용자 정보를 가져오지 못했습니다",
+//                            Toast.LENGTH_SHORT
+//                        ).show()
                     }
                 } else {
                     // accessToken 또는 refreshToken이 null인 경우 처리
-                    Toast.makeText(this@InfoinputActivity, "토큰 정보를 가져오지 못했습니다", Toast.LENGTH_SHORT)
-                        .show()
+//                    Toast.makeText(this@InfoinputActivity, "토큰 정보를 가져오지 못했습니다", Toast.LENGTH_SHORT)
+//                        .show()
                 }
             }
         }

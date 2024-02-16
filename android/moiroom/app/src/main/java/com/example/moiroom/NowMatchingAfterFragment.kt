@@ -6,6 +6,7 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.util.LruCache
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,25 +19,32 @@ import androidx.viewpager2.widget.ViewPager2
 import com.example.moiroom.adapter.CardAdapter
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
+import com.example.moiroom.data.Page
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData
-import com.example.moiroom.utils.CachedMatchedMemberListLiveData.cacheMatchedMemberList
+import com.example.moiroom.utils.CachedMatchingResultLiveData
+import com.example.moiroom.utils.CachedMatchingResultLiveData.cacheMatchingResult
+import com.example.moiroom.utils.CachedPageLiveData
+import com.example.moiroom.utils.CachedPageLiveData.cachePage
 import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
 import com.example.moiroom.utils.getCharacterDetailDescription
 import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.getUserInfo
 
 class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener {
     private lateinit var binding: FragmentNowMatchingAfterBinding
     private var toggled: Boolean = true
 
     var cachedUserInfo: UserResponse.Data.Member? = cacheUserInfo.get("userInfo")
-    var cachedMatchedMemberList: ResponseData? = cacheMatchedMemberList.get("matchedMemberList")
+    // var cachedMatchedMemberList: ResponseData? = cacheMatchedMemberList.get("matchedMemberList")
 
-    var matchedMemberListForAdapter = mutableListOf<MatchedMemberData>()
+    var cachedMatchingResult: MutableList<MatchedMemberData>? = cacheMatchingResult.get("matchedData")
+    var cachedPage: Page? = cachePage.get("page")
+
+    // var matchedMemberListForAdapter = mutableListOf<MatchedMemberData>()
 
     var currentPageNumber: Int = 0
     var currentPageItems: Int = 0
@@ -45,6 +53,10 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
     var currentScrollPosition: Int = 0
     var currentViewPagerPosition: Int = 0
+
+    val cacheSize = 4 * 1024 * 1024
+    val previousMemberList = LruCache<String, MutableList<MatchedMemberData>>(cacheSize)
+    val previousLastPage = LruCache<String, Int>(cacheSize)
 
     companion object {
         var isLoading: Boolean = false
@@ -64,40 +76,89 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         super.onViewCreated(view, savedInstanceState)
 
         Log.d("MYTAG", "Now Matching After Fragment View Created.")
-        Log.d("MYTAG", "Member: ${cachedMatchedMemberList?.data}")
+        Log.d("MYTAG", "Member: ${cachedMatchingResult}")
+
+//        if (cachedMatchingResult != null && cachedPage != null) {
+//
+//            currentPageNumber = cachedPage.currentPage
+//            currentPageItems = 0
+//            totalPage = 0
+//            totalItems = 0
+//        }
+//
+//        if (cachedMatchedMemberList!!.data.currentPage != 1) {
+//            Log.d("MYTAG", "NowMatchingAfterFragment: 다시 불러와야 함.")
+//            getMatchedMember(requireContext(), 1)
+//            currentPageNumber = 0
+//            currentPageItems = 0
+//            totalPage = 0
+//            totalItems = 0
+//            setCardAdapter(toggled)
+//        }
 
         CachedUserInfoLiveData.observe(viewLifecycleOwner) { userInfo ->
             Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 사용자 데이터")
             cachedUserInfo = cacheUserInfo.get("userInfo")
 
+
             if (cachedUserInfo != null) {
                 setCardAdapter(toggled)
+            } else {
+                getUserInfo(requireContext())
             }
         }
 
-        CachedMatchedMemberListLiveData.observe(viewLifecycleOwner) {matchedMemberList ->
-            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 매칭 멤버 리스트")
-            cachedMatchedMemberList = cacheMatchedMemberList.get("matchedMemberList")
+//        CachedMatchedMemberListLiveData.observe(viewLifecycleOwner) {matchedMemberList ->
+//            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 매칭 멤버 리스트")
+//            cachedMatchedMemberList = cacheMatchedMemberList.get("matchedMemberList")
+//
+//            if (cachedMatchedMemberList != null) {
+//                Log.d("MYTAG", "nowMatchingAfterFragment: 매칭 멤버 리스트가 null이 아님.")
+//                Log.d("MYTAG", "nowMatchingAfterFragment: 현재 페이지 $currentPageNumber, 받아온 페이지 ${cachedMatchedMemberList!!.data.currentPage}, 총페이지 ${cachedMatchedMemberList!!.data.totalPages}")
+//                totalPage = cachedMatchedMemberList!!.data.totalPages
+//                totalItems = cachedMatchedMemberList!!.data.totalElements
+//                currentPageItems = cachedMatchedMemberList!!.data.pageSize
+//                binding.totalCard.text = "$totalItems"
+//
+//                if (currentPageNumber < cachedMatchedMemberList!!.data.currentPage) {
+//                    Log.d("MYTAG", "nowMatchingAfterFragment: 새로운 페이지 받기")
+//                    for (member in cachedMatchedMemberList!!.data.content) {
+//                        matchedMemberListForAdapter.add(member)
+//                        currentPageNumber = cachedMatchedMemberList!!.data.currentPage
+//                    }
+//                    Log.d("MYTAG", "nowMatchingAfterFragment: 새로운 페이지를 받아서 새롭게 어댑터 세팅합니다.")
+//                    setCardAdapter(toggled)
+//                    (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(currentScrollPosition)
+//                    binding.viewPager2.currentItem = currentViewPagerPosition
+//                }
+//            }
+//        }
 
-            if (cachedMatchedMemberList != null) {
-                Log.d("MYTAG", "nowMatchingAfterFragment: 매칭 멤버 리스트가 null이 아님.")
-                Log.d("MYTAG", "nowMatchingAfterFragment: 현재 페이지 $currentPageNumber, 받아온 페이지 ${cachedMatchedMemberList!!.data.currentPage}, 총페이지 ${cachedMatchedMemberList!!.data.totalPages}")
-                totalPage = cachedMatchedMemberList!!.data.totalPages
-                totalItems = cachedMatchedMemberList!!.data.totalElements
-                currentPageItems = cachedMatchedMemberList!!.data.pageSize
+        CachedPageLiveData.observe(viewLifecycleOwner) { page ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 페이지")
+            cachedPage = cachePage.get("page")
+
+            if (cachedPage != null) {
+                totalPage = cachedPage!!.totalPages
+                totalItems = cachedPage!!.totalElements
+                currentPageItems = cachedPage!!.pageSize
+                currentPageNumber = cachedPage!!.currentPage
                 binding.totalCard.text = "$totalItems"
+            }
+        }
 
-                if (currentPageNumber < cachedMatchedMemberList!!.data.currentPage) {
-                    Log.d("MYTAG", "nowMatchingAfterFragment: 새로운 페이지 받기")
-                    for (member in cachedMatchedMemberList!!.data.content) {
-                        matchedMemberListForAdapter.add(member)
-                        currentPageNumber = cachedMatchedMemberList!!.data.currentPage
-                    }
-                    Log.d("MYTAG", "nowMatchingAfterFragment: 새로운 페이지를 받아서 새롭게 어댑터 세팅합니다.")
-                    setCardAdapter(toggled)
-                    (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(currentScrollPosition)
-                    binding.viewPager2.currentItem = currentViewPagerPosition
-                }
+        CachedMatchingResultLiveData.observe(viewLifecycleOwner) { matchedData ->
+            Log.d("MYTAG", "onCreateView: 캐시 데이터 변경 감지 in 매칭 결과 페이지 of 매칭 멤버 리스트")
+            cachedMatchingResult = cacheMatchingResult.get("matchedData")
+
+            if (cachedMatchingResult != null) {
+                Log.d("MYTAG", "nowMatchingAfterFragment: 매칭 멤버 리스트가 null이 아님.")
+
+                setCardAdapter(toggled)
+                (binding.recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(currentScrollPosition)
+                binding.viewPager2.currentItem = currentViewPagerPosition
+            } else {
+                getMatchedMember(requireContext(), 1)
             }
         }
 
@@ -211,6 +272,9 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
             currentScrollPosition = 0
             currentViewPagerPosition = 0
 
+            CachedPageLiveData.cachePage.remove("page")
+            CachedMatchingResultLiveData.cacheMatchingResult.remove("matchedData")
+
             val intent = Intent(context, NowMatchingActivity::class.java)
             startActivity(intent)
         }
@@ -242,9 +306,9 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
     private fun setCardAdapter(isButton1Checked: Boolean) {
         Log.d("MYTAG", "Now Matching After Fragment , 새롭게 데이터 어댑터 세팅")
-        if (matchedMemberListForAdapter.isNotEmpty() && cachedUserInfo != null) {
+        if (cachedMatchingResult != null && cachedUserInfo != null) {
             // CardAdapter 생성자에 UserResponse.Data.Member 타입의 cachedUserInfo를 전달
-            val cardAdapter = CardAdapter(requireContext(), matchedMemberListForAdapter, cachedUserInfo!!, isButton1Checked)
+            val cardAdapter = CardAdapter(requireContext(), cachedMatchingResult!!, cachedUserInfo!!, isButton1Checked)
 
             cardAdapter.setOnCharacterClickListener(this)
 
@@ -257,14 +321,13 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
 
                 cardAdapter.setOnItemClickListener { position ->
                     Log.d("MYTAG", "setCardAdapter: $position")
-                    val cardAdapter2 = CardAdapter(requireContext(), matchedMemberListForAdapter, cachedUserInfo!!, !isButton1Checked)
+                    val cardAdapter2 = CardAdapter(requireContext(), cachedMatchingResult!!, cachedUserInfo!!, !isButton1Checked)
                     setToViewPager()
 
                     binding.viewPager2.adapter = cardAdapter2
                     binding.recyclerView.adapter = null
                     toggled = !toggled
                     binding.viewPager2.currentItem = position
-
                 }
             }
         }
@@ -286,4 +349,5 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
         }
         dialog.show()
     }
+
 }

@@ -8,12 +8,13 @@ import android.webkit.WebResourceRequest
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
+import androidx.browser.customtabs.CustomTabsIntent
 import com.example.moiroom.LoadingActivity
 import com.example.moiroom.NaviActivity
 import com.example.moiroom.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
-import com.example.moiroom.utils.getRequestResult
+import com.facebook.CallbackManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import com.github.kittinunf.fuel.Fuel
@@ -21,6 +22,12 @@ import com.github.kittinunf.fuel.core.FuelManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.GlobalScope
+import android.widget.Toast
+import com.facebook.FacebookCallback
+import com.facebook.FacebookException
+import com.facebook.login.LoginManager
+import com.facebook.login.LoginResult
+import java.util.*
 
 class InstagramExtract: AppCompatActivity() {
     private lateinit var binding: ActivityWebviewtestBinding
@@ -32,13 +39,18 @@ class InstagramExtract: AppCompatActivity() {
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
 //        // 바인딩된 레이아웃의 최상위 뷰를 현재 액티비티의 뷰로 설정
         setContentView(binding.root)
-        getRequestResult(true, this)
+
         val webView: WebView = findViewById(R.id.webView)
         webView.settings.javaScriptEnabled = true
         webView.webViewClient = InstagramAuthWebViewClient()
         val url = "https://api.instagram.com/oauth/authorize?client_id=802744445198772&redirect_uri=https://example.com/instagramredirection&scope=user_profile,user_media&response_type=code"
         webView.loadUrl(url)
+        ////////
+//        val customTabsIntent = CustomTabsIntent.Builder().build()
+//        val url = "https://api.instagram.com/oauth/authorize?client_id=802744445198772&redirect_uri=https://moiroom.firebaseapp.com/__/auth/handler&scope=user_profile,user_media&response_type=code"
+//        customTabsIntent.launchUrl(this, Uri.parse(url))
     }
+
 
     fun instagramExtract () {
         binding = ActivityWebviewtestBinding.inflate(layoutInflater)
