@@ -50,7 +50,7 @@
 # 화면 구성 소개
 
 ## 영상 소개
-<img src="image/result_video.gif" width=40% />
+<img src="image/result_video.gif" width="300" />
 
 ## 1. 입장 화면 및 동의 화면
 
