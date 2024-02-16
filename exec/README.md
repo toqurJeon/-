@@ -2,9 +2,57 @@
 
 <p align="center">
 원치 않게 룸메이트를 찾아야 하는 상황에 처하게 될 때 저희 모이룸 서비스가 완벽한 룸메이트를 찾을 수 있도록 도와드리겠습니다! 단지 저희 서비스에 로그인하는 것만으로도, 여러분에게 알맞은 룸메이트 매칭을 원활하게 진행할 수 있는 시스템을 갖추고 있습니다. 👫
-</p>
+</p><br>
+
+<p>
+
+# 개발 환경
+
+<h3> Management Tool</h3>
+<img src="https://img.shields.io/badge/JIRA-0052CC?style=for-the-badge&logo=JIRA&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/gitlab-FC6D26?style=for-the-badge&logo=gitlab&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/mattermost-0058CC?style=for-the-badge&logo=mattermost&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/notion-000000?style=for-the-badge&logo=notion&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/GIT-F05032?style=for-the-badge&logo=git&logoColor=white">
+
+<h3>IDE</h3>
+<img src="https://img.shields.io/badge/INTELLIJ-000000?style=for-the-badge&logo=intellijidea&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/ANDROID STUDIO-3DDC84?style=for-the-badge&logo=ANDROID-STUDIO&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/PYCHARM-000000?style=for-the-badge&logo=pycharm&logoColor=white"/>
+
+<h3>Infra</h3>
+<img src="https://img.shields.io/badge/AMAZON EC2-232F3E?style=for-the-badge&logo=amazonec2&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/AMAZON S3-569A31?style=for-the-badge&logo=amazons3&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/NGINX-009639?style=for-the-badge&logo=nginx&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/DOCKER-2496ED?style=for-the-badge&logo=docker&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/UBUNTU-E95420?style=for-the-badge&logo=ubuntu&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/JENKINS-D24939?style=for-the-badge&logo=jenkins&logoColor=white"/>
+
+<h3>Frontend</h3>
+<img src="https://img.shields.io/badge/KOTLIN-7F52FF?style=for-the-badge&logo=kotlin&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/FIREBASE-FFCA28?style=for-the-badge&logo=firebase&logoColor=white"/>
+
+<h3>Backend</h3>
+<img src="https://img.shields.io/badge/java-007396?style=for-the-badge&logo=java&logoColor=white">&nbsp;
+<img src="https://img.shields.io/badge/SPRING BOOT-6DB33F?style=for-the-badge&logo=springboot&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/SPRING SECURITY-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/MYSQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/PYTHON-3776AB?style=for-the-badge&logo=python&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/FLASK-000000?style=for-the-badge&logo=flask&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/OAUTH2-40AEF0?style=for-the-badge&logo=oauth2&logoColor=white"/>&nbsp;
+<img src="https://img.shields.io/badge/WEBSOCKET-FF9E0F?style=for-the-badge&logo=websocket&logoColor=white"/>
+</p><br>
+
+<p>
 
 # 화면 구성 소개
+
+## 영상 소개
+<video autoplay controls loop muted width=50%>
+   <source src="image/result_video.mp4" type="video/mp4"/>
+</video>
 
 ## 1. 입장 화면 및 동의 화면
 
@@ -36,3 +84,14 @@
 <img  src="https://github.com/hel-gather/hel-gather-server/assets/75198221/a646334b-26b6-4151-acf4-f0880c1a0bb8" width="200" height="350"> <img  src="https://github.com/hel-gather/hel-gather-server/assets/75198221/56a691fb-7c1b-4c03-8c7d-9e2572b3d3a2" width="200" height="350">
 
 채팅 서비스를 활용하여 서로 자세한 소개를 하거나 원하는 방 찾기 등 유용한 정보들을 주고 받을 수 있습니다.
+</p><br>
+
+<p>
+
+# 기술 소개
+## 시스템 아키텍처
+<img src="image/system_architecture.png" width="600">
+
+## ERD
+<img src="image/erd.png" width="600">
+</p>
