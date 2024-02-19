@@ -7,8 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class GetMetropolitan {
-
+public class GetCityResponse {
+    private Long cityId;
     private Long metropolitanId;
-    private String metropolitanName;
+    private String cityName;
 }
