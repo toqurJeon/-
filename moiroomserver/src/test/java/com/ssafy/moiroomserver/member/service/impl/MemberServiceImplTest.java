@@ -3,16 +3,18 @@ package com.ssafy.moiroomserver.member.service.impl;
 import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
-@Component
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
 class MemberServiceImplTest {
 
-    @Autowired MemberRepository memberRepository;
+    @Autowired
+    MemberRepository memberRepository;
 
     @Test
     void modifyMemberInfo() {
@@ -50,9 +52,9 @@ class MemberServiceImplTest {
 
         memberRepository.save(member);
 
-        //Then
-        Assertions.assertThat(memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()))
-                .isNull();
+//        Then
+        assertThat(memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider()))
+                .isNotNull();
     }
 
     @Test
