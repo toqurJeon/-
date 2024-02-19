@@ -1,7 +1,7 @@
 package com.ssafy.moiroomserver.area.controller;
 
-import com.ssafy.moiroomserver.area.dto.GetCity;
-import com.ssafy.moiroomserver.area.dto.GetMetropolitan;
+import com.ssafy.moiroomserver.area.dto.GetCityResponse;
+import com.ssafy.moiroomserver.area.dto.GetMetropolitanResponse;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +26,7 @@ public class AreaController {
 	 */
 	@GetMapping("/metropolitan")
 	public ApiResponse<?> getMetropolitans() {
-		List<GetMetropolitan> metropolitans = areaService.getMetropolitans();
+		List<GetMetropolitanResponse> metropolitans = areaService.getMetropolitans();
 		return ApiResponse.success(SuccessCode.GET_METROPOLITANS, metropolitans);
 	}
 
@@ -36,7 +36,7 @@ public class AreaController {
 	 */
 	@GetMapping("/{metropolitanId}/city")
 	public ApiResponse<?> getCities(@PathVariable Long metropolitanId) {
-		List<GetCity> cities = areaService.getCitiesByMetropolitanId(metropolitanId);
+		List<GetCityResponse> cities = areaService.getCitiesByMetropolitanId(metropolitanId);
 		return ApiResponse.success(SuccessCode.GET_METROPOLITANS, cities);
 	}
 }

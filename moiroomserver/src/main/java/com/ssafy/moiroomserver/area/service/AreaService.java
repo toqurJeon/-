@@ -1,12 +1,12 @@
 package com.ssafy.moiroomserver.area.service;
 
-import com.ssafy.moiroomserver.area.dto.GetCity;
-import com.ssafy.moiroomserver.area.dto.GetMetropolitan;
+import com.ssafy.moiroomserver.area.dto.GetCityResponse;
+import com.ssafy.moiroomserver.area.dto.GetMetropolitanResponse;
 
 import java.util.List;
 
 public interface AreaService {
-    List<GetMetropolitan> getMetropolitans();
+    List<GetMetropolitanResponse> getMetropolitans();
 
-    List<GetCity> getCitiesByMetropolitanId(Long metropolitanId);
+    List<GetCityResponse> getCitiesByMetropolitanId(Long metropolitanId);
 }
