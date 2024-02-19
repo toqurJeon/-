@@ -1,6 +1,6 @@
 package com.ssafy.moiroomserver.member.service.impl;
 
-import com.ssafy.moiroomserver.member.dto.AddMemberDto;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.MemberRepository;
 import org.junit.jupiter.api.Test;
@@ -24,7 +24,7 @@ class MemberServiceImplTest {
     @Transactional
     void login() {
         //Given
-        AddMemberDto dto = new AddMemberDto(
+        AddMemberRequest dto = new AddMemberRequest(
                 12345L,
                 "kakao",
                 "nicknameTest1",
