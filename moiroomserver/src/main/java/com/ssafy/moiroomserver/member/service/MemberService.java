@@ -1,7 +1,7 @@
 package com.ssafy.moiroomserver.member.service;
 
-import com.ssafy.moiroomserver.member.dto.AddMemberDto;
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.dto.MemberInfoRes;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -11,7 +11,7 @@ public interface MemberService {
 
     void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest MemberInfoModifyReq);
 
-    void login(AddMemberDto dto);
+    void login(AddMemberRequest dto);
 
     void modifyMemberToken(Long memberId, MemberTokenDto tokenDto);
 

@@ -2,6 +2,7 @@ package com.ssafy.moiroomserver.member.dto;
 
 import java.util.List;
 
+import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.ssafy.moiroomserver.member.entity.Member;
@@ -11,6 +12,22 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class MemberInfo {
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class AddMemberRequest {
+        private Long socialId;
+        private String provider;
+        private String nickname;
+        private String imageUrl;
+        private String birthyear;
+        private String birthday;
+        private String name;
+        private String gender;
+        private String accessToken; // 카카오 accessToken
+        private String refreshToken; // 카카오 refreshToken
+    }
 
     @Getter
     @Setter

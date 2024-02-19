@@ -5,6 +5,7 @@ import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;
@@ -58,7 +59,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void login(AddMemberDto dto) {
+    public void login(AddMemberRequest dto) {
 
         if (memberRepository.existsMemberByProviderAndSocialId(dto.getProvider(), dto.getSocialId())) {
             Member member = memberRepository.findMemberBySocialIdAndProvider(dto.getSocialId(), dto.getProvider());

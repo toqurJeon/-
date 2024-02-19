@@ -5,6 +5,7 @@ import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
 import com.ssafy.moiroomserver.global.constants.SuccessCode;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.*;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -40,7 +41,7 @@ public class MemberController {
      * @return
      */
     @PostMapping("/login")
-    public ApiResponse<?> login(@RequestBody AddMemberDto accountDto) {
+    public ApiResponse<?> login(@RequestBody AddMemberRequest accountDto) {
         memberService.login(accountDto);
         return ApiResponse.success(SuccessCode.LOGIN_MEMBER);
     }
