@@ -25,7 +25,7 @@ public class CharacteristicAndInterestInfo {
 	}
 	@Getter
 	@Setter
-	public static class CharactAndInterInfoResquest {
+	public static class AddCharactAndInterInfoRequest {
 		private Long memberId;
 		private CharacteristicInfo.RequestResponse characteristic;
 		private List<InterestInfo.RequestResponse> interests;
