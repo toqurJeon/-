@@ -7,6 +7,7 @@ import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberInfoRes;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberTokenRequest;
 import com.ssafy.moiroomserver.member.dto.jpql.MemberInfoDetail;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
@@ -92,7 +93,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void modifyMemberToken(Long memberId, MemberTokenDto tokenDto) {
+    public void modifyMemberToken(Long memberId, MemberTokenRequest tokenDto) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow();
 
