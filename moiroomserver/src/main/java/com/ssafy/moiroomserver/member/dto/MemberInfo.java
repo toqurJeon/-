@@ -31,7 +31,7 @@ public class MemberInfo {
 
     @Getter
     @Setter
-    public static class ModifyRequest {
+    public static class ModifyMemberRequest {
         private MultipartFile memberProfileImage;
         private String profileImageUrl;
         private Long metropolitanId;

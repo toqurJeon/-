@@ -25,11 +25,11 @@ public class MemberController {
     /**
      * 회원 정보 수정
      *
-     * @param infoModifyRequest 수정 시 입력할 데이터
+     * @param infoModifyMemberRequest 수정 시 입력할 데이터
      */
     @PatchMapping
-    public ApiResponse<?> modifyMemberInfo(HttpServletRequest request, @ModelAttribute MemberInfo.ModifyRequest infoModifyRequest) {
-        memberService.modifyMemberInfo(request, infoModifyRequest);
+    public ApiResponse<?> modifyMemberInfo(HttpServletRequest request, @ModelAttribute MemberInfo.ModifyMemberRequest infoModifyMemberRequest) {
+        memberService.modifyMemberInfo(request, infoModifyMemberRequest);
 
         return ApiResponse.success(MODIFY_MEMBER_INFO);
     }

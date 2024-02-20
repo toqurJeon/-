@@ -9,7 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 public interface MemberService {
 
-    void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest MemberInfoModifyReq);
+    void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyMemberRequest MemberInfoModifyReq);
 
     void login(AddMemberRequest dto);
 

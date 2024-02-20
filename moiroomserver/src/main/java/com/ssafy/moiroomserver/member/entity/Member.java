@@ -83,7 +83,7 @@ public class Member extends BaseEntity {
      * 회원 정보 수정
      * @param infoModifyRequest 수정 시 입력할 회원 정보
      */
-    public void modifyMemberInfo(MemberInfo.ModifyRequest infoModifyRequest) {
+    public void modifyMemberInfo(MemberInfo.ModifyMemberRequest infoModifyRequest) {
         this.imageUrl = (infoModifyRequest.getProfileImageUrl() == null) ? imageUrl : infoModifyRequest.getProfileImageUrl();
         this.metropolitanId = (infoModifyRequest.getMetropolitanId() == null) ? metropolitanId : infoModifyRequest.getMetropolitanId();
         this.cityId = (infoModifyRequest.getCityId() == null) ? cityId : infoModifyRequest.getCityId();
