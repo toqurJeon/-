@@ -31,7 +31,7 @@ public class MatchingController {
      */
     @GetMapping("/info")
     public ApiResponse<?> getInfoForMatching(HttpServletRequest request) {
-        MatchingInfo.GetResponse matchingInfoRes = matchingService.getInfoForMatching(request);
+        MatchingInfo.MatchingResponse matchingInfoRes = matchingService.getInfoForMatching(request);
 
         return ApiResponse.success(GET_INFO_FOR_MATCHING, matchingInfoRes);
     }

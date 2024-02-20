@@ -49,7 +49,7 @@ public class MatchingServiceImpl implements MatchingService {
 	 * @return 로그인 사용자와 상대방의 특징 및 관심사 정보
 	 */
 	@Override
-	public MatchingInfo.GetResponse getInfoForMatching(HttpServletRequest request) {
+	public MatchingInfo.MatchingResponse getInfoForMatching(HttpServletRequest request) {
 		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		//로그인 사용자의 특징 및 관심사 데이터 조회
 		CharacteristicAndInterestInfo.RequestResponse memberOne = CharacteristicAndInterestInfo.RequestResponse.builder()
@@ -74,7 +74,7 @@ public class MatchingServiceImpl implements MatchingService {
 			}
 		}
 
-		return MatchingInfo.GetResponse.builder()
+		return MatchingInfo.MatchingResponse.builder()
 			.memberOne(memberOne)
 			.memberTwos(memberTwoList)
 			.build();
