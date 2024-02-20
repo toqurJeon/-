@@ -14,12 +14,12 @@ public class MatchingInfo {
 	@Getter
 	@Setter
 	@NoArgsConstructor
-	public static class GetResponse {
+	public static class MatchingResponse {
 		private CharacteristicAndInterestInfo.RequestResponse memberOne;
 		private List<CharacteristicAndInterestInfo.RequestResponse> memberTwos;
 
 		@Builder
-		public GetResponse(CharacteristicAndInterestInfo.RequestResponse memberOne,
+		public MatchingResponse(CharacteristicAndInterestInfo.RequestResponse memberOne,
 				List<CharacteristicAndInterestInfo.RequestResponse> memberTwos) {
 			this.memberOne = memberOne;
 			this.memberTwos = memberTwos;
