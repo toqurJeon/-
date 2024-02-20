@@ -42,7 +42,7 @@ public class MemberServiceImpl implements MemberService {
      */
     @Transactional
     @Override
-    public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyRequest memberInfoModifyReq) {
+    public void modifyMemberInfo(HttpServletRequest request, MemberInfo.ModifyMemberRequest memberInfoModifyReq) {
         Member member = kakaoService.getMemberByHttpServletRequest(request);
         if (memberInfoModifyReq.getMemberProfileImage() != null) {
             memberInfoModifyReq.setProfileImageUrl(s3Service.uploadProfileImage(memberInfoModifyReq.getMemberProfileImage(), member));
