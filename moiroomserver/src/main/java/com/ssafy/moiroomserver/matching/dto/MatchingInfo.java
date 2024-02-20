@@ -26,9 +26,4 @@ public class MatchingInfo {
 		}
 	}
 
-	@Getter
-	@Setter
-	public static class AddMatchingResultsRequest {
-		private List<MatchingResultInfo.AddMatchingRequest> matchingResults;
-	}
 }

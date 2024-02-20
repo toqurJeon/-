@@ -5,6 +5,7 @@ import static com.ssafy.moiroomserver.global.constants.SuccessCode.*;
 import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.matching.dto.MatchingInfo;
+import com.ssafy.moiroomserver.matching.dto.MatchingResultInfo;
 import com.ssafy.moiroomserver.matching.service.MatchingService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -42,7 +43,7 @@ public class MatchingController {
      * @param matchingInfoAddReq 추가할 매칭 결과 리스트
      */
     @PostMapping("/result")
-    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddMatchingResultsRequest matchingInfoAddReq) {
+    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingResultInfo.AddMatchingResultsRequest matchingInfoAddReq) {
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(ADD_MATCHING_RESULT);
