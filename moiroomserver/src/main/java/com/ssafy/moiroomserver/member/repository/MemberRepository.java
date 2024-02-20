@@ -3,7 +3,7 @@ package com.ssafy.moiroomserver.member.repository;
 import java.util.List;
 import java.util.Optional;
 
-import com.ssafy.moiroomserver.member.dto.MemberInfoDetail;
+import com.ssafy.moiroomserver.member.dto.jpql.member.MemberInfoDetail;
 import com.ssafy.moiroomserver.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,7 +19,7 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
         (Long memberId, String gender, Long metropolitanId, Long cityId, int roommateSearchStatus, int accountStatus);
 
     @Query(
-            "select new com.ssafy.moiroomserver.member.dto.MemberInfoDetail(" +
+            "select new com.ssafy.moiroomserver.member.dto.jpql.member.MemberInfoDetail(" +
                     "m.memberId as memberId, m.imageUrl as memberProfileImageUrl, m.nickname as memberNickname, " +
                     "m.gender as memberGender, m.name as memberName, m.birthyear as memberBirthYear," +
                     "met.name as metropolitanName, c.name as cityName, m.introduction as memberIntroduction, " +

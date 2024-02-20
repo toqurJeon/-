@@ -1,5 +1,6 @@
-package com.ssafy.moiroomserver.member.dto;
+package com.ssafy.moiroomserver.member.dto.jpql.member;
 
+import com.ssafy.moiroomserver.member.dto.CharacteristicInfo;
 import com.ssafy.moiroomserver.member.dto.jpql.interest.InterestRes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
