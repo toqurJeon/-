@@ -44,7 +44,7 @@ public class MemberInfo {
 
     @Getter
     @Setter
-    public static class GetResponse {
+    public static class MatchingResponse {
         private Long memberId;
         private String memberProfileImageUrl;
         private String memberNickname;
@@ -58,7 +58,7 @@ public class MemberInfo {
         private List<InterestInfo.RequestResponse> interests;
 
         @Builder
-        public GetResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.RequestResponse characteristic,
+        public MatchingResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.RequestResponse characteristic,
                 List<InterestInfo.RequestResponse> interests) {
             this.memberId = member.getMemberId();
             this.memberProfileImageUrl = member.getImageUrl();
