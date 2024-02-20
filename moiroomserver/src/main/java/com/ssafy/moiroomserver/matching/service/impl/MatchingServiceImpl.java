@@ -120,7 +120,7 @@ public class MatchingServiceImpl implements MatchingService {
 			return null;
 		}
 		//매칭 결과 Entity에서 얻은 정보로 추천 룸메이트 응답 DTO 생성
-		List<MatchingResultInfo.GetResponse> matchingResultResList = new ArrayList<>();
+		List<MatchingResultInfo.MatchingResultResponse> matchingResultResList = new ArrayList<>();
 		for (MatchingResult matchingResult : matchingResultPage.getContent()) {
 			Long memberTwoId = (matchingResult.getMemberOneId().equals(member.getMemberId())) ? matchingResult.getMemberTwoId() : matchingResult.getMemberOneId();
 			Member memberTwo = memberRepository.findById(memberTwoId)
@@ -131,7 +131,7 @@ public class MatchingServiceImpl implements MatchingService {
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_CITY_ID));
 			//추천 룸메이트 리스트에 추천 룸메이트 한 명 정보 담기
 			try {
-				matchingResultResList.add(MatchingResultInfo.GetResponse.builder()
+				matchingResultResList.add(MatchingResultInfo.MatchingResultResponse.builder()
 						.member(MemberInfo.MatchingResponse.builder()
 								.member(memberTwo)
 								.metropolitanName(metropolitanName)

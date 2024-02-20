@@ -29,13 +29,13 @@ public class MatchingResultInfo {
 
 	@Getter
 	@Setter
-	public static class GetResponse {
+	public static class MatchingResultResponse {
 		private MemberInfo.MatchingResponse member;
 		private int matchRate;
 		private String matchIntroduction;
 
 		@Builder
-		public GetResponse(MemberInfo.MatchingResponse member, int matchRate, String matchIntroduction) {
+		public MatchingResultResponse(MemberInfo.MatchingResponse member, int matchRate, String matchIntroduction) {
 			this.member = member;
 			this.matchRate = matchRate;
 			this.matchIntroduction = matchIntroduction;
