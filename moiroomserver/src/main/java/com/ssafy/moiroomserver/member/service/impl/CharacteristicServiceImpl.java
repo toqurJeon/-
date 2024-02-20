@@ -55,7 +55,7 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 		}
 		//관심사 데이터 추가 (특성 및 관심사 데이터 추가 및 수정 작업 모든 경우에 실행)
 		if (infoAddModifyReq.getInterests() == null) return;
-		for (InterestInfo.RequestResponse interestAddReq : infoAddModifyReq.getInterests()) {
+		for (InterestInfo.InterestInfoResponse interestAddReq : infoAddModifyReq.getInterests()) {
 			Interest interest = interestRepository.findByName(interestAddReq.getInterestName())
 				.orElseThrow(() -> new NoExistException(NOT_EXISTS_INTEREST_NAME));
 			memberInterestRepository.save(interestAddReq.toEntity(member, interest));
@@ -86,11 +86,11 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	 * @return 회원의 관심사 정보
 	 */
 	@Override
-	public List<InterestInfo.RequestResponse> getInterestListOf(Member member) {
+	public List<InterestInfo.InterestInfoResponse> getInterestListOf(Member member) {
 		List<MemberInterest> memberInterestList = memberInterestRepository.findByMemberOrderByPercentDesc(member);
-		List<InterestInfo.RequestResponse> interestInfoResList = new ArrayList<>();
+		List<InterestInfo.InterestInfoResponse> interestInfoResList = new ArrayList<>();
 		for (MemberInterest memberInterest : memberInterestList) {
-			interestInfoResList.add(InterestInfo.RequestResponse.builder()
+			interestInfoResList.add(InterestInfo.InterestInfoResponse.builder()
 				.memberInterest(memberInterest)
 				.build());
 		}

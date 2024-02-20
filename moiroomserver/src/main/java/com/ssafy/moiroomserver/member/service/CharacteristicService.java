@@ -13,5 +13,5 @@ public interface CharacteristicService {
 
 	void addCharacteristic(HttpServletRequest request, CharacteristicAndInterestInfo.AddCharactAndInterInfoRequest infoAddModifyReq);
 	CharacteristicInfo.CharacteristicResponse getCharacteristicOf(Member member);
-	List<InterestInfo.RequestResponse> getInterestListOf(Member member);
+	List<InterestInfo.InterestInfoResponse> getInterestListOf(Member member);
 }
