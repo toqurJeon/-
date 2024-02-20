@@ -12,6 +12,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface CharacteristicService {
 
 	void addCharacteristic(HttpServletRequest request, CharacteristicAndInterestInfo.AddCharactAndInterInfoRequest infoAddModifyReq);
-	CharacteristicInfo.RequestResponse getCharacteristicOf(Member member);
+	CharacteristicInfo.CharacteristicResponse getCharacteristicOf(Member member);
 	List<InterestInfo.RequestResponse> getInterestListOf(Member member);
 }

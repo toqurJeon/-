@@ -20,6 +20,6 @@ public class MemberInfoDetail {
     private String cityName;
     private String memberIntroduction;
     private Integer memberRoommateSearchStatus;
-    private CharacteristicInfo.RequestResponse characteristic;
+    private CharacteristicInfo.CharacteristicResponse characteristic;
     private List<InterestRes> interests;
 }

@@ -12,7 +12,7 @@ public class CharacteristicInfo {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class RequestResponse {
+    public static class CharacteristicResponse {
         private Integer sociability;
         private Integer positivity;
         private Integer activity;
@@ -25,7 +25,7 @@ public class CharacteristicInfo {
         private String wakeUpAt;
 
         @Builder
-        public RequestResponse(Characteristic characteristic) {
+        public CharacteristicResponse(Characteristic characteristic) {
             this.sociability = characteristic.getSociability();
             this.positivity = characteristic.getPositivity();
             this.activity = characteristic.getActivity();
