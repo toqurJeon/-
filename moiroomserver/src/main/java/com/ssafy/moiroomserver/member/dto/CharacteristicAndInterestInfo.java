@@ -23,4 +23,12 @@ public class CharacteristicAndInterestInfo {
 			this.interests = interests;
 		}
 	}
+	@Getter
+	@Setter
+	public static class CharactAndInterInfoResquest {
+		private Long memberId;
+		private CharacteristicInfo.RequestResponse characteristic;
+		private List<InterestInfo.RequestResponse> interests;
+	}
+
 }
