@@ -7,6 +7,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 public class MatchingResultInfo {
 
 	@Getter
@@ -25,6 +27,12 @@ public class MatchingResultInfo {
 				.rateIntroduction(rateIntroduction)
 				.build();
 		}
+	}
+
+	@Getter
+	@Setter
+	public static class AddMatchingResultsRequest {
+		private List<AddMatchingRequest> matchingResults;
 	}
 
 	@Getter
