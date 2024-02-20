@@ -10,13 +10,13 @@ public class CharacteristicAndInterestInfo {
 
 	@Getter
 	@Setter
-	public static class RequestResponse {
+	public static class CharactAndInterInfoResponse {
 		private Long memberId;
 		private CharacteristicInfo.RequestResponse characteristic;
 		private List<InterestInfo.RequestResponse> interests;
 
 		@Builder
-		public RequestResponse(Long memberId, CharacteristicInfo.RequestResponse characteristic,
+		public CharactAndInterInfoResponse(Long memberId, CharacteristicInfo.RequestResponse characteristic,
 				List<InterestInfo.RequestResponse> interests) {
 			this.memberId = memberId;
 			this.characteristic = characteristic;
