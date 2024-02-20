@@ -1,5 +1,6 @@
 package com.ssafy.moiroomserver.member.dto;
 
+import com.ssafy.moiroomserver.member.dto.jpql.interest.InterestRes;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;

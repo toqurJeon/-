@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.repository;
 
 import java.util.List;
 
-import com.ssafy.moiroomserver.member.dto.InterestRes;
+import com.ssafy.moiroomserver.member.dto.jpql.interest.InterestRes;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.entity.MemberInterest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,7 +17,7 @@ public interface MemberInterestRepository extends JpaRepository<MemberInterest, 
     List<MemberInterest> findByMemberOrderByPercentDesc(Member member);
 
     @Query(
-            "select new com.ssafy.moiroomserver.member.dto.InterestRes(mi.interest.name, mi.percent) from MemberInterest mi " +
+            "select new com.ssafy.moiroomserver.member.dto.jpql.interest.InterestRes(mi.interest.name, mi.percent) from MemberInterest mi " +
                     "join Interest i on i.interestId = mi.interest.interestId" +
                     " where mi.member.memberId = :memberId"
     )
