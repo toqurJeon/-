@@ -11,7 +11,7 @@ public class MatchingResultInfo {
 
 	@Getter
 	@Setter
-	public static class AddRequest {
+	public static class AddMatchingRequest {
 		private Long memberTwoId;
 		private int rate;
 		private String rateIntroduction;
