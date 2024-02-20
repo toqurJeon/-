@@ -8,6 +8,6 @@ import jakarta.servlet.http.HttpServletRequest;
 public interface MatchingService {
 
 	MatchingInfo.MatchingResponse getInfoForMatching(HttpServletRequest request);
-	void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq);
+	void addMatchingResult(HttpServletRequest request, MatchingInfo.AddMatchingResultsRequest matchingInfoAddReq);
 	PageResponse getMatchingRoommateList(HttpServletRequest request, int pgno);
 }
