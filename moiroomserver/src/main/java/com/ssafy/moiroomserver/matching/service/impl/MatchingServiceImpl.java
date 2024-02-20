@@ -87,7 +87,7 @@ public class MatchingServiceImpl implements MatchingService {
 	 */
 	@Transactional
 	@Override
-	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
+	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddMatchingResultsRequest matchingInfoAddReq) {
 		Member member = kakaoService.getMemberByHttpServletRequest(request);
 		for (MatchingResultInfo.AddMatchingRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResults()) {
 			MatchingResult firstMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(member.getMemberId(), matchingResultInfoAddReq.getMemberTwoId());

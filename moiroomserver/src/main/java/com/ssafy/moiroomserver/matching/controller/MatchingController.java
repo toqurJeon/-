@@ -42,7 +42,7 @@ public class MatchingController {
      * @param matchingInfoAddReq 추가할 매칭 결과 리스트
      */
     @PostMapping("/result")
-    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddRequest matchingInfoAddReq) {
+    public ApiResponse<?> addMatchingResult(HttpServletRequest request, @RequestBody MatchingInfo.AddMatchingResultsRequest matchingInfoAddReq) {
         matchingService.addMatchingResult(request, matchingInfoAddReq);
 
         return ApiResponse.success(ADD_MATCHING_RESULT);
