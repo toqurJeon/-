@@ -2,6 +2,7 @@ package com.ssafy.moiroomserver.member.dto;
 
 import java.util.List;
 
+import com.ssafy.moiroomserver.member.dto.jpql.member.MemberInfoDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +41,13 @@ public class MemberInfo {
         private String memberIntroduction;
         private Integer roommateSearchStatus;
         private String memberGender;
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class MemberInfoRes {
+        MemberInfoDetail member;
     }
 
     @Getter

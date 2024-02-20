@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.service;
 
 import com.ssafy.moiroomserver.member.dto.MemberInfo;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
-import com.ssafy.moiroomserver.member.dto.MemberInfoRes;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberInfoRes;
 import com.ssafy.moiroomserver.member.dto.MemberTokenDto;
 import com.ssafy.moiroomserver.member.entity.Member;
 import jakarta.servlet.http.HttpServletRequest;
