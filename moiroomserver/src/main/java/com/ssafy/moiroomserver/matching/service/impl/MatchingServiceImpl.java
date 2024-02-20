@@ -133,7 +133,7 @@ public class MatchingServiceImpl implements MatchingService {
 			//추천 룸메이트 리스트에 추천 룸메이트 한 명 정보 담기
 			try {
 				matchingResultResList.add(MatchingResultInfo.GetResponse.builder()
-						.member(MemberInfo.GetResponse.builder()
+						.member(MemberInfo.MatchingResponse.builder()
 								.member(memberTwo)
 								.metropolitanName(metropolitanName)
 								.cityName(cityName)

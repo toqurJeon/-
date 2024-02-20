@@ -30,12 +30,12 @@ public class MatchingResultInfo {
 	@Getter
 	@Setter
 	public static class GetResponse {
-		private MemberInfo.GetResponse member;
+		private MemberInfo.MatchingResponse member;
 		private int matchRate;
 		private String matchIntroduction;
 
 		@Builder
-		public GetResponse(MemberInfo.GetResponse member, int matchRate, String matchIntroduction) {
+		public GetResponse(MemberInfo.MatchingResponse member, int matchRate, String matchIntroduction) {
 			this.member = member;
 			this.matchRate = matchRate;
 			this.matchIntroduction = matchIntroduction;
