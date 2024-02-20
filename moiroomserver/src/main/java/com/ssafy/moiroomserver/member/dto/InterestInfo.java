@@ -14,12 +14,12 @@ public class InterestInfo {
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class RequestResponse {
+    public static class InterestInfoResponse {
         private String interestName;
         private int interestPercent;
 
         @Builder
-        public RequestResponse(MemberInterest memberInterest) {
+        public InterestInfoResponse(MemberInterest memberInterest) {
             this.interestName = memberInterest.getInterest().getName();
             this.interestPercent = memberInterest.getPercent();
         }
