@@ -12,11 +12,11 @@ public class CharacteristicAndInterestInfo {
 	@Setter
 	public static class CharactAndInterInfoResponse {
 		private Long memberId;
-		private CharacteristicInfo.RequestResponse characteristic;
+		private CharacteristicInfo.CharacteristicResponse characteristic;
 		private List<InterestInfo.RequestResponse> interests;
 
 		@Builder
-		public CharactAndInterInfoResponse(Long memberId, CharacteristicInfo.RequestResponse characteristic,
+		public CharactAndInterInfoResponse(Long memberId, CharacteristicInfo.CharacteristicResponse characteristic,
 				List<InterestInfo.RequestResponse> interests) {
 			this.memberId = memberId;
 			this.characteristic = characteristic;
@@ -27,7 +27,7 @@ public class CharacteristicAndInterestInfo {
 	@Setter
 	public static class AddCharactAndInterInfoRequest {
 		private Long memberId;
-		private CharacteristicInfo.RequestResponse characteristic;
+		private CharacteristicInfo.CharacteristicResponse characteristic;
 		private List<InterestInfo.RequestResponse> interests;
 	}
 

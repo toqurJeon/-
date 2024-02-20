@@ -136,7 +136,7 @@ public class MemberServiceImpl implements MemberService {
 
         MemberInfoDetail memberInfo = memberRepository.findMemberDetailByMemberId(memberId)
                 .orElseThrow(() -> new NoExistException(NOT_EXISTS_MEMBER));
-        memberInfo.setCharacteristic(CharacteristicInfo.RequestResponse.builder()
+        memberInfo.setCharacteristic(CharacteristicInfo.CharacteristicResponse.builder()
                 .characteristic(characteristicRepository.findById(characteristicId)
                         .orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC)))
                 .build());

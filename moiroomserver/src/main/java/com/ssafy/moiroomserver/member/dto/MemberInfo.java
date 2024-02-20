@@ -54,11 +54,11 @@ public class MemberInfo {
         private String metropolitanName;
         private String cityName;
         private String memberIntroduction;
-        private CharacteristicInfo.RequestResponse characteristic;
+        private CharacteristicInfo.CharacteristicResponse characteristic;
         private List<InterestInfo.RequestResponse> interests;
 
         @Builder
-        public MatchingResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.RequestResponse characteristic,
+        public MatchingResponse(Member member, String metropolitanName, String cityName, CharacteristicInfo.CharacteristicResponse characteristic,
                 List<InterestInfo.RequestResponse> interests) {
             this.memberId = member.getMemberId();
             this.memberProfileImageUrl = member.getImageUrl();

@@ -67,7 +67,7 @@ public class Characteristic extends BaseEntity {
         this.wakeUpAt = wakeUpAt;
     }
 
-    public void modifyCharacteristicInfo(CharacteristicInfo.RequestResponse characteristicInfoReqRes) {
+    public void modifyCharacteristicInfo(CharacteristicInfo.CharacteristicResponse characteristicInfoReqRes) {
         this.sociability = (characteristicInfoReqRes.getSociability() == null) ? sociability : characteristicInfoReqRes.getSociability();
         this.positivity = (characteristicInfoReqRes.getPositivity() == null) ? positivity : characteristicInfoReqRes.getPositivity();
         this.activity = (characteristicInfoReqRes.getActivity() == null) ? activity : characteristicInfoReqRes.getActivity();

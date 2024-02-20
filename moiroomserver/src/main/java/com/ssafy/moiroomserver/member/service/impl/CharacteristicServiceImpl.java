@@ -68,14 +68,14 @@ public class CharacteristicServiceImpl implements CharacteristicService {
 	 * @return 회원의 특징 정보
 	 */
 	@Override
-	public CharacteristicInfo.RequestResponse getCharacteristicOf(Member member) {
+	public CharacteristicInfo.CharacteristicResponse getCharacteristicOf(Member member) {
 		if (member.getCharacteristicId() == null) {
 			throw new NoExistException(NOT_EXIST_CHARACTERISTIC_ID);
 		}
 		Characteristic characteristic = characteristicRepository.findById(member.getCharacteristicId())
 			.orElseThrow(() -> new NoExistException(NOT_EXISTS_CHARACTERISTIC));
 
-		return CharacteristicInfo.RequestResponse.builder()
+		return CharacteristicInfo.CharacteristicResponse.builder()
 			.characteristic(characteristic)
 			.build();
 	}
