@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.ssafy.moiroomserver.area.repository.CityRepository;
 import com.ssafy.moiroomserver.area.repository.MetropolitanRepository;
-import com.ssafy.moiroomserver.global.constants.ErrorCode;
 import com.ssafy.moiroomserver.global.dto.PageResponse;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
@@ -90,7 +89,7 @@ public class MatchingServiceImpl implements MatchingService {
 	@Override
 	public void addMatchingResult(HttpServletRequest request, MatchingInfo.AddRequest matchingInfoAddReq) {
 		Member member = kakaoService.getMemberByHttpServletRequest(request);
-		for (MatchingResultInfo.AddRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResults()) {
+		for (MatchingResultInfo.AddMatchingRequest matchingResultInfoAddReq : matchingInfoAddReq.getMatchingResults()) {
 			MatchingResult firstMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(member.getMemberId(), matchingResultInfoAddReq.getMemberTwoId());
 			MatchingResult secondMatchingResult = matchingResultRepository.findByMemberOneIdAndMemberTwoId(matchingResultInfoAddReq.getMemberTwoId(), member.getMemberId());
 			//이미 서로의 매칭 결과가 저장되어 있는 경우 -> 수정
