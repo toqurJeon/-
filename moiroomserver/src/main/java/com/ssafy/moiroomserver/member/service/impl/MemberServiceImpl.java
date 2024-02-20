@@ -7,7 +7,7 @@ import com.ssafy.moiroomserver.global.kakao.KakaoService;
 import com.ssafy.moiroomserver.member.dto.*;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberInfoRes;
-import com.ssafy.moiroomserver.member.dto.jpql.member.MemberInfoDetail;
+import com.ssafy.moiroomserver.member.dto.jpql.MemberInfoDetail;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.repository.CharacteristicRepository;
 import com.ssafy.moiroomserver.member.repository.MemberInterestRepository;

@@ -2,7 +2,7 @@ package com.ssafy.moiroomserver.member.dto;
 
 import java.util.List;
 
-import com.ssafy.moiroomserver.member.dto.jpql.member.MemberInfoDetail;
+import com.ssafy.moiroomserver.member.dto.jpql.MemberInfoDetail;
 import lombok.AllArgsConstructor;
 import org.springframework.web.multipart.MultipartFile;
 
