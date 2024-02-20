@@ -7,6 +7,7 @@ import com.ssafy.moiroomserver.global.dto.ApiResponse;
 import com.ssafy.moiroomserver.member.dto.*;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberInfoRes;
+import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberTokenRequest;
 import com.ssafy.moiroomserver.member.entity.Member;
 import com.ssafy.moiroomserver.member.service.CharacteristicService;
 import com.ssafy.moiroomserver.member.service.MemberService;
@@ -55,7 +56,7 @@ public class MemberController {
      */
     @PatchMapping("/{memberId}")
     public ApiResponse<?> modifyMemberToken(@PathVariable Long memberId,
-                                            @RequestBody MemberTokenDto tokenDto) {
+                                            @RequestBody MemberTokenRequest tokenDto) {
         memberService.modifyMemberToken(memberId, tokenDto);
         return ApiResponse.success(SuccessCode.MODIFY_MEMBER_TOKEN);
     }

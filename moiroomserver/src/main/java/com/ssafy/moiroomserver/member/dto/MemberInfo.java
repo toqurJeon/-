@@ -51,6 +51,12 @@ public class MemberInfo {
     }
 
     @Getter
+    public class MemberTokenRequest {
+        private String accessToken;
+        private String refreshToken;
+    }
+
+    @Getter
     @Setter
     public static class MatchingResponse {
         private Long memberId;
