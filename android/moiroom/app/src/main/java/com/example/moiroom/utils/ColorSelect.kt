@@ -12,14 +12,14 @@ private val interestColorMap = mapOf(
     "Pets & Animals" to R.color.pastel_blue_2,
     "Sports" to R.color.pastel_blue,
     "Travel & Events" to R.color.pastel_purple_2,
-    "Gaming" to R.color.pastel_aquagreen,
-    "Videoblogging" to R.color.pastel_skyblue,
+    "Gaming" to R.color.pastel_aqua_green,
+    "Videoblogging" to R.color.pastel_sky_blue,
     "People & Blogs" to R.color.pastel_orange,
     "Comedy" to R.color.pastel_yellow_2,
     "Entertainment" to R.color.pastel_pink_2,
     "News & Politics" to R.color.pastel_purple,
     "Howto & Style" to R.color.pastel_pink,
-    "Education" to R.color.pastel_skyblue_2,
+    "Education" to R.color.pastel_sky_blue_2,
     "Science & Technology" to R.color.pastel_green,
     "Nonprofits & Activism" to R.color.pastel_orange_2
 )
@@ -30,7 +30,7 @@ fun getColorInterest(interestName: String,  context: Context): Int {
 }
 
 private val characterBGColorMap = mapOf(
-    "사교" to R.color.character_bg_socialable,
+    "사교" to R.color.character_bg_sociable,
     "긍정" to R.color.character_bg_positivity,
     "활동" to R.color.character_bg_activity,
     "공유" to R.color.character_bg_communion,
@@ -42,7 +42,7 @@ private val characterBGColorMap = mapOf(
 )
 
 private val characterColorMap = mapOf(
-    "사교" to R.color.character_socialable,
+    "사교" to R.color.character_sociable,
     "긍정" to R.color.character_positivity,
     "활동" to R.color.character_activity,
     "공유" to R.color.character_communion,

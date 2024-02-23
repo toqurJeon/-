@@ -369,7 +369,7 @@ class CardAdapter(
                         )
                         binding.hiddenView.visibility = View.VISIBLE
                         characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
-                        detailLine.setBackgroundColor(context.getColor(R.color.main_orange_transparent))
+                        detailLine.setBackgroundColor(context.getColor(R.color.main_orange_transparent_50))
                     }
                 }
 

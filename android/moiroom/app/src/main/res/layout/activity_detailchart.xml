@@ -85,7 +85,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
-                                app:tint="@color/character_socialable"
+                                app:tint="@color/character_sociable"
                                 android:src="@drawable/ic_character_socialability"/>
 
                             <TextView

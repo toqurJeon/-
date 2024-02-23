@@ -6,7 +6,7 @@
     <color name="white_transparent">#CCFFFFFF</color>
     <color name="transparency">#00FFFFFF</color>
     <color name="main_orange">#FF8A00</color>
-    <color name="main_orange_transparent">#80FF8A00</color>
+    <color name="main_orange_transparent_50">#80FF8A00</color>
 
     <!-- 서브 컬러 -->
     <color name="sub_yellow">#FFC639</color>
@@ -23,12 +23,12 @@
     <color name="gray_low_brightness">#888888</color>
     <color name="gray_medium_brightness">#C8C8C8</color>
     <color name="gray_high_brightness">#E1E1E1</color>
-    <color name="gray_high_brightness_60">#99E1E1E1</color>
+    <color name="gray_high_brightness_transparent_60">#99E1E1E1</color>
     <color name="gray_high_brightness_background">#F4F4F4</color>
     <color name="gray_high_brightness_max">#EBEBEB</color>
 
     <!--성향 별 색상 설정-->
-    <color name="character_bg_socialable">#E4F8E2</color>
+    <color name="character_bg_sociable">#E4F8E2</color>
     <color name="character_bg_positivity">#F6F1BF</color>
     <color name="character_bg_activity">#FADCDC</color>
     <color name="character_bg_communion">#F3D5EC</color>
@@ -37,7 +37,7 @@
     <color name="character_bg_humor">#D1F6EA</color>
     <color name="character_bg_generous">#E8E0FB</color>
 
-    <color name="character_socialable">#73DA60</color>
+    <color name="character_sociable">#73DA60</color>
     <color name="character_positivity">#FFBF1E</color>
     <color name="character_activity">#F8371E</color>
     <color name="character_communion">#EC35E9</color>
@@ -58,9 +58,9 @@
     <color name="pastel_purple_2">#F4D6FF</color>
     <color name="pastel_blue">#CFE1FF</color>
     <color name="pastel_blue_2">#CFD5FF</color>
-    <color name="pastel_skyblue">#B0EFFF</color>
-    <color name="pastel_skyblue_2">#B0DDFF</color>
-    <color name="pastel_aquagreen">#D6FFEF</color>
+    <color name="pastel_sky_blue">#B0EFFF</color>
+    <color name="pastel_sky_blue_2">#B0DDFF</color>
+    <color name="pastel_aqua_green">#D6FFEF</color>
     <color name="pastel_green">#E1FFD6</color>
     <color name="pastel_green_2">#D6FFDA</color>
 
