@@ -1,12 +1,10 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
 import android.Manifest
 import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -14,6 +12,7 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import com.example.moiroom.R
 import com.example.moiroom.extraction.AppExtract
 import com.example.moiroom.extraction.CallExtract
 import com.example.moiroom.extraction.InstagramExtract
@@ -44,7 +43,7 @@ class LoadingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_loading)
 
-        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
         accessToken = sharedPreferences.getString("accessToken", null)
         refreshToken = sharedPreferences.getString("refreshToken", null)
 

@@ -228,7 +228,7 @@
                     android:layout_marginEnd="6dp"
                     android:layout_gravity="center_vertical"
                     app:tint="@color/darkorange"
-                    android:src="@drawable/character_information"/>
+                    android:src="@drawable/ic_character_information"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -342,7 +342,7 @@
                                     android:layout_height="24dp"
                                     android:layout_gravity="center_vertical"
                                     app:tint="@color/socialable"
-                                    android:src="@drawable/character_socialability"/>
+                                    android:src="@drawable/ic_character_socialability"/>
 
                                 <TextView
                                     android:id="@+id/characterDetailName"
@@ -468,7 +468,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         app:tint="@color/darkorange"
-                                        android:src="@drawable/character_member_pin"/>
+                                        android:src="@drawable/ic_character_member_pin"/>
 
                                 </LinearLayout>
 
@@ -491,7 +491,7 @@
                                         android:layout_height="wrap_content"
                                         android:layout_gravity="center_horizontal"
                                         app:tint="@color/darkorange"
-                                        android:src="@drawable/character_person_pin"/>
+                                        android:src="@drawable/ic_character_person_pin"/>
 
                                 </LinearLayout>
 
@@ -543,7 +543,7 @@
                                 android:layout_marginRight="6dp"
                                 android:layout_gravity="center_vertical"
                                 app:tint="@color/darkorange"
-                                android:src="@drawable/character_interests"/>
+                                android:src="@drawable/ic_character_interests"/>
 
                             <TextView
                                 android:layout_width="wrap_content"

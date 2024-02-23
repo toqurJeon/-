@@ -9,9 +9,9 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.appcompat.app.AppCompatActivity
 import androidx.browser.customtabs.CustomTabsIntent
-import com.example.moiroom.LoadingActivity
-import com.example.moiroom.NaviActivity
-import com.example.moiroom.NowMatchingActivity
+import com.example.moiroom.activity.LoadingActivity
+import com.example.moiroom.activity.NaviActivity
+import com.example.moiroom.activity.NowMatchingActivity
 import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityWebviewtestBinding
 import com.facebook.CallbackManager

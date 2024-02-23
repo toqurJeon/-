@@ -1,30 +1,17 @@
-package com.example.moiroom
+package com.example.moiroom.socket
 
-import ChatAdapter
 import android.util.Log
 import com.example.moiroom.data.Chat
-import com.example.moiroom.data.ChatMessageReqDTO
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.utils.CachedUserInfoLiveData
-import com.google.gson.Gson
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import kotlinx.serialization.json.Json
-import okhttp3.OkHttpClient
 import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
-import okhttp3.WebSocket
-import okhttp3.Request
-import org.json.JSONObject
 import ua.naiksoftware.stomp.dto.LifecycleEvent
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import java.util.concurrent.Flow
-import android.content.Context
 import androidx.recyclerview.widget.RecyclerView
-import com.example.moiroom.adapter.ChatRoomAdapter
-import com.google.gson.JsonSyntaxException
+import com.example.moiroom.activity.ChatActivity
+import com.example.moiroom.adapter.ChatAdapter
 
 
 //class ChatSocketManager(private val activity: ChatActivity) {

@@ -19,7 +19,7 @@
             android:layout_height="24dp"
             android:layout_gravity="center_vertical"
             app:tint="@color/socialable"
-            android:src="@drawable/character_socialability"/>
+            android:src="@drawable/ic_character_socialability"/>
 
         <TextView
             android:id="@+id/characterDetailName"

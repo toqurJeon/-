@@ -1,40 +1,22 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
-import android.content.ContentProvider
-import android.content.ContentValues
-import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
-//성현
-import android.util.Log
-import com.kakao.sdk.common.util.Utility
-
-//성현
 import android.content.Intent
-import android.database.Cursor
-import android.net.Uri
-import android.provider.MediaStore
+import android.os.Bundle
+import android.util.Log
 import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
+import com.example.moiroom.R
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
 import com.kakao.sdk.auth.LoginClient
 import com.kakao.sdk.auth.model.OAuthToken
-import com.kakao.sdk.common.model.AuthErrorCause.*
+import com.kakao.sdk.common.model.AuthErrorCause
+import com.kakao.sdk.common.util.Utility
 import com.kakao.sdk.user.UserApiClient
 import fetchUserInfo
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 // AppCompatActivity: AndroidX에서 제공하는 액티비티 클래스
 class MainActivity : AppCompatActivity() {
@@ -58,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
 //                Toast.makeText(this, "토큰 정보 보기 성공", Toast.LENGTH_SHORT).show()
 
-                val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val sharedPreferences = this.getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
                 val intent: Intent
 
@@ -82,7 +64,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         // 키 해시 값을 구하기 위한 코드(성현)
-        val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val sharedPreferences = this.getSharedPreferences("PREFERENCE", MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
 
         val keyHash = Utility.getKeyHash(this)
@@ -96,28 +78,28 @@ class MainActivity : AppCompatActivity() {
             if (error != null) {
                 // 에러가 아래 옵션 중에 있으면 특정 토스트 띄우기
                 when {
-                    error.toString() == AccessDenied.toString() -> {
+                    error.toString() == AuthErrorCause.AccessDenied.toString() -> {
 //                        Toast.makeText(this, "접근이 거부 됨(동의 취소)", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == InvalidClient.toString() -> {
+                    error.toString() == AuthErrorCause.InvalidClient.toString() -> {
 //                        Toast.makeText(this, "유효하지 않은 앱", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == InvalidGrant.toString() -> {
+                    error.toString() == AuthErrorCause.InvalidGrant.toString() -> {
 //                        Toast.makeText(this, "인증 수단이 유효하지 않아 인증할 수 없는 상태", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == InvalidRequest.toString() -> {
+                    error.toString() == AuthErrorCause.InvalidRequest.toString() -> {
 //                        Toast.makeText(this, "요청 파라미터 오류", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == InvalidScope.toString() -> {
+                    error.toString() == AuthErrorCause.InvalidScope.toString() -> {
 //                        Toast.makeText(this, "유효하지 않은 scope ID", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == Misconfigured.toString() -> {
+                    error.toString() == AuthErrorCause.Misconfigured.toString() -> {
 //                        Toast.makeText(this, "설정이 올바르지 않음(android key hash)", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == ServerError.toString() -> {
+                    error.toString() == AuthErrorCause.ServerError.toString() -> {
 //                        Toast.makeText(this, "서버 내부 에러", Toast.LENGTH_SHORT).show()
                     }
-                    error.toString() == Unauthorized.toString() -> {
+                    error.toString() == AuthErrorCause.Unauthorized.toString() -> {
 //                        Toast.makeText(this, "앱이 요청 권한이 없음", Toast.LENGTH_SHORT).show()
                     }
                     // 에러가 위 옵션 중에 없으면 '기타 에러' 토스트 띄우기'
@@ -135,7 +117,7 @@ class MainActivity : AppCompatActivity() {
                 val refreshToken = token.refreshToken
 
                 // 액세스 토큰을 SharedPreferences에 저장
-                val sharedAccessToken = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val sharedAccessToken = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 val editor = sharedAccessToken.edit()
                 editor.putString("accessToken", accessToken)
                 editor.putString("refreshToken", refreshToken)
@@ -159,14 +141,17 @@ class MainActivity : AppCompatActivity() {
 //                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보냈습니다.", Toast.LENGTH_SHORT).show()
                     } else {
                         // 상태 코드와 메시지를 로그에 출력합니다.
-                        Log.d("Login", "Status code: ${response.code()}, message: ${response.message()}")
+                        Log.d(
+                            "Login",
+                            "Status code: ${response.code()}, message: ${response.message()}"
+                        )
 //                        Toast.makeText(this@MainActivity, "서버에 로그인 요청을 보내는 데 실패했습니다.", Toast.LENGTH_SHORT).show()
                     }
                 }
 
 
 //                Toast.makeText(this, "로그인에 성공하였습니다.", Toast.LENGTH_SHORT).show()
-                val sharedPreferences = this.getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val sharedPreferences = this.getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
                 val intent: Intent
 

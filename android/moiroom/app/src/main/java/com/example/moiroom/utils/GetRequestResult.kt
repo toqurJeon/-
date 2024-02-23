@@ -3,21 +3,17 @@ package com.example.moiroom.utils
 import ApiService
 import NetworkModule
 import android.content.Context
-import android.content.Intent
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
 import android.util.LruCache
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
-import com.example.moiroom.NaviActivity
-import com.example.moiroom.NowMatchingAfterFragment
+import com.example.moiroom.fragment.NowMatchingAfterFragment
 import com.example.moiroom.data.Characteristic
 import com.example.moiroom.data.Interest
 import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.MatchedMemberList
-import com.example.moiroom.data.Member
 import com.example.moiroom.data.Page
 import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
@@ -28,9 +24,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 
 val cacheSize = 4 * 1024 * 1024 // 4MB
 

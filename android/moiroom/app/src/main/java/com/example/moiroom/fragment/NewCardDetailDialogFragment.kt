@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.fragment
 
 import android.app.Dialog
 import android.os.Bundle
@@ -7,8 +7,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.example.moiroom.R
 import com.example.moiroom.data.CardInfo
-import com.example.moiroom.data.MatchedMember
 
 class NewCardDetailDialogFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {

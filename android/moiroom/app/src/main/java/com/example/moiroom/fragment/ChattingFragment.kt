@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -12,6 +12,7 @@ import android.widget.Toast
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moiroom.activity.ChatActivity
 import com.example.moiroom.adapter.ChatRoomAdapter
 import com.example.moiroom.data.ChatRoom
 import com.example.moiroom.databinding.FragmentChattingBinding
@@ -19,8 +20,6 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.Instant
-import kotlin.math.log
 
 class ChattingFragment : Fragment() {
 

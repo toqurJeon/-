@@ -1,15 +1,13 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
 import android.content.Intent
-import android.content.Intent.FLAG_ACTIVITY_CLEAR_TOP
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
-import com.example.moiroom.MainActivity
 import com.example.moiroom.R
 import com.kakao.sdk.user.UserApiClient
 
@@ -28,7 +26,7 @@ class SecondActivity : AppCompatActivity() {
                     Toast.makeText(this, "로그아웃 성공", Toast.LENGTH_SHORT).show()
                 }
                 val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
+                startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                 finish()
             }
         }
@@ -42,7 +40,7 @@ class SecondActivity : AppCompatActivity() {
                 }else {
                     Toast.makeText(this, "회원 탈퇴 성공", Toast.LENGTH_SHORT).show()
                     val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent.addFlags(FLAG_ACTIVITY_CLEAR_TOP))
+                    startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP))
                     finish()
                 }
             }

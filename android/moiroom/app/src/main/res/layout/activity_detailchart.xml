@@ -34,7 +34,7 @@
                         android:layout_marginRight="6dp"
                         android:layout_gravity="center_vertical"
                         app:tint="@color/darkorange"
-                        android:src="@drawable/character_information"/>
+                        android:src="@drawable/ic_character_information"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -86,7 +86,7 @@
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
                                 app:tint="@color/socialable"
-                                android:src="@drawable/character_socialability"/>
+                                android:src="@drawable/ic_character_socialability"/>
 
                             <TextView
                                 android:id="@+id/characterDetailName"
@@ -137,7 +137,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             app:tint="@color/darkorange"
-                            android:src="@drawable/character_person_pin"/>
+                            android:src="@drawable/ic_character_person_pin"/>
 
                     </LinearLayout>
 
@@ -186,7 +186,7 @@
                         android:layout_marginRight="6dp"
                         android:layout_gravity="center_vertical"
                         app:tint="@color/darkorange"
-                        android:src="@drawable/character_interests"/>
+                        android:src="@drawable/ic_character_interests"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -221,7 +221,7 @@
                         <androidx.recyclerview.widget.RecyclerView
                             android:id="@+id/interestRecyclerView"
                             android:layout_width="140dp"
-                            android:layout_height="wrap_content"
+                            android:layout_height="200dp"
                             android:gravity="end"
                             android:layout_marginTop="2dp"
                             android:layout_marginBottom="16dp"
@@ -383,7 +383,7 @@
             android:layout_marginVertical="16dp"
             android:layout_marginLeft="8dp"
             android:layout_gravity="center_vertical"
-            android:src="@drawable/arrow_back_ios_new_fill0_wght400_grad0_opsz24"/>
+            android:src="@drawable/ic_arrow_back"/>
 
         <TextView
             android:layout_width="wrap_content"

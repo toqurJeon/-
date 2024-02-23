@@ -1,47 +1,39 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
-import android.app.Activity
+import ApiService
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Intent
 import android.net.Uri
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
-import android.widget.EditText
-import com.bumptech.glide.Glide
-import com.example.moiroom.databinding.ActivityInfoupdateBinding
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import ApiService
-import android.app.Dialog
-import android.content.Context
 import android.widget.AdapterView
-import android.widget.Toast
+import android.widget.EditText
+import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.example.moiroom.R
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
 import com.example.moiroom.data.Metropolitan
 import com.example.moiroom.data.UserResponse
+import com.example.moiroom.databinding.ActivityInfoupdateBinding
 import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
-import com.example.moiroom.utils.CachedUserInfoLiveData.cacheUserInfo
-import com.example.moiroom.utils.getMatchedMember
+import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.getUserInfo
-import fetchUserInfo
-import kotlinx.coroutines.async
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.net.URL
-
 
 class InfoupdateActivity : AppCompatActivity() {
 
@@ -146,7 +138,8 @@ class InfoupdateActivity : AppCompatActivity() {
                                         apiService.getCities(selectedMetropolitan.metropolitanId)
                                     Log.d("결과", "군/구 데이터 요청 결과: $cityResponse")
                                     if (cityResponse.isSuccessful) {
-                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName } ?: emptyList()  // 수정된 부분
+                                        cities = cityResponse.body()?.data?.sortedBy { it.cityName }
+                                            ?: emptyList()  // 수정된 부분
                                         Log.d("결과", "군/구 데이터: $cities")
                                         withContext(Dispatchers.Main) {
 
@@ -277,7 +270,7 @@ class InfoupdateActivity : AppCompatActivity() {
     // 갤러리 선택 결과 처리
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null) {
             // 선택한 이미지의 Uri를 가져옴
             val selectedImageUri: Uri? = data.data
             // 선택한 이미지를 Glide를 사용하여 이미지뷰에 표시
@@ -338,14 +331,14 @@ class InfoupdateActivity : AppCompatActivity() {
     private fun sendUpdatedInfo() {
 
         CoroutineScope(Dispatchers.IO).launch {
-            val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+            val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
             val accessToken = sharedPreferences.getString("accessToken", null)
             val refreshToken = sharedPreferences.getString("refreshToken", null)
 
             // accessToken과 refreshToken이 null인지 검사합니다.
             if (accessToken != null && refreshToken != null) {
                 // 사용자 정보를 가져옵니다.
-                val userInfo = cacheUserInfo.get("userInfo") as? UserResponse.Data.Member
+                val userInfo = CachedUserInfoLiveData.cacheUserInfo.get("userInfo") as? UserResponse.Data.Member
 
                 // 사용자 정보가 null이 아니라면
                 if (userInfo != null) {
@@ -431,7 +424,7 @@ class InfoupdateActivity : AppCompatActivity() {
                     )
                     Log.d("UpdateMemberInfo", "Cities: ${cities.map { it.cityName }}")
 
-                    val sharedPref = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+                    val sharedPref = getSharedPreferences("PREFERENCE_NAME", MODE_PRIVATE)
                     val memberGender = sharedPref.getString("memberGender", null) ?: run {
                         Log.e("UpdateMemberInfo", "No stored memberGender in SharedPreferences.")
                         return@launch

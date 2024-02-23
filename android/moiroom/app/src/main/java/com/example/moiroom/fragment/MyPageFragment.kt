@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.fragment
 
 import android.content.Intent
 import android.os.Bundle
@@ -8,6 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
+import com.example.moiroom.activity.AdsettingActivity
+import com.example.moiroom.activity.DetailchartActivity
+import com.example.moiroom.activity.InfoupdateActivity
 import com.example.moiroom.data.CharacteristicType
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.data.UserResponse

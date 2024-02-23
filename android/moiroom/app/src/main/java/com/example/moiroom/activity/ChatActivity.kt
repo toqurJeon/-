@@ -1,42 +1,28 @@
-package com.example.moiroom
-
+package com.example.moiroom.activity
 
 import ApiService
-import ChatAdapter
 import android.app.Dialog
-import android.content.Context
-import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.view.ViewTreeObserver
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.moiroom.socket.ChatSocketManager
+import com.example.moiroom.R
+import com.example.moiroom.adapter.ChatAdapter
 import com.example.moiroom.data.Chat
 import com.example.moiroom.data.ChatMessageReqDTO
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityChatBinding
 import com.example.moiroom.utils.CachedUserInfoLiveData
-import com.example.moiroom.utils.getUserInfo
 import com.google.gson.Gson
-import io.reactivex.disposables.Disposable
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import okhttp3.OkHttpClient
-import okhttp3.WebSocket
-import java.time.Instant
-import java.time.LocalDateTime
-import java.time.ZoneId
-import java.time.format.DateTimeFormatter
-import ua.naiksoftware.stomp.Stomp
 import ua.naiksoftware.stomp.StompClient
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 class ChatActivity : AppCompatActivity() {
 
@@ -60,7 +46,7 @@ class ChatActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val sharedPref = getSharedPreferences("shared_preferences", Context.MODE_PRIVATE)
+        val sharedPref = getSharedPreferences("shared_preferences", MODE_PRIVATE)
         val memberNickname = sharedPref.getString("memberNickname", "defaultNickname") ?: "defaultNickname"
         val memberProfileImage = sharedPref.getString("memberProfileImage", "defaultProfileImage") ?: "defaultProfileImage"
         val anothermemberId = sharedPref.getLong("memberId", 0L)
@@ -80,7 +66,7 @@ class ChatActivity : AppCompatActivity() {
         Log.d("MYTAG", "receivedData: $memberId")
         Log.d("MYTAG", "채팅Data: $chatRoomId")
 
-//        adapter = ChatAdapter(data, this@ChatActivity)
+//        adapter = com.example.moiroom.adapter.ChatAdapter(data, this@ChatActivity)
 //        recyclerView.adapter = adapter
 
         // 채팅방이 생성되면 WebSocket에 연결하고 구독을 시작
@@ -158,7 +144,8 @@ class ChatActivity : AppCompatActivity() {
 
         binding.sendMsgBtn.setOnClickListener {
             val message = binding.sendMsg.text.toString().trim()
-            val currentDateTime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
+            val currentDateTime = LocalDateTime.now()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"))
 
             if (message.isNotEmpty()) {
                 val chatMessageReqDTO = ChatMessageReqDTO(
@@ -195,7 +182,7 @@ class ChatActivity : AppCompatActivity() {
             }
         }
 
-        Log.d("채팅기록","$chatRoomId")
+        Log.d("채팅기록", "$chatRoomId")
 
         val btnShowModal = binding.exitBtn
         btnShowModal.setOnClickListener {
@@ -253,4 +240,3 @@ class ChatActivity : AppCompatActivity() {
 
 
 }
-

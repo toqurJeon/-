@@ -1,3 +1,5 @@
+package com.example.moiroom.adapter
+
 import android.content.Context
 import android.graphics.PorterDuff
 import android.util.Log
@@ -5,9 +7,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.R
@@ -16,9 +16,7 @@ import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ChatItemLayoutBinding
 import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.getUserInfo
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class ChatAdapter(
@@ -65,8 +63,8 @@ class ChatAdapter(
 
             // 이전 메세지와 비교
 
-            val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape)
-            val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape_flipped)
+            val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.bg_chat_ballon_shape)
+            val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.bg_chat_ballon_shape_flipped)
 
             Log.d("current_position", "current_position: $position, ${chatContent.text}")
 

@@ -2,11 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NowMatchingActivity"
+    tools:context=".activity.NowMatchingActivity"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/bg_gradient"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
@@ -73,6 +73,6 @@
         android:layout_alignParentBottom="true"
         app:tint="@color/white"
         android:contentDescription="@string/logoLetter"
-        android:src="@drawable/letter_logo"/>
+        android:src="@drawable/logo_letter"/>
 
 </RelativeLayout>

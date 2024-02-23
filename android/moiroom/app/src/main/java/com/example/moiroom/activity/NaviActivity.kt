@@ -1,12 +1,15 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
+import com.example.moiroom.fragment.ChattingFragment
+import com.example.moiroom.fragment.MyPageFragment
+import com.example.moiroom.fragment.NowMatchingAfterFragment
+import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityNaviBinding
-
 
 private const val TAG_NOW_MATCHING_AFTER = "now_matching_after_fragment"
 private const val TAG_CHATTING = "chatting_fragment"
@@ -41,9 +44,12 @@ class NaviActivity : AppCompatActivity() {
 
         binding.navigationView.setOnItemSelectedListener { item ->
             when(item.itemId) {
-                R.id.nowMatchingFragment -> setFragment(TAG_NOW_MATCHING_AFTER, NowMatchingAfterFragment())
+                R.id.nowMatchingFragment -> setFragment(
+                    TAG_NOW_MATCHING_AFTER,
+                    NowMatchingAfterFragment()
+                )
                 R.id.chattingFragment -> setFragment(TAG_CHATTING, ChattingFragment())
-                R.id.myPageFragment-> setFragment(TAG_MY_PAGE, MyPageFragment())
+                R.id.myPageFragment -> setFragment(TAG_MY_PAGE, MyPageFragment())
             }
             true
         }
@@ -57,8 +63,10 @@ class NaviActivity : AppCompatActivity() {
             super.onBackPressed()
             finish()//액티비티 종료
         }else{
-            Toast.makeText(applicationContext, "한번 더 뒤로가기 버튼을 누르면 종료됩니다.",
-                Toast.LENGTH_SHORT).show()
+            Toast.makeText(
+                applicationContext, "한번 더 뒤로가기 버튼을 누르면 종료됩니다.",
+                Toast.LENGTH_SHORT
+            ).show()
         }
 
         //현재 시간 담기

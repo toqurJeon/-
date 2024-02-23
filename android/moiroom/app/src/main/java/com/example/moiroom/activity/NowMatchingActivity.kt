@@ -1,36 +1,25 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
+import android.Manifest
+import android.app.AppOpsManager
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
-import android.view.View
-import android.widget.RelativeLayout
-import android.widget.TextView
+import android.os.Process
+import android.provider.Settings
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.example.moiroom.databinding.DialogAuthorityBinding
-import com.example.moiroom.extraction.InstagramExtract
-import android.app.AlertDialog
-import android.util.Log
+import com.example.moiroom.R
 import com.example.moiroom.databinding.ActivityNowMatchingBinding
-import android.Manifest
-import android.app.AppOpsManager
-import android.net.Uri
-import android.provider.Settings
-import android.widget.Toast
 import com.example.moiroom.databinding.DialogBasicBinding
+import com.example.moiroom.databinding.DialogBasicSingleBinding
+import com.example.moiroom.extraction.InstagramExtract
 import com.example.moiroom.extraction.YoutubeExtract
 import com.example.moiroom.utils.getMatchedMember
 import com.example.moiroom.utils.getUserInfo
-import android.os.Process
-import androidx.appcompat.content.res.AppCompatResources
-import com.example.moiroom.databinding.DialogAuthorityFirstLayoutBinding
-import com.example.moiroom.databinding.DialogAuthorityInstagramLayoutBinding
-import com.example.moiroom.databinding.DialogAuthorityYoutubeLayoutBinding
-import com.example.moiroom.databinding.DialogBasicSingleBinding
 
 class NowMatchingActivity : AppCompatActivity() {
 
@@ -44,7 +33,7 @@ class NowMatchingActivity : AppCompatActivity() {
         binding = ActivityNowMatchingBinding.inflate(layoutInflater)
 
         // SharedPreferences에서 'isButtonClicked' 값을 가져옴
-        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
         val isButtonClicked = sharedPreferences.getBoolean("isButtonClicked", false)
         val isRematching = sharedPreferences.getBoolean("isRematching", false)
         Log.d("MYTAG", "isButtonClicked(이전에 매칭을 진행했는지 확인): $isButtonClicked")
@@ -118,8 +107,10 @@ class NowMatchingActivity : AppCompatActivity() {
     }
 
     private fun showAuthorityDialog() {
-        val appOps = getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager
-        val mode = appOps.checkOpNoThrow(AppOpsManager.OPSTR_GET_USAGE_STATS, Process.myUid(), packageName)
+        val appOps = getSystemService(APP_OPS_SERVICE) as AppOpsManager
+        val mode = appOps.checkOpNoThrow(
+            AppOpsManager.OPSTR_GET_USAGE_STATS,
+            Process.myUid(), packageName)
         val granted = mode == AppOpsManager.MODE_ALLOWED
 
         val dialog = Dialog(this, R.style.DialogTheme)
@@ -276,7 +267,7 @@ class NowMatchingActivity : AppCompatActivity() {
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_MEDIA_LOCATION
-        ) != PackageManager.PERMISSION_GRANTED
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
             permissionsToRequest.add(Manifest.permission.ACCESS_MEDIA_LOCATION);
         }

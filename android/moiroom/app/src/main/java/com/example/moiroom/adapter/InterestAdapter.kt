@@ -9,6 +9,7 @@ import com.example.moiroom.data.Interest
 import com.example.moiroom.databinding.InterestItemLayoutBinding
 import com.example.moiroom.utils.getColorInterest
 import com.example.moiroom.utils.getInterestName
+import java.text.DecimalFormat
 
 class InterestAdapter(private val context: Context, private var dataList: List<Interest>) : RecyclerView.Adapter<InterestAdapter.InterestViewHolder>() {
 
@@ -23,10 +24,11 @@ class InterestAdapter(private val context: Context, private var dataList: List<I
     override fun onBindViewHolder(holder: InterestViewHolder, position: Int) {
         val data = dataList[position]
         val color = getColorInterest(data.interestName, context)
+        val decimalFormat = DecimalFormat("#.#")
 
         holder.binding.apply {
             interestName.text = getInterestName(data.interestName)
-            interestPercent.text = "${data.interestPercent}%"
+            interestPercent.text = "${decimalFormat.format(data.interestPercent/100)}%"
             cardBackground.setCardBackgroundColor(color)
         }
     }

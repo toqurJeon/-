@@ -1,20 +1,16 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
-import android.content.Context
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
-import com.bumptech.glide.Glide
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.lifecycleScope
 import com.example.moiroom.databinding.ActivityAdsettingBinding
+import com.google.gson.JsonParser
 import com.kakao.sdk.user.UserApiClient
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import androidx.lifecycle.lifecycleScope
-import com.google.gson.JsonParser
 
 private const val TAG = "UserInfo"
 
@@ -47,7 +43,7 @@ class AdsettingActivity : AppCompatActivity() {
 //                            Toast.makeText(this, "카카오 로그아웃 실패 $error", Toast.LENGTH_SHORT).show()
                         } else {
                             // 카카오 로그아웃 성공, 이제 백엔드 서버에 로그아웃 요청을 보낸다.
-                            val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                            val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                             val accessToken = sharedPreferences.getString("accessToken", null)
                             if (accessToken != null) {
                                 val token = "Bearer $accessToken"
@@ -70,7 +66,7 @@ class AdsettingActivity : AppCompatActivity() {
 //                    Toast.makeText(this, "회원 탈퇴 실패 $error", Toast.LENGTH_SHORT).show()
                 } else {
                     // 회원탈퇴 성공 시, 'isButtonClicked' 값을 초기화
-                    val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                    val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                     val editor = sharedPreferences?.edit()
                     editor?.putBoolean("isButtonClicked", false)
                     editor?.apply()
@@ -117,7 +113,7 @@ class AdsettingActivity : AppCompatActivity() {
     fun logoutSuccess() {
         Log.d(TAG, "logoutSuccess 호출됨")
         // 'isButtonClicked' 값을 초기화
-        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+        val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
         val editor = sharedPreferences?.edit()
         editor?.putBoolean("isButtonClicked", false)
         editor?.apply()
@@ -137,6 +133,3 @@ class AdsettingActivity : AppCompatActivity() {
 //        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }
-
-
-

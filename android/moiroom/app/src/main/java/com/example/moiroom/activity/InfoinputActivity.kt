@@ -1,36 +1,23 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
 import ApiService
-import java.net.URL
 import android.app.AlertDialog
 import android.app.Dialog
-import android.content.Context
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
-import android.view.LayoutInflater
 import android.view.View
-import android.view.WindowManager
-import android.view.inputmethod.EditorInfo
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.BaseAdapter
-import android.widget.GridView
-import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
+import com.example.moiroom.R
 import com.example.moiroom.adapter.DialogAdapter
 import com.example.moiroom.data.City
 import com.example.moiroom.data.Metropolitan
-import com.example.moiroom.data.MyResponse
-import com.example.moiroom.data.RequestBody
 import com.example.moiroom.databinding.ActivityInfoinputBinding
-import com.example.moiroom.databinding.DialogAuthorityBinding
 import com.example.moiroom.databinding.DialogFindCityBinding
 import com.example.moiroom.databinding.DialogFindMetropolitanBinding
 import fetchUserInfo
@@ -42,11 +29,9 @@ import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
-import retrofit2.Call
-import retrofit2.create
 import java.io.File
 import java.io.FileOutputStream
-import java.util.logging.Logger.global
+import java.net.URL
 
 class InfoinputActivity : AppCompatActivity() {
 
@@ -211,7 +196,7 @@ class InfoinputActivity : AppCompatActivity() {
         binding.saveButton.setOnClickListener {
             CoroutineScope(Dispatchers.Main).launch {
 
-                val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 val accessToken = sharedPreferences.getString("accessToken", null)
                 val refreshToken = sharedPreferences.getString("refreshToken", null)
 
@@ -252,13 +237,15 @@ class InfoinputActivity : AppCompatActivity() {
                         val memberNickname: String = userInfo.nickname
                         val memberIntroduction: String = binding.editText.text.toString()
 
-                        val sharedPref = getSharedPreferences("PREFERENCE_NAME", Context.MODE_PRIVATE)
+                        val sharedPref = getSharedPreferences("PREFERENCE_NAME", MODE_PRIVATE)
                         with(sharedPref.edit()) {
                             putString("memberGender", memberGender)
                             apply()
                         }
 
-                        val metropolitanIdPart = metropolitanId.toString().toRequestBody(MultipartBody.FORM)
+                        val metropolitanIdPart = metropolitanId.toString().toRequestBody(
+                            MultipartBody.FORM
+                        )
                         val cityIdPart = cityId.toString().toRequestBody(MultipartBody.FORM)
                         val memberGenderPart = memberGender.toRequestBody(MultipartBody.FORM)
                         val memberNicknamePart = memberNickname.toRequestBody(MultipartBody.FORM)
@@ -267,25 +254,36 @@ class InfoinputActivity : AppCompatActivity() {
                         // 이미지 URL을 가져옵니다.
                         val imageUrl: String = userInfo.imageUrl
 
-                        val memberProfileImagePart: MultipartBody.Part = withContext(Dispatchers.IO) {
-                            // 이미지 파일을 다운로드합니다.
-                            val inputStream = URL(imageUrl).openStream()
-                            val downloadedFile = File.createTempFile("downloaded_image", ".png")
-                            FileOutputStream(downloadedFile).use { outputStream ->
-                                inputStream.copyTo(outputStream)
+                        val memberProfileImagePart: MultipartBody.Part =
+                            withContext(Dispatchers.IO) {
+                                // 이미지 파일을 다운로드합니다.
+                                val inputStream = URL(imageUrl).openStream()
+                                val downloadedFile = File.createTempFile("downloaded_image", ".png")
+                                FileOutputStream(downloadedFile).use { outputStream ->
+                                    inputStream.copyTo(outputStream)
+                                }
+
+                                Log.d(
+                                    "Request Info",
+                                    "Downloaded image file: ${downloadedFile.absolutePath}"
+                                )
+
+                                // 다운로드한 파일을 MultipartBody.Part로 만듭니다.
+                                val requestFile = downloadedFile
+                                    .asRequestBody("image/*".toMediaTypeOrNull())
+                                val multipartBodyPart = MultipartBody.Part.createFormData(
+                                    "memberProfileImage",
+                                    downloadedFile.name,
+                                    requestFile
+                                )
+
+                                Log.d(
+                                    "Request Info",
+                                    "Converted to MultipartBody.Part: $multipartBodyPart"
+                                )
+
+                                return@withContext multipartBodyPart
                             }
-
-                            Log.d("Request Info", "Downloaded image file: ${downloadedFile.absolutePath}")
-
-                            // 다운로드한 파일을 MultipartBody.Part로 만듭니다.
-                            val requestFile = downloadedFile
-                                .asRequestBody("image/*".toMediaTypeOrNull())
-                            val multipartBodyPart = MultipartBody.Part.createFormData("memberProfileImage", downloadedFile.name, requestFile)
-
-                            Log.d("Request Info", "Converted to MultipartBody.Part: $multipartBodyPart")
-
-                            return@withContext multipartBodyPart
-                        }
 
 
                         Log.d("Request Info", "metropolitanId: $metropolitanId")
@@ -295,7 +293,7 @@ class InfoinputActivity : AppCompatActivity() {
                         Log.d("Request Info", "memberIntroduction: $memberIntroduction")
                         Log.d("Request Info", "imageUrl: $imageUrl")
 
-                        val sharedPreferences = getSharedPreferences("PREFERENCE", Context.MODE_PRIVATE)
+                        val sharedPreferences = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                         val editor = sharedPreferences.edit()
                         editor.putLong("metropolitanId", metropolitanId) // 원본 Long 값 저장
                         editor.putLong("cityId", cityId) // 원본 Long 값 저장
@@ -441,4 +439,3 @@ class InfoinputActivity : AppCompatActivity() {
 //        }
 //    }
 }
-

@@ -1,19 +1,19 @@
-package com.example.moiroom
+package com.example.moiroom.activity
 
 import android.animation.ValueAnimator
 import android.app.Dialog
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.moiroom.R
 import com.example.moiroom.adapter.CharacterAdapter
 import com.example.moiroom.adapter.InterestAdapter
 import com.example.moiroom.data.CharacteristicType
-import com.example.moiroom.data.Member
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.ActivityDetailchartBinding
@@ -44,24 +44,49 @@ class DetailchartActivity : AppCompatActivity() {
             val chartView = RadarChartView(this, null)
 
             val chartData = arrayListOf(
-                RadarChartData(CharacteristicType.sociability, memberData.characteristic.sociability.toFloat() / 100),
-                RadarChartData(CharacteristicType.positivity, memberData.characteristic.positivity.toFloat() / 100),
-                RadarChartData(CharacteristicType.activity, memberData.characteristic.activity.toFloat() / 100),
-                RadarChartData(CharacteristicType.communion, memberData.characteristic.communion.toFloat() / 100),
-                RadarChartData(CharacteristicType.altruism, memberData.characteristic.altruism.toFloat() / 100),
-                RadarChartData(CharacteristicType.empathy, memberData.characteristic.empathy.toFloat() / 100),
-                RadarChartData(CharacteristicType.humor, memberData.characteristic.humor.toFloat() / 100),
-                RadarChartData(CharacteristicType.generous, memberData.characteristic.generous.toFloat() / 100)
+                RadarChartData(
+                    CharacteristicType.sociability,
+                    memberData.characteristic.sociability.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.positivity,
+                    memberData.characteristic.positivity.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.activity,
+                    memberData.characteristic.activity.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.communion,
+                    memberData.characteristic.communion.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.altruism,
+                    memberData.characteristic.altruism.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.empathy,
+                    memberData.characteristic.empathy.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.humor,
+                    memberData.characteristic.humor.toFloat() / 100
+                ),
+                RadarChartData(
+                    CharacteristicType.generous,
+                    memberData.characteristic.generous.toFloat() / 100
+                )
             )
             chartView.setDataList(chartData, null)
             binding.radarChartContainer.addView(chartView)
 
             // 성향 목록
             binding.recyclerView.layoutManager = GridLayoutManager(this, 4)
-            val characterAdapter = CharacterAdapter(this, chartData, null) { clickedData, position ->
-                updateUI(clickedData[0])
-                performAnimation(clickedData[0])
-            }
+            val characterAdapter =
+                CharacterAdapter(this, chartData, null) { clickedData, position ->
+                    updateUI(clickedData[0])
+                    performAnimation(clickedData[0])
+                }
             binding.recyclerView.adapter = characterAdapter
 
             // 관심사 차트
@@ -95,7 +120,8 @@ class DetailchartActivity : AppCompatActivity() {
                 dialog.setContentView(dialogBinding.root)
 
                 dialogBinding.characterTitle.text = "${binding.characterDetailName.text}"
-                val detailDescription = getCharacterDetailDescription(this, binding.characterDetailName.text.toString())
+                val detailDescription =
+                    getCharacterDetailDescription(this, binding.characterDetailName.text.toString())
                 dialogBinding.characterDescription.text = detailDescription
 
                 dialogBinding.confirmButton.setOnClickListener {

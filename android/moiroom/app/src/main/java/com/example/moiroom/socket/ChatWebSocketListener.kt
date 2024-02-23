@@ -1,11 +1,11 @@
-package com.example.moiroom
+package com.example.moiroom.socket
 
 import android.util.Log
 import android.widget.Toast
+import com.example.moiroom.activity.ChatActivity
 import okhttp3.Response
 import okhttp3.WebSocket
 import okhttp3.WebSocketListener
-import okio.ByteString
 
 class ChatWebSocketListener(private val activity: ChatActivity) : WebSocketListener() {
 

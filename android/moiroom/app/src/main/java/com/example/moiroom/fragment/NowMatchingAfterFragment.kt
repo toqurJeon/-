@@ -1,4 +1,4 @@
-package com.example.moiroom
+package com.example.moiroom.fragment
 
 import android.app.Dialog
 import android.content.Context
@@ -12,16 +12,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
+import com.example.moiroom.R
+import com.example.moiroom.activity.NowMatchingActivity
 import com.example.moiroom.adapter.CardAdapter
-import com.example.moiroom.data.MatchedMember
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.Page
 import com.example.moiroom.databinding.FragmentNowMatchingAfterBinding
-import com.example.moiroom.data.ResponseData
 import com.example.moiroom.data.UserResponse
 import com.example.moiroom.databinding.DialogCharacterInformationBinding
 import com.example.moiroom.utils.CachedMatchingResultLiveData
@@ -281,7 +280,9 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     }
 
     private fun setToViewPager() {
-        val iconListDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_several)!!
+        val iconListDrawable: Drawable = ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_chat_several
+        )!!
 
         binding.viewPager2.visibility = View.VISIBLE
         binding.recyclerView.visibility = View.GONE
@@ -292,7 +293,9 @@ class NowMatchingAfterFragment : Fragment(), CardAdapter.OnCharcterClickListener
     }
 
     private fun setToRecyclerView() {
-        val iconDrawable: Drawable = ContextCompat.getDrawable(requireContext(), R.drawable.ic_chat_one)!!
+        val iconDrawable: Drawable = ContextCompat.getDrawable(requireContext(),
+            R.drawable.ic_chat_one
+        )!!
 
         binding.viewPager2.visibility = View.GONE
         binding.recyclerView.visibility = View.VISIBLE
