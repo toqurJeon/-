@@ -8,6 +8,12 @@ def calc(input, output):
 
     # ChromeDriver를 자동으로 설치합니다.
     # chromedriver_autoinstaller.install()
+
+    #options = webdriver.ChromeOptions()
+    #options.add_argument('--headless')
+    #options.add_argument('--no-sandbox')
+    #options.add_argument('--disable-dev-shm-usage')
+    #driver = webdriver.Chrome(chrome_options=options)
     driver = webdriver.Chrome()
 
     categories = {}
