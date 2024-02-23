@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".activity.AdsettingActivity"
-    android:background="@color/BGgray"
+    android:background="@color/gray_high_brightness_background"
     android:paddingHorizontal="16dp">
 
     <FrameLayout

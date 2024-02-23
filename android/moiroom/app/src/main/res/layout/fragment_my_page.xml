@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/BGgray">
+    android:background="@color/gray_high_brightness_background">
 
     <LinearLayout
         android:id="@+id/fragmentContainer"
@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:padding="16dp"
         android:orientation="vertical"
-        android:background="@color/BGgray">
+        android:background="@color/gray_high_brightness_background">
 
         <androidx.cardview.widget.CardView
             android:layout_width="match_parent"
@@ -129,7 +129,7 @@
                     android:id="@+id/editButton"
                     android:layout_width="48dp"
                     android:layout_height="match_parent"
-                    android:background="@color/darkorange"
+                    android:background="@color/main_orange"
                     android:layout_weight="1"
                     android:src="@drawable/ic_edit"
                     android:paddingHorizontal="4dp"/>
@@ -241,7 +241,7 @@
                 android:layout_height="32dp"
                 android:layout_marginRight="12dp"
                 android:layout_gravity="end|center_vertical"
-                app:tint="@color/grey"
+                app:tint="@color/gray_low_brightness"
                 android:src="@drawable/ic_arrow_right"/>
 
         </androidx.cardview.widget.CardView>

@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="42dp"
         app:cardElevation="0dp"
-        app:cardBackgroundColor="@color/BGgray"
+        app:cardBackgroundColor="@color/gray_high_brightness_background"
         app:cardCornerRadius="12dp">
 
         <TextView

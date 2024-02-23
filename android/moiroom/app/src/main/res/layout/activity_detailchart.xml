@@ -33,7 +33,7 @@
                         android:layout_height="32dp"
                         android:layout_marginRight="6dp"
                         android:layout_gravity="center_vertical"
-                        app:tint="@color/darkorange"
+                        app:tint="@color/main_orange"
                         android:src="@drawable/ic_character_information"/>
 
                     <TextView
@@ -60,7 +60,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="12dp"
                     android:layout_marginBottom="16dp"
-                    tools:listitem="@layout/characteristic_item_layout" />
+                    tools:listitem="@layout/layout_characteristic_item" />
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
@@ -85,7 +85,7 @@
                                 android:layout_width="24dp"
                                 android:layout_height="24dp"
                                 android:layout_gravity="center_vertical"
-                                app:tint="@color/socialable"
+                                app:tint="@color/character_socialable"
                                 android:src="@drawable/ic_character_socialability"/>
 
                             <TextView
@@ -104,7 +104,7 @@
                             android:id="@+id/characterDetailDescription"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/fontGray"
+                            android:textColor="@color/font_gray_mb"
                             android:text="성향에 대한 1줄 정도의 간략한 설명"/>
 
                     </LinearLayout>
@@ -136,7 +136,7 @@
                             android:id="@+id/characterLocation"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            app:tint="@color/darkorange"
+                            app:tint="@color/main_orange"
                             android:src="@drawable/ic_character_person_pin"/>
 
                     </LinearLayout>
@@ -146,7 +146,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="8dp"
                         android:layout_marginBottom="12dp"
-                        app:cardBackgroundColor="@color/BGgray"
+                        app:cardBackgroundColor="@color/gray_high_brightness_background"
                         app:cardCornerRadius="4dp"
                         app:cardElevation="0dp"/>
 
@@ -165,7 +165,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="12dp"
-                android:background="@color/mediumGray"
+                android:background="@color/gray_high_brightness"
                 android:layout_marginVertical="12dp"/>
 
             <LinearLayout
@@ -185,7 +185,7 @@
                         android:layout_height="30dp"
                         android:layout_marginRight="6dp"
                         android:layout_gravity="center_vertical"
-                        app:tint="@color/darkorange"
+                        app:tint="@color/main_orange"
                         android:src="@drawable/ic_character_interests"/>
 
                     <TextView
@@ -225,7 +225,7 @@
                             android:gravity="end"
                             android:layout_marginTop="2dp"
                             android:layout_marginBottom="16dp"
-                            tools:listitem="@layout/interest_item_layout" />
+                            tools:listitem="@layout/layout_interest_item" />
 
                     </LinearLayout>
 
@@ -245,7 +245,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="80dp"
-                android:background="@color/mediumGray"
+                android:background="@color/gray_high_brightness"
                 android:layout_marginVertical="12dp"/>
 
             <!-- LinearLayout

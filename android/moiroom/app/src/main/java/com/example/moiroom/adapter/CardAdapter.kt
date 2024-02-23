@@ -30,8 +30,8 @@ import com.example.moiroom.data.CombinedInterest
 import com.example.moiroom.data.MatchedMemberData
 import com.example.moiroom.data.RadarChartData
 import com.example.moiroom.data.UserResponse
-import com.example.moiroom.databinding.MatchedListLayoutBinding
-import com.example.moiroom.databinding.MatchedLayoutBinding
+import com.example.moiroom.databinding.LayoutMatchedBinding
+import com.example.moiroom.databinding.LayoutMatchedListBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getCharacterDescription
 import com.example.moiroom.utils.getCharacterDetailDescription
@@ -78,10 +78,10 @@ class CardAdapter(
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         return if (viewType == 1) {
-            val binding = MatchedLayoutBinding.inflate(inflater, parent, false)
+            val binding = LayoutMatchedBinding.inflate(inflater, parent, false)
             CardViewHolder1(binding)
         } else {
-            val binding = MatchedListLayoutBinding.inflate(inflater, parent, false)
+            val binding = LayoutMatchedListBinding.inflate(inflater, parent, false)
             CardViewHolder2(binding)
         }
     }
@@ -107,7 +107,7 @@ class CardAdapter(
         }
     }
 
-    inner class CardViewHolder1(private val binding: MatchedLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CardViewHolder1(private val binding: LayoutMatchedBinding) : RecyclerView.ViewHolder(binding.root) {
         val chartView = RadarChartView(context, null)
 
         fun bind(cardInfo: MatchedMemberData) {
@@ -133,14 +133,14 @@ class CardAdapter(
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                 } else if (matchRateResult >= 80) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_80))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_80))
                 } else if (matchRateResult >= 70) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_70))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_70))
                 } else if (matchRateResult >= 60) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_60))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_60))
                 } else {
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
@@ -173,7 +173,7 @@ class CardAdapter(
                 // 성향 레이더 차트 생성
                 radarChartContainer.removeAllViews()
                 radarChartContainer.addView(chartView)
-                radarChartRoommateLegendColor.setCardBackgroundColor(context.getColor(R.color.rate_over80))
+                radarChartRoommateLegendColor.setCardBackgroundColor(context.getColor(R.color.rate_over_80))
                 radarChartRoommateLegend.text = cardInfo.member.memberNickname
 
                 // 성향 비교 카드
@@ -362,14 +362,14 @@ class CardAdapter(
                         )
                         binding.hiddenView.visibility = View.GONE
                         characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_down)
-                        detailLine.setBackgroundColor(context.getColor(R.color.mediumGray))
+                        detailLine.setBackgroundColor(context.getColor(R.color.gray_high_brightness))
                     } else{
                         TransitionManager.beginDelayedTransition(binding.characterViewGroup,
                             AutoTransition()
                         )
                         binding.hiddenView.visibility = View.VISIBLE
                         characterDescriptionButton.setImageResource(com.google.android.material.R.drawable.mtrl_ic_arrow_drop_up)
-                        detailLine.setBackgroundColor(context.getColor(R.color.transparent_orange))
+                        detailLine.setBackgroundColor(context.getColor(R.color.main_orange_transparent))
                     }
                 }
 
@@ -433,7 +433,7 @@ class CardAdapter(
         }
     }
 
-    inner class CardViewHolder2(private val binding: MatchedListLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class CardViewHolder2(private val binding: LayoutMatchedListBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             // 클릭 이벤트 처리
             binding.parentLayout.setOnClickListener {
@@ -462,14 +462,14 @@ class CardAdapter(
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.main_orange))
                 } else if (matchRateResult >= 80) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over80))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_80))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_80))
                 } else if (matchRateResult >= 70) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over70))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_70))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_70))
                 } else if (matchRateResult >= 60) {
-                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
-                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over60))
+                    matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_over_60))
+                    matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_over_60))
                 } else {
                     matchRate.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
                     matchRateSymbol.setTextColor(ContextCompat.getColor(context, R.color.rate_else))
@@ -510,7 +510,7 @@ class CardAdapter(
 
     override fun getItemCount() = cardInfoList.size
 
-    fun performAnimation(clickedData: RadarChartData, clickedData2: RadarChartData, binding: MatchedLayoutBinding) {
+    fun performAnimation(clickedData: RadarChartData, clickedData2: RadarChartData, binding: LayoutMatchedBinding) {
         val newValue = clickedData.value.coerceIn(0f, 100f)
 
         // 레이아웃이 로딩되지 않았을 때, 애니메이션 재 시작
@@ -542,7 +542,7 @@ class CardAdapter(
         }
     }
 
-    fun performAnimation2(clickedData: RadarChartData, binding: MatchedLayoutBinding) {
+    fun performAnimation2(clickedData: RadarChartData, binding: LayoutMatchedBinding) {
         val newValue = clickedData.value.coerceIn(0f, 100f)
 
         val currentMargin = (binding.characterLocation2.layoutParams as ViewGroup.MarginLayoutParams).leftMargin

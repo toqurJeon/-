@@ -19,12 +19,12 @@ class SleepChartView(context: Context, attrs: AttributeSet) : View(context, attr
 
     private var circlePaint = Paint().apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.BGgray)
+        color = ContextCompat.getColor(context, R.color.gray_high_brightness_background)
     }
 
     private var sleepPaint = Paint().apply {
         style = Paint.Style.FILL
-        color = ContextCompat.getColor(context, R.color.sleepIndigo)
+        color = ContextCompat.getColor(context, R.color.sleep_indigo)
     }
 
     private var innerPaint = Paint().apply {

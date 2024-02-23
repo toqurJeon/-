@@ -1,89 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- 메인 컬러 -->
     <color name="black">#0E0E0E</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="darkorange">#FF8A00</color>
-    <color name="grey">#818181</color>
-
-    <color name="lightorange">#CECECE</color>
-    <color name="lightgray">#F5F5F5</color>
-    <color name="BGgray">#F4F4F4</color>
-    <color name="darkGray">#A9A9A9</color>
+    <color name="white_transparent">#CCFFFFFF</color>
     <color name="transparency">#00FFFFFF</color>
-    <color name="orangeTp">#1AFF8A00</color>
-
-    <color name="fontGray">#999999</color>
-    <color name="mediumGray">#E0E0E0</color>
-
-    <!-- 메인 컬러 -->
     <color name="main_orange">#FF8A00</color>
-    <color name="transparent_orange">#80FF8A00</color>
+    <color name="main_orange_transparent">#80FF8A00</color>
 
     <!-- 서브 컬러 -->
     <color name="sub_yellow">#FFC639</color>
+
+    <!-- 아이콘 색상 -->
+    <color name="icon_gray">#8A8A8A</color>
+
+    <!-- 폰트 색상 -->
+    <color name="font_gray_lb">#6E6E6E</color>
+    <color name="font_gray_mb">#999999</color>
+    <color name="font_gray_hb">#C8C8C8</color>
 
     <!-- 회색 색상 -->
     <color name="gray_low_brightness">#888888</color>
     <color name="gray_medium_brightness">#C8C8C8</color>
     <color name="gray_high_brightness">#E1E1E1</color>
-    <color name="gray_more_high_brightness">#EBEBEB</color>
     <color name="gray_high_brightness_60">#99E1E1E1</color>
-
-    <!-- 폰트 색상 -->
-    <color name="font_Gray_2">#6E6E6E</color>
-    <color name="font_Gray_3">#C8C8C8</color>
+    <color name="gray_high_brightness_background">#F4F4F4</color>
+    <color name="gray_high_brightness_max">#EBEBEB</color>
 
     <!--성향 별 색상 설정-->
-    <color name="bg_socialable">#E4F8E2</color>
-    <color name="bg_positivity">#F6F1BF</color>
-    <color name="bg_activity">#FADCDC</color>
-    <color name="bg_communion">#F3D5EC</color>
-    <color name="bg_altruism">#FFE3D1</color>
-    <color name="bg_empathy">#FDE6EB</color>
-    <color name="bg_humor">#D1F6EA</color>
-    <color name="bg_generous">#E8E0FB</color>
+    <color name="character_bg_socialable">#E4F8E2</color>
+    <color name="character_bg_positivity">#F6F1BF</color>
+    <color name="character_bg_activity">#FADCDC</color>
+    <color name="character_bg_communion">#F3D5EC</color>
+    <color name="character_bg_altruism">#FFE3D1</color>
+    <color name="character_bg_empathy">#FDE6EB</color>
+    <color name="character_bg_humor">#D1F6EA</color>
+    <color name="character_bg_generous">#E8E0FB</color>
 
-    <color name="socialable">#73DA60</color>
-    <color name="positivity">#FFBF1E</color>
-    <color name="activity">#F8371E</color>
-    <color name="communion">#EC35E9</color>
-    <color name="altruism">#E65E14</color>
-    <color name="empathy">#E32772</color>
-    <color name="humor">#18E4A0</color>
-    <color name="generous">#6D37F1</color>
+    <color name="character_socialable">#73DA60</color>
+    <color name="character_positivity">#FFBF1E</color>
+    <color name="character_activity">#F8371E</color>
+    <color name="character_communion">#EC35E9</color>
+    <color name="character_altruism">#E65E14</color>
+    <color name="character_empathy">#E32772</color>
+    <color name="character_humor">#18E4A0</color>
+    <color name="character_generous">#6D37F1</color>
 
     <!--채도가 낮은 색상들-->
-    <color name="pastelOrange">#FFE8CF</color>
-    <color name="pastelBlue">#CFE1FF</color>
-    <color name="pastelYellow">#FFE9B0</color>
-    <color name="pastelPurple">#EFD6FF</color>
-
-    <color name="pastelGreen">#E1FFD6</color>
-    <color name="pastelPink">#FFD6F1</color>
-    <color name="pastelSkyBlue">#B0EFFF</color>
-    <color name="pastelAquaGreen">#D6FFEF</color>
-
-    <color name="pastelOrange2">#FFDDCF</color>
-    <color name="pastelBlue2">#CFD5FF</color>
-    <color name="pastelYellow2">#F1FFB0</color>
-    <color name="pastelPurple2">#F4D6FF</color>
-
-    <color name="pastelGreen2">#D6FFDA</color>
-    <color name="pastelPink2">#FFD6E9</color>
-    <color name="pastelSkyBlue2">#B0DDFF</color>
-    <color name="pastelRed">#FFD6D6</color>
+    <color name="pastel_yellow">#FFE9B0</color>
+    <color name="pastel_yellow_2">#F5FFC9</color>
+    <color name="pastel_orange">#FFE8CF</color>
+    <color name="pastel_orange_2">#FFDDCF</color>
+    <color name="pastel_red">#FFD6D6</color>
+    <color name="pastel_pink">#FFD6F1</color>
+    <color name="pastel_pink_2">#FFD6E9</color>
+    <color name="pastel_purple">#EFD6FF</color>
+    <color name="pastel_purple_2">#F4D6FF</color>
+    <color name="pastel_blue">#CFE1FF</color>
+    <color name="pastel_blue_2">#CFD5FF</color>
+    <color name="pastel_skyblue">#B0EFFF</color>
+    <color name="pastel_skyblue_2">#B0DDFF</color>
+    <color name="pastel_aquagreen">#D6FFEF</color>
+    <color name="pastel_green">#E1FFD6</color>
+    <color name="pastel_green_2">#D6FFDA</color>
 
     <!--SleepChart 색상-->
-    <color name="sleepIndigo">#5C60A7</color>
-    <color name="wakeOrange">#FFE2BF</color>
-
-    <!-- 반투명 인디케이터 -->
-    <color name="transparentWhite">#CCFFFFFF</color>
-    <color name="iconGray">#8A8A8A</color>
+    <color name="sleep_indigo">#5C60A7</color>
 
     <!-- 매칭 결과 색상 -->
-    <color name="rate_over80">#12C319</color>
-    <color name="rate_over70">#BBCA06</color>
-    <color name="rate_over60">#E3C147</color>
+    <color name="rate_over_80">#12C319</color>
+    <color name="rate_over_70">#BBCA06</color>
+    <color name="rate_over_60">#E3C147</color>
     <color name="rate_else">#AEA7A1</color>
 </resources>

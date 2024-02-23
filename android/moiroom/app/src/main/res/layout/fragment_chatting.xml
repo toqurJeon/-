@@ -24,6 +24,6 @@
         android:layout_height="match_parent"
         android:layout_margin="8dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/chatroom_item_layout" />
+        tools:listitem="@layout/layout_chatroom_item" />
 
 </LinearLayout>

@@ -14,7 +14,7 @@
         android:orientation="horizontal"
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="12dp"
-        android:background="@color/transparentWhite" >
+        android:background="@color/white_transparent" >
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -28,16 +28,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:textColor="@color/darkorange"
+                android:textColor="@color/main_orange"
                 android:textSize="22sp"
-                android:text="@string/sampleMatchRate"/>
+                android:text="@string/sample_number_matching_rate"/>
 
             <TextView
                 android:id="@+id/matchRateSymbol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_bold"
-                android:textColor="@color/darkorange"
+                android:textColor="@color/main_orange"
                 android:textSize="16sp"
                 android:text="%"/>
 
@@ -76,7 +76,7 @@
                 android:fontFamily="@font/pretendard_semibold"
                 android:gravity="center"
                 android:textSize="20sp"
-                android:text="@string/sampleNickname"/>
+                android:text="@string/sample_nickname"/>
 
             <TextView
                 android:id="@+id/location"
@@ -84,9 +84,9 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/pretendard_regular"
                 android:gravity="start"
-                android:textColor="@color/font_Gray_2"
+                android:textColor="@color/font_gray_lb"
                 android:textSize="16sp"
-                android:text="@string/sampleString"/>
+                android:text="@string/sample_string"/>
 
         </LinearLayout>
 
@@ -106,7 +106,7 @@
                 android:layout_height="28dp"
                 android:layout_gravity="center"
                 android:src="@drawable/ic_chatting"
-                app:tint="@color/darkorange"/>
+                app:tint="@color/main_orange"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -116,7 +116,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginHorizontal="16dp"
-        android:background="@color/mediumGray"
+        android:background="@color/gray_high_brightness"
         app:layout_collapseMode="parallax"/>
 
 </LinearLayout>
