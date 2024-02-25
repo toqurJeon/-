@@ -52,12 +52,12 @@ def calc(input, output):
 
         # Selenium을 이용하여 웹 페이지를  엽니다.
         url = "https://papago.naver.com/"
-        #options = webdriver.ChromeOptions()
-        #options.add_argument('--headless')
-        #options.add_argument('--no-sandbox')
-        #options.add_argument('--disable-dev-shm-usage')
-        #driver = webdriver.Chrome(chrome_options=options)
-        driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        driver = webdriver.Chrome(chrome_options=options)
+        #driver = webdriver.Chrome()
         driver.get(url)
 
         # 페이지가 로딩될 때까지 기다립니다.
