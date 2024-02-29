@@ -18,14 +18,14 @@ def calc_pos(blob):
     return round((sentiment_avg + 1) * 5000)
 
 
-def calc_emp(blob):
+def calc_emp(blob, prev_emp):
     sentiment_avg = 0
     for sentence in blob.sentences:
         # print(sentence.sentiment.polarity, sentence.sentiment.subjectivity, sentence)
         sentiment_avg += sentence.sentiment.subjectivity
     sentiment_avg = sentiment_avg / len(blob.sentences)
 
-    return round(sentiment_avg * 10000)
+    return round((sentiment_avg * 10000 + prev_emp) / 2)
 
 
 def calc(input, output):
@@ -84,7 +84,7 @@ def calc(input, output):
         blob = TextBlob(translated_text)
 
         output['characteristic']['positivity'] = calc_pos(blob)
-        output['characteristic']['empathy'] = calc_emp(blob)
+        output['characteristic']['empathy'] = calc_emp(blob, input['characteristic']['empathy'])
 
     except Exception as e:
         return None
