@@ -12,6 +12,24 @@ def calc_emp(data_by_phone_number):
     return round((parents_total_duration / total_duration) * 10000)
 
 
+def calc_com(data_by_phone_number):
+    values = []
+
+    for key, inner_dict in data_by_phone_number.items():
+        if 'durations' in inner_dict:
+            values.append(sum(inner_dict['durations']))
+
+    if values:
+        average = sum(values) / (len(values) * len(values))
+    else:
+        average = 2
+    return 10000 - round(10000 / average)
+
+
+def calc_gen(data_by_phone_number):
+    return 5000
+
+
 def calc(input, output):
     if input == [] or input is None:
         return None
@@ -39,7 +57,6 @@ def calc(input, output):
         data_by_phone_number[phone_number]['times'].append(start_time)
         data_by_phone_number[phone_number]['durations'].append(duration)
 
+    output['characteristic']['communion'] = calc_com(data_by_phone_number)
+    output['characteristic']['generous'] = calc_gen(data_by_phone_number)
     output['characteristic']['empathy'] = calc_emp(data_by_phone_number)
-    # 부모 통화 비율로 공감성,
-    # 통화 시작 시간 + 통화시간 => 취침시간git 
-    # 기상시간 ~= 취침시간 + 수면시간(예측)
