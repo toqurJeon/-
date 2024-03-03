@@ -2,40 +2,26 @@ import requests
 
 
 def code_converter(category_code):
-    if category_code == 1:
-        return "Film & Animation"
-    elif category_code == 2:
-        return "Autos & Vehicles"
-    elif category_code == 10:
-        return "Music"
-    elif category_code == 15:
-        return "Pets & Animals"
-    elif category_code == 17:
-        return "Sports"
-    elif category_code == 19:
-        return "Travel & Events"
-    elif category_code == 20:
-        return "Gaming"
-    elif category_code == 21:
-        return "Videoblogging"
-    elif category_code == 22:
-        return "People & Blogs"
-    elif category_code == 23:
-        return "Comedy"
-    elif category_code == 24:
-        return "Entertainment"
-    elif category_code == 25:
-        return "News & Politics"
-    elif category_code == 26:
-        return "Howto & Style"
-    elif category_code == 27:
-        return "Education"
-    elif category_code == 28:
-        return "Science & Technology"
-    elif category_code == 29:
-        return "Nonprofits & Activism"
-    else:
-        return "Others"
+    category_dict = {
+        1: "Film & Animation",
+        2: "Autos & Vehicles",
+        10: "Music",
+        15: "Pets & Animals",
+        17: "Sports",
+        19: "Travel & Events",
+        20: "Gaming",
+        21: "Videoblogging",
+        22: "People & Blogs",
+        23: "Comedy",
+        24: "Entertainment",
+        25: "News & Politics",
+        26: "Howto & Style",
+        27: "Education",
+        28: "Science & Technology",
+        29: "Nonprofits & Activism"
+    }
+
+    return category_dict.get(category_code, "Others")
 
 
 def calc(input):
