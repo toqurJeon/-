@@ -1,10 +1,8 @@
 package com.ssafy.moiroomserver.global.util;
 
-import com.ssafy.moiroomserver.global.constants.SecurityConstants;
 import com.ssafy.moiroomserver.global.dto.JwtDto;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.io.Decoder;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
