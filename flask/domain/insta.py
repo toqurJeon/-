@@ -18,14 +18,14 @@ def calc_pos(blob):
     return round((sentiment_avg + 1) * 5000)
 
 
-def calc_emp(blob):
+def calc_emp(blob, prev_emp):
     sentiment_avg = 0
     for sentence in blob.sentences:
         # print(sentence.sentiment.polarity, sentence.sentiment.subjectivity, sentence)
         sentiment_avg += sentence.sentiment.subjectivity
     sentiment_avg = sentiment_avg / len(blob.sentences)
 
-    return round(sentiment_avg * 10000)
+    return round((sentiment_avg * 10000 + prev_emp) / 2)
 
 
 def calc(input, output):
@@ -52,7 +52,12 @@ def calc(input, output):
 
         # Selenium을 이용하여 웹 페이지를  엽니다.
         url = "https://papago.naver.com/"
-        driver = webdriver.Chrome()
+        options = webdriver.ChromeOptions()
+        options.add_argument('--headless')
+        options.add_argument('--no-sandbox')
+        options.add_argument('--disable-dev-shm-usage')
+        driver = webdriver.Chrome(options=options)
+        #driver = webdriver.Chrome()
         driver.get(url)
 
         # 페이지가 로딩될 때까지 기다립니다.
@@ -79,7 +84,7 @@ def calc(input, output):
         blob = TextBlob(translated_text)
 
         output['characteristic']['positivity'] = calc_pos(blob)
-        output['characteristic']['empathy'] = calc_emp(blob)
+        output['characteristic']['empathy'] = calc_emp(blob, input['characteristic']['empathy'])
 
     except Exception as e:
         return None

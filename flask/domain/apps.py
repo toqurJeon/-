@@ -8,7 +8,13 @@ def calc(input, output):
 
     # ChromeDriver를 자동으로 설치합니다.
     # chromedriver_autoinstaller.install()
-    driver = webdriver.Chrome()
+
+    options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    driver = webdriver.Chrome(options=options)
+    #driver = webdriver.Chrome()
 
     categories = {}
     total_time = 0
@@ -28,7 +34,7 @@ def calc(input, output):
         # 카테고리 정보를 찾습니다.
         category_element = soup.select('span.VfPpkd-vQzf8d')
         category = category_element[3].text if category_element else 'Not Found'
-        if '인기' in category:
+        if 'popular' in category:
             category = category_element[4].text
 
         # print(f"어플 카테고리: {category}")
@@ -45,8 +51,14 @@ def calc(input, output):
 
     del categories['Not Found']
 
-    sorted_categories = dict(sorted(categories.items(), key=lambda item: item[1], reverse=True))
-    print(sorted_categories)
+    value_comm = categories.get('Communication', 0)
+
+    # 전체 value의 합
+    total_value = sum(categories.values())
+
+    # (comm의 value) / (전체 value의 합)
+    result = value_comm / total_value
+    output['characteristic']['sociability'] = round(result*10000)
 
     # for category_name, value in sorted_categories.items():
     #     output['characteristic']['interests'].append({'interestName': category_name,
