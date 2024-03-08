@@ -16,6 +16,10 @@ import java.util.Date;
 @Component
 public class JwtTokenProvider {
 
+    private static final String ISSUER = "moiroom";
+    private static final String SUBJECT = "socialId_SocialProvider";
+    private static final String SOCIAL_ID = "socialId";
+    private static final String SOCIAL_PROVIDER = "socialProvider";
     private static final String BEARER_TYPE = "bearer";
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; // accessToken 유효 시간: 30분
     private static final long REFRESH_TOKEN_EXPIRE_TIME = 1000 * 60 * 60 * 24 * 7; // refreshToken 유효 시간: 일주일
@@ -34,12 +38,12 @@ public class JwtTokenProvider {
 
         //access token 생성하기
         String accessToken = Jwts.builder()
-                .issuer("moiroom")
-                .subject("socialId")
+                .issuer(ISSUER)
+                .subject(SUBJECT)
                 .issuedAt(new Date())
                 .expiration(new Date(accessExpiresIn))
-                .claim("socialId", socialId)
-                .claim("socialProvider", socialProvider)
+                .claim(SOCIAL_ID, socialId)
+                .claim(SOCIAL_PROVIDER, socialProvider)
                 .signWith(key, SignatureAlgorithm.HS512)
                 .compact();
 
