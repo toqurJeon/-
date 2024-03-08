@@ -7,11 +7,9 @@ from domain import apps, call, images, insta, youtube
 app = Flask(__name__)
 CORS(app)
 
-params = {'characteristic': {'sociability': 5678, 'positivity': 7896, 'activity': 1874, 'communion': 3814,
-                             'altruism': 1234, 'empathy': 4183, 'humor': 8423, 'generous': 4538},
-          'interests': [{'interestName': 'Entertainment', 'interestPercent': 5000},
-                        {'interestName': 'Sports', 'interestPercent': 3000},
-                        {'interestName': 'Film & Animation', 'interestPercent': 2000}]}
+params = {'characteristic': {'sociability': 5000, 'positivity': 5000, 'activity': 5000, 'communion': 5000,
+                             'altruism': 5000, 'empathy': 5000, 'humor': 5000, 'generous': 5000},
+          'interests': []}
 
 
 @app.route('/moiroom/privacy')
@@ -28,18 +26,19 @@ def user_init():
         access_token = 'Bearer ' + json_data['accessToken']
 
         images.calc(json_data['images'], params)
-        # insta.calc(json_data['insta'], params)
+        insta.calc(json_data['insta'], params)
         call.calc(json_data['calls'], params)
-        # params['interests'] = youtube.calc(json_data['youtube'])
-        # apps.calc(json_data['apps'], params)
+        params['interests'] = youtube.calc(json_data['youtube'])
+        apps.calc(json_data['apps'], params)
 
 
         print(params)
 
-        send_response = requests.post('https://moiroom.n-e.kr/member/characteristic',
-                                      headers={'Authorization': access_token},
-                                      json=params)
-        return send_response.json()
+        # send_response = requests.post('https://moiroom.n-e.kr/member/characteristic',
+        #                               headers={'Authorization': access_token},
+        #                               json=params)
+        # return send_response.json()
+        return jsonify({'status': 'hi'})
 
     except Exception as e:
         return jsonify({'status': 'error', 'message': str(e)})
