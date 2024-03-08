@@ -17,7 +17,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @Setter
 @NoArgsConstructor
 @ToString
-@OnDelete(action = OnDeleteAction.CASCADE)
 @Table(name = "member")
 public class Member extends BaseEntity {
 
