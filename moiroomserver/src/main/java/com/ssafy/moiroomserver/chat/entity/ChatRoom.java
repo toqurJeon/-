@@ -3,15 +3,12 @@ package com.ssafy.moiroomserver.chat.entity;
 import com.ssafy.moiroomserver.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Entity
 @Table(name = "chat_room")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @AllArgsConstructor
-@OnDelete(action = OnDeleteAction.CASCADE)
 @Builder
 public class ChatRoom extends BaseEntity {
 
