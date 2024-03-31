@@ -13,7 +13,6 @@ import org.hibernate.annotations.OnDeleteAction;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
-@OnDelete(action = OnDeleteAction.CASCADE)
 public class MemberChatRoom {
 
     @Id
