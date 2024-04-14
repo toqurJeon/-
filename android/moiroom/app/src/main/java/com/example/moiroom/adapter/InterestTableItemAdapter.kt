@@ -8,9 +8,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.R
 import com.example.moiroom.data.CombinedInterest
-import com.example.moiroom.databinding.InterestTableItemLayoutBinding
+import com.example.moiroom.databinding.LayoutInterestTableItemBinding
 import com.example.moiroom.utils.getColorInterest
 import com.example.moiroom.utils.getInterestName
+import java.text.DecimalFormat
 
 class InterestTableItemAdapter(
     private val context: Context,
@@ -21,7 +22,7 @@ class InterestTableItemAdapter(
     private var selectedPosition: Int = RecyclerView.NO_POSITION
     private var selectedInterestName: String? = null
 
-    inner class InterestTableItemViewHolder(val binding: InterestTableItemLayoutBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class InterestTableItemViewHolder(val binding: LayoutInterestTableItemBinding) : RecyclerView.ViewHolder(binding.root), View.OnClickListener {
         init {
             itemView.setOnClickListener(this)
         }
@@ -37,13 +38,14 @@ class InterestTableItemAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestTableItemViewHolder {
-        val binding = InterestTableItemLayoutBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = LayoutInterestTableItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return InterestTableItemViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: InterestTableItemViewHolder, position: Int) {
         val data = dataList[position]
         val color = getColorInterest(data.interestName, context)
+        val decimalFormat = DecimalFormat("#.#")
 
         holder.binding.apply {
             interestTableName.text = getInterestName(data.interestName)
@@ -56,18 +58,18 @@ class InterestTableItemAdapter(
 
             if (data.myInterestPercent != null && data.roommateInterestPercent != null) {
 
-                interestTableRoommatePercent.text = "${data.roommateInterestPercent}%"
-                interestTableMyPercent.text = "${data.myInterestPercent}%"
+                interestTableRoommatePercent.text = "${decimalFormat.format(data.roommateInterestPercent/100)}%"
+                interestTableMyPercent.text = "${decimalFormat.format(data.myInterestPercent/100)}%"
 
             } else if (data.roommateInterestPercent != null) {
 
-                interestTableRoommatePercent.text = "${data.roommateInterestPercent}%"
+                interestTableRoommatePercent.text = "${decimalFormat.format(data.roommateInterestPercent/100)}%"
                 interestTableMyPercent.text = ""
 
-            } else {
+            } else if (data.myInterestPercent != null) {
 
                 interestTableRoommatePercent.text = ""
-                interestTableMyPercent.text = "${data.myInterestPercent}%"
+                interestTableMyPercent.text = "${decimalFormat.format(data.myInterestPercent/100)}%"
 
             }
         }

@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.ChatRoom
-import com.example.moiroom.databinding.ChatroomItemLayoutBinding
+import com.example.moiroom.databinding.LayoutChatroomItemBinding
 import java.time.Instant
 import java.time.LocalDateTime
 import java.time.ZoneId
@@ -22,7 +22,7 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
     // 클릭 리스너
     var onItemClickListener: OnItemClickListener? = null
 
-    inner class ChatRoomViewHolder(val binding: ChatroomItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ChatRoomViewHolder(val binding: LayoutChatroomItemBinding) : RecyclerView.ViewHolder(binding.root) {
         init {
             // 아이템 뷰에 클릭 리스너 설정
             binding.root.setOnClickListener {
@@ -39,7 +39,7 @@ class ChatRoomAdapter(private val dataList: List<ChatRoom>) : RecyclerView.Adapt
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatRoomViewHolder {
-        val binding = ChatroomItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutChatroomItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return ChatRoomViewHolder(binding)
     }
 

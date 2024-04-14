@@ -6,22 +6,22 @@ import androidx.core.content.ContextCompat
 import com.example.moiroom.R
 
 private val interestColorMap = mapOf(
-    "Film & Animation" to R.color.pastelGreen2,
-    "Autos & Vehicles" to R.color.pastelRed,
-    "Music" to R.color.pastelYellow,
-    "Pets & Animals" to R.color.pastelBlue2,
-    "Sports" to R.color.pastelBlue,
-    "Travel & Events" to R.color.pastelPurple2,
-    "Gaming" to R.color.pastelAquaGreen,
-    "Videoblogging" to R.color.pastelSkyBlue,
-    "People & Blogs" to R.color.pastelOrange,
-    "Comedy" to R.color.pastelYellow2,
-    "Entertainment" to R.color.pastelPink2,
-    "News & Politics" to R.color.pastelPurple,
-    "Howto & Style" to R.color.pastelPink,
-    "Education" to R.color.pastelSkyBlue2,
-    "Science & Technology" to R.color.pastelGreen,
-    "Nonprofits & Activism" to R.color.pastelOrange2
+    "Film & Animation" to R.color.pastel_green_2,
+    "Autos & Vehicles" to R.color.pastel_red,
+    "Music" to R.color.pastel_yellow,
+    "Pets & Animals" to R.color.pastel_blue_2,
+    "Sports" to R.color.pastel_blue,
+    "Travel & Events" to R.color.pastel_purple_2,
+    "Gaming" to R.color.pastel_aqua_green,
+    "Videoblogging" to R.color.pastel_sky_blue,
+    "People & Blogs" to R.color.pastel_orange,
+    "Comedy" to R.color.pastel_yellow_2,
+    "Entertainment" to R.color.pastel_pink_2,
+    "News & Politics" to R.color.pastel_purple,
+    "Howto & Style" to R.color.pastel_pink,
+    "Education" to R.color.pastel_sky_blue_2,
+    "Science & Technology" to R.color.pastel_green,
+    "Nonprofits & Activism" to R.color.pastel_orange_2
 )
 
 fun getColorInterest(interestName: String,  context: Context): Int {
@@ -30,27 +30,27 @@ fun getColorInterest(interestName: String,  context: Context): Int {
 }
 
 private val characterBGColorMap = mapOf(
-    "사교" to R.color.bg_socialable,
-    "긍정" to R.color.bg_positivity,
-    "활동" to R.color.bg_activity,
-    "공유" to R.color.bg_communion,
-    "이타" to R.color.bg_altruism,
-    "공감" to R.color.bg_empathy,
-    "감각" to R.color.bg_humor,
-    "관대" to R.color.bg_generous,
-    "default" to R.color.BGgray,
+    "사교" to R.color.character_bg_sociable,
+    "긍정" to R.color.character_bg_positivity,
+    "활동" to R.color.character_bg_activity,
+    "공유" to R.color.character_bg_communion,
+    "이타" to R.color.character_bg_altruism,
+    "공감" to R.color.character_bg_empathy,
+    "감각" to R.color.character_bg_humor,
+    "관대" to R.color.character_bg_generous,
+    "default" to R.color.gray_high_brightness_background,
 )
 
 private val characterColorMap = mapOf(
-    "사교" to R.color.socialable,
-    "긍정" to R.color.positivity,
-    "활동" to R.color.activity,
-    "공유" to R.color.communion,
-    "이타" to R.color.altruism,
-    "공감" to R.color.empathy,
-    "감각" to R.color.humor,
-    "관대" to R.color.generous,
-    "default" to R.color.BGgray,
+    "사교" to R.color.character_sociable,
+    "긍정" to R.color.character_positivity,
+    "활동" to R.color.character_activity,
+    "공유" to R.color.character_communion,
+    "이타" to R.color.character_altruism,
+    "공감" to R.color.character_empathy,
+    "감각" to R.color.character_humor,
+    "관대" to R.color.character_generous,
+    "default" to R.color.gray_high_brightness_background,
 )
 
 fun getBGColorCharacter(characterName: String,  context: Context): Int {

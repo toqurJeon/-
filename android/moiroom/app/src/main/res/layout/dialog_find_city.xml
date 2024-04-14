@@ -41,7 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="2dp"
             android:layout_below="@+id/dialog_header"
-            android:background="@color/darkorange"/>
+            android:background="@color/main_orange"/>
 
         <GridView
             android:id="@+id/dataGrid"

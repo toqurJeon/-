@@ -47,7 +47,7 @@ class SquareChartView(context: Context, attrs: AttributeSet? = null) : View(cont
                 if (dataIndex >= data.size) return // 데이터 인덱스가 데이터 리스트 크기를 넘어가면 그리기를 중단합니다.
 
                 val interest = data[dataIndex]
-                val numOfSquares = interest.interestPercent
+                val numOfSquares = interest.interestPercent / 100
 
                 val color = getColorInterest(interest.interestName, context)
 

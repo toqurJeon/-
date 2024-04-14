@@ -2,11 +2,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NowMatchingActivity"
+    tools:context=".activity.NowMatchingActivity"
     android:id="@+id/mainLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/gradient_background"
+    android:background="@drawable/bg_gradient"
     android:clickable="true"
     android:focusable="true"
     android:orientation="vertical">
@@ -20,7 +20,7 @@
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/white"
         android:textSize="38sp"
-        android:text="@string/nowMatchingHeader"/>
+        android:text="@string/now_matching_header"/>
 
     <TextView
         android:id="@+id/subHeader"
@@ -32,7 +32,7 @@
         android:fontFamily="@font/pretendard_bold"
         android:textColor="@color/white"
         android:textSize="28sp"
-        android:text="@string/nowMatchingHeader2"/>
+        android:text="@string/now_matching_header_2"/>
 
     <ImageView
         android:id="@+id/mainImage"
@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="8dp"
-        android:contentDescription="@string/nowMatchingMainImage"
+        android:contentDescription="@string/now_matching_main_image_description"
         android:src="@drawable/ic_before_matching" />
 
     <ImageView
@@ -50,7 +50,7 @@
         android:layout_centerHorizontal="true"
         android:layout_below="@id/mainImage"
         android:layout_marginTop="96dp"
-        android:contentDescription="@string/iconTouch"
+        android:contentDescription="@string/icon_touch"
         android:src="@drawable/ic_touch" />
 
     <TextView
@@ -61,7 +61,7 @@
         android:layout_below="@id/touchIcon"
         android:layout_marginTop="8dp"
         android:fontFamily="@font/pretendard_semibold"
-        android:text="@string/nowMatchingSign"
+        android:text="@string/now_matching_sign"
         android:textColor="@color/white"
         android:textSize="20sp"/>
 
@@ -72,7 +72,7 @@
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
         app:tint="@color/white"
-        android:contentDescription="@string/logoLetter"
-        android:src="@drawable/letter_logo"/>
+        android:contentDescription="@string/logo_letter"
+        android:src="@drawable/logo_letter"/>
 
 </RelativeLayout>

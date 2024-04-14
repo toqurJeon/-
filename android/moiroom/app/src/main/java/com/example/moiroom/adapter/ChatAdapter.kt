@@ -1,3 +1,5 @@
+package com.example.moiroom.adapter
+
 import android.content.Context
 import android.graphics.PorterDuff
 import android.util.Log
@@ -5,20 +7,16 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.ContextCompat
-import androidx.core.view.marginTop
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moiroom.R
 import com.example.moiroom.data.Chat
 import com.example.moiroom.data.UserResponse
-import com.example.moiroom.databinding.ChatItemLayoutBinding
+import com.example.moiroom.databinding.LayoutChatItemBinding
 import com.example.moiroom.utils.CachedUserInfoLiveData
 import com.example.moiroom.utils.getUserInfo
-import java.time.Instant
 import java.time.LocalDateTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 
 class ChatAdapter(
@@ -28,12 +26,12 @@ class ChatAdapter(
 
     var cachedUserInfo: UserResponse.Data.Member? = CachedUserInfoLiveData.cacheUserInfo.get("userInfo")
 
-    inner class ChatViewHolder(val binding: ChatItemLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
-        var nextViewHolder: ChatItemLayoutBinding? = null
+    inner class ChatViewHolder(val binding: LayoutChatItemBinding) : RecyclerView.ViewHolder(binding.root) {
+        var nextViewHolder: LayoutChatItemBinding? = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChatViewHolder {
-        val binding = ChatItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutChatItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
 
         if (cachedUserInfo == null) {
             getUserInfo(context)
@@ -65,13 +63,13 @@ class ChatAdapter(
 
             // 이전 메세지와 비교
 
-            val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape)
-            val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.chat_ballon_shape_flipped)
+            val chatBallonDrawable = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.bg_chat_ballon_shape)
+            val chatBallonDrawableFlipped = ContextCompat.getDrawable(holder.binding.root.context, R.drawable.bg_chat_ballon_shape_flipped)
 
             Log.d("current_position", "current_position: $position, ${chatContent.text}")
 
             if (currentMemberId == myMemberId) {
-                chatBallonDrawableFlipped?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.lightorange), PorterDuff.Mode.SRC_ATOP)
+                chatBallonDrawableFlipped?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.gray_medium_brightness), PorterDuff.Mode.SRC_ATOP)
                 chatContent.background = chatBallonDrawableFlipped
 
                 holder.binding.root.gravity = Gravity.END
@@ -102,7 +100,7 @@ class ChatAdapter(
                 }
 
             } else {
-                chatBallonDrawable?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.darkorange), PorterDuff.Mode.SRC_ATOP)
+                chatBallonDrawable?.setColorFilter(ContextCompat.getColor(holder.binding.root.context, R.color.main_orange), PorterDuff.Mode.SRC_ATOP)
                 chatContent.background = chatBallonDrawable
 
                 holder.binding.root.gravity = Gravity.START

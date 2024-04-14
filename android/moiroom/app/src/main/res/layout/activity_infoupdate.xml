@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".InfoupdateActivity"
+    tools:context=".activity.InfoupdateActivity"
     android:paddingHorizontal="16dp"
-    android:background="@color/BGgray">
+    android:background="@color/gray_high_brightness_background">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -26,7 +26,7 @@
                 android:layout_marginVertical="16dp"
                 android:layout_marginLeft="8dp"
                 android:layout_gravity="center_vertical"
-                android:src="@drawable/arrow_back_ios_new_fill0_wght400_grad0_opsz24"/>
+                android:src="@drawable/ic_arrow_back"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:cardCornerRadius="16dp"
-                android:backgroundTint="@color/darkorange"
+                android:backgroundTint="@color/main_orange"
                 android:layout_gravity="bottom|center"
                 android:layout_marginTop="8dp"
                 android:layout_marginLeft="48dp"
@@ -77,7 +77,7 @@
                     android:layout_width="32dp"
                     android:layout_height="32dp"
                     android:layout_margin="8dp"
-                    android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+                    android:src="@drawable/ic_edit"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -98,7 +98,7 @@
                     android:layout_height="16dp"
                     android:layout_margin="8dp"
                     app:tint="@color/white"
-                    android:src="@drawable/close_fill0_wght400_grad0_opsz24"/>
+                    android:src="@drawable/ic_close"/>
 
             </androidx.cardview.widget.CardView>
 
@@ -135,7 +135,7 @@
                     android:visibility="invisible"
                     android:layout_marginLeft="4dp"
                     android:text="(수정됨)"
-                    android:textColor="@color/darkorange"
+                    android:textColor="@color/main_orange"
                     android:fontFamily="@font/pretendard_semibold"
                     android:textSize="14dp"
                     android:layout_gravity="center_vertical"/>
@@ -158,8 +158,8 @@
                 android:layout_height="24dp"
                 android:layout_marginRight="12dp"
                 android:layout_gravity="end|center_vertical"
-                app:tint="@color/darkorange"
-                android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+                app:tint="@color/main_orange"
+                android:src="@drawable/ic_edit"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -194,7 +194,7 @@
                     android:visibility="invisible"
                     android:layout_marginLeft="4dp"
                     android:text="(수정됨)"
-                    android:textColor="@color/darkorange"
+                    android:textColor="@color/main_orange"
                     android:fontFamily="@font/pretendard_semibold"
                     android:textSize="14dp"
                     android:layout_gravity="center_vertical"/>
@@ -219,8 +219,8 @@
                 android:layout_height="24dp"
                 android:layout_marginRight="12dp"
                 android:layout_gravity="end|center_vertical"
-                app:tint="@color/darkorange"
-                android:src="@drawable/edit_fill0_wght400_grad0_opsz24"/>
+                app:tint="@color/main_orange"
+                android:src="@drawable/ic_edit"/>
 
         </androidx.cardview.widget.CardView>
 
@@ -255,7 +255,7 @@
                     android:visibility="invisible"
                     android:layout_marginLeft="4dp"
                     android:text="(수정됨)"
-                    android:textColor="@color/darkorange"
+                    android:textColor="@color/main_orange"
                     android:fontFamily="@font/pretendard_semibold"
                     android:textSize="14dp"
                     android:layout_gravity="center_vertical"/>
@@ -280,7 +280,7 @@
                 android:layout_height="24dp"
                 android:layout_marginRight="12dp"
                 android:layout_gravity="end|center_vertical"
-                app:tint="@color/darkorange"
+                app:tint="@color/main_orange"
                 android:src="@drawable/ic_search"/>
 
         </androidx.cardview.widget.CardView>
@@ -325,7 +325,7 @@
         android:layout_marginBottom="12dp"
         app:cardCornerRadius="16dp"
         app:cardElevation="0dp"
-        android:backgroundTint="@color/darkorange"
+        android:backgroundTint="@color/main_orange"
         android:layout_alignParentBottom="true">
 
         <TextView
