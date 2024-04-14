@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.data.RadarChartData
-import com.example.moiroom.databinding.CharacteristicItemLayoutBinding
+import com.example.moiroom.databinding.LayoutCharacteristicItemBinding
 import com.example.moiroom.utils.getBGColorCharacter
 import com.example.moiroom.utils.getColorCharacter
 import java.text.DecimalFormat
@@ -21,7 +21,7 @@ class CharacterAdapter(
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
 
-    inner class CharacterViewHolder(val binding: CharacteristicItemLayoutBinding) : RecyclerView.ViewHolder(binding.root)
+    inner class CharacterViewHolder(val binding: LayoutCharacteristicItemBinding) : RecyclerView.ViewHolder(binding.root)
 
     init {
         // 어댑터가 생성될 때 첫 번째 아이템을 클릭하는 메서드를 호출
@@ -46,7 +46,7 @@ class CharacterAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CharacterViewHolder {
-        val binding = CharacteristicItemLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        val binding = LayoutCharacteristicItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return CharacterViewHolder(binding)
     }
 

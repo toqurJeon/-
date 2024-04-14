@@ -1,16 +1,13 @@
 package com.example.moiroom.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.moiroom.R
-import com.example.moiroom.data.CombinedInterest
 import com.example.moiroom.data.Interest
-import com.example.moiroom.databinding.InterestChartItemLayoutBinding
-import com.example.moiroom.databinding.InterestItemLayoutBinding
+import com.example.moiroom.databinding.LayoutInterestChartItemBinding
 import com.example.moiroom.utils.getColorInterest
 
 class InterestChartAdapter(
@@ -23,7 +20,7 @@ class InterestChartAdapter(
     private var selectedItemPosition: Int = RecyclerView.NO_POSITION
     private var selectedInterestName: String? = null
 
-    inner class InterestChartViewHolder(val binding: InterestChartItemLayoutBinding) :
+    inner class InterestChartViewHolder(val binding: LayoutInterestChartItemBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener {
             init {
                 itemView.setOnClickListener(this)
@@ -37,7 +34,7 @@ class InterestChartAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): InterestChartViewHolder {
-        val binding = InterestChartItemLayoutBinding.inflate(LayoutInflater.from(context), parent, false)
+        val binding = LayoutInterestChartItemBinding.inflate(LayoutInflater.from(context), parent, false)
         return InterestChartViewHolder(binding)
     }
 
@@ -49,10 +46,10 @@ class InterestChartAdapter(
             if (data.interestName == selectedInterestName) {
                 interestItem.setCardBackgroundColor(color)
             } else {
-                interestItem.setCardBackgroundColor(context.getColor(R.color.gray_more_high_brightness))
+                interestItem.setCardBackgroundColor(context.getColor(R.color.gray_high_brightness_max))
             }
             val layoutParams = interestItem.layoutParams
-            layoutParams.width = calculateItemWidth(data.interestPercent)
+            layoutParams.width = calculateItemWidth((data.interestPercent / 100).toInt())
             interestItem.layoutParams = layoutParams
             // Log.d("MYTAG", "onBindViewHolder: ${calculateItemWidth(data.interestPercent)}")
         }

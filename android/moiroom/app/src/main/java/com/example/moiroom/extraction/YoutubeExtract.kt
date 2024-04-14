@@ -42,7 +42,7 @@ import java.io.InputStreamReader
 import java.net.HttpURLConnection
 import java.net.URL
 import android.webkit.WebSettings
-import com.example.moiroom.LoadingActivity
+import com.example.moiroom.activity.LoadingActivity
 import org.json.JSONObject
 
 class YoutubeExtract : AppCompatActivity() {

@@ -7,8 +7,8 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:weightSum="1"
-    tools:context=".ChatActivity"
-    android:background="@color/lightgray">
+    tools:context=".activity.ChatActivity"
+    android:background="@color/gray_high_brightness">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -18,7 +18,7 @@
         android:layout_marginHorizontal="8dp"
         android:paddingBottom="52dp"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/chat_item_layout" />
+        tools:listitem="@layout/layout_chat_item" />
 
     <RelativeLayout
         android:id="@+id/topFixed"
@@ -34,7 +34,7 @@
             android:id="@+id/backwardButton"
             android:layout_width="36dp"
             android:layout_height="36dp"
-            android:src="@drawable/arrow_back_fill0_wght400_grad0_opsz24"/>
+            android:src="@drawable/ic_arrow_back_2"/>
 
         <TextView
             android:id="@+id/chatRoomName"
@@ -52,7 +52,7 @@
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:layout_alignParentRight="true"
-            android:src="@drawable/close_fill0_wght400_grad0_opsz24"/>
+            android:src="@drawable/ic_close"/>
 
     </RelativeLayout>
 
@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:paddingVertical="6dp"
-        android:background="@drawable/top_border_box"
+        android:background="@drawable/shape_top_border_box"
         android:elevation="8dp"
         android:layout_gravity="bottom">
 
@@ -88,7 +88,7 @@
                 android:layout_width="40dp"
                 android:layout_height="40dp"
                 android:layout_gravity="center"
-                android:src="@drawable/send_fill0_wght400_grad0_opsz24"/>
+                android:src="@drawable/ic_send"/>
 
         </FrameLayout>
 

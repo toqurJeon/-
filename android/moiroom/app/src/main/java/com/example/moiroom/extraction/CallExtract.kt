@@ -9,7 +9,7 @@ import com.example.moiroom.data.CallLogItem
 import android.provider.CallLog.Calls
 import android.provider.CallLog.Locations
 import android.util.Log
-import com.example.moiroom.NowMatchingActivity
+import com.example.moiroom.activity.NowMatchingActivity
 import com.example.moiroom.databinding.ActivityJaeeontestBinding
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.FuelManager

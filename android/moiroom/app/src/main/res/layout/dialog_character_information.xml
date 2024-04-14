@@ -40,7 +40,7 @@
             android:layout_centerHorizontal="true"
             android:fontFamily="@font/pretendard_bold"
             android:text="확인"
-            android:backgroundTint="@color/darkorange"
+            android:backgroundTint="@color/main_orange"
             android:layout_marginHorizontal="8dp" />
 
     </RelativeLayout>

@@ -61,22 +61,22 @@
             android:name="com.google.android.gms.signin.389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0"
             android:value="389148661924-jv1mk55jr7c1ti4tet7n8qbb1dij6ts0.apps.googleusercontent.com" />
         <activity
-            android:name=".DetailchartActivity"
+            android:name=".activity.DetailchartActivity"
             android:exported="true" />
         <activity
-            android:name=".InfoupdateActivity"
+            android:name=".activity.InfoupdateActivity"
             android:exported="false" />
         <activity
-            android:name=".AdsettingActivity"
+            android:name=".activity.AdsettingActivity"
             android:exported="false" />
         <activity
-            android:name=".ChatActivity"
+            android:name=".activity.ChatActivity"
             android:theme="@style/ChatActivityTheme"
             android:exported="true"
             android:windowSoftInputMode="adjustResize"/>
 
         <activity
-            android:name=".NowMatchingActivity"
+            android:name=".activity.NowMatchingActivity"
             android:theme="@style/NowMatchingTheme"
             android:exported="true" />
         <!--
@@ -84,15 +84,15 @@
        exported: 다른 앱에서 접근 허용 여부
        -->
         <activity
-            android:name=".LoadingActivity"
+            android:name=".activity.LoadingActivity"
             android:exported="true" />
 
         <activity
-            android:name=".NaviActivity"
+            android:name=".activity.NaviActivity"
             android:exported="true" />
 
         <activity
-            android:name=".InfoinputActivity"
+            android:name=".activity.InfoinputActivity"
             android:exported="true">
             <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
             <!-- <intent-filter> -->
@@ -104,7 +104,7 @@
         </activity>
 
         <activity
-            android:name=".SecondActivity"
+            android:name=".activity.SecondActivity"
             android:exported="true" />
 
         <activity
@@ -154,7 +154,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:exported="true">
             <!-- 해당 액티비티가 어떤 (암시적) 인텐트를 수신할 지 정의 -->
             <intent-filter>
@@ -226,7 +226,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/file_paths" />
         </provider>
-        <service android:name=".MyForegroundService" />
+        <service android:name=".extraction.MyForegroundService" />
     </application>
 
 </manifest>
