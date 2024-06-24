@@ -1,9 +1,11 @@
 package com.ssafy.moiroomserver.member.service.impl;
 
+import com.ssafy.moiroomserver.global.dto.JwtDto;
 import com.ssafy.moiroomserver.global.exception.ExistException;
 import com.ssafy.moiroomserver.global.exception.NoExistException;
 import com.ssafy.moiroomserver.global.exception.WrongValueException;
 import com.ssafy.moiroomserver.global.kakao.KakaoService;
+import com.ssafy.moiroomserver.global.util.JwtTokenProvider;
 import com.ssafy.moiroomserver.member.dto.*;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.AddMemberRequest;
 import com.ssafy.moiroomserver.member.dto.MemberInfo.MemberInfoRes;
@@ -31,6 +33,7 @@ public class MemberServiceImpl implements MemberService {
 
     private final MemberInterestRepository memberInterestRepository;
     private final CharacteristicRepository characteristicRepository;
+    private final JwtTokenProvider jwtTokenProvider;
 
     private static final int LOGIN = 1;
     private static final int LOGOUT = 0;
@@ -81,8 +84,13 @@ public class MemberServiceImpl implements MemberService {
         member.setBirthday(dto.getBirthday());
         member.setName(dto.getName());
         member.setGender(dto.getGender());
-        member.setAccessToken(dto.getAccessToken());
-        member.setRefreshToken(dto.getRefreshToken());
+//        member.setAccessToken(dto.getAccessToken());
+//        member.setRefreshToken(dto.getRefreshToken());
+
+        // 토큰 생성하기
+        JwtDto jwtDto = jwtTokenProvider.generateToken(dto.getSocialId(), dto.getProvider());
+        member.setAccessToken(jwtDto.getAccessToken());
+        member.setRefreshToken(jwtDto.getRefreshToken());
 
         memberRepository.save(member);
     }
